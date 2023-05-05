@@ -13,14 +13,7 @@ export default function Button({
   action,
   ...props
 }: ButtonProps) {
-  const actionTypes = {
-    primary: "btn-primary",
-    secondary: "btn-secondary",
-    ghost: "btn-ghost",
-    link: "btn-link",
-  };
-
-  const rootClassName = cn("btn", action && actionTypes[action], className);
+  const rootClassName = cn("btn", className);
 
   return (
     <button className={rootClassName} {...props}>
