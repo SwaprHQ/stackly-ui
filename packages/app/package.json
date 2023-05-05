@@ -9,7 +9,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "export": "next export",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf .vercel && rm -rf .turbo && rm -rf out && rm -rf .next"
   },
