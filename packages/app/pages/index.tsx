@@ -10,7 +10,7 @@ export default function Index() {
       <h1 className="mt-6">Hello Stackly UI</h1>
       <Link href="/test">Test</Link>
       <hr />
-      <Button action="primary">Stackly Color Button</Button>
+      <Button action="primary">Stackly Button</Button>
     </div>
   );
 }
