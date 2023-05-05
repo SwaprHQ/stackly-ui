@@ -16,7 +16,6 @@
   "dependencies": {
     "@stackly/ui": "*",
     "@stackly/utils": "*",
-    "@vercel/examples-ui": "^1.0.4",
     "next": "canary",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
