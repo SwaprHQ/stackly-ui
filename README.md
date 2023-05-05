@@ -1,59 +1,61 @@
----
-name: Monorepo with Turborepo
-slug: monorepo-turborepo
-description: Learn to implement a monorepo with a single Next.js site that has installed two local packages.
-framework: Next.js
-useCase:
-  - Monorepos
-  - Documentation
-css: Tailwind
-deployUrl: https://vercel.com/new/clone?repository-url=https://github.com/vercel/examples/tree/main/solutions/monorepo&project-name=monorepo&repository-name=monorepo&root-directory=apps/app&install-command=pnpm%20install&build-command=cd%20..%2F..%20%26%26%20pnpm%20build%20--filter%3Dapp...&ignore-command=npx%20turbo-ignore
-demoUrl: https://solutions-monorepo.vercel.sh
-relatedTemplates:
-  - monorepo-nx
-  - turborepo-next-basic
-  - turborepo-sveltekit-starter
----
+# Stackly
 
-# Monorepo
+Stackly is a Next.js Cloudflare mono repo project that implements Dollar Cost Averaging using CoW protocol.
 
-This is a monorepo example with a single Next.js site ([./apps/app](./apps/app)) that has installed two local packages:
+## Prerequisites
 
-- [./packages/ui](./packages/ui): Exports UI components that use TypeScript and Tailwind CSS and is compiled by SWC.
-- [./packages/utils](./packages/utils): Exports utility functions that use TypeScript.
+Before you can run this project, make sure you have the following software installed:
 
-The monorepo is using [Turborepo](https://turborepo.org/) and [pnpm workspaces](https://pnpm.io/workspaces) to link packages together.
+- Node.js 18 or higher
+- Yarn
+- Git
 
-For more examples on monorepos check out the [official Turborepo examples](https://github.com/vercel/turborepo/tree/main/examples).
+## Getting Started
 
-## Demo
+To get started with Stackly, follow these steps:
 
-https://solutions-monorepo.vercel.sh
+1. Clone the repository:
 
-## How to Use
-
-You can choose from one of the following two methods to use this repository:
-
-### One-Click Deploy
-
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=vercel-examples):
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/examples/tree/main/solutions/monorepo&project-name=monorepo&repository-name=monorepo&root-directory=apps/app&install-command=pnpm%20install&build-command=cd%20..%2F..%20%26%26%20pnpm%20build%20--filter%3Dapp...&ignore-command=npx%20turbo-ignore)
-
-### Clone and Deploy
-
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [pnpm](https://pnpm.io/installation) to bootstrap the example:
-
-```bash
-pnpm create next-app --example https://github.com/vercel/examples/tree/main/solutions/monorepo monorepo
+```
+git clone https://github.com/ImpeccableHQ/stackly-ui
 ```
 
-Next, run `app` in development mode:
+2. Install the dependencies:
 
-```bash
-pnpm dev
+```
+cd stackly
+yarn
 ```
 
-The app should be up and running at http://localhost:3000.
+3. Start the development server:
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=monorepo-example) ([Documentation](https://nextjs.org/docs/deployment)).
+```
+yarn dev
+```
+
+The development server will start at http://localhost:3000.
+
+## Deployment
+
+To deploy the Stackly project to production, you can use the following command:
+
+```
+yarn build && yarn export
+```
+
+This command will create a production build of the project in the `packages/app/out` directory. You can then deploy the contents of this directory to your server or hosting provider.
+
+## Contributing
+
+We welcome contributions to Stackly! To get started, fork this repository and create a new branch for your changes.
+
+Before submitting a pull request, make sure that your code passes the linting and formatting checks:
+
+```
+yarn lint
+yarn typecheck
+```
+
+## License
+
+Stackly is released under the MIT License. See the [LICENSE](LICENSE) file for more information.
