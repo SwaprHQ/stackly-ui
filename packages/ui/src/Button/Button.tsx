@@ -3,17 +3,24 @@ import cn from "clsx";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
+  action?: "primary" | "secondary" | "ghost" | "link";
   className?: string;
 }
 
-export default function Button({ children, className, ...props }: ButtonProps) {
-  const rootClassName = cn(
-    "relative inline-flex items-center justify-center cursor-pointer",
-    "no-underline py-0 px-3.5 rounded-md border border-solid border-black",
-    "bg-black text-white text-base font-medium outline-none select-none",
-    "align-middle whitespace-nowrap leading-10 shadow-md transition-colors",
-    className
-  );
+export default function Button({
+  children,
+  className,
+  action,
+  ...props
+}: ButtonProps) {
+  const actionTypes = {
+    primary: "btn-primary",
+    secondary: "btn-secondary",
+    ghost: "btn-ghost",
+    link: "btn-link",
+  };
+
+  const rootClassName = cn("btn", action && actionTypes[action], className);
 
   return (
     <button className={rootClassName} {...props}>

@@ -1,11 +1,9 @@
-const ui = require('@stackly/ui/tailwind')
+const ui = require("@stackly/ui/tailwind");
 
 module.exports = {
-  presets: [require('@vercel/examples-ui/tailwind'), ui],
-  // `ui.content` includes a path to the components that are using tailwind in @stacklyui
+  presets: [ui],
   content: ui.content.concat([
-    './pages/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
-    './node_modules/@vercel/examples-ui/**/*.js',
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
   ]),
-}
+};
