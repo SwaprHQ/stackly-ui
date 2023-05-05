@@ -1,7 +1,7 @@
 {
-  "name": "@acme/utils",
+  "name": "@stackly/utils",
   "version": "0.0.1",
-  "repository": "https://github.com/vercel/examples.git",
+  "repository": "https://github.com/ImpeccableHQ/stackly-ui",
   "license": "MIT",
   "private": true,
   "scripts": {

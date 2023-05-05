@@ -1,9 +1,8 @@
 {
-  "repository": "https://github.com/vercel/examples.git",
+  "repository": "https://github.com/ImpeccableHQ/stackly-ui",
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "apps/*",
     "packages/*"
   ],
   "scripts": {

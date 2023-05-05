@@ -3,5 +3,6 @@ node_modules
 out
 dist
 .vercel
-apps/app/.turbo/turbo-build.log
+.turbo
 
+.DS_Store
