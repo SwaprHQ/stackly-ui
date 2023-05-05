@@ -23,6 +23,9 @@
     },
     "export": {
       "cache": false
+    },
+    "typecheck": {
+      "cache": false
     }
   }
 }

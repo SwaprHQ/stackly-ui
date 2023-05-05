@@ -11,7 +11,8 @@
     "start": "turbo run start",
     "lint": "turbo run lint",
     "clean": "turbo run clean",
-    "export": "turbo run export"
+    "export": "turbo run export",
+    "typecheck": "turbo run typecheck"
   },
   "devDependencies": {
     "eslint": "^8.28.0",
