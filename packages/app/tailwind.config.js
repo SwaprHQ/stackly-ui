@@ -1,8 +1,8 @@
-const ui = require('@acme/ui/tailwind')
+const ui = require('@stackly/ui/tailwind')
 
 module.exports = {
   presets: [require('@vercel/examples-ui/tailwind'), ui],
-  // `ui.content` includes a path to the components that are using tailwind in @acme/ui
+  // `ui.content` includes a path to the components that are using tailwind in @stacklyui
   content: ui.content.concat([
     './pages/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
