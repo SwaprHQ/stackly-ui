@@ -21,9 +21,6 @@
     "clean": {
       "cache": false
     },
-    "export": {
-      "cache": false
-    },
     "typecheck": {
       "cache": false
     }

@@ -40,10 +40,10 @@ The development server will start at http://localhost:3000.
 To deploy the Stackly project to production, you can use the following command:
 
 ```
-yarn build && yarn export
+yarn build
 ```
 
-This command will create a production build of the project in the `packages/app/out` directory. You can then deploy the contents of this directory to your server or hosting provider.
+This command will create a production build of the project in the `dist` directory. You can then deploy the contents of this directory to your server or hosting provider.
 
 ## Contributing
 

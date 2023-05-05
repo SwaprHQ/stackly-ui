@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ["@stackly/ui"],
+  output: "export",
+  distDir: "../../dist",
 };
 
 module.exports = nextConfig;
