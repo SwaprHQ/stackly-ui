@@ -16,7 +16,7 @@ export default function Link({
   href,
   ...props
 }: LinkProps) {
-  const rootClassName = cn("link link-hover", className);
+  const rootClassName = cn(className);
 
   if (external) {
     const externalProps = { target: "_blank", rel: "noopener noreferrer" };
