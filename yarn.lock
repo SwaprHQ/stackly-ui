@@ -204,7 +204,7 @@
   dependencies:
     tslib "^2.4.0"
 
-"@swc/helpers@^0.4.11", "@swc/helpers@^0.4.12":
+"@swc/helpers@^0.4.12":
   version "0.4.14"
   resolved "https://registry.yarnpkg.com/@swc/helpers/-/helpers-0.4.14.tgz#1352ac6d95e3617ccb7c1498ff019654f1e12a74"
   integrity sha512-4C7nX/dvpzB7za4Ql9K81xK3HPxCpHMgwTZVyf+9JQ6VUbn9jjZVN7/Nkdz/Ugzs2CSjqnL/UPXroiVBVHUWUw==
@@ -343,15 +343,6 @@
   dependencies:
     "@typescript-eslint/types" "5.59.2"
     eslint-visitor-keys "^3.3.0"
-
-"@vercel/examples-ui@^1.0.4":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@vercel/examples-ui/-/examples-ui-1.0.5.tgz#61ed8ab78baea0a4b1dab490d6c737e52eb0db97"
-  integrity sha512-6pj8V9MPLgrPajIUbqEkbmupEMnK6xBk5zkwsilwhA9mYQdxttqgVyDqlFMQhEVqb3tk0PshA+XxnZoDfLCpoQ==
-  dependencies:
-    "@swc/helpers" "^0.4.11"
-    clsx "^1.1.1"
-    sugar-high "~0.4.5"
 
 acorn-jsx@^5.3.2:
   version "5.3.2"
@@ -2515,11 +2506,6 @@ sucrase@^3.32.0:
     mz "^2.7.0"
     pirates "^4.0.1"
     ts-interface-checker "^0.1.9"
-
-sugar-high@~0.4.5:
-  version "0.4.6"
-  resolved "https://registry.yarnpkg.com/sugar-high/-/sugar-high-0.4.6.tgz#31fd3e3a1f29f07401e1023a37060425954b0e93"
-  integrity sha512-V/5BlmDTQ0YCD6o+xumBpOBP8CWDqVDA8Pt7W/i8QzkwFnYwBxX9T4a8XRmay7ulnnCj/5rX3f845tbkXU1lIw==
 
 supports-color@^7.1.0:
   version "7.2.0"
