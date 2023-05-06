@@ -1,7 +1,9 @@
 {
+  "name": "stackly-ui",
   "repository": "https://github.com/ImpeccableHQ/stackly-ui",
   "license": "MIT",
   "private": true,
+  "packageManager": "yarn@3.5.1",
   "engines": {
     "node": ">=18.0.0"
   },

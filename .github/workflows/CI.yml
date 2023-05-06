@@ -32,6 +32,9 @@ jobs:
       - name: 🎪 Install dependencies
         run: yarn install --immutable
 
+      - name: 🧪 Yarn check cache
+        run: yarn install --check-cache
+
       - name: 🚑 Typecheck
         run: yarn typecheck
 

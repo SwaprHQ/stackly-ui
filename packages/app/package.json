@@ -1,7 +1,7 @@
 {
-  "name": "stackly-ui",
+  "name": "app",
   "version": "0.0.0",
-  "repository": "https://github.com/ImpeccableHQ/stackly-ui",
+  "repository": "https://github.com/ImpeccableHQ/stackly-ui/packages/app",
   "license": "MIT",
   "private": true,
   "scripts": {
@@ -27,6 +27,5 @@
     "postcss": "^8.4.23",
     "tailwindcss": "^3.3.2",
     "typescript": "^5.0.4"
-  },
-  "resolutions": {}
+  }
 }
