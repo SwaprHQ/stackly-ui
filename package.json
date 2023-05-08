@@ -1,0 +1,25 @@
+{
+  "repository": "https://github.com/ImpeccableHQ/stackly-ui",
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "start": "turbo run start",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean",
+    "export": "turbo run export",
+    "typecheck": "turbo run typecheck"
+  },
+  "devDependencies": {
+    "eslint": "^8.28.0",
+    "eslint-config-turbo": "latest",
+    "turbo": "^1.8.3"
+  }
+}
