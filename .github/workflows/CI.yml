@@ -3,12 +3,14 @@ name: Continous Integration
 on:
   push:
     branches:
-      - master
+      - main
+      - production
       - develop
   pull_request:
     types: [opened, synchronize, reopened]
     branches:
-      - master
+      - main
+      - production
       - develop
 
 concurrency:
