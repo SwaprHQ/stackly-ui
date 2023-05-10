@@ -2,9 +2,9 @@
 import "../styles/global.css";
 
 export const metadata = {
-  title: "Stackly UI",
+  title: "Stackly | Stack crypto over time.",
   description:
-    "Stackly is a Next.js Cloudflare mono repo project that implements Dollar Cost Averaging using CoW protocol.",
+    "Stackly is a simple, non-custodial tool that uses the CoW protocol to place recurring swaps based on DCA..",
 };
 
 interface RootLayoutProps {
@@ -14,7 +14,7 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="font-sans bg-surface-25">{children}</body>
     </html>
   );
 }
