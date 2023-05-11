@@ -9,7 +9,7 @@ import MobileMenu from "./MobileMenu";
 
 export default function Header() {
   return (
-    <header className="h-[72px] sticky top-0 z-50 flex flex-col w-full bg-surface-25 border-b border-solid border-b-stackly-border">
+    <header className="h-[72px] sticky top-0 z-50 flex flex-col w-full bg-surface-25 border-b border-solid border-b-surface-75">
       <nav className="h-full flex items-center w-full max-w-screen-xl px-4 mx-auto">
         <div>
           <Link href="/" title="Stackly Home" className="flex items-center">
