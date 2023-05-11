@@ -34,10 +34,6 @@ jobs:
       - name: 🎪 Install dependencies
         run: yarn install --immutable
 
-      - name: 🧪 Yarn check cache
-        if: ${{ github.event.pull_request.head.repo.full_name != github.repository }}
-        run: yarn install --check-cache
-
       - name: 🚑 Typecheck
         run: yarn typecheck
 
