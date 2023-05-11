@@ -15,7 +15,7 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
-      <body className="font-sans bg-surface-25 bg-stackly-bg">
+      <body className="font-sans bg-surface-25">
         <Header />
         {children}
       </body>
