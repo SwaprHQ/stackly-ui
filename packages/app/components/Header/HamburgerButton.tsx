@@ -4,17 +4,17 @@ import Image from "next/image";
 
 interface HamburgerButtonProps {
   open: boolean;
-  setOpen: () => void;
+  toggle: () => void;
 }
 
 export default function HamburgerButton({
   open,
-  setOpen,
+  toggle,
 }: HamburgerButtonProps) {
   return (
     <button
       className="space-y-1.5 md:invisible px-[10px] py-[10px] rounded-md  bg-[#F3F4F2] active:bg-[#ECEDEB]"
-      onClick={setOpen}
+      onClick={toggle}
     >
       {open ? (
         <Image
