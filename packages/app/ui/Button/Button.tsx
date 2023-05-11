@@ -1,5 +1,5 @@
 import type { ButtonHTMLAttributes } from "react";
-import cn from "clsx";
+import { cx } from "class-variance-authority";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
@@ -13,7 +13,7 @@ export default function Button({
   action,
   ...props
 }: ButtonProps) {
-  const rootClassName = cn("btn", className);
+  const rootClassName = cx("btn", className);
 
   return (
     <button className={rootClassName} {...props}>
