@@ -1,6 +1,6 @@
 // These styles apply to every route in the application
 import "../styles/global.css";
-import Header from "@/components/Header/Header";
+import Header from "@/components/Navbar/Navbar";
 
 export const metadata = {
   title: "Stackly | Stack crypto over time.",
