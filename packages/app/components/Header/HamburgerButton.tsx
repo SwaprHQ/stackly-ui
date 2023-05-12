@@ -1,34 +1,34 @@
 import HamburgerIcon from "../../public/assets/images/hamburger.svg";
-import CrossIcon from "../../public/assets/images/cross.svg";
+import CloseIcon from "../../public/assets/images/close.svg";
 import Image from "next/image";
 
-interface HamburgerButtonProps {
+interface MenuButtonProps {
   open: boolean;
   toggle: () => void;
 }
 
-export default function HamburgerButton({
-  open,
-  toggle,
-}: HamburgerButtonProps) {
+export default function MenuButton({ open, toggle }: MenuButtonProps) {
   return (
     <button
-      className="space-y-1.5 md:invisible px-[10px] py-[10px] rounded-md  bg-[#F3F4F2] active:bg-[#ECEDEB]"
+      className="space-y-1.5 md:invisible p-2.5 rounded-[12px]  bg-surface-50 active:bg-surface-75"
       onClick={toggle}
     >
       {open ? (
         <Image
           aria-label="close-menu"
           alt="close-menu"
-          src={CrossIcon}
-          className="h-[20px] w-[20px] p-[4px]"
+          src={CloseIcon}
+          width={20}
+          height={20}
+          className="p-1"
         />
       ) : (
         <Image
           aria-label="menu"
           alt="menu"
           src={HamburgerIcon}
-          className="h-[20px] w-[20px]"
+          width={20}
+          height={20}
         />
       )}
     </button>

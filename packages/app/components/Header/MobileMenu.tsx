@@ -1,18 +1,18 @@
 import { useState } from "react";
-import HamburgerButton from "./HamburgerButton";
+import MenuButton from "./HamburgerButton";
 import MobileMenuList from "./MobileMenuList";
 
 export default function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className="flex justify-end items-center gap-4 w-full md:hidden">
-      <div className="rounded-sm ring ring-gray-100 ring-offset-0 text-xs p-2">
+    <div className="flex items-center justify-end w-full gap-4 md:hidden">
+      <div className="p-2 text-xs rounded-sm ring ring-gray-100 ring-offset-0">
         Placeholder1
       </div>
-      <div className="rounded-sm ring ring-gray-100 ring-offset-0 text-xs p-2">
+      <div className="p-2 text-xs rounded-sm ring ring-gray-100 ring-offset-0">
         Placeholder2
       </div>
-      <HamburgerButton open={isOpen} toggle={() => setIsOpen(!isOpen)} />
+      <MenuButton open={isOpen} toggle={() => setIsOpen(!isOpen)} />
       <MobileMenuList open={isOpen} toggle={() => setIsOpen(!isOpen)} />
     </div>
   );
