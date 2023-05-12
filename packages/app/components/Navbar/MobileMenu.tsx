@@ -1,5 +1,5 @@
 import { useState } from "react";
-import MenuButton from "./HamburgerButton";
+import MenuButton from "./MenuButton";
 import MobileMenuList from "./MobileMenuList";
 
 export default function MobileMenu() {

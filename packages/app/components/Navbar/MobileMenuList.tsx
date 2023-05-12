@@ -17,15 +17,17 @@ export default function MobileMenuList({ open, toggle }: MobileMenuListProps) {
         onClick={toggle}
       ></div>
       <div className="w-full bg-surface-25 rounded-lg absolute top-[72px] left-0 border-b border-solid border-surface-75 gap-2 py-2 px-6">
-        <Link href="#" className="flex py-3 items-center text-med-em">
+        <Link href="#" className="flex items-center py-3 text-med-em">
           <Image
             alt="your stacks"
             src={Blocks}
-            className="w-[18px] h-[18px] mr-2"
+            width={18}
+            height={18}
+            className="mr-2"
           />
           <span>Your Stacks</span>
         </Link>
-        <hr className="border-b border-solid border-surface-75 h-0 -ml-6 -mr-6 text-med-em" />
+        <hr className="h-0 -mx-6 border-b border-solid border-surface-75 text-med-em" />
         <Link href="#" className="block py-3">
           How it works
         </Link>
