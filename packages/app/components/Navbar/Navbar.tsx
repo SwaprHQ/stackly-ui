@@ -5,7 +5,7 @@ import Link from "next/link";
 import MobileMenu from "./MobileMenu";
 import Logo from "./Logo";
 
-export default function Header() {
+export default function Navbar() {
   return (
     <header className="h-[72px] top-0 flex flex-col w-full bg-surface-25 border-b border-solid border-b-surface-75">
       <nav className="flex items-center w-full h-full max-w-screen-xl px-4 mx-auto">
