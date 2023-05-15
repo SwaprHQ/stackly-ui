@@ -7,7 +7,7 @@ import Logo from "./Logo";
 
 export default function Navbar() {
   return (
-    <header className="h-[72px] top-0 flex flex-col w-full bg-surface-25 border-b border-solid border-b-surface-75">
+    <header className="top-0 flex flex-col w-full border-b border-solid h-nav-height bg-surface-25 border-b-surface-75">
       <nav className="flex items-center w-full h-full max-w-screen-xl px-4 mx-auto">
         <div>
           <Link href="/" title="Stackly Home" className="flex items-center">
