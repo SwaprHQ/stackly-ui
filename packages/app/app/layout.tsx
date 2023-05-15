@@ -1,5 +1,6 @@
 // These styles apply to every route in the application
 import "../styles/global.css";
+import Navbar from "@/components/Navbar/Navbar";
 
 export const metadata = {
   title: "Stackly | Stack crypto over time.",
@@ -14,7 +15,10 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
-      <body className="font-sans bg-surface-25">{children}</body>
+      <body className="font-sans bg-surface-25">
+        <Navbar />
+        {children}
+      </body>
     </html>
   );
 }
