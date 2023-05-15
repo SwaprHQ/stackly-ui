@@ -13,10 +13,10 @@ export default function MobileMenuList({ open, toggle }: MobileMenuListProps) {
   return (
     <>
       <div
-        className="fixed top-[72px] bottom-0 left-0 right-0 bg-gray-alpha-75"
+        className="fixed bottom-0 left-0 right-0 top-nav-height bg-gray-alpha-75"
         onClick={toggle}
       ></div>
-      <div className="w-full bg-surface-25 rounded-lg absolute top-[72px] left-0 border-b border-solid border-surface-75 gap-2 py-2 px-6">
+      <div className="absolute left-0 w-full gap-2 px-6 py-2 border-b border-solid rounded-lg bg-surface-25 top-nav-height border-surface-75">
         <Link href="#" className="flex items-center py-3 text-text-med-em">
           <Image
             alt="your stacks"

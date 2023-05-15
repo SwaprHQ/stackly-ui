@@ -76,6 +76,12 @@ module.exports = {
       opacity: {
         8: "0.08",
       },
+      height: {
+        "nav-height": "72px",
+      },
+      inset: {
+        "nav-height": "72px",
+      },
     },
   },
   plugins: [],

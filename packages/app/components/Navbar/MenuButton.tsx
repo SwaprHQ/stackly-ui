@@ -10,7 +10,7 @@ interface MenuButtonProps {
 export default function MenuButton({ open, toggle }: MenuButtonProps) {
   return (
     <button
-      className="space-y-1.5 md:invisible p-2.5 rounded-[12px]  bg-surface-50 active:bg-surface-75"
+      className="space-y-1.5 md:invisible p-2.5 rounded-xl  bg-surface-50 active:bg-surface-75"
       onClick={toggle}
     >
       {open ? (
