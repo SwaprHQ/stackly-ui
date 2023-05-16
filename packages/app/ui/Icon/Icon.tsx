@@ -1,19 +1,45 @@
-import { PlusIcon } from "@/ui/icons/PlusIcon";
-import { CloseIcon } from "@/ui/icons/CloseIcon";
+import Image from "next/image";
+import PlusIcon from "../../public/assets/icons/plus.svg";
+import HamburgerIcon from "../../public/assets/icons/hamburger.svg";
+import CloseIcon from "../../public/assets/icons/close.svg";
+import BlocksIcon from "../../public/assets/icons/blocks.svg";
 
-export type IconName = "close" | "plus";
+export type IconName = "close" | "plus" | "menu" | "blocks";
 
-const getIconComponent = (name: IconName) => {
+const getIcon = (name: IconName) => {
   switch (name) {
     case "plus":
-      return <PlusIcon />;
+      return PlusIcon;
     case "close":
-      return <CloseIcon />;
+      return CloseIcon;
+    case "menu":
+      return HamburgerIcon;
+    case "blocks":
+      return BlocksIcon;
     default:
       return null;
   }
 };
 
-export const Icon = ({ name }: { name: IconName }) => {
-  return <>{getIconComponent(name)}</>;
+export const Icon = ({
+  name,
+  size = 20,
+  alt,
+  className,
+}: {
+  name: IconName;
+  size?: number;
+  alt?: string;
+  className?: string;
+}) => {
+  return (
+    <Image
+      className={className}
+      aria-label={name}
+      alt={alt ? alt : name}
+      src={getIcon(name)}
+      width={size}
+      height={size}
+    />
+  );
 };
