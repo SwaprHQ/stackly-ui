@@ -7,7 +7,11 @@ import { Icon, IconName } from "@/ui/Icon/Icon";
 export const buttonStyles = cva(
   [
     "flex items-center justify-center",
-    "rounded-lg cursor-pointer font-medium space-x-3",
+    "rounded-lg cursor-pointer font-medium",
+    "space-x-3",
+    "active:ring-4",
+    "disabled:bg-surface-75 disabled:text-em-disabled disabled:cursor-not-allowed disabled:ring-0",
+    "focus:outline-none focus:ring-4",
   ],
   {
     variants: {
@@ -18,14 +22,25 @@ export const buttonStyles = cva(
         icon: "p-2",
       },
       action: {
-        primary: ["shadow"],
-        secondary: ["bg-primary-75"],
-        tertiary: [],
-        quaternary: [],
+        primary: [
+          "bg-primary-400 text-em-high hover:bg-primary-500 active:ring-primary-200 shadow",
+          "focus:bg-primary-500 focus:ring-primary-200",
+        ],
+        secondary: [
+          "bg-surface-50 text-em-med hover:bg-gray-100 active:ring-gray-200 shadow-sm",
+          "focus:bg-gray-100 focus:ring-gray-200",
+        ],
+        tertiary: [
+          "bg-white text-em-med hover:bg-surface-75 border active:ring-gray-100",
+          "focus:bg-surface-75 focus:ring-gray-100",
+        ],
+        quaternary: [
+          "text-em-med hover:bg-surface-50 active:ring-surface-75",
+          "focus:bg-surface-50 focus:ring-surface-75",
+        ],
       },
       active: {
-        true: [],
-        false: [],
+        true: ["ring-4"],
       },
       width: {
         full: "w-full",
@@ -40,19 +55,22 @@ export const buttonStyles = cva(
       {
         action: ["primary"],
         active: true,
-        disabled: false,
-        class: "bg-primary-500 text-em-high ring-4 ring-primary-200",
+        class: "bg-primary-500 ring-primary-200",
       },
       {
-        action: ["primary"],
-        disabled: false,
-        class:
-          "bg-primary-400 text-em-high hover:bg-primary-500 active:ring-4 active:ring-primary-200",
+        action: ["secondary"],
+        active: true,
+        class: "bg-gray-100 ring-gray-200",
       },
       {
-        action: ["primary"],
-        disabled: true,
-        class: "bg-surface-75 text-em-disabled !cursor-not-allowed",
+        action: ["tertiary"],
+        active: true,
+        class: "bg-surface-75 ring-gray-100",
+      },
+      {
+        action: ["quaternary"],
+        active: true,
+        class: "bg-surface-50 ring-surface-75",
       },
     ],
     defaultVariants: {
