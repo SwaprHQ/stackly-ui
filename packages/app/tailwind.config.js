@@ -58,10 +58,10 @@ module.exports = {
         500: "#F03D3D",
         600: "#CF2A2A",
       },
-      text: {
-        "high-em": "#060D00",
-        "med-em": "#4D4F4C",
-        "low-em": "#969894",
+      em: {
+        high: "#060D00",
+        med: "#4D4F4C",
+        low: "#969894",
         disabled: "#C9CBC8",
       },
       surface: {
