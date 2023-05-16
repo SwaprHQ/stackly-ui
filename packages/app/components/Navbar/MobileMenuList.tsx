@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Blocks from "../../public/assets/images/blocks.svg";
+import Blocks from "../../public/assets/icons/blocks.svg";
 import Image from "next/image";
 
 interface MobileMenuListProps {
@@ -28,10 +28,10 @@ export default function MobileMenuList({ open, toggle }: MobileMenuListProps) {
           <span>Your Stacks</span>
         </Link>
         <hr className="h-0 -mx-6 border-b border-solid border-surface-75" />
-        <Link href="#" className="block py-3 text-text-med-em">
+        <Link href="#" className="block py-3 text-em-med">
           How it works
         </Link>
-        <Link href="#" className="block py-3 text-text-med-em">
+        <Link href="#" className="block py-3 text-em-med">
           FAQ&apos;s
         </Link>
       </div>

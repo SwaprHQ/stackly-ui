@@ -1,6 +1,4 @@
-export const PlusIcon = ({ className }: { className?: string }) => (
-  <svg
-    className={className}
+ <svg
     width="20"
     height="20"
     viewBox="0 0 20 20"
@@ -12,4 +10,3 @@ export const PlusIcon = ({ className }: { className?: string }) => (
       fill="currentcolor"
     />
   </svg>
-);
