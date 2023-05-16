@@ -1,33 +1,48 @@
 "use client";
-import Image from "next/image";
-import Blocks from "../../public/assets/icons/blocks.svg";
+
 import Link from "next/link";
 import MobileMenu from "./MobileMenu";
 import Logo from "./Logo";
-import { Icon } from "@/ui/Icon/Icon";
+import { Button, ButtonLink } from "@/ui";
+
+const Divider = () => (
+  <div className="h-8 border-r border-solid border-b-gray-100"></div>
+);
 
 export default function Navbar() {
   return (
     <header className="top-0 flex flex-col w-full border-b border-solid h-nav-height bg-surface-25 border-b-surface-75">
       <nav className="flex items-center w-full h-full max-w-screen-xl px-4 mx-auto">
         <div>
-          <Link href="/" title="Stackly Home" className="flex items-center">
+          <Link
+            href="/"
+            title="Stackly Home"
+            className="flex items-center w-14 md:w-40"
+          >
             <Logo />
           </Link>
         </div>
-        <div className="h-8 ml-5 border-r border-solid border-b-gray-100 md:ml-10"></div>
+        <Divider />
         <div className="items-center justify-end hidden w-full gap-4 md:flex">
-          <Link href="#" className="flex items-center py-3 text-med-em">
-            <Icon name="blocks" size={18} alt="your stacks" />
-            <span className="px-2 py-3 text-sm">Your Stacks</span>
-          </Link>
-          <div className="h-8 ml-5 border-r border-solid border-b-gray-100 md:ml-2"></div>
-          <div className="p-2 text-xs rounded-sm ring ring-gray-100 ring-offset-0">
-            Placeholder1
-          </div>
-          <div className="p-2 text-xs rounded-sm ring ring-gray-100 ring-offset-0">
-            Placeholder2
-          </div>
+          <ButtonLink
+            action="quaternary"
+            size="sm"
+            iconLeft="blocks"
+            href="/stacks"
+          >
+            Your stacks
+          </ButtonLink>
+          <Divider />
+          <Button
+            action="tertiary"
+            size="sm"
+            onClick={() => console.log("change network")}
+          >
+            Gnosis
+          </Button>
+          <Button size="sm" onClick={() => console.log("connect wallet")}>
+            Connect wallet
+          </Button>
         </div>
         <MobileMenu />
       </nav>
