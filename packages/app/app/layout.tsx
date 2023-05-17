@@ -1,6 +1,6 @@
 // These styles apply to every route in the application
 import "../styles/global.css";
-import Navbar from "@/components/Navbar/Navbar";
+import Navbar from "@/components/navbar/Navbar";
 
 export const metadata = {
   title: "Stackly | Stack crypto over time.",
