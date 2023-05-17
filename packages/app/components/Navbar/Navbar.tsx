@@ -15,9 +15,10 @@ export default function Navbar() {
       <nav className="flex items-center w-full h-full max-w-screen-xl px-4 mx-auto">
         <div>
           <Link
+            tabIndex={0}
             href="/"
             title="Stackly Home"
-            className="flex items-center w-14 md:w-40"
+            className="flex items-center outline-none w-14 md:w-40 focus:ring-2 focus:ring-primary-200 focus:ring-offset-2"
           >
             <Logo />
           </Link>
