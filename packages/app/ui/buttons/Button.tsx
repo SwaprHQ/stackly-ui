@@ -117,7 +117,7 @@ export const ButtonContent = ({
   </>
 );
 
-export default function Button({
+export function Button({
   children,
   className,
   size,

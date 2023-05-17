@@ -1,17 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import {
-  ButtonBaseProps,
-  ButtonContent,
-  buttonStyles,
-} from "@/ui/buttons/Button/Button";
+import { ButtonBaseProps, ButtonContent, buttonStyles } from "./Button";
 
 interface ButtonLinkProps extends ButtonBaseProps {
   href: string;
 }
 
-export default function ButtonLink({
+export function ButtonLink({
   children,
   className,
   size,
