@@ -24,6 +24,7 @@ export function ButtonLink({
     <Link
       id={id}
       href={href}
+      tabIndex={0}
       className={buttonStyles({
         size,
         action,
