@@ -18,9 +18,11 @@ export function ButtonLink({
   active,
   iconLeft,
   iconRight,
+  id,
 }: ButtonLinkProps) {
   return (
     <Link
+      id={id}
       href={href}
       className={buttonStyles({
         size,
