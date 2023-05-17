@@ -95,6 +95,7 @@ export interface ButtonBaseProps
   active?: boolean;
   iconLeft?: IconName;
   iconRight?: IconName;
+  id?: string;
 }
 
 interface ButtonProps extends ButtonBaseProps {
@@ -128,9 +129,11 @@ export function Button({
   active,
   iconLeft,
   iconRight,
+  id,
 }: ButtonProps) {
   return (
     <button
+      id={id}
       onClick={onClick}
       disabled={disabled}
       className={buttonStyles({
