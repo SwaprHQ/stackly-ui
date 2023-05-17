@@ -2,7 +2,7 @@
 
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { cva } from "class-variance-authority";
-import { Icon, IconName } from "@/ui/Icon/Icon";
+import { Icon, IconName } from "@/ui";
 
 export const buttonStyles = cva(
   [
