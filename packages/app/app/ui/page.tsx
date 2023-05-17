@@ -10,7 +10,7 @@ export default function Page() {
       <h1 className="text-3xl font-medium">Stackly UI</h1>
       <UISection
         title="Buttons"
-        description="This is a collection of all our current button and different states."
+        description="This is a collection of all our current buttons divided by actions."
       >
         <UISubSection title="primary">
           <Button size="lg" onClick={() => console.log("hey")}>
@@ -22,9 +22,6 @@ export default function Page() {
           <Button size="sm" onClick={() => console.log("hey")}>
             Connect wallet
           </Button>
-          <ButtonLink size="sm" href="/">
-            soy un ButtonLink
-          </ButtonLink>
           <Button size="sm" active={true} onClick={() => console.log("hey")}>
             active
           </Button>
@@ -47,6 +44,9 @@ export default function Page() {
             iconRight="close"
             onClick={() => console.log("hey")}
           ></Button>
+          <ButtonLink action="secondary" size="sm" href="/">
+            soy un ButtonLink
+          </ButtonLink>
         </UISubSection>
         <UISubSection title="tertiary">
           <Button
