@@ -2,12 +2,12 @@
 
 import { UISection } from "@/app/ui/sections/UISection";
 import { UISubSection } from "@/app/ui/sections/UISubSection";
-import { Button, ButtonLink } from "@/ui";
+import { Button, ButtonLink, Icon, IconName, iconMap } from "@/ui";
 
 export default function Page() {
   return (
     <div className="m-10">
-      <h1 className="text-3xl">Stackly UI</h1>
+      <h1 className="text-3xl font-medium">Stackly UI</h1>
       <UISection
         title="Buttons"
         description="This is a collection of all our current button and different states."
@@ -82,6 +82,19 @@ export default function Page() {
             Cancel
           </Button>
         </UISubSection>
+      </UISection>
+      <UISection title="Icons">
+        <div className="flex flex-wrap space-x-4 space-y-2 md:space-y-0">
+          {Object.keys(iconMap).map((iconName) => (
+            <div
+              className="flex flex-col items-center space-y-2"
+              key={iconName}
+            >
+              <Icon name={iconName as IconName} />
+              <p className="p-1 text-xs rounded-lg bg-surface-75">{iconName}</p>
+            </div>
+          ))}
+        </div>
       </UISection>
     </div>
   );
