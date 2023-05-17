@@ -1,7 +1,5 @@
 import Link from "next/link";
-import Blocks from "../../public/assets/icons/blocks.svg";
-import Image from "next/image";
-import { Icon } from "@/ui/Icon/Icon";
+import { Icon } from "@/ui";
 
 interface MobileMenuListProps {
   open: boolean;

@@ -1,7 +1,3 @@
-import HamburgerIcon from "../../public/assets/icons/hamburger.svg";
-import CloseIcon from "../../public/assets/icons/close.svg";
-import Image from "next/image";
-import { Icon } from "@/ui/Icon/Icon";
 import { Button } from "@/ui";
 
 interface MenuButtonProps {
