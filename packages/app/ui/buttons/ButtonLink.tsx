@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { ButtonBaseProps, ButtonContent, buttonStyles } from "./Button";
+import { ButtonBaseProps, buttonStyles, getIconSize } from "./base";
+import { Icon } from "@/ui/icon/Icon";
 
 interface ButtonLinkProps extends ButtonBaseProps {
   href: string;
@@ -34,9 +35,9 @@ export function ButtonLink({
         className,
       })}
     >
-      <ButtonContent iconRight={iconRight} iconLeft={iconLeft} size={size}>
-        {children}
-      </ButtonContent>
+      {iconLeft && <Icon size={getIconSize(size)} name={iconLeft} />}
+      {children && <div>{children}</div>}
+      {iconRight && <Icon size={getIconSize(size)} name={iconRight} />}
     </Link>
   );
 }
