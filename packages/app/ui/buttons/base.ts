@@ -104,7 +104,5 @@ export const iconSizeMap: Record<SizeProps, any> = {
   lg: 26,
 };
 
-const defaultIconSize = iconSizeMap["icon"];
-
 export const getIconSize = (size?: SizeProps) =>
-  size ? iconSizeMap[size] : defaultIconSize;
+  size ? iconSizeMap[size] : iconSizeMap["icon"];
