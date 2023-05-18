@@ -1,15 +1,12 @@
-import Image from "next/image";
-import LogoImage from "../../public/assets/images/logo.svg";
-import Stackly from "../../public/assets/images/stackly.svg";
+import StacklyLogoIcon from "../../public/assets/images/stackly-logo-icon.svg";
+import StacklyLogoName from "../../public/assets/images/stackly-logo-name.svg";
 
 export default function Logo() {
   return (
     <>
-      <Image aria-label="Stackly logo" src={LogoImage} alt="Stackly Logo" />
-      <Image
-        aria-label="Stackly"
-        src={Stackly}
-        alt="Stackly Logo"
+      <StacklyLogoIcon title="Stackly logo icon" />
+      <StacklyLogoName
+        title="Stackly logo name"
         className="hidden ml-3 md:block"
       />
     </>

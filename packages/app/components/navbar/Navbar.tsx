@@ -37,6 +37,7 @@ export default function Navbar() {
           <Button
             action="tertiary"
             size="sm"
+            iconRight="caret-down"
             onClick={() => console.log("change network")}
           >
             Gnosis

@@ -22,7 +22,12 @@ export default function Page() {
           <Button size="sm" onClick={() => console.log("hey")}>
             Connect wallet
           </Button>
-          <Button size="sm" active={true} onClick={() => console.log("hey")}>
+          <Button
+            size="sm"
+            iconRight="caret-down"
+            active={true}
+            onClick={() => console.log("hey")}
+          >
             active
           </Button>
           <Button size="sm" disabled={true} onClick={() => console.log("hey")}>

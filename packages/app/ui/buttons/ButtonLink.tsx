@@ -34,7 +34,7 @@ export function ButtonLink({
         className,
       })}
     >
-      <ButtonContent iconRight={iconRight} iconLeft={iconLeft}>
+      <ButtonContent iconRight={iconRight} iconLeft={iconLeft} size={size}>
         {children}
       </ButtonContent>
     </Link>

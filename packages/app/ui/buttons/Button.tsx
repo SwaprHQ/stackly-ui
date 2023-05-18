@@ -8,7 +8,6 @@ export const buttonStyles = cva(
   [
     "flex items-center justify-center",
     "rounded-lg cursor-pointer select-none font-medium",
-    "space-x-3",
     "active:ring-4",
     "disabled:bg-surface-75 disabled:text-em-disabled disabled:cursor-not-allowed disabled:ring-0",
     "focus:outline-none focus:ring-4",
@@ -16,9 +15,9 @@ export const buttonStyles = cva(
   {
     variants: {
       size: {
-        lg: "px-14 py-3 md:py-4 text-lg md:px-24",
-        md: "px-12 py-2",
-        sm: "px-4 py-2 text-sm",
+        lg: "px-14 py-3 md:py-4 text-lg md:px-24 space-x-4",
+        md: "px-12 py-2 space-x-3",
+        sm: "px-4 py-2 text-sm space-x-2",
         icon: "p-2",
       },
       action: {
@@ -83,12 +82,14 @@ export const buttonStyles = cva(
   }
 );
 
+type SizeProps = "sm" | "md" | "lg" | "icon";
+
 export interface ButtonBaseProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
   action?: "primary" | "secondary" | "tertiary" | "quaternary";
   className?: string;
-  size?: "sm" | "md" | "lg" | "icon";
+  size?: SizeProps;
   width?: "normal" | "fit" | "full";
   disabled?: boolean;
   href?: string;
@@ -102,26 +103,42 @@ interface ButtonProps extends ButtonBaseProps {
   onClick: () => void;
 }
 
+export const iconSizeMap: Record<SizeProps, any> = {
+  sm: 18,
+  icon: 20,
+  md: 22,
+  lg: 26,
+};
+
+const defaultIconSize = iconSizeMap["icon"];
+
+const getIconSize = (size?: SizeProps) =>
+  size ? iconSizeMap[size] : defaultIconSize;
+
 export const ButtonContent = ({
   iconLeft,
   iconRight,
+  size,
   children,
 }: {
   iconLeft?: IconName;
   iconRight?: IconName;
+  size?: SizeProps;
   children?: ReactNode;
-}) => (
-  <>
-    {iconLeft && <Icon name={iconLeft} />}
-    {children && <div>{children}</div>}
-    {iconRight && <Icon name={iconRight} />}
-  </>
-);
+}) => {
+  return (
+    <>
+      {iconLeft && <Icon size={getIconSize(size)} name={iconLeft} />}
+      {children && <div>{children}</div>}
+      {iconRight && <Icon size={getIconSize(size)} name={iconRight} />}
+    </>
+  );
+};
 
 export function Button({
   children,
   className,
-  size,
+  size = "md",
   action,
   width,
   disabled,
@@ -145,7 +162,7 @@ export function Button({
         className,
       })}
     >
-      <ButtonContent iconRight={iconRight} iconLeft={iconLeft}>
+      <ButtonContent iconRight={iconRight} iconLeft={iconLeft} size={size}>
         {children}
       </ButtonContent>
     </button>
