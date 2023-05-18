@@ -41,9 +41,7 @@ export const iconMap: Record<IconName, any> = {
   "caret-right": CaretRightIcon,
 };
 
-const defaultIcon = iconMap["blocks"];
-
-const getIcon = (name: IconName) => iconMap[name] || defaultIcon;
+const getIcon = (name: IconName) => iconMap[name];
 
 export const Icon = ({
   name,
