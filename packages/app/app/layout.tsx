@@ -1,4 +1,3 @@
-// These styles apply to every route in the application
 import "../styles/global.css";
 import Navbar from "@/components/navbar/Navbar";
 
@@ -15,7 +14,7 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
-      <body className="font-sans bg-surface-25">
+      <body className="max-w-screen-xl px-4 mx-auto font-sans bg-surface-25">
         <Navbar />
         {children}
       </body>

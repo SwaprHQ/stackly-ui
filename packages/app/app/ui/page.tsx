@@ -6,7 +6,7 @@ import { Button, ButtonLink, Icon, IconName, iconMap } from "@/ui";
 
 export default function Page() {
   return (
-    <div className="m-10">
+    <div className="my-10">
       <h1 className="text-3xl font-medium">Stackly UI</h1>
       <UISection
         title="Buttons"
