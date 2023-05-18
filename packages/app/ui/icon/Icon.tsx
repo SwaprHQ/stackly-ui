@@ -27,10 +27,10 @@ export type IconName =
   | "caret-right";
 
 export const iconMap: Record<IconName, any> = {
-  close: CloseIcon,
-  plus: PlusIcon,
-  menu: HamburgerIcon,
   blocks: BlocksIcon,
+  plus: PlusIcon,
+  close: CloseIcon,
+  menu: HamburgerIcon,
   check: CheckIcon,
   "arrow-left": ArrowLeftIcon,
   "arrow-external": ArrowExternalIcon,
@@ -41,11 +41,13 @@ export const iconMap: Record<IconName, any> = {
   "caret-right": CaretRightIcon,
 };
 
-const getIcon = (name: IconName) => iconMap[name] || null;
+const defaultIcon = iconMap["blocks"];
+
+const getIcon = (name: IconName) => iconMap[name] || defaultIcon;
 
 export const Icon = ({
   name,
-  size = 20,
+  size = 30,
   alt,
   className,
 }: {
@@ -54,14 +56,14 @@ export const Icon = ({
   alt?: string;
   className?: string;
 }) => {
+  const IconComponent = getIcon(name);
+
   return (
-    <Image
-      className={className}
-      aria-label={name}
-      alt={alt ? alt : name}
-      src={getIcon(name)}
+    <IconComponent
       width={size}
       height={size}
+      className={className}
+      title={alt ? alt : name}
     />
   );
 };
