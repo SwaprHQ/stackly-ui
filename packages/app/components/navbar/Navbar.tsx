@@ -12,7 +12,7 @@ const Divider = () => (
 export default function Navbar() {
   return (
     <header className="top-0 flex flex-col w-full border-b border-solid h-nav-height bg-surface-25 border-b-surface-75">
-      <nav className="flex items-center w-full h-full max-w-screen-xl px-4 mx-auto">
+      <nav className="flex items-center w-full h-full">
         <div>
           <Link
             tabIndex={0}
