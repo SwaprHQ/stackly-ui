@@ -45,7 +45,7 @@ const getIcon = (name: IconName) => iconMap[name];
 
 export const Icon = ({
   name,
-  size = 30,
+  size = 20,
   alt,
   className,
 }: {

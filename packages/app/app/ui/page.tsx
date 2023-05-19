@@ -95,7 +95,7 @@ export default function Page() {
               className="flex flex-col items-center space-y-2"
               key={iconName}
             >
-              <Icon name={iconName as IconName} />
+              <Icon name={iconName as IconName} size={24} />
               <p className="p-1 text-xs rounded-lg bg-surface-75">{iconName}</p>
             </div>
           ))}
