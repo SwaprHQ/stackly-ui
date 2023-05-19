@@ -9,6 +9,14 @@ module.exports = {
     fontFamily: {
       sans: ["system-ui", "sans-serif"], // will be Stabil Grotesk
     },
+    boxShadow: {
+      xs: " 0px 1px 2px -1px rgba(17, 12, 34, 0.08)",
+      sm: "0px 2px 4px -2px rgba(17, 12, 34, 0.12)",
+      md: "0px 6px 16px -6px rgba(17, 12, 34, 0.1)",
+      lg: "0px 16px 20px -8px rgba(17, 12, 34, 0.1)",
+      xl: "0px 20px 24px -10px rgba(17, 12, 34, 0.1)",
+      "2xl": "0px 32px 32px -12px rgba(17, 12, 34, 0.12)",
+    },
     colors: {
       primary: {
         25: "#F9FFF4",
