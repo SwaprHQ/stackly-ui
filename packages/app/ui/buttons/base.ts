@@ -20,15 +20,15 @@ export const buttonStyles = cva(
       },
       action: {
         primary: [
-          "bg-primary-400 text-em-high hover:bg-primary-500 active:ring-primary-200 shadow",
+          "bg-primary-400 text-em-high hover:bg-primary-500 active:ring-primary-200 shadow-xs",
           "focus:bg-primary-500 focus:ring-primary-200",
         ],
         secondary: [
-          "bg-surface-50 text-em-med hover:bg-gray-100 active:ring-gray-200 shadow-sm",
+          "bg-surface-50 text-em-med hover:bg-gray-100 active:ring-gray-200",
           "focus:bg-gray-100 focus:ring-gray-200",
         ],
         tertiary: [
-          "bg-white text-em-med hover:bg-surface-75 border active:ring-gray-100",
+          "bg-white text-em-med hover:bg-surface-75 border active:ring-gray-100 shadow-xs",
           "focus:bg-surface-75 focus:ring-gray-100",
         ],
         quaternary: [
