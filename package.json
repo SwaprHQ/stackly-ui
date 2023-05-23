@@ -24,5 +24,8 @@
     "eslint": "^8.28.0",
     "eslint-config-turbo": "latest",
     "turbo": "^1.9.4"
+  },
+  "dependencies": {
+    "@headlessui/react": "^1.7.14"
   }
 }
