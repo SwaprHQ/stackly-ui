@@ -2,9 +2,23 @@
 
 import { UISection } from "@/app/ui/sections/UISection";
 import { UISubSection } from "@/app/ui/sections/UISubSection";
-import { Button, ButtonLink, Icon, IconName, iconMap } from "@/ui";
+import {
+  Button,
+  ButtonLink,
+  Icon,
+  IconName,
+  Modal,
+  ModalContent,
+  ModalFooter,
+  ModalHeaderTitle,
+  iconMap,
+} from "@/ui";
+import { useState } from "react";
 
 export default function Page() {
+  const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [isTokenPickerOpen, setTokenPickerOpen] = useState(false);
+
   return (
     <div className="my-10">
       <h1 className="text-3xl font-medium">Stackly UI</h1>
@@ -100,6 +114,147 @@ export default function Page() {
             </div>
           ))}
         </div>
+      </UISection>
+      <UISection title="Modal">
+        <UISubSection title="Examples">
+          <Button
+            action="tertiary"
+            size="sm"
+            onClick={() => setConfirmModalOpen(true)}
+          >
+            confirm modal
+          </Button>
+          <Button
+            action="tertiary"
+            size="sm"
+            onClick={() => setTokenPickerOpen(true)}
+          >
+            token picker
+          </Button>
+          <Modal
+            isOpen={isConfirmModalOpen}
+            close={() => setConfirmModalOpen(false)}
+          >
+            <ModalHeaderTitle
+              title="Confirm Stack"
+              closeAction={() => setConfirmModalOpen(false)}
+            />
+            <ModalContent>
+              <div className="space-y-6">
+                <div className="flex items-center justify-center p-2 bg-surface-25 rounded-xl">
+                  <p>USDC</p>
+                  <Icon className="rotate-180" name="arrow-left" />
+                  <p>WETH</p>
+                </div>
+                <div>
+                  <p className="text-lg font-semibold text-center text-em-low">
+                    Stacks <span className="text-em-high">62.5 USDC</span> worth
+                    of <span className="text-em-high">WETH</span> every hour
+                  </p>
+                </div>
+                <div className="w-full h-32 p-3 space-y-2 bg-surface-25 rounded-xl">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-em-med">Starts on</p>
+                    <p className="text-sm">1 Jun 23, 2:00 PM</p>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-em-med">Ends on</p>
+                    <p className="text-sm">30 Jun 23, 2:00 PM</p>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-em-med">
+                      Total funds to be used
+                    </p>
+                    <p className="text-sm">1000 USDC</p>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-em-med">Stack fee</p>
+                    <p className="text-sm">0.05%</p>
+                  </div>
+                </div>
+              </div>
+            </ModalContent>
+            <ModalFooter>
+              <>
+                <Button
+                  action="tertiary"
+                  onClick={() => console.log("cancel")}
+                  width="full"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  action="primary"
+                  onClick={() => console.log("stack")}
+                  width="full"
+                >
+                  Stack now
+                </Button>
+              </>
+            </ModalFooter>
+          </Modal>
+          <Modal
+            isOpen={isTokenPickerOpen}
+            close={() => setTokenPickerOpen(false)}
+          >
+            <ModalHeaderTitle
+              title="Select a token"
+              closeAction={() => setTokenPickerOpen(false)}
+            />
+            <ModalContent>
+              <div className="space-y-4">
+                <input
+                  type="search"
+                  placeholder="search token name or paste address"
+                  className="w-full p-2 bg-surface-75 rounded-xl"
+                />
+                <div className="py-3 space-y-2">
+                  <p className="text-xs font-semibold text-em-low">
+                    Common tokens
+                  </p>
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 font-semibold uppercase border text-em-med w-fit rounded-2xl">
+                      Eth
+                    </div>
+                    <div className="p-2 font-semibold uppercase border text-em-med w-fit rounded-2xl">
+                      Pepe
+                    </div>
+                    <div className="p-2 font-semibold uppercase border text-em-med w-fit rounded-2xl">
+                      usdc
+                    </div>
+                  </div>
+                </div>
+                <div className="relative">
+                  <div className="-mx-4 overflow-y-auto border-t h-72 border-surface-50">
+                    {[
+                      "1Inch",
+                      "Aave",
+                      "DAI",
+                      "USDC",
+                      "Matic",
+                      "Uni",
+                      "pepe",
+                      "Swapr",
+                      "ARB",
+                    ].map((token) => (
+                      <div
+                        className="flex justify-between w-full px-4 py-2 border-b cursor-pointer border-surface-50 hover:bg-surface-50"
+                        key={token}
+                        onClick={() => setTokenPickerOpen(false)}
+                      >
+                        <div className="flex items-center space-x-3">
+                          <div className="w-8 h-8 rounded-full bg-primary-100" />
+                          <p className="text-sm font-medium">{token}</p>
+                        </div>
+                        <p>0</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </ModalContent>
+          </Modal>
+        </UISubSection>
       </UISection>
     </div>
   );
