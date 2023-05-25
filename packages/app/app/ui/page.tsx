@@ -303,7 +303,7 @@ export default function Page() {
           >
             <Icon name="warning" className="text-danger-500" size={38} />
             <DialogText
-              className="text-danger-200"
+              className="!text-danger-200"
               title="An error has occurred"
               description="A short description showing the user how to solve this error with a bit of details."
             />
