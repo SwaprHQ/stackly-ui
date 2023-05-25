@@ -1,7 +1,7 @@
 "use client";
 
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, ReactNode } from "react";
+import { Fragment, ReactNode, RefObject } from "react";
 import { cva } from "class-variance-authority";
 
 interface ModalProps {
@@ -9,6 +9,7 @@ interface ModalProps {
   isOpen: boolean;
   close: () => void;
   size?: "full" | "almostFull";
+  initialFocusRef?: RefObject<HTMLButtonElement | HTMLInputElement>;
 }
 
 export const dialogPanelStyles = cva(
@@ -31,11 +32,22 @@ export const dialogPanelStyles = cva(
   }
 );
 
-export function Modal({ isOpen, close, size, children }: ModalProps) {
+export function Modal({
+  isOpen,
+  close,
+  size,
+  children,
+  initialFocusRef,
+}: ModalProps) {
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10 shadow-xl" onClose={close}>
+        <Dialog
+          as="div"
+          className="relative z-10 shadow-xl"
+          onClose={close}
+          initialFocus={initialFocusRef}
+        >
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"

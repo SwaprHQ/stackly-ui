@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import { StackTransactionLoading } from "@/components/stackbox/StackTransactionLoading";
 import {
   Modal,
@@ -7,7 +8,6 @@ import {
   ModalContent,
   ModalHeaderTitle,
 } from "@/ui";
-import { useState } from "react";
 
 interface ConfirmStackModalProps {
   isOpen: boolean;
@@ -18,6 +18,7 @@ export const ConfirmStackModal = ({
   isOpen,
   closeAction,
 }: ConfirmStackModalProps) => {
+  const focusBtnRef = useRef<HTMLButtonElement>(null);
   const [isTransactionLoadingDialogOpen, setTransactionLoadingDialogOpen] =
     useState(false);
 
@@ -26,7 +27,7 @@ export const ConfirmStackModal = ({
   }
 
   return (
-    <Modal isOpen={isOpen} close={closeAction}>
+    <Modal isOpen={isOpen} close={closeAction} initialFocusRef={focusBtnRef}>
       <ModalHeaderTitle title="Confirm Stack" closeAction={closeAction} />
       <ModalContent>
         <div className="space-y-6">
@@ -66,7 +67,12 @@ export const ConfirmStackModal = ({
           <Button action="tertiary" onClick={closeAction} width="full">
             Cancel
           </Button>
-          <Button action="primary" onClick={stack} width="full">
+          <Button
+            action="primary"
+            onClick={stack}
+            width="full"
+            ref={focusBtnRef}
+          >
             Stack now
           </Button>
         </>
