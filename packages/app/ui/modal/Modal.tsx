@@ -2,14 +2,36 @@
 
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, ReactNode } from "react";
+import { cva } from "class-variance-authority";
 
 interface ModalProps {
   children: ReactNode;
   isOpen: boolean;
   close: () => void;
+  size?: "full" | "almostFull";
 }
 
-export function Modal({ isOpen, close, children }: ModalProps) {
+export const dialogPanelStyles = cva(
+  [
+    "max-w-md",
+    "overflow-hidden text-left align-middle  ",
+    "bg-white shadow-xl rounded-2xl",
+    "transition-all transform ",
+  ],
+  {
+    variants: {
+      size: {
+        full: "w-full",
+        almostFull: " w-[420px]",
+      },
+    },
+    defaultVariants: {
+      size: "full",
+    },
+  }
+);
+
+export function Modal({ isOpen, close, size, children }: ModalProps) {
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
@@ -37,7 +59,7 @@ export function Modal({ isOpen, close, children }: ModalProps) {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md pt-1 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                <Dialog.Panel className={dialogPanelStyles({ size })}>
                   {children}
                 </Dialog.Panel>
               </Transition.Child>
