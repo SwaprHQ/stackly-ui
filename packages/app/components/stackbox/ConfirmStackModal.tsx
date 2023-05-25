@@ -1,3 +1,4 @@
+import { StackTransactionLoading } from "@/components/stackbox/StackTransactionLoading";
 import {
   Modal,
   ModalFooter,
@@ -6,6 +7,7 @@ import {
   ModalContent,
   ModalHeaderTitle,
 } from "@/ui";
+import { useState } from "react";
 
 interface ConfirmStackModalProps {
   isOpen: boolean;
@@ -16,8 +18,11 @@ export const ConfirmStackModal = ({
   isOpen,
   closeAction,
 }: ConfirmStackModalProps) => {
+  const [isTransactionLoadingDialogOpen, setTransactionLoadingDialogOpen] =
+    useState(false);
+
   function stack() {
-    alert("stack");
+    setTransactionLoadingDialogOpen(true);
   }
 
   return (
@@ -66,6 +71,10 @@ export const ConfirmStackModal = ({
           </Button>
         </>
       </ModalFooter>
+      <StackTransactionLoading
+        isOpen={isTransactionLoadingDialogOpen}
+        closeAction={() => setTransactionLoadingDialogOpen(false)}
+      />
     </Modal>
   );
 };
