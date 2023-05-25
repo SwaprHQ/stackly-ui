@@ -5,6 +5,9 @@ import { UISubSection } from "@/app/ui/sections/UISubSection";
 import {
   Button,
   ButtonLink,
+  Dialog,
+  DialogFooterActions,
+  DialogText,
   Icon,
   IconName,
   Modal,
@@ -16,8 +19,14 @@ import {
 import { useState } from "react";
 
 export default function Page() {
+  // modals
   const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
   const [isTokenPickerOpen, setTokenPickerOpen] = useState(false);
+
+  // dialogs
+  const [isErrorDialogOpen, setErrorDialogOpen] = useState(false);
+  const [isOpenCancelStackingDialog, setOpenCancelStackingDialog] =
+    useState(false);
 
   return (
     <div className="my-10">
@@ -254,6 +263,57 @@ export default function Page() {
               </div>
             </ModalContent>
           </Modal>
+        </UISubSection>
+      </UISection>
+      <UISection title="Dialog">
+        <UISubSection title="Examples">
+          <Button
+            action="tertiary"
+            size="sm"
+            onClick={() => setOpenCancelStackingDialog(true)}
+          >
+            confirm dialog
+          </Button>
+          <Button
+            action="tertiary"
+            size="sm"
+            onClick={() => setErrorDialogOpen(true)}
+          >
+            error dialog
+          </Button>
+          <Dialog
+            isOpen={isOpenCancelStackingDialog}
+            closeAction={() => setOpenCancelStackingDialog(false)}
+          >
+            <DialogText
+              title=" Are you sure you want to cancel stacking?"
+              description="The remaining funds of 684.5 USDC will be sent back to your
+                wallet 0xb9."
+            />
+            <DialogFooterActions
+              primaryAction={() => console.log("primary")}
+              primaryText="Keep stacking"
+              secondaryAction={() => setOpenCancelStackingDialog(false)}
+              secondaryText="Cancel"
+            />
+          </Dialog>
+          <Dialog
+            isOpen={isErrorDialogOpen}
+            closeAction={() => setErrorDialogOpen(false)}
+          >
+            <Icon name="warning" className="text-danger-500" size={38} />
+            <DialogText
+              className="text-danger-200"
+              title="An error has occurred"
+              description="A short description showing the user how to solve this error with a bit of details."
+            />
+            <DialogFooterActions
+              primaryAction={() => console.log("try again")}
+              primaryText="Try again"
+              secondaryAction={() => setErrorDialogOpen(false)}
+              secondaryText="Dismiss"
+            />
+          </Dialog>
         </UISubSection>
       </UISection>
     </div>
