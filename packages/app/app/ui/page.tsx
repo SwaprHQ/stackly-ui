@@ -16,7 +16,7 @@ import {
   ModalHeaderTitle,
   iconMap,
 } from "@/ui";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 export default function Page() {
   // modals
@@ -27,6 +27,7 @@ export default function Page() {
   const [isErrorDialogOpen, setErrorDialogOpen] = useState(false);
   const [isOpenCancelStackingDialog, setOpenCancelStackingDialog] =
     useState(false);
+  const dialogBtnRef = useRef<HTMLButtonElement>(null);
 
   return (
     <div className="my-10">
@@ -282,6 +283,7 @@ export default function Page() {
             error dialog
           </Button>
           <Dialog
+            initialFocusRef={dialogBtnRef}
             isOpen={isOpenCancelStackingDialog}
             closeAction={() => setOpenCancelStackingDialog(false)}
           >
@@ -295,6 +297,7 @@ export default function Page() {
               primaryText="Keep stacking"
               secondaryAction={() => setOpenCancelStackingDialog(false)}
               secondaryText="Cancel"
+              ref={dialogBtnRef}
             />
           </Dialog>
           <Dialog
