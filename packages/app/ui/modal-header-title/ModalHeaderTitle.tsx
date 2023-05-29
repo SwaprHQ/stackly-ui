@@ -11,7 +11,7 @@ export const ModalHeaderTitle = ({
   closeAction,
 }: ModalHeaderTitleProps) => (
   <ModalHeader>
-    <div className="flex items-center justify-between w-full">
+    <div className="flex items-center justify-between w-full py-2">
       <h3 className="text-lg font-medium leading-6 text-em-high">{title}</h3>
       <Button
         action="quaternary"
