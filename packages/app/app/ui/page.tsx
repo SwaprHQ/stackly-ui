@@ -137,9 +137,6 @@ export default function Page() {
             <Icon name="blocks" />
             <span>Eu tenho um icon</span>
           </ChipButton>
-          <ChipButton onClick={() => console.log(" Eu tenho um icon")}>
-            Hour
-          </ChipButton>
           <ChipButton
             onClick={() => console.log("Eu tenho um icon")}
             disabled={true}
