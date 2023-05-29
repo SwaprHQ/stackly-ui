@@ -13,7 +13,6 @@ export const DialogFooterActions = forwardRef<
   HTMLButtonElement,
   DialogFooterActionsProps
 >(({ primaryAction, primaryText, secondaryAction, secondaryText }, ref) => {
-  console.log("ref:", ref);
   return (
     <div className="flex w-full pt-4 space-x-2">
       {secondaryAction && (
