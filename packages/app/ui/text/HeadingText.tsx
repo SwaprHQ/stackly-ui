@@ -33,10 +33,10 @@ export const HeadingText = ({
   bold,
   as,
 }: HeadingTextProps) => {
-  const Component = as || "h4";
+  const TextComponent = as || "h4";
   return (
-    <Component className={headingTextStyles({ variant, className, bold })}>
+    <TextComponent className={headingTextStyles({ variant, className, bold })}>
       {children}
-    </Component>
+    </TextComponent>
   );
 };

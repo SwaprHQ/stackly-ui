@@ -29,7 +29,7 @@ export const CaptionText = ({
   bold,
   as,
 }: CaptionTextProps) => {
-  const Component = as || "p";
+  const TextComponent = as || "p";
   return (
     <p className={captionTextStyles({ variant, className, bold })}>
       {children}

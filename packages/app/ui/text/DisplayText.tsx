@@ -30,10 +30,10 @@ export const DisplayText = ({
   bold,
   as,
 }: DisplayTextProps) => {
-  const Component = as || "h2";
+  const TextComponent = as || "h2";
   return (
-    <Component className={displayTextStyles({ variant, className, bold })}>
+    <TextComponent className={displayTextStyles({ variant, className, bold })}>
       {children}
-    </Component>
+    </TextComponent>
   );
 };

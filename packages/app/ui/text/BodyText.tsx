@@ -30,10 +30,10 @@ export const BodyText = ({
   bold,
   as,
 }: BodyTextProps) => {
-  const Component = as || "p";
+  const TextComponent = as || "p";
   return (
-    <Component className={bodyTextStyles({ variant, className, bold })}>
+    <TextComponent className={bodyTextStyles({ variant, className, bold })}>
       {children}
-    </Component>
+    </TextComponent>
   );
 };

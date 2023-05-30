@@ -14,10 +14,10 @@ const overlineTextStyles = cva(["uppercase text-[11px] leading-[16px]"], {
 });
 
 export const OverlineText = ({ children, className, bold, as }: TextProps) => {
-  const Component = as || "p";
+  const TextComponent = as || "p";
   return (
-    <Component className={overlineTextStyles({ className, bold })}>
+    <TextComponent className={overlineTextStyles({ className, bold })}>
       {children}
-    </Component>
+    </TextComponent>
   );
 };
