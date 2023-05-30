@@ -192,7 +192,9 @@ export default function Page() {
               key={iconName}
             >
               <Icon name={iconName as IconName} size={24} />
-              <OverlineText>{iconName}</OverlineText>
+              <div className="p-1 rounded-lg bg-surface-75">
+                <BodyText>{iconName}</BodyText>
+              </div>
             </div>
           ))}
         </div>
