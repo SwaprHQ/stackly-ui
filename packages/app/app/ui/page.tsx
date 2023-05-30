@@ -17,7 +17,13 @@ import {
   iconMap,
   ChipButton,
   RadioButton,
+  BodyText,
+  TitleText,
+  DisplayText,
+  HeadingText,
+  OverlineText,
 } from "@/ui";
+import { CaptionText } from "@/ui/text/CaptionText";
 import { useRef, useState } from "react";
 
 export default function Page() {
@@ -34,7 +40,9 @@ export default function Page() {
 
   return (
     <div className="my-10">
-      <h1 className="text-3xl font-medium">Stackly UI</h1>
+      <HeadingText as="h1" variant={1}>
+        Stackly UI
+      </HeadingText>
       <UISection
         title="Buttons"
         description="This is a collection of all our current buttons divided by actions."
@@ -184,7 +192,7 @@ export default function Page() {
               key={iconName}
             >
               <Icon name={iconName as IconName} size={24} />
-              <p className="p-1 text-xs rounded-lg bg-surface-75">{iconName}</p>
+              <OverlineText>{iconName}</OverlineText>
             </div>
           ))}
         </div>
@@ -381,6 +389,76 @@ export default function Page() {
               secondaryText="Dismiss"
             />
           </Dialog>
+        </UISubSection>
+      </UISection>
+      <UISection
+        title="Text components"
+        description="Text components accept variant, bold and classname props."
+      >
+        <UISubSection title="Display">
+          <div className="space-y-2">
+            {([1, 2, 3] as Array<1 | 2 | 3>).map((variant) => (
+              <div className="flex items-baseline space-x-4" key={variant}>
+                <p>{variant}.</p>
+                <DisplayText variant={variant}>
+                  I want to DCA with Stackly
+                </DisplayText>
+              </div>
+            ))}
+          </div>
+        </UISubSection>
+        <UISubSection title="Heading">
+          <div className="space-y-2">
+            {([1, 2, 3, 4, 5, 6] as Array<1 | 2 | 3 | 4 | 5 | 6>).map(
+              (variant) => (
+                <div className="flex items-baseline space-x-4" key={variant}>
+                  <p>{variant}.</p>
+                  <HeadingText variant={variant}>
+                    I want to DCA with Stackly
+                  </HeadingText>
+                </div>
+              )
+            )}
+          </div>
+        </UISubSection>
+        <UISubSection title="Title">
+          <div className="space-y-2">
+            {([1, 2] as Array<1 | 2>).map((variant) => (
+              <div className="flex items-baseline space-x-4" key={variant}>
+                <p>{variant}.</p>
+                <TitleText variant={variant}>
+                  I want to DCA with Stackly
+                </TitleText>
+              </div>
+            ))}
+          </div>
+        </UISubSection>
+        <UISubSection title="Body">
+          <div className="space-y-2">
+            {([1, 2, 3] as Array<1 | 2>).map((variant) => (
+              <div className="flex items-baseline space-x-4" key={variant}>
+                <p>{variant}.</p>
+                <BodyText variant={variant}>
+                  I want to DCA with Stackly
+                </BodyText>
+              </div>
+            ))}
+          </div>
+        </UISubSection>
+        <UISubSection title="Caption">
+          <div className="space-y-2">
+            {([1, 2] as Array<1 | 2>).map((variant) => (
+              <div className="flex items-baseline space-x-4" key={variant}>
+                <p>{variant}.</p>
+                <CaptionText variant={variant}>
+                  I want to DCA with Stackly
+                </CaptionText>
+              </div>
+            ))}
+          </div>
+        </UISubSection>
+        <UISubSection title="Overline">
+          <OverlineText> I want to DCA with Stackly</OverlineText>
         </UISubSection>
       </UISection>
     </div>
