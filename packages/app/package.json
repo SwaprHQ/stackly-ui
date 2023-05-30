@@ -13,6 +13,7 @@
     "clean": "rm -rf .vercel && rm -rf .turbo && rm -rf out && rm -rf .next"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.14",
     "class-variance-authority": "^0.6.0",
     "next": "^13.4.1",
     "react": "^18.2.0",
@@ -20,6 +21,7 @@
     "tailwind-merge": "^1.12.0"
   },
   "devDependencies": {
+    "@svgr/webpack": "^8.0.1",
     "@types/node": "^18.0.0",
     "@types/react": "^18.2.5",
     "autoprefixer": "^10.4.14",
