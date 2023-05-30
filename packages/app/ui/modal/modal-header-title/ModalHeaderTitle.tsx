@@ -1,5 +1,6 @@
 import { Button } from "@/ui/buttons";
 import { ModalHeader } from "@/ui/modal/ModalHeader";
+import { TitleText } from "@/ui/text";
 
 interface ModalHeaderTitleProps {
   title: string;
@@ -12,7 +13,7 @@ export const ModalHeaderTitle = ({
 }: ModalHeaderTitleProps) => (
   <ModalHeader>
     <div className="flex items-center justify-between w-full py-2">
-      <h3 className="text-lg font-medium leading-6 text-em-high">{title}</h3>
+      <TitleText>{title}</TitleText>
       <Button
         action="quaternary"
         iconLeft="close"
