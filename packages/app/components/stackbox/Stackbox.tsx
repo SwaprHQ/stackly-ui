@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Icon } from "@/ui";
+import { BodyText, Button, Icon, RadioButton, TitleText } from "@/ui";
 import { useState } from "react";
 import { ConfirmStackModal } from "./ConfirmStackModal";
 import { TokenPicker } from "@/components/token-picker/TokenPicker";
@@ -21,7 +21,9 @@ export const Stackbox = () => {
         <div className="px-5 py-4 border shadow-lg border-surface-50 rounded-2xl">
           <div className="flex items-end justify-between pb-4 border-b border-surface-50">
             <div className="space-y-2">
-              <p className="text-sm font-semibold text-em-low">Deposit from</p>
+              <BodyText variant={2} className="text-em-low">
+                Deposit from
+              </BodyText>
               <Button action="secondary" size="sm" onClick={openTokenPicker}>
                 select token
               </Button>
@@ -44,13 +46,45 @@ export const Stackbox = () => {
             />
           </div>
         </div>
-        <div className="px-5">
-          <p className="py-12 mx-auto w-fit text-em-low">The stackbox™</p>
-          <div className="pb-5">
-            <Button width="full" onClick={openConfirmStack}>
-              Stack Now
-            </Button>
+        <div className="px-5 py-6">
+          <div className="space-y-2">
+            <TitleText variant={2} bold className=" text-em-med">
+              Stack WETH every
+            </TitleText>
+            <div className="flex space-x-2">
+              <RadioButton
+                name="hour"
+                id="hour"
+                checked={true}
+                value={"0"}
+                onChange={() => {}}
+              >
+                Hour
+              </RadioButton>
+              <RadioButton
+                name="week"
+                id="week"
+                checked={false}
+                value={"1"}
+                onChange={() => {}}
+              >
+                Week
+              </RadioButton>
+              <RadioButton
+                name="month"
+                id="month"
+                checked={false}
+                value={"2"}
+                onChange={() => {}}
+              >
+                Month
+              </RadioButton>
+            </div>
           </div>
+          <p className="py-12 mx-auto w-fit text-em-low">The stackbox™</p>
+          <Button width="full" onClick={openConfirmStack}>
+            Stack Now
+          </Button>
         </div>
       </div>
       <TokenPicker isOpen={isTokenPickerOpen} closeAction={closeTokenPicker} />

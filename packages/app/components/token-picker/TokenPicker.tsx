@@ -1,6 +1,6 @@
 "use client";
 
-import { Modal, ModalContent, ModalHeaderTitle } from "@/ui";
+import { BodyText, Modal, ModalContent, ModalHeaderTitle } from "@/ui";
 
 interface TokenPickerProps {
   isOpen: boolean;
@@ -52,9 +52,9 @@ export const TokenPicker = ({ isOpen, closeAction }: TokenPickerProps) => {
                   >
                     <div className="flex items-center space-x-3">
                       <div className="w-8 h-8 rounded-full bg-primary-100" />
-                      <p className="text-sm font-medium">{token}</p>
+                      <BodyText>{token}</BodyText>
                     </div>
-                    <p>0</p>
+                    <BodyText>0</BodyText>
                   </div>
                 ))}
               </div>

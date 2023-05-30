@@ -1,3 +1,5 @@
+import { BodyText, TitleText } from "@/ui/text";
+
 interface DialogTextProps {
   title?: string;
   description?: string;
@@ -11,8 +13,10 @@ export const DialogText = ({
 }: DialogTextProps) => (
   <div className="space-y-1 text-center">
     {title && (
-      <p className={`text-lg font-medium text-white ${className}`}>{title}</p>
+      <TitleText className={`text-white ${className}`}>{title}</TitleText>
     )}
-    {description && <p className="text-sm text-white/70">{description}</p>}
+    {description && (
+      <BodyText className="text-white/70">{description}</BodyText>
+    )}
   </div>
 );
