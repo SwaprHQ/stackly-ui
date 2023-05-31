@@ -3,36 +3,37 @@ import { cva } from "class-variance-authority";
 
 const displayTextStyles = cva([], {
   variants: {
-    variant: {
-      1: ["text-[104px] leading-[120px]"],
+    size: {
+      3: ["text-[104px] leading-[120px]"],
       2: ["text-[88px] leading-[96px]"],
-      3: ["text-[74px] leading-[88px]"],
+      1: ["text-[74px] leading-[88px]"],
     },
-    bold: {
-      true: ["font-bold"],
-      false: ["font-semibold"],
+    weight: {
+      bold: ["font-bold"],
+      semibold: ["font-semibold"],
+      medium: ["font-medium"],
     },
   },
   defaultVariants: {
-    variant: 1,
-    bold: false,
+    size: 1,
+    weight: "semibold",
   },
 });
 
 interface DisplayTextProps extends TextProps {
-  variant?: 1 | 2 | 3;
+  size?: 1 | 2 | 3;
 }
 
 export const DisplayText = ({
   children,
-  variant,
+  size,
   className,
-  bold,
+  weight,
   as,
 }: DisplayTextProps) => {
   const TextComponent = as || "h2";
   return (
-    <TextComponent className={displayTextStyles({ variant, className, bold })}>
+    <TextComponent className={displayTextStyles({ size, className, weight })}>
       {children}
     </TextComponent>
   );

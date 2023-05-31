@@ -3,30 +3,31 @@ import { cva } from "class-variance-authority";
 
 const titleTextStyles = cva([], {
   variants: {
-    variant: {
-      1: ["text-lg"],
-      2: ["text-md"],
+    size: {
+      2: ["text-lg"],
+      1: ["text-md"],
     },
-    bold: {
-      true: ["font-bold"],
-      false: ["font-semibold"],
+    weight: {
+      bold: ["font-bold"],
+      semibold: ["font-semibold"],
+      medium: ["font-medium"],
     },
   },
   defaultVariants: {
-    variant: 1,
-    bold: false,
+    size: 1,
+    weight: "semibold",
   },
 });
 
 interface TitleTextProps extends TextProps {
-  variant?: 1 | 2;
+  size?: 1 | 2;
 }
 
 export const TitleText = ({
   children,
-  variant,
+  size,
   className,
-  bold,
+  weight,
 }: TitleTextProps) => (
-  <p className={titleTextStyles({ variant, bold, className })}>{children}</p>
+  <p className={titleTextStyles({ size, weight, className })}>{children}</p>
 );

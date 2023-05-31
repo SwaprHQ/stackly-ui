@@ -3,39 +3,40 @@ import { cva } from "class-variance-authority";
 
 const headingTextStyles = cva([], {
   variants: {
-    variant: {
-      1: ["text-[64px] leading-[72px]"],
-      2: ["text-[52px] leading-[64px]"],
-      3: ["text-[40px] leading-[56px]"],
-      4: ["text-[32px] leading-[40px]"],
-      5: ["text-[26px] leading-[40px]"],
-      6: ["text-[20px] leading-[32px]"],
+    size: {
+      6: ["text-[64px] leading-[72px]"],
+      5: ["text-[52px] leading-[64px]"],
+      4: ["text-[40px] leading-[56px]"],
+      3: ["text-[32px] leading-[40px]"],
+      2: ["text-[26px] leading-[40px]"],
+      1: ["text-[20px] leading-[32px]"],
     },
-    bold: {
-      true: ["font-bold"],
-      false: ["font-semibold"],
+    weight: {
+      bold: ["font-bold"],
+      semibold: ["font-semibold"],
+      medium: ["font-medium"],
     },
   },
   defaultVariants: {
-    variant: 1,
-    bold: false,
+    size: 1,
+    weight: "semibold",
   },
 });
 
 interface HeadingTextProps extends TextProps {
-  variant?: 1 | 2 | 3 | 4 | 5 | 6;
+  size?: 1 | 2 | 3 | 4 | 5 | 6;
 }
 
 export const HeadingText = ({
   children,
-  variant,
+  size,
   className,
-  bold,
+  weight,
   as,
 }: HeadingTextProps) => {
   const TextComponent = as || "h4";
   return (
-    <TextComponent className={headingTextStyles({ variant, className, bold })}>
+    <TextComponent className={headingTextStyles({ size, weight, className })}>
       {children}
     </TextComponent>
   );

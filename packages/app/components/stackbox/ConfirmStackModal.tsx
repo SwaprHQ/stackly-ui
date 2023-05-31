@@ -36,7 +36,7 @@ export const ConfirmStackModal = ({
           <div className="flex items-center px-4 py-2 mx-auto space-x-4 bg-surface-25 rounded-3xl w-fit">
             <div className="flex items-center space-x-2">
               <div className="w-6 h-6 rounded-full bg-primary-100"></div>
-              <TitleText variant={2}>USDC</TitleText>
+              <TitleText>USDC</TitleText>
             </div>
             <Icon
               size={36}
@@ -45,11 +45,11 @@ export const ConfirmStackModal = ({
             />
             <div className="flex items-center space-x-2">
               <div className="w-6 h-6 rounded-full bg-primary-100"></div>
-              <TitleText variant={2}>WETH</TitleText>
+              <TitleText>WETH</TitleText>
             </div>
           </div>
           <div>
-            <TitleText className="text-center text-em-low">
+            <TitleText size={2} className="text-center text-em-low">
               Stacks <span className="text-em-high">62.5 USDC</span> worth of{" "}
               <span className="text-em-high">WETH</span> every hour
             </TitleText>

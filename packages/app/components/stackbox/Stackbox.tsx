@@ -21,9 +21,7 @@ export const Stackbox = () => {
         <div className="px-5 py-4 border shadow-lg border-surface-50 rounded-2xl">
           <div className="flex items-end justify-between pb-4 border-b border-surface-50">
             <div className="space-y-2">
-              <BodyText variant={2} className="text-em-low">
-                Deposit from
-              </BodyText>
+              <BodyText className="text-em-low">Deposit from</BodyText>
               <Button action="secondary" size="sm" onClick={openTokenPicker}>
                 select token
               </Button>
@@ -48,7 +46,7 @@ export const Stackbox = () => {
         </div>
         <div className="px-5 py-6">
           <div className="space-y-2">
-            <TitleText variant={2} bold className=" text-em-med">
+            <TitleText weight="bold" className=" text-em-med">
               Stack WETH every
             </TitleText>
             <div className="flex space-x-2">

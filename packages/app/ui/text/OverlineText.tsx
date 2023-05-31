@@ -3,20 +3,26 @@ import { cva } from "class-variance-authority";
 
 const overlineTextStyles = cva(["uppercase text-[11px] leading-[16px]"], {
   variants: {
-    bold: {
-      true: ["font-bold"],
-      false: ["font-semibold"],
+    weight: {
+      bold: ["font-bold"],
+      semibold: ["font-semibold"],
+      medium: ["font-medium"],
     },
   },
   defaultVariants: {
-    bold: false,
+    weight: "semibold",
   },
 });
 
-export const OverlineText = ({ children, className, bold, as }: TextProps) => {
+export const OverlineText = ({
+  children,
+  className,
+  weight,
+  as,
+}: TextProps) => {
   const TextComponent = as || "p";
   return (
-    <TextComponent className={overlineTextStyles({ className, bold })}>
+    <TextComponent className={overlineTextStyles({ className, weight })}>
       {children}
     </TextComponent>
   );

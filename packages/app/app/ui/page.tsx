@@ -40,7 +40,7 @@ export default function Page() {
 
   return (
     <div className="my-10">
-      <HeadingText as="h1" variant={1}>
+      <HeadingText as="h1" size={6}>
         Stackly UI
       </HeadingText>
       <UISection
@@ -328,7 +328,7 @@ export default function Page() {
                       >
                         <div className="flex items-center space-x-3">
                           <div className="w-8 h-8 rounded-full bg-primary-100" />
-                          <p className="text-sm font-medium">{token}</p>
+                          <BodyText weight="medium">{token}</BodyText>
                         </div>
                         <p>0</p>
                       </div>
@@ -399,10 +399,10 @@ export default function Page() {
       >
         <UISubSection title="Display">
           <div className="space-y-2">
-            {([1, 2, 3] as Array<1 | 2 | 3>).map((variant) => (
-              <div className="flex items-baseline space-x-4" key={variant}>
-                <p>{variant}.</p>
-                <DisplayText variant={variant}>
+            {([3, 2, 1] as Array<1 | 2 | 3>).map((size) => (
+              <div className="flex items-baseline space-x-4" key={size}>
+                <p>{size}.</p>
+                <DisplayText size={size}>
                   I want to DCA with Stackly
                 </DisplayText>
               </div>
@@ -411,11 +411,11 @@ export default function Page() {
         </UISubSection>
         <UISubSection title="Heading">
           <div className="space-y-2">
-            {([1, 2, 3, 4, 5, 6] as Array<1 | 2 | 3 | 4 | 5 | 6>).map(
-              (variant) => (
-                <div className="flex items-baseline space-x-4" key={variant}>
-                  <p>{variant}.</p>
-                  <HeadingText variant={variant}>
+            {([6, 5, 4, 3, 2, 1] as Array<1 | 2 | 3 | 4 | 5 | 6>).map(
+              (size) => (
+                <div className="flex items-baseline space-x-4" key={size}>
+                  <p>{size}.</p>
+                  <HeadingText size={size}>
                     I want to DCA with Stackly
                   </HeadingText>
                 </div>
@@ -425,34 +425,30 @@ export default function Page() {
         </UISubSection>
         <UISubSection title="Title">
           <div className="space-y-2">
-            {([1, 2] as Array<1 | 2>).map((variant) => (
-              <div className="flex items-baseline space-x-4" key={variant}>
-                <p>{variant}.</p>
-                <TitleText variant={variant}>
-                  I want to DCA with Stackly
-                </TitleText>
+            {([2, 1] as Array<1 | 2>).map((size) => (
+              <div className="flex items-baseline space-x-4" key={size}>
+                <p>{size}.</p>
+                <TitleText size={size}>I want to DCA with Stackly</TitleText>
               </div>
             ))}
           </div>
         </UISubSection>
         <UISubSection title="Body">
           <div className="space-y-2">
-            {([1, 2, 3] as Array<1 | 2>).map((variant) => (
-              <div className="flex items-baseline space-x-4" key={variant}>
-                <p>{variant}.</p>
-                <BodyText variant={variant}>
-                  I want to DCA with Stackly
-                </BodyText>
+            {([3, 2, 1] as Array<1 | 2>).map((size) => (
+              <div className="flex items-baseline space-x-4" key={size}>
+                <p>{size}.</p>
+                <BodyText size={size}>I want to DCA with Stackly</BodyText>
               </div>
             ))}
           </div>
         </UISubSection>
         <UISubSection title="Caption">
           <div className="space-y-2">
-            {([1, 2] as Array<1 | 2>).map((variant) => (
-              <div className="flex items-baseline space-x-4" key={variant}>
-                <p>{variant}.</p>
-                <CaptionText variant={variant}>
+            {([2, 1] as Array<1 | 2>).map((size) => (
+              <div className="flex items-baseline space-x-4" key={size}>
+                <p>{size}.</p>
+                <CaptionText size={size}>
                   I want to DCA with Stackly
                 </CaptionText>
               </div>

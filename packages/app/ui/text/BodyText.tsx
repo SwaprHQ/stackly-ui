@@ -3,36 +3,37 @@ import { cva } from "class-variance-authority";
 
 const bodyTextStyles = cva([], {
   variants: {
-    variant: {
-      3: ["text-xs"],
+    size: {
+      3: ["text-md"],
       2: ["text-sm"],
-      1: ["text-md"],
+      1: ["text-xs"],
     },
-    bold: {
-      true: ["font-bold"],
-      false: ["font-semibold"],
+    weight: {
+      bold: ["font-bold"],
+      semibold: ["font-semibold"],
+      medium: ["font-medium"],
     },
   },
   defaultVariants: {
-    variant: 2,
-    bold: false,
+    size: 2,
+    weight: "semibold",
   },
 });
 
 interface BodyTextProps extends TextProps {
-  variant?: 1 | 2 | 3;
+  size?: 1 | 2 | 3;
 }
 
 export const BodyText = ({
   children,
-  variant,
+  size,
   className,
-  bold,
+  weight,
   as,
 }: BodyTextProps) => {
   const TextComponent = as || "p";
   return (
-    <TextComponent className={bodyTextStyles({ variant, className, bold })}>
+    <TextComponent className={bodyTextStyles({ size, className, weight })}>
       {children}
     </TextComponent>
   );

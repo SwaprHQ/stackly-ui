@@ -3,36 +3,37 @@ import { cva } from "class-variance-authority";
 
 const captionTextStyles = cva([], {
   variants: {
-    variant: {
-      1: ["text-xs"],
-      2: ["text-[10px] leading-[16px]"],
+    size: {
+      2: ["text-xs"],
+      1: ["text-[10px] leading-[16px]"],
     },
-    bold: {
-      true: ["font-bold"],
-      false: ["font-semibold"],
+    weight: {
+      bold: ["font-bold"],
+      semibold: ["font-semibold"],
+      medium: ["font-medium"],
     },
   },
   defaultVariants: {
-    variant: 2,
-    bold: false,
+    size: 2,
+    weight: "semibold",
   },
 });
 
 interface CaptionTextProps extends TextProps {
-  variant?: 1 | 2;
+  size?: 1 | 2;
 }
 
 export const CaptionText = ({
   children,
-  variant,
+  size,
   className,
-  bold,
+  weight,
   as,
 }: CaptionTextProps) => {
   const TextComponent = as || "p";
   return (
-    <p className={captionTextStyles({ variant, className, bold })}>
+    <TextComponent className={captionTextStyles({ size, className, weight })}>
       {children}
-    </p>
+    </TextComponent>
   );
 };
