@@ -28,6 +28,12 @@ export const TitleText = ({
   size,
   className,
   weight,
-}: TitleTextProps) => (
-  <p className={titleTextStyles({ size, weight, className })}>{children}</p>
-);
+  as,
+}: TitleTextProps) => {
+  const TextComponent = as || "p";
+  return (
+    <TextComponent className={titleTextStyles({ size, weight, className })}>
+      {children}
+    </TextComponent>
+  );
+};
