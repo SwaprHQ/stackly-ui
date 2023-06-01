@@ -1,5 +1,5 @@
 import DotsSpinner from "public/assets/images/dots-spinner.svg";
-import { Dialog, DialogBaseProps, DialogText } from "@/ui";
+import { Dialog, DialogBaseProps, DialogContent } from "@/ui";
 
 export const StackTransactionLoading = ({
   isOpen,
@@ -7,7 +7,7 @@ export const StackTransactionLoading = ({
 }: DialogBaseProps) => (
   <Dialog isOpen={isOpen} closeAction={closeAction}>
     <DotsSpinner className="animate-spin" />
-    <DialogText
+    <DialogContent
       title="Waiting for confirmation"
       description="Confirm this transaction in your wallet."
     />
