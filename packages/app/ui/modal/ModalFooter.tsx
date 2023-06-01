@@ -1,13 +1,9 @@
 "use client";
 
-import { ReactNode } from "react";
+import { PropsWithChildren } from "react";
 
-interface ModalFooterProps {
-  children: ReactNode;
-}
-
-export function ModalFooter({ children }: ModalFooterProps) {
+export const ModalFooter = ({ children }: PropsWithChildren) => {
   return (
     <div className="flex items-center px-4 py-5 space-x-2">{children}</div>
   );
-}
+};
