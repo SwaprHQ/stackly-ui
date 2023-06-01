@@ -1,5 +1,5 @@
-import { TextProps } from "@/ui/text/base";
-import { cva } from "class-variance-authority";
+import { TextProps, boldStyles } from "@/ui/text/base";
+import { cva, cx } from "class-variance-authority";
 
 const titleTextStyles = cva([], {
   variants: {
@@ -7,15 +7,9 @@ const titleTextStyles = cva([], {
       2: ["text-lg"],
       1: ["text-md"],
     },
-    weight: {
-      bold: ["font-bold"],
-      semibold: ["font-semibold"],
-      medium: ["font-medium"],
-    },
   },
   defaultVariants: {
     size: 1,
-    weight: "semibold",
   },
 });
 
@@ -28,6 +22,17 @@ export const TitleText = ({
   size,
   className,
   weight,
-}: TitleTextProps) => (
-  <p className={titleTextStyles({ size, weight, className })}>{children}</p>
-);
+  as,
+}: TitleTextProps) => {
+  const TextComponent = as || "p";
+  return (
+    <TextComponent
+      className={cx(
+        boldStyles({ weight }),
+        titleTextStyles({ size, className })
+      )}
+    >
+      {children}
+    </TextComponent>
+  );
+};

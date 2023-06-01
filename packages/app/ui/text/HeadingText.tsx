@@ -1,5 +1,5 @@
-import { TextProps } from "@/ui/text/base";
-import { cva } from "class-variance-authority";
+import { TextProps, boldStyles } from "@/ui/text/base";
+import { cva, cx } from "class-variance-authority";
 
 const headingTextStyles = cva([], {
   variants: {
@@ -11,15 +11,9 @@ const headingTextStyles = cva([], {
       2: ["text-[26px] leading-[40px]"],
       1: ["text-[20px] leading-[32px]"],
     },
-    weight: {
-      bold: ["font-bold"],
-      semibold: ["font-semibold"],
-      medium: ["font-medium"],
-    },
   },
   defaultVariants: {
     size: 1,
-    weight: "semibold",
   },
 });
 
@@ -36,7 +30,12 @@ export const HeadingText = ({
 }: HeadingTextProps) => {
   const TextComponent = as || "h4";
   return (
-    <TextComponent className={headingTextStyles({ size, weight, className })}>
+    <TextComponent
+      className={cx(
+        boldStyles({ weight }),
+        headingTextStyles({ size, className })
+      )}
+    >
       {children}
     </TextComponent>
   );

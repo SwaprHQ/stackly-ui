@@ -77,19 +77,12 @@ export const ConfirmStackModal = ({
         </div>
       </ModalContent>
       <ModalFooter>
-        <>
-          <Button action="tertiary" onClick={closeAction} width="full">
-            Cancel
-          </Button>
-          <Button
-            action="primary"
-            onClick={stack}
-            width="full"
-            ref={focusBtnRef}
-          >
-            Stack now
-          </Button>
-        </>
+        <Button action="tertiary" onClick={closeAction} width="full">
+          Cancel
+        </Button>
+        <Button action="primary" onClick={stack} width="full" ref={focusBtnRef}>
+          Stack now
+        </Button>
       </ModalFooter>
       <StackTransactionLoading
         isOpen={isTransactionLoadingDialogOpen}

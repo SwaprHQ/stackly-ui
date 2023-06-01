@@ -19,7 +19,7 @@ export const Dialog = ({
   <Modal
     isOpen={isOpen}
     close={closeAction}
-    size="almostFull"
+    width="dialog"
     initialFocusRef={initialFocusRef}
   >
     <div className="flex flex-col items-center px-6 py-8 space-y-3 bg-gray-900 shadow-xl">

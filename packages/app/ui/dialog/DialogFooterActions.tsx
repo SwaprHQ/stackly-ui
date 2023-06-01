@@ -1,9 +1,9 @@
 import { Button } from "@/ui/buttons";
-import { useRef, forwardRef, Ref, RefObject } from "react";
+import { forwardRef, RefObject } from "react";
 
 interface DialogFooterActionsProps {
-  primaryAction?: () => void;
-  primaryText?: string;
+  primaryAction: () => void;
+  primaryText: string;
   secondaryAction?: () => void;
   secondaryText?: string;
   ref?: RefObject<HTMLButtonElement>;
@@ -26,11 +26,10 @@ export const DialogFooterActions = forwardRef<
           {secondaryText}
         </Button>
       )}
-      {primaryAction && (
-        <Button ref={ref} size="sm" width="full" onClick={primaryAction}>
-          {primaryText}
-        </Button>
-      )}
+
+      <Button ref={ref} size="sm" width="full" onClick={primaryAction}>
+        {primaryText}
+      </Button>
     </div>
   );
 });

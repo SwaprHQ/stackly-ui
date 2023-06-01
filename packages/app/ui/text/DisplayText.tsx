@@ -1,5 +1,5 @@
-import { TextProps } from "@/ui/text/base";
-import { cva } from "class-variance-authority";
+import { TextProps, boldStyles } from "@/ui/text/base";
+import { cva, cx } from "class-variance-authority";
 
 const displayTextStyles = cva([], {
   variants: {
@@ -8,15 +8,9 @@ const displayTextStyles = cva([], {
       2: ["text-[88px] leading-[96px]"],
       1: ["text-[74px] leading-[88px]"],
     },
-    weight: {
-      bold: ["font-bold"],
-      semibold: ["font-semibold"],
-      medium: ["font-medium"],
-    },
   },
   defaultVariants: {
     size: 1,
-    weight: "semibold",
   },
 });
 
@@ -33,7 +27,12 @@ export const DisplayText = ({
 }: DisplayTextProps) => {
   const TextComponent = as || "h2";
   return (
-    <TextComponent className={displayTextStyles({ size, className, weight })}>
+    <TextComponent
+      className={cx(
+        boldStyles({ weight }),
+        displayTextStyles({ size, className })
+      )}
+    >
       {children}
     </TextComponent>
   );
