@@ -8,7 +8,7 @@ interface ModalProps {
   children: ReactNode;
   isOpen: boolean;
   close: () => void;
-  size?: "full" | "almostFull";
+  width?: "full" | "dialog";
   initialFocusRef?: RefObject<HTMLButtonElement | HTMLInputElement>;
 }
 
@@ -21,13 +21,13 @@ export const dialogPanelStyles = cva(
   ],
   {
     variants: {
-      size: {
+      width: {
         full: "w-full",
-        almostFull: " w-[420px]",
+        dialog: " w-[420px]",
       },
     },
     defaultVariants: {
-      size: "full",
+      width: "full",
     },
   }
 );
@@ -35,7 +35,7 @@ export const dialogPanelStyles = cva(
 export function Modal({
   isOpen,
   close,
-  size,
+  width,
   children,
   initialFocusRef,
 }: ModalProps) {
@@ -71,7 +71,7 @@ export function Modal({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className={dialogPanelStyles({ size })}>
+                <Dialog.Panel className={dialogPanelStyles({ width })}>
                   {children}
                 </Dialog.Panel>
               </Transition.Child>
