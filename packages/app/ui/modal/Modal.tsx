@@ -8,7 +8,7 @@ interface ModalProps {
   children: ReactNode;
   isOpen: boolean;
   close: () => void;
-  size?: "full" | "almostFull";
+  width?: "full" | "dialog";
   initialFocusRef?: RefObject<HTMLButtonElement | HTMLInputElement>;
 }
 
@@ -21,13 +21,13 @@ export const dialogPanelStyles = cva(
   ],
   {
     variants: {
-      size: {
+      width: {
         full: "w-full",
-        almostFull: " w-[420px]",
+        dialog: " w-[420px]",
       },
     },
     defaultVariants: {
-      size: "full",
+      width: "full",
     },
   }
 );
@@ -35,50 +35,48 @@ export const dialogPanelStyles = cva(
 export function Modal({
   isOpen,
   close,
-  size,
+  width,
   children,
   initialFocusRef,
 }: ModalProps) {
   return (
-    <>
-      <Transition appear show={isOpen} as={Fragment}>
-        <Dialog
-          as="div"
-          className="relative z-10 shadow-xl"
-          onClose={close}
-          initialFocus={initialFocusRef}
+    <Transition appear show={isOpen} as={Fragment}>
+      <Dialog
+        as="div"
+        className="relative z-10 shadow-xl"
+        onClose={close}
+        initialFocus={initialFocusRef}
+      >
+        <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
         >
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
-          </Transition.Child>
+          <div className="fixed inset-0 bg-black bg-opacity-25" />
+        </Transition.Child>
 
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex items-center justify-center min-h-full p-4 text-center">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
-                <Dialog.Panel className={dialogPanelStyles({ size })}>
-                  {children}
-                </Dialog.Panel>
-              </Transition.Child>
-            </div>
+        <div className="fixed inset-0 overflow-y-auto">
+          <div className="flex items-center justify-center min-h-full p-4 text-center">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95"
+            >
+              <Dialog.Panel className={dialogPanelStyles({ width })}>
+                {children}
+              </Dialog.Panel>
+            </Transition.Child>
           </div>
-        </Dialog>
-      </Transition>
-    </>
+        </div>
+      </Dialog>
+    </Transition>
   );
 }

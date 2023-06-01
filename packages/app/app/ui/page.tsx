@@ -7,7 +7,6 @@ import {
   ButtonLink,
   Dialog,
   DialogFooterActions,
-  DialogText,
   Icon,
   IconName,
   Modal,
@@ -22,6 +21,7 @@ import {
   DisplayText,
   HeadingText,
   OverlineText,
+  DialogContent,
 } from "@/ui";
 import { CaptionText } from "@/ui/text/CaptionText";
 import { useRef, useState } from "react";
@@ -259,22 +259,20 @@ export default function Page() {
               </div>
             </ModalContent>
             <ModalFooter>
-              <>
-                <Button
-                  action="tertiary"
-                  onClick={() => console.log("cancel")}
-                  width="full"
-                >
-                  Cancel
-                </Button>
-                <Button
-                  action="primary"
-                  onClick={() => console.log("stack")}
-                  width="full"
-                >
-                  Stack now
-                </Button>
-              </>
+              <Button
+                action="tertiary"
+                onClick={() => console.log("cancel")}
+                width="full"
+              >
+                Cancel
+              </Button>
+              <Button
+                action="primary"
+                onClick={() => console.log("stack")}
+                width="full"
+              >
+                Stack now
+              </Button>
             </ModalFooter>
           </Modal>
           <Modal
@@ -361,7 +359,7 @@ export default function Page() {
             isOpen={isOpenCancelStackingDialog}
             closeAction={() => setOpenCancelStackingDialog(false)}
           >
-            <DialogText
+            <DialogContent
               title=" Are you sure you want to cancel stacking?"
               description="The remaining funds of 684.5 USDC will be sent back to your
                 wallet 0xb9."
@@ -379,7 +377,7 @@ export default function Page() {
             closeAction={() => setErrorDialogOpen(false)}
           >
             <Icon name="warning" className="text-danger-500" size={38} />
-            <DialogText
+            <DialogContent
               className="!text-danger-200"
               title="An error has occurred"
               description="A short description showing the user how to solve this error with a bit of details."

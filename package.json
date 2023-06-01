@@ -20,12 +20,8 @@
     "typecheck": "turbo run typecheck"
   },
   "devDependencies": {
-    "@svgr/webpack": "^8.0.1",
     "eslint": "^8.28.0",
     "eslint-config-turbo": "latest",
     "turbo": "^1.9.4"
-  },
-  "dependencies": {
-    "@headlessui/react": "^1.7.14"
   }
 }

@@ -6,7 +6,7 @@ interface DialogTextProps {
   className?: string;
 }
 
-export const DialogText = ({
+export const DialogContent = ({
   title,
   description,
   className,
