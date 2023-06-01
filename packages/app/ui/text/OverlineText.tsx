@@ -1,18 +1,5 @@
-import { TextProps } from "@/ui/text/base";
-import { cva } from "class-variance-authority";
-
-const overlineTextStyles = cva(["uppercase text-[11px] leading-[16px]"], {
-  variants: {
-    weight: {
-      bold: ["font-bold"],
-      semibold: ["font-semibold"],
-      medium: ["font-medium"],
-    },
-  },
-  defaultVariants: {
-    weight: "semibold",
-  },
-});
+import { TextProps, boldStyles } from "@/ui/text/base";
+import { cx } from "class-variance-authority";
 
 export const OverlineText = ({
   children,
@@ -22,7 +9,13 @@ export const OverlineText = ({
 }: TextProps) => {
   const TextComponent = as || "p";
   return (
-    <TextComponent className={overlineTextStyles({ className, weight })}>
+    <TextComponent
+      className={cx(
+        "uppercase text-[11px] leading-[16px]",
+        className,
+        boldStyles({ weight })
+      )}
+    >
       {children}
     </TextComponent>
   );

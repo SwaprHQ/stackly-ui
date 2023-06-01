@@ -1,5 +1,5 @@
-import { TextProps } from "@/ui/text/base";
-import { cva } from "class-variance-authority";
+import { TextProps, boldStyles } from "@/ui/text/base";
+import { cva, cx } from "class-variance-authority";
 
 const captionTextStyles = cva([], {
   variants: {
@@ -7,15 +7,9 @@ const captionTextStyles = cva([], {
       2: ["text-xs"],
       1: ["text-[10px] leading-[16px]"],
     },
-    weight: {
-      bold: ["font-bold"],
-      semibold: ["font-semibold"],
-      medium: ["font-medium"],
-    },
   },
   defaultVariants: {
     size: 2,
-    weight: "semibold",
   },
 });
 
@@ -32,7 +26,12 @@ export const CaptionText = ({
 }: CaptionTextProps) => {
   const TextComponent = as || "p";
   return (
-    <TextComponent className={captionTextStyles({ size, className, weight })}>
+    <TextComponent
+      className={cx(
+        boldStyles({ weight }),
+        captionTextStyles({ size, className })
+      )}
+    >
       {children}
     </TextComponent>
   );

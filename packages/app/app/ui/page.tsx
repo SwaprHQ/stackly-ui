@@ -193,7 +193,7 @@ export default function Page() {
             >
               <Icon name={iconName as IconName} size={24} />
               <div className="p-1 rounded-lg bg-surface-75">
-                <BodyText>{iconName}</BodyText>
+                <BodyText weight="medium">{iconName}</BodyText>
               </div>
             </div>
           ))}

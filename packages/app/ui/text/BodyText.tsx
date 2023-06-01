@@ -1,5 +1,5 @@
-import { TextProps } from "@/ui/text/base";
-import { cva } from "class-variance-authority";
+import { TextProps, boldStyles } from "@/ui/text/base";
+import { cva, cx } from "class-variance-authority";
 
 const bodyTextStyles = cva([], {
   variants: {
@@ -8,15 +8,9 @@ const bodyTextStyles = cva([], {
       2: ["text-sm"],
       1: ["text-xs"],
     },
-    weight: {
-      bold: ["font-bold"],
-      semibold: ["font-semibold"],
-      medium: ["font-medium"],
-    },
   },
   defaultVariants: {
     size: 2,
-    weight: "semibold",
   },
 });
 
@@ -33,7 +27,12 @@ export const BodyText = ({
 }: BodyTextProps) => {
   const TextComponent = as || "p";
   return (
-    <TextComponent className={bodyTextStyles({ size, className, weight })}>
+    <TextComponent
+      className={cx(
+        boldStyles({ weight }),
+        bodyTextStyles({ size, className })
+      )}
+    >
       {children}
     </TextComponent>
   );
