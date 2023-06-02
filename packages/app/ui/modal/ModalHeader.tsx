@@ -1,13 +1,9 @@
 "use client";
 
 import { Dialog } from "@headlessui/react";
-import { ReactNode } from "react";
+import { PropsWithChildren } from "react";
 
-interface ModalHeaderProps {
-  children: ReactNode;
-}
-
-export function ModalHeader({ children }: ModalHeaderProps) {
+export function ModalHeader({ children }: PropsWithChildren) {
   return (
     <Dialog.Title
       as="div"
