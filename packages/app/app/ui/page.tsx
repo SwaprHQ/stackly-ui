@@ -16,8 +16,15 @@ import {
   iconMap,
   ChipButton,
   RadioButton,
+  BodyText,
+  TitleText,
+  DisplayText,
+  HeadingText,
+  CaptionText,
+  OverlineText,
   DialogContent,
 } from "@/ui";
+
 import { useRef, useState } from "react";
 
 export default function Page() {
@@ -34,7 +41,9 @@ export default function Page() {
 
   return (
     <div className="my-10">
-      <h1 className="text-3xl font-medium">Stackly UI</h1>
+      <HeadingText as="h1" size={6}>
+        Stackly UI
+      </HeadingText>
       <UISection
         title="Buttons"
         description="This is a collection of all our current buttons divided by actions."
@@ -184,7 +193,9 @@ export default function Page() {
               key={iconName}
             >
               <Icon name={iconName as IconName} size={24} />
-              <p className="p-1 text-xs rounded-lg bg-surface-75">{iconName}</p>
+              <div className="p-1 rounded-lg bg-surface-75">
+                <BodyText weight="medium">{iconName}</BodyText>
+              </div>
             </div>
           ))}
         </div>
@@ -316,7 +327,7 @@ export default function Page() {
                       >
                         <div className="flex items-center space-x-3">
                           <div className="w-8 h-8 rounded-full bg-primary-100" />
-                          <p className="text-sm font-medium">{token}</p>
+                          <BodyText weight="medium">{token}</BodyText>
                         </div>
                         <p>0</p>
                       </div>
@@ -379,6 +390,72 @@ export default function Page() {
               secondaryText="Dismiss"
             />
           </Dialog>
+        </UISubSection>
+      </UISection>
+      <UISection
+        title="Text components"
+        description="Text components accept variant, bold and classname props."
+      >
+        <UISubSection title="Display">
+          <div className="space-y-2">
+            {([3, 2, 1] as Array<1 | 2 | 3>).map((size) => (
+              <div className="flex items-baseline space-x-4" key={size}>
+                <p>{size}.</p>
+                <DisplayText size={size}>
+                  I want to DCA with Stackly
+                </DisplayText>
+              </div>
+            ))}
+          </div>
+        </UISubSection>
+        <UISubSection title="Heading">
+          <div className="space-y-2">
+            {([6, 5, 4, 3, 2, 1] as Array<1 | 2 | 3 | 4 | 5 | 6>).map(
+              (size) => (
+                <div className="flex items-baseline space-x-4" key={size}>
+                  <p>{size}.</p>
+                  <HeadingText size={size}>
+                    I want to DCA with Stackly
+                  </HeadingText>
+                </div>
+              )
+            )}
+          </div>
+        </UISubSection>
+        <UISubSection title="Title">
+          <div className="space-y-2">
+            {([2, 1] as Array<1 | 2>).map((size) => (
+              <div className="flex items-baseline space-x-4" key={size}>
+                <p>{size}.</p>
+                <TitleText size={size}>I want to DCA with Stackly</TitleText>
+              </div>
+            ))}
+          </div>
+        </UISubSection>
+        <UISubSection title="Body">
+          <div className="space-y-2">
+            {([3, 2, 1] as Array<1 | 2>).map((size) => (
+              <div className="flex items-baseline space-x-4" key={size}>
+                <p>{size}.</p>
+                <BodyText size={size}>I want to DCA with Stackly</BodyText>
+              </div>
+            ))}
+          </div>
+        </UISubSection>
+        <UISubSection title="Caption">
+          <div className="space-y-2">
+            {([2, 1] as Array<1 | 2>).map((size) => (
+              <div className="flex items-baseline space-x-4" key={size}>
+                <p>{size}.</p>
+                <CaptionText size={size}>
+                  I want to DCA with Stackly
+                </CaptionText>
+              </div>
+            ))}
+          </div>
+        </UISubSection>
+        <UISubSection title="Overline">
+          <OverlineText> I want to DCA with Stackly</OverlineText>
         </UISubSection>
       </UISection>
     </div>
