@@ -43,7 +43,7 @@ export function RadioButton({
   onChange,
 }: RadioButtonProps) {
   return (
-    <div>
+    <div className="flex">
       <input
         type="radio"
         value={value}
