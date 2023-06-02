@@ -20,10 +20,11 @@ import {
   TitleText,
   DisplayText,
   HeadingText,
+  CaptionText,
   OverlineText,
   DialogContent,
 } from "@/ui";
-import { CaptionText } from "@/ui/text/CaptionText";
+
 import { useRef, useState } from "react";
 
 export default function Page() {
