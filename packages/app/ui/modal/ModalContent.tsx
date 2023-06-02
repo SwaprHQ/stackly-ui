@@ -1,11 +1,7 @@
 "use client";
 
-import { ReactNode } from "react";
+import { PropsWithChildren } from "react";
 
-interface ModalContentProps {
-  children: ReactNode;
-}
-
-export function ModalContent({ children }: ModalContentProps) {
+export function ModalContent({ children }: PropsWithChildren) {
   return <div className="px-4 mt-5">{children}</div>;
 }
