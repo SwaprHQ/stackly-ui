@@ -18,7 +18,7 @@ export default function Navbar() {
             tabIndex={0}
             href="/"
             title="Stackly Home"
-            className="flex items-center outline-none w-14 md:w-40 focus:ring-2 focus:ring-primary-200 focus:ring-offset-2"
+            className="flex items-center outline-none w-14 md:w-40 "
           >
             <Logo />
           </Link>
