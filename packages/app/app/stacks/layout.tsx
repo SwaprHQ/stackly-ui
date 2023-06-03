@@ -1,11 +1,9 @@
+import { PropsWithChildren } from "react";
+
 export const metadata = {
   title: "Your stacks | Stackly",
 };
 
-interface YourStacksLayoutProps {
-  children: React.ReactNode;
-}
-
-export default function YourStacksLayout({ children }: YourStacksLayoutProps) {
-  return <div className="max-w-5xl pt-24 mx-auto">{children}</div>;
+export default function YourStacksLayout({ children }: PropsWithChildren) {
+  return <div className="max-w-5xl pt-12 mx-auto md:pt-24">{children}</div>;
 }
