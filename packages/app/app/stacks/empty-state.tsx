@@ -2,7 +2,7 @@ import StackOfCoinsImage from "@/public/assets/images/empty-state-stacks-coins.s
 import { ButtonLink, HeadingText } from "@/ui";
 
 export const EmptyState = () => (
-  <div className="max-w-xl pt-32 mx-auto space-y-8">
+  <div className="max-w-xl mx-auto space-y-8">
     <div className="flex flex-col items-center space-y-6 md:space-y-8">
       <StackOfCoinsImage />
       <div className="space-y-3 text-center">

@@ -17,7 +17,7 @@ export const Stackbox = () => {
 
   return (
     <div>
-      <div className="max-w-lg mx-auto my-32 bg-white shadow-2xl rounded-2xl">
+      <div className="max-w-lg mx-auto my-24 bg-white shadow-2xl rounded-2xl">
         <div className="px-5 py-4 border shadow-lg border-surface-50 rounded-2xl">
           <div className="flex items-end justify-between pb-4 border-b border-surface-50">
             <div className="space-y-2">
