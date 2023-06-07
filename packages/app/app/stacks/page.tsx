@@ -173,7 +173,7 @@ const completedOrders = (orders: Order[]) =>
       order.cancelledAt === null
   );
 
-const currentOrders = (orders: Order[]) =>
+const activeOrders = (orders: Order[]) =>
   orders.filter(
     (order) =>
       Number(order.endTime) > currentTimestampInSeconds &&
@@ -219,7 +219,7 @@ export default function Page() {
           </Tab.List>
           <Tab.Panels>
             <Tab.Panel>
-              <StacksTable orders={currentOrders(data.orders)} />
+              <StacksTable orders={activeOrders(data.orders)} />
             </Tab.Panel>
             <Tab.Panel>
               <StacksTable orders={completedOrders(data.orders)} />
