@@ -1,6 +1,7 @@
 import { PropsWithChildren } from "react";
+import { Navbar } from "@/components";
 import "../styles/global.css";
-import Navbar from "@/components/navbar/Navbar";
+import { Providers } from "@/providers";
 
 export const metadata = {
   title: "Stackly | Stack crypto over time.",
@@ -12,8 +13,10 @@ export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
       <body className="max-w-screen-xl px-4 mx-auto font-sans bg-surface-25">
-        <Navbar />
-        {children}
+        <Providers>
+          <Navbar />
+          {children}
+        </Providers>
       </body>
     </html>
   );
