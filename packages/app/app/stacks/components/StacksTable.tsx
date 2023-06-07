@@ -1,4 +1,4 @@
-import { TextDivider } from "./TextDivider";
+import { CellWrapper } from "./CellWrapper";
 import { Order } from "@/app/stacks/page";
 import {
   BodyText,
@@ -144,25 +144,39 @@ export const StacksTable = ({ orders }: { orders: Order[] }) => (
               </div>
             </TableCell>
             <TableCell className="text-right">
-              <TextDivider
-                left={totalFundsUsed(order).toFixed(2)}
-                right={`/ ${convertedAmount(
-                  order.amount,
-                  order.buyToken.decimals
-                ).toFixed(2)} ${order.sellToken.symbol}`}
-              />
+              <CellWrapper>
+                <BodyText className="text-em-high">
+                  {totalFundsUsed(order).toFixed(2)}
+                </BodyText>
+                <BodyText className="text-em-low">
+                  /{" "}
+                  {convertedAmount(
+                    order.amount,
+                    order.buyToken.decimals
+                  ).toFixed(2)}{" "}
+                  {order.sellToken.symbol}
+                </BodyText>
+              </CellWrapper>
             </TableCell>
             <TableCell className="text-right">
-              <TextDivider
-                left={calculateAveragePrice(order)}
-                right={getPairSymbols(order)}
-              />
+              <CellWrapper>
+                <BodyText className="text-em-high">
+                  {calculateAveragePrice(order)}
+                </BodyText>
+                <BodyText className="text-em-low">
+                  {getPairSymbols(order)}
+                </BodyText>
+              </CellWrapper>
             </TableCell>
             <TableCell className="text-right">
-              <TextDivider
-                left={ordersDone(order).toString()}
-                right={`/ ${order.orderSlots.length} orders`}
-              />
+              <CellWrapper>
+                <BodyText className="text-em-high">
+                  {ordersDone(order).toString()}
+                </BodyText>
+                <BodyText className="text-em-low">
+                  / {order.orderSlots.length} orders
+                </BodyText>
+              </CellWrapper>
             </TableCell>
             <TableCell className="flex justify-end">
               <Button
