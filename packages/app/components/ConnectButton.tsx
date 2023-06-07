@@ -48,7 +48,11 @@ const CustomConnectButton = ({
         iconRight="caret-down"
         onClick={onClick}
         size="sm"
+<<<<<<< HEAD
         className="border-none shadow-sm rounded-xl flex hover:bg-white focus:bg-white focus:ring-0 active:ring-0"
+=======
+        className="border-none shadow-sm rounded-xl flex flex-row hover:bg-white focus:bg-white focus:ring-0 active:ring-0"
+>>>>>>> 274259e (feat: add connect button)
       >
         {avatar && (
           <Image
@@ -59,7 +63,11 @@ const CustomConnectButton = ({
             className="rounded-full"
           />
         )}
+<<<<<<< HEAD
         <BodyText size={2} className="text-black">
+=======
+        <BodyText size={2} className=" text-black">
+>>>>>>> 274259e (feat: add connect button)
           <span className="md:hidden">{truncatedAddress(2)}</span>
           <span className="hidden md:block">{truncatedAddress(4)}</span>
         </BodyText>
