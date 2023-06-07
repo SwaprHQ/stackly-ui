@@ -180,6 +180,7 @@ export const StacksTable = ({ orders }: { orders: Order[] }) => (
             </TableCell>
             <TableCell className="flex justify-end">
               <Button
+                className="w-max"
                 size="sm"
                 action="tertiary"
                 onClick={() => console.log("open modal")}
