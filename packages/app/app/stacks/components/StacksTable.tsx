@@ -12,7 +12,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/ui";
-import { currentTimestampInSeconds, formatTimestampToDate } from "@/utils/time";
+import { currentTimestampInSeconds } from "@/utils/time";
+import { useState } from "react";
+import { StackedTokenLogoPair } from "@/app/stacks/components/StackedTokenLogoPair";
+import { StackModal } from "@/app/stacks/components/StackModal";
 
 const mockCowOrders = [
   {
@@ -110,82 +113,94 @@ const totalStacked = (order: Order) =>
 const getPairSymbols = (order: Order) =>
   `${order.buyToken.symbol}/${order.sellToken.symbol}`;
 
-export const StacksTable = ({ orders }: { orders: Order[] }) => (
-  <div className="w-full bg-white border rounded-3xl border-surface-50">
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Stack</TableHead>
-          <TableHead className="text-right">Used funds</TableHead>
-          <TableHead className="text-right">Avg. Buy Price</TableHead>
-          <TableHead className="text-right">Progress</TableHead>
-          <TableHead className="text-right"></TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {orders.map((order) => (
-          <TableRow key={order.id}>
-            <TableCell className="flex items-center font-medium">
-              <div className="flex items-end">
-                <div className="flex items-center justify-center w-10 h-10 text-[10px] border-2 rounded-full border-primary-400 bg-primary-100">
-                  {order.buyToken.symbol.substring(0, 4)}
-                </div>
-                <div className="flex items-center justify-center w-5 h-5 -ml-2 text-[8px]  border-primary-400 border rounded-full bg-primary-200">
-                  {order.sellToken.symbol.substring(2, 5)}
-                </div>
-              </div>
-              <div className="ml-3 space-y-0.5">
-                <BodyText weight="bold">
-                  {totalStacked(order).toFixed(3)}
-                </BodyText>
-                <CaptionText className="text-em-low">
-                  {getPairSymbols(order)}
-                </CaptionText>
-              </div>
-            </TableCell>
-            <TableCell className="text-right">
-              <CellWrapper>
-                <BodyText className="text-em-high">
-                  {totalFundsUsed(order).toFixed(2)}
-                </BodyText>
-                <BodyText className="text-em-low">
-                  /{" "}
-                  {convertedAmount(
-                    order.amount,
-                    order.buyToken.decimals
-                  ).toFixed(2)}{" "}
-                  {order.sellToken.symbol}
-                </BodyText>
-              </CellWrapper>
-            </TableCell>
-            <TableCell className="text-right">
-              <CellWrapper>
-                <BodyText className="text-em-high">
-                  {calculateAveragePrice(order).toFixed(3)}
-                </BodyText>
-                <BodyText className="text-em-low">
-                  {getPairSymbols(order)}
-                </BodyText>
-              </CellWrapper>
-            </TableCell>
-            <TableCell className="text-right">
-              <CellWrapper>
-                <OrdersProgressText order={order} />
-              </CellWrapper>
-            </TableCell>
-            <TableCell className="flex justify-end">
-              <Button
-                className="w-max"
-                size="sm"
-                action="tertiary"
-                onClick={() => console.log("open modal")}
-              >
-                View details
-              </Button>
-            </TableCell>
+export const StacksTable = ({ orders }: { orders: Order[] }) => {
+  const [stackOrder, setStackOrder] = useState<Order>();
+
+  const [isModalOpen, setModalOpen] = useState(false);
+  const closeModal = () => setModalOpen(false);
+
+  const setupAndOpenModal = (order: Order) => {
+    setStackOrder(order);
+    setModalOpen(true);
+  };
+
+  return (
+    <div className="w-full bg-white border rounded-3xl border-surface-50">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Stack</TableHead>
+            <TableHead className="text-right">Used funds</TableHead>
+            <TableHead className="text-right">Avg. Buy Price</TableHead>
+            <TableHead className="text-right">Progress</TableHead>
+            <TableHead className="text-right"></TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  </div>
-);
+        </TableHeader>
+        <TableBody>
+          {orders.map((order) => (
+            <TableRow key={order.id}>
+              <TableCell className="flex items-center font-medium">
+                <StackedTokenLogoPair order={order} />
+                <div className="ml-3 space-y-0.5">
+                  <BodyText weight="bold">
+                    {totalStacked(order).toFixed(3)}
+                  </BodyText>
+                  <CaptionText className="text-em-low">
+                    {getPairSymbols(order)}
+                  </CaptionText>
+                </div>
+              </TableCell>
+              <TableCell className="text-right">
+                <CellWrapper>
+                  <BodyText className="text-em-high">
+                    {totalFundsUsed(order).toFixed(2)}
+                  </BodyText>
+                  <BodyText className="text-em-low">
+                    /{" "}
+                    {convertedAmount(
+                      order.amount,
+                      order.buyToken.decimals
+                    ).toFixed(2)}{" "}
+                    {order.sellToken.symbol}
+                  </BodyText>
+                </CellWrapper>
+              </TableCell>
+              <TableCell className="text-right">
+                <CellWrapper>
+                  <BodyText className="text-em-high">
+                    {calculateAveragePrice(order).toFixed(3)}
+                  </BodyText>
+                  <BodyText className="text-em-low">
+                    {getPairSymbols(order)}
+                  </BodyText>
+                </CellWrapper>
+              </TableCell>
+              <TableCell className="text-right">
+                <CellWrapper>
+                  <OrdersProgressText order={order} />
+                </CellWrapper>
+              </TableCell>
+              <TableCell className="flex justify-end">
+                <Button
+                  className="w-max"
+                  size="sm"
+                  action="tertiary"
+                  onClick={() => setupAndOpenModal(order)}
+                >
+                  View details
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      {stackOrder && (
+        <StackModal
+          isOpen={isModalOpen}
+          closeAction={closeModal}
+          order={stackOrder}
+        />
+      )}
+    </div>
+  );
+};
