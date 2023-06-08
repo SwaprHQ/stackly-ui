@@ -111,7 +111,7 @@ const getPairSymbols = (order: Order) =>
   `${order.buyToken.symbol}/${order.sellToken.symbol}`;
 
 export const StacksTable = ({ orders }: { orders: Order[] }) => (
-  <div className="w-full bg-white border h-96 rounded-3xl border-surface-50">
+  <div className="w-full bg-white border rounded-3xl border-surface-50">
     <Table>
       <TableHeader>
         <TableRow>
