@@ -66,8 +66,8 @@ const convertedAmount = (amount: string | number, decimals: number) =>
 const calculateAveragePrice = (order: Order) => {
   let totalExecutedBuyAmount = 0;
   let totalExecutedSellAmount = 0;
-  getCowOrders(order).map((cowOrder) => {
-    if (cowOrder.executedBuyAmount === "0") return 0;
+  getCowOrders(order).forEach((cowOrder) => {
+    if (cowOrder.executedBuyAmount === "0") return;
 
     totalExecutedBuyAmount += convertedAmount(
       cowOrder.executedBuyAmount,
@@ -78,9 +78,8 @@ const calculateAveragePrice = (order: Order) => {
       order.sellToken.decimals
     );
   });
-
   const averagePrice = totalExecutedSellAmount / totalExecutedBuyAmount;
-  return averagePrice.toFixed(3);
+  return averagePrice;
 };
 
 const ordersDone = (order: Order) => {
@@ -161,7 +160,7 @@ export const StacksTable = ({ orders }: { orders: Order[] }) => (
             <TableCell className="text-right">
               <CellWrapper>
                 <BodyText className="text-em-high">
-                  {calculateAveragePrice(order)}
+                  {calculateAveragePrice(order).toFixed(3)}
                 </BodyText>
                 <BodyText className="text-em-low">
                   {getPairSymbols(order)}
