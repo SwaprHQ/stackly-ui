@@ -1,3 +1,4 @@
+import { OrdersProgressText } from "@/app/stacks/components/OrdersProgressText";
 import { CellWrapper } from "./CellWrapper";
 import { Order } from "@/app/stacks/page";
 import {
@@ -11,7 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/ui";
-import { currentTimestampInSeconds } from "@/utils/time";
+import { currentTimestampInSeconds, formatTimestampToDate } from "@/utils/time";
 
 const mockCowOrders = [
   {
@@ -82,7 +83,7 @@ const calculateAveragePrice = (order: Order) => {
   return averagePrice;
 };
 
-const ordersDone = (order: Order) => {
+export const ordersDone = (order: Order) => {
   return order.orderSlots.reduce((count, orderTimestamp) => {
     if (Number(orderTimestamp) < currentTimestampInSeconds) return ++count;
 
@@ -169,12 +170,7 @@ export const StacksTable = ({ orders }: { orders: Order[] }) => (
             </TableCell>
             <TableCell className="text-right">
               <CellWrapper>
-                <BodyText className="text-em-high">
-                  {ordersDone(order).toString()}
-                </BodyText>
-                <BodyText className="text-em-low">
-                  / {order.orderSlots.length} orders
-                </BodyText>
+                <OrdersProgressText order={order} />
               </CellWrapper>
             </TableCell>
             <TableCell className="flex justify-end">
