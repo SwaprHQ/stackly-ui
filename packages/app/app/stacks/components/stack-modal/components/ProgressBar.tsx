@@ -1,8 +1,7 @@
-import { ordersDone, totalOrders } from "@/app/stacks/components/StacksTable";
-import { Order } from "@/app/stacks/page";
+import { OrderProps, ordersDone, totalOrders } from "@/app/models/order";
 import React, { useRef, useEffect, useState } from "react";
 
-export const ProgressBar = ({ order }: { order: Order }) => {
+export const ProgressBar = ({ order }: OrderProps) => {
   const progressBarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

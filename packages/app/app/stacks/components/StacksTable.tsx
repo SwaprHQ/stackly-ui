@@ -1,6 +1,6 @@
 import { OrdersProgressText } from "@/app/stacks/components/OrdersProgressText";
 import { CellWrapper } from "./CellWrapper";
-import { Order } from "@/app/stacks/page";
+
 import {
   BodyText,
   Button,
@@ -12,10 +12,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/ui";
-import { currentTimestampInSeconds } from "@/utils/time";
 import { useState } from "react";
 import { StackedTokenLogoPair } from "@/app/stacks/components/StackedTokenLogoPair";
 import { StackModal } from "@/app/stacks/components/stack-modal/StackModal";
+import {
+  Order,
+  fundsUsedWithToken,
+  getOrderPairSymbols,
+  totalFundsUsed,
+} from "@/app/models/order";
+import { convertedAmount } from "@/utils/numbers";
 
 const mockCowOrders = [
   {
@@ -63,10 +69,6 @@ const mockCowOrders = [
 // mock function to be replaced
 const getCowOrders = (order: Order) => mockCowOrders;
 
-// we'll probably use viem/ethers function when we connect to data
-const convertedAmount = (amount: string | number, decimals: number) =>
-  Number(amount) / 10 ** decimals;
-
 const calculateAveragePrice = (order: Order) => {
   let totalExecutedBuyAmount = 0;
   let totalExecutedSellAmount = 0;
@@ -86,40 +88,12 @@ const calculateAveragePrice = (order: Order) => {
   return averagePrice;
 };
 
-export const ordersDone = (order: Order) => {
-  return order.orderSlots.reduce((count, orderTimestamp) => {
-    if (Number(orderTimestamp) < currentTimestampInSeconds) return ++count;
-
-    return count;
-  }, 0);
-};
-
-export const totalFundsUsed = (order: Order) =>
-  Number(buyAmountPerSlot(order)) * ordersDone(order);
-
-const buyAmountPerSlot = (order: Order) =>
-  convertedAmount(
-    Number(order.amount) / order.orderSlots.length,
-    order.buyToken.decimals
-  );
-
-export const fundsUsed = (order: Order) =>
-  convertedAmount(order.amount, order.buyToken.decimals).toFixed(2);
-
-export const fundsUsedWithToken = (order: Order) =>
-  `${fundsUsed(order)} ${order.sellToken.symbol}`;
-
-export const totalOrders = (order: Order) => order.orderSlots.length;
-
 export const totalStacked = (order: Order) =>
   getCowOrders(order).reduce((acc, cowOrder) => {
     return (
       acc + convertedAmount(cowOrder.executedBuyAmount, order.buyToken.decimals)
     );
   }, 0);
-
-const getPairSymbols = (order: Order) =>
-  `${order.buyToken.symbol}/${order.sellToken.symbol}`;
 
 export const StacksTable = ({ orders }: { orders: Order[] }) => {
   const [stackOrder, setStackOrder] = useState<Order>();
@@ -154,7 +128,7 @@ export const StacksTable = ({ orders }: { orders: Order[] }) => {
                     {totalStacked(order).toFixed(3)}
                   </BodyText>
                   <CaptionText className="text-em-low">
-                    {getPairSymbols(order)}
+                    {getOrderPairSymbols(order)}
                   </CaptionText>
                 </div>
               </TableCell>
@@ -174,7 +148,7 @@ export const StacksTable = ({ orders }: { orders: Order[] }) => {
                     {calculateAveragePrice(order).toFixed(3)}
                   </BodyText>
                   <BodyText className="text-em-low">
-                    {getPairSymbols(order)}
+                    {getOrderPairSymbols(order)}
                   </BodyText>
                 </CellWrapper>
               </TableCell>

@@ -5,6 +5,7 @@ import { EmptyState } from "@/app/stacks/empty-state";
 import { ButtonLink, HeadingText } from "@/ui";
 import { StacksTable } from "@/app/stacks/components/StacksTable";
 import { currentTimestampInSeconds } from "@/utils/time";
+import { Order } from "@/app/models/order";
 
 const mockData = {
   orders: [
@@ -145,27 +146,7 @@ const mockData = {
     },
   ],
 };
-interface Token {
-  id: string;
-  decimals: number;
-  name: string;
-  symbol: string;
-}
 
-export interface Order {
-  id: string;
-  owner: string;
-  receiver: string;
-  amount: string;
-  sellToken: Token;
-  buyToken: Token;
-  createdAt: string;
-  startTime: number;
-  endTime: number;
-  orderSlots: string[];
-  cancelledAt: string | null;
-  interval: string;
-}
 const completedOrders = (orders: Order[]) =>
   orders.filter(
     (order) =>

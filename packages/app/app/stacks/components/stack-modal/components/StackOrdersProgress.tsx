@@ -1,13 +1,13 @@
 import {
+  OrderProps,
   fundsUsedWithToken,
   ordersDone,
   totalFundsUsed,
-} from "@/app/stacks/components/StacksTable";
+} from "@/app/models/order";
 import { ProgressBar } from "@/app/stacks/components/stack-modal/components/ProgressBar";
-import { Order } from "@/app/stacks/page";
 import { BodyText } from "@/ui";
 
-const OrdersExecuted = ({ order }: { order: Order }) => {
+const OrdersExecuted = ({ order }: OrderProps) => {
   if (!ordersDone(order))
     return <BodyText className="text-em-low">No orders executed yet</BodyText>;
 
@@ -23,7 +23,7 @@ const OrdersExecuted = ({ order }: { order: Order }) => {
   );
 };
 
-export const StackOrdersProgress = ({ order }: { order: Order }) => {
+export const StackOrdersProgress = ({ order }: OrderProps) => {
   return (
     <div className="mt-3 space-y-3">
       <div className="flex flex-col justify-between space-y-1 md:space-y-0 md:items-center md:flex-row">

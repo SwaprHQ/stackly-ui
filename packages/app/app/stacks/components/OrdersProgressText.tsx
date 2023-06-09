@@ -1,9 +1,8 @@
-import { ordersDone } from "@/app/stacks/components/StacksTable";
-import { Order } from "@/app/stacks/page";
+import { OrderProps, ordersDone } from "@/app/models/order";
 import { BodyText } from "@/ui";
 import { formatTimestampToDateWithSuffix } from "@/utils/time";
 
-export const OrdersProgressText = ({ order }: { order: Order }) =>
+export const OrdersProgressText = ({ order }: OrderProps) =>
   ordersDone(order) === 0 ? (
     <BodyText className="text-primary-700">
       Starts on {formatTimestampToDateWithSuffix(order.orderSlots[0])}

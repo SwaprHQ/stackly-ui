@@ -1,8 +1,7 @@
+import { Order, ordersDone } from "@/app/models/order";
 import { StackedTokenLogoPair } from "@/app/stacks/components/StackedTokenLogoPair";
-import { ordersDone } from "@/app/stacks/components/StacksTable";
 import { StackDetail } from "@/app/stacks/components/stack-modal/components/StackDetail";
 import { StackOrdersProgress } from "@/app/stacks/components/stack-modal/components/StackOrdersProgress";
-import { Order } from "@/app/stacks/page";
 import {
   Modal,
   ModalFooter,
