@@ -15,7 +15,7 @@ import {
 import { currentTimestampInSeconds } from "@/utils/time";
 import { useState } from "react";
 import { StackedTokenLogoPair } from "@/app/stacks/components/StackedTokenLogoPair";
-import { StackModal } from "@/app/stacks/components/StackModal";
+import { StackModal } from "@/app/stacks/components/stack-modal/StackModal";
 
 const mockCowOrders = [
   {
@@ -94,7 +94,7 @@ export const ordersDone = (order: Order) => {
   }, 0);
 };
 
-const totalFundsUsed = (order: Order) =>
+export const totalFundsUsed = (order: Order) =>
   Number(buyAmountPerSlot(order)) * ordersDone(order);
 
 const buyAmountPerSlot = (order: Order) =>
@@ -103,7 +103,15 @@ const buyAmountPerSlot = (order: Order) =>
     order.buyToken.decimals
   );
 
-const totalStacked = (order: Order) =>
+export const fundsUsed = (order: Order) =>
+  convertedAmount(order.amount, order.buyToken.decimals).toFixed(2);
+
+export const fundsUsedWithToken = (order: Order) =>
+  `${fundsUsed(order)} ${order.sellToken.symbol}`;
+
+export const totalOrders = (order: Order) => order.orderSlots.length;
+
+export const totalStacked = (order: Order) =>
   getCowOrders(order).reduce((acc, cowOrder) => {
     return (
       acc + convertedAmount(cowOrder.executedBuyAmount, order.buyToken.decimals)
@@ -156,12 +164,7 @@ export const StacksTable = ({ orders }: { orders: Order[] }) => {
                     {totalFundsUsed(order).toFixed(2)}
                   </BodyText>
                   <BodyText className="text-em-low">
-                    /{" "}
-                    {convertedAmount(
-                      order.amount,
-                      order.buyToken.decimals
-                    ).toFixed(2)}{" "}
-                    {order.sellToken.symbol}
+                    / {fundsUsedWithToken(order)}
                   </BodyText>
                 </CellWrapper>
               </TableCell>

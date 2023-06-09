@@ -1,5 +1,7 @@
 import { StackedTokenLogoPair } from "@/app/stacks/components/StackedTokenLogoPair";
 import { ordersDone } from "@/app/stacks/components/StacksTable";
+import { StackDetail } from "@/app/stacks/components/stack-modal/components/StackDetail";
+import { StackOrdersProgress } from "@/app/stacks/components/stack-modal/components/StackOrdersProgress";
 import { Order } from "@/app/stacks/page";
 import {
   Modal,
@@ -9,40 +11,21 @@ import {
   ModalContent,
   BodyText,
   ModalHeader,
+  TitleText,
+  DialogBaseProps,
 } from "@/ui";
 import {
   formatFrequencyHours,
   formatTimestampToDateWithTime,
 } from "@/utils/time";
 import Link from "next/link";
-import { ReactNode } from "react";
 
-interface ModalProps {
-  isOpen: boolean;
-  closeAction: () => void;
-}
-
-interface StackModalProps extends ModalProps {
+interface StackModalProps extends DialogBaseProps {
   order: Order;
 }
 
-const StackDetail = ({
-  title,
-  children,
-}: {
-  title: string;
-  children: ReactNode;
-}) => (
-  <div className="space-y-1">
-    <BodyText size={1} className="text-em-low">
-      {title}
-    </BodyText>
-    <BodyText size={1}>{children}</BodyText>
-  </div>
-);
-
 const transactionExplorerLink = (address: string) =>
-  `https://gnosisscan.io/address/${address}#internaltx`;
+  `https://gnosisscan.io/address/${address}#tokentxns`;
 
 export const StackModal = ({ order, isOpen, closeAction }: StackModalProps) => {
   const orderSlots = order.orderSlots;
@@ -52,7 +35,7 @@ export const StackModal = ({ order, isOpen, closeAction }: StackModalProps) => {
 
   return (
     <div>
-      <Modal isOpen={isOpen} close={closeAction}>
+      <Modal maxWidth="2xl" isOpen={isOpen} close={closeAction}>
         <ModalHeader>
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center space-x-2">
@@ -81,7 +64,7 @@ export const StackModal = ({ order, isOpen, closeAction }: StackModalProps) => {
           </div>
         </ModalHeader>
         <ModalContent>
-          <div className="flex justify-between">
+          <div className="grid grid-cols-2 gap-y-5 md:flex md:justify-between">
             <StackDetail title="Starts on">
               {formatTimestampToDateWithTime(firstSlot)}
             </StackDetail>
@@ -95,15 +78,20 @@ export const StackModal = ({ order, isOpen, closeAction }: StackModalProps) => {
               {formatTimestampToDateWithTime(nextSlot)}
             </StackDetail>
           </div>
+          <div className="w-full my-4 border-b border-surface-50"></div>
+          <TitleText size={2} weight="bold">
+            Transactions
+          </TitleText>
+          <StackOrdersProgress order={order} />
         </ModalContent>
         <ModalFooter>
           <Button
             size="sm"
             action="secondary"
-            onClick={() => console.log("cancel")}
+            onClick={() => alert("Are you sure you want to cancel stacking?")}
             width="full"
           >
-            Cancel
+            Cancel Stacking
           </Button>
         </ModalFooter>
       </Modal>
