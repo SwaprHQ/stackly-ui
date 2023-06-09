@@ -217,7 +217,7 @@ export default function Page() {
           </Button>
           <Modal
             isOpen={isConfirmModalOpen}
-            close={() => setConfirmModalOpen(false)}
+            closeAction={() => setConfirmModalOpen(false)}
           >
             <ModalHeaderTitle
               title="Confirm Stack"
@@ -277,7 +277,7 @@ export default function Page() {
           </Modal>
           <Modal
             isOpen={isTokenPickerOpen}
-            close={() => setTokenPickerOpen(false)}
+            closeAction={() => setTokenPickerOpen(false)}
           >
             <ModalHeaderTitle
               title="Select a token"

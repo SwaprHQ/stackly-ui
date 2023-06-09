@@ -9,7 +9,7 @@ interface TokenPickerProps {
 export const TokenPicker = ({ isOpen, closeAction }: TokenPickerProps) => {
   return (
     <div>
-      <Modal isOpen={isOpen} close={closeAction}>
+      <Modal isOpen={isOpen} closeAction={closeAction}>
         <ModalHeaderTitle title="Select a token" closeAction={closeAction} />
         <ModalContent>
           <div className="space-y-4">

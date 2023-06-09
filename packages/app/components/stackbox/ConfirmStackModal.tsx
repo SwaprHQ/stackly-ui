@@ -29,7 +29,11 @@ export const ConfirmStackModal = ({
   }
 
   return (
-    <Modal isOpen={isOpen} close={closeAction} initialFocusRef={focusBtnRef}>
+    <Modal
+      isOpen={isOpen}
+      closeAction={closeAction}
+      initialFocusRef={focusBtnRef}
+    >
       <ModalHeaderTitle title="Confirm Stack" closeAction={closeAction} />
       <ModalContent>
         <div className="space-y-6">

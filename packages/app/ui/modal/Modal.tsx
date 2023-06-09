@@ -4,38 +4,43 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, ReactNode, RefObject } from "react";
 import { cva } from "class-variance-authority";
 
-interface ModalProps {
-  children: ReactNode;
+export interface ModalBaseProps {
   isOpen: boolean;
-  close: () => void;
-  width?: "full" | "dialog";
+  closeAction: () => void;
+}
+interface ModalProps extends ModalBaseProps {
+  children: ReactNode;
+  maxWidth?: "2xl" | "xl" | "lg" | "md" | "sm";
   initialFocusRef?: RefObject<HTMLButtonElement | HTMLInputElement>;
 }
 
 export const dialogPanelStyles = cva(
   [
-    "max-w-md",
+    "w-full",
     "overflow-hidden text-left align-middle  ",
     "bg-white shadow-xl rounded-2xl",
     "transition-all transform ",
   ],
   {
     variants: {
-      width: {
-        full: "w-full",
-        dialog: " w-[420px]",
+      maxWidth: {
+        "2xl": "max-w-2xl",
+        xl: "max-w-xl",
+        lg: "max-w-lg",
+        md: "max-w-md",
+        sm: "max-w-sm",
       },
     },
     defaultVariants: {
-      width: "full",
+      maxWidth: "md",
     },
   }
 );
 
 export function Modal({
   isOpen,
-  close,
-  width,
+  closeAction,
+  maxWidth,
   children,
   initialFocusRef,
 }: ModalProps) {
@@ -44,7 +49,7 @@ export function Modal({
       <Dialog
         as="div"
         className="relative z-10 shadow-xl"
-        onClose={close}
+        onClose={closeAction}
         initialFocus={initialFocusRef}
       >
         <Transition.Child
@@ -70,7 +75,7 @@ export function Modal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className={dialogPanelStyles({ width })}>
+              <Dialog.Panel className={dialogPanelStyles({ maxWidth })}>
                 {children}
               </Dialog.Panel>
             </Transition.Child>

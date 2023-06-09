@@ -12,7 +12,7 @@ import {
   BodyText,
   ModalHeader,
   TitleText,
-  DialogBaseProps,
+  ModalBaseProps,
 } from "@/ui";
 import {
   formatFrequencyHours,
@@ -20,7 +20,7 @@ import {
 } from "@/utils/time";
 import Link from "next/link";
 
-interface StackModalProps extends DialogBaseProps {
+interface StackModalProps extends ModalBaseProps {
   order: Order;
 }
 
@@ -35,7 +35,7 @@ export const StackModal = ({ order, isOpen, closeAction }: StackModalProps) => {
 
   return (
     <div>
-      <Modal maxWidth="2xl" isOpen={isOpen} close={closeAction}>
+      <Modal maxWidth="2xl" isOpen={isOpen} closeAction={closeAction}>
         <ModalHeader>
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center space-x-2">
