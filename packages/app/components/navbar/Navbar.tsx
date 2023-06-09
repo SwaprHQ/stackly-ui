@@ -3,8 +3,8 @@
 import Link from "next/link";
 import MobileMenu from "./MobileMenu";
 import Logo from "./Logo";
-import { Button, ButtonLink } from "@/ui";
-import { ConnectButton } from "@/components";
+import { ButtonLink } from "@/ui";
+import { ConnectButton, SelectNetwork } from "@/components";
 
 const Divider = () => (
   <div className="h-8 border-r border-solid border-b-gray-100"></div>
@@ -35,14 +35,7 @@ export function Navbar() {
             Your stacks
           </ButtonLink>
           <Divider />
-          <Button
-            action="tertiary"
-            size="sm"
-            iconRight="caret-down"
-            onClick={() => console.log("change network")}
-          >
-            Gnosis
-          </Button>
+          <SelectNetwork />
           <ConnectButton />
         </div>
         <MobileMenu />
