@@ -1,7 +1,9 @@
+import Link from "next/link";
+import { ReactNode } from "react";
+
 import { Order, totalOrdersDone } from "@/app/models/order";
-import { StackedTokenLogoPair } from "@/app/stacks/components/StackedTokenLogoPair";
-import { StackDetail } from "@/app/stacks/components/stack-modal/components/StackDetail";
-import { StackOrdersProgress } from "@/app/stacks/components/stack-modal/components/StackOrdersProgress";
+import { StackedTokenLogoPair } from "@/components/StackedTokenLogoPair";
+import { StackProgress } from "@/components/stack-modal/StackProgress";
 import {
   Modal,
   ModalFooter,
@@ -17,7 +19,6 @@ import {
   formatFrequencyHours,
   formatTimestampToDateWithTime,
 } from "@/utils/time";
-import Link from "next/link";
 
 interface StackModalProps extends ModalBaseProps {
   order: Order;
@@ -81,7 +82,7 @@ export const StackModal = ({ order, isOpen, closeAction }: StackModalProps) => {
           <TitleText size={2} weight="bold">
             Transactions
           </TitleText>
-          <StackOrdersProgress order={order} />
+          <StackProgress order={order} />
         </ModalContent>
         <ModalFooter>
           <Button
@@ -97,3 +98,18 @@ export const StackModal = ({ order, isOpen, closeAction }: StackModalProps) => {
     </div>
   );
 };
+
+const StackDetail = ({
+  title,
+  children,
+}: {
+  title: string;
+  children: ReactNode;
+}) => (
+  <div className="space-y-1">
+    <BodyText size={1} className="text-em-low">
+      {title}
+    </BodyText>
+    <BodyText size={1}>{children}</BodyText>
+  </div>
+);

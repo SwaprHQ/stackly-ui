@@ -9,17 +9,10 @@ import {
   ModalHeaderTitle,
   BodyText,
   TitleText,
+  ModalBaseProps,
 } from "@/ui";
 
-interface ConfirmStackModalProps {
-  isOpen: boolean;
-  closeAction: () => void;
-}
-
-export const ConfirmStackModal = ({
-  isOpen,
-  closeAction,
-}: ConfirmStackModalProps) => {
+export const ConfirmStackModal = ({ isOpen, closeAction }: ModalBaseProps) => {
   const focusBtnRef = useRef<HTMLButtonElement>(null);
   const [isTransactionLoadingDialogOpen, setTransactionLoadingDialogOpen] =
     useState(false);

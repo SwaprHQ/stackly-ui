@@ -1,12 +1,14 @@
 "use client";
 
-import { BodyText, Modal, ModalContent, ModalHeaderTitle } from "@/ui";
+import {
+  BodyText,
+  Modal,
+  ModalBaseProps,
+  ModalContent,
+  ModalHeaderTitle,
+} from "@/ui";
 
-interface TokenPickerProps {
-  isOpen: boolean;
-  closeAction: () => void;
-}
-export const TokenPicker = ({ isOpen, closeAction }: TokenPickerProps) => {
+export const TokenPicker = ({ isOpen, closeAction }: ModalBaseProps) => {
   return (
     <div>
       <Modal isOpen={isOpen} closeAction={closeAction}>

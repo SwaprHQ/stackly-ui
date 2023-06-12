@@ -1,6 +1,4 @@
-import { OrdersProgressText } from "@/app/stacks/components/OrdersProgressText";
-import { CellWrapper } from "./CellWrapper";
-
+import { PropsWithChildren, useState } from "react";
 import {
   BodyText,
   Button,
@@ -12,16 +10,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/ui";
-import { useState } from "react";
-import { StackedTokenLogoPair } from "@/app/stacks/components/StackedTokenLogoPair";
-import { StackModal } from "@/app/stacks/components/stack-modal/StackModal";
+import { StackedTokenLogoPair } from "@/components/StackedTokenLogoPair";
+import { StackModal } from "@/components/stack-modal/StackModal";
 import {
   Order,
+  OrderProps,
   fundsUsedWithToken,
   getOrderPairSymbols,
   totalFundsUsed,
+  totalOrdersDone,
 } from "@/app/models/order";
 import { convertedAmount } from "@/utils/numbers";
+import { formatTimestampToDateWithSuffix } from "@/utils/time";
 
 const mockCowOrders = [
   {
@@ -181,3 +181,23 @@ export const StacksTable = ({ orders }: { orders: Order[] }) => {
     </div>
   );
 };
+
+const CellWrapper = ({ children }: PropsWithChildren) => (
+  <div className="flex items-center justify-end space-x-1 w-max lg:w-auto">
+    {children}
+  </div>
+);
+
+const OrdersProgressText = ({ order }: OrderProps) =>
+  totalOrdersDone(order) === 0 ? (
+    <BodyText className="text-primary-700">
+      Starts on {formatTimestampToDateWithSuffix(order.orderSlots[0])}
+    </BodyText>
+  ) : (
+    <>
+      <BodyText className="text-em-high">
+        {totalOrdersDone(order).toString()}
+      </BodyText>
+      <BodyText className="text-em-low">{`/ ${order.orderSlots.length} orders`}</BodyText>
+    </>
+  );

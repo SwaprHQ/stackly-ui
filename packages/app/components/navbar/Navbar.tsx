@@ -5,10 +5,6 @@ import MobileMenu from "./MobileMenu";
 import Logo from "./Logo";
 import { Button, ButtonLink } from "@/ui";
 
-const Divider = () => (
-  <div className="h-8 border-r border-solid border-b-gray-100"></div>
-);
-
 export default function Navbar() {
   return (
     <header className="top-0 flex flex-col w-full border-b border-solid h-nav-height bg-surface-25 border-b-surface-75">
@@ -51,3 +47,7 @@ export default function Navbar() {
     </header>
   );
 }
+
+const Divider = () => (
+  <div className="h-8 border-r border-solid border-b-gray-100"></div>
+);

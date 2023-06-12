@@ -1,7 +1,7 @@
 import { OrderProps, totalOrdersDone, totalOrders } from "@/app/models/order";
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 
-export const ProgressBar = ({ order }: OrderProps) => {
+export const OrdersProgressBar = ({ order }: OrderProps) => {
   const progressBarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
