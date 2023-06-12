@@ -2,7 +2,7 @@ import { Order } from "./types";
 import { convertedAmount } from "@/utils/numbers";
 import { currentTimestampInSeconds } from "@/utils/time";
 
-export const ordersDone = (order: Order) => {
+export const totalOrdersDone = (order: Order) => {
   return order.orderSlots.reduce((count, orderTimestamp) => {
     if (Number(orderTimestamp) < currentTimestampInSeconds) return ++count;
 
@@ -11,7 +11,7 @@ export const ordersDone = (order: Order) => {
 };
 
 export const totalFundsUsed = (order: Order) =>
-  Number(buyAmountPerSlot(order)) * ordersDone(order);
+  Number(buyAmountPerSlot(order)) * totalOrdersDone(order);
 
 const buyAmountPerSlot = (order: Order) =>
   convertedAmount(

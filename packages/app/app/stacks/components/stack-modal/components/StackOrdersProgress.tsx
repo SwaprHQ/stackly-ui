@@ -1,14 +1,14 @@
 import {
   OrderProps,
   fundsUsedWithToken,
-  ordersDone,
+  totalOrdersDone,
   totalFundsUsed,
 } from "@/app/models/order";
 import { ProgressBar } from "@/app/stacks/components/stack-modal/components/ProgressBar";
 import { BodyText } from "@/ui";
 
 const OrdersExecuted = ({ order }: OrderProps) => {
-  if (!ordersDone(order))
+  if (!totalOrdersDone(order))
     return <BodyText className="text-em-low">No orders executed yet</BodyText>;
 
   return (
@@ -17,7 +17,7 @@ const OrdersExecuted = ({ order }: OrderProps) => {
         Orders executed:
       </BodyText>
       <BodyText size="responsive">
-        {ordersDone(order)} out of {order.orderSlots.length}
+        {totalOrdersDone(order)} out of {order.orderSlots.length}
       </BodyText>
     </div>
   );

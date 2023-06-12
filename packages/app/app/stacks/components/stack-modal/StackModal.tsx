@@ -1,4 +1,4 @@
-import { Order, ordersDone } from "@/app/models/order";
+import { Order, totalOrdersDone } from "@/app/models/order";
 import { StackedTokenLogoPair } from "@/app/stacks/components/StackedTokenLogoPair";
 import { StackDetail } from "@/app/stacks/components/stack-modal/components/StackDetail";
 import { StackOrdersProgress } from "@/app/stacks/components/stack-modal/components/StackOrdersProgress";
@@ -30,7 +30,7 @@ export const StackModal = ({ order, isOpen, closeAction }: StackModalProps) => {
   const orderSlots = order.orderSlots;
   const firstSlot = orderSlots[0];
   const lastSlot = orderSlots[orderSlots.length - 1];
-  const nextSlot = orderSlots[ordersDone(order)];
+  const nextSlot = orderSlots[totalOrdersDone(order)];
 
   return (
     <div>
