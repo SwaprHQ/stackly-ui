@@ -3,7 +3,6 @@ import { StackTransactionLoading } from "@/components/stackbox/StackTransactionL
 import {
   Modal,
   ModalFooter,
-  Icon,
   Button,
   ModalContent,
   ModalHeaderTitle,
@@ -11,6 +10,7 @@ import {
   TitleText,
   ModalBaseProps,
 } from "@/ui";
+import { FromToStackTokenPair } from "@/components/FromToStackTokenPair";
 
 export const ConfirmStackModal = ({ isOpen, closeAction }: ModalBaseProps) => {
   const focusBtnRef = useRef<HTMLButtonElement>(null);
@@ -20,6 +20,20 @@ export const ConfirmStackModal = ({ isOpen, closeAction }: ModalBaseProps) => {
   function stack() {
     setTransactionLoadingDialogOpen(true);
   }
+
+  const fromToken = {
+    id: "absadcas",
+    symbol: "USDC",
+    decimals: 18,
+    name: "usdc",
+  };
+
+  const toToken = {
+    id: "0x213edas",
+    symbol: "WETH",
+    decimals: 18,
+    name: "wrapped eth",
+  };
 
   return (
     <Modal
@@ -31,19 +45,7 @@ export const ConfirmStackModal = ({ isOpen, closeAction }: ModalBaseProps) => {
       <ModalContent>
         <div className="space-y-6">
           <div className="flex items-center px-4 py-2 mx-auto space-x-4 bg-surface-25 rounded-3xl w-fit">
-            <div className="flex items-center space-x-2">
-              <div className="w-6 h-6 rounded-full bg-primary-100"></div>
-              <TitleText>USDC</TitleText>
-            </div>
-            <Icon
-              size={36}
-              className="w-12 p-2 rotate-180 rounded-full bg-surface-75"
-              name="arrow-left"
-            />
-            <div className="flex items-center space-x-2">
-              <div className="w-6 h-6 rounded-full bg-primary-100"></div>
-              <TitleText>WETH</TitleText>
-            </div>
+            <FromToStackTokenPair fromToken={fromToken} toToken={toToken} />
           </div>
           <div>
             <TitleText size={2} className="text-center text-em-low">
