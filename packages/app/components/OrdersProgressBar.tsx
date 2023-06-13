@@ -6,9 +6,8 @@ export const OrdersProgressBar = ({ order }: OrderProps) => {
 
   useEffect(() => {
     if (progressBarRef.current) {
-      const totalWidth = progressBarRef.current.offsetWidth;
-      const width = (totalWidth * totalOrdersDone(order)) / totalOrders(order);
-      progressBarRef.current.style.width = `${width}px`;
+      const width = (100 * totalOrdersDone(order)) / totalOrders(order);
+      progressBarRef.current.style.width = `${width}%`;
     }
   }, [order]);
 
