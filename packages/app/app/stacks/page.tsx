@@ -4,7 +4,7 @@ import { Tab } from "@headlessui/react";
 import { EmptyState } from "@/app/stacks/empty-state";
 import { ButtonLink, HeadingText } from "@/ui";
 import { StacksTable } from "@/components/StacksTable";
-import { currentTimestampInSeconds } from "@/utils/time";
+import { currentTimestampInSeconds } from "@/utils/datetime";
 import { Order } from "@/app/models/order";
 
 const mockData = {

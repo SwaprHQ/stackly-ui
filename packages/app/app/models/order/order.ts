@@ -1,11 +1,10 @@
 import { Order } from "./types";
 import { convertedAmount } from "@/utils/numbers";
-import { currentTimestampInSeconds } from "@/utils/time";
+import { currentTimestampInSeconds } from "@/utils/datetime";
 
 export const totalOrdersDone = (order: Order) => {
   return order.orderSlots.reduce((count, orderTimestamp) => {
     if (Number(orderTimestamp) < currentTimestampInSeconds) return ++count;
-
     return count;
   }, 0);
 };

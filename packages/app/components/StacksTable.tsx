@@ -21,7 +21,7 @@ import {
   totalOrdersDone,
 } from "@/app/models/order";
 import { convertedAmount } from "@/utils/numbers";
-import { formatTimestampToDateWithSuffix } from "@/utils/time";
+import { formatTimestampToDateWithSuffix } from "@/utils/datetime";
 
 const mockCowOrders = [
   {
@@ -69,7 +69,7 @@ const mockCowOrders = [
 // mock function to be replaced
 const getCowOrders = (order: Order) => mockCowOrders;
 
-const calculateAveragePrice = (order: Order) => {
+export const calculateAveragePrice = (order: Order) => {
   let totalExecutedBuyAmount = 0;
   let totalExecutedSellAmount = 0;
   getCowOrders(order).forEach((cowOrder) => {
