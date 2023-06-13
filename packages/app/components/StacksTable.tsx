@@ -15,7 +15,7 @@ import { StackModal } from "@/components/stack-modal/StackModal";
 import {
   Order,
   OrderProps,
-  fundsUsedWithToken,
+  fundsTotalWithToken,
   getOrderPairSymbols,
   totalFundsUsed,
   totalOrdersDone,
@@ -138,7 +138,7 @@ export const StacksTable = ({ orders }: { orders: Order[] }) => {
                     {totalFundsUsed(order).toFixed(2)}
                   </BodyText>
                   <BodyText className="text-em-low">
-                    / {fundsUsedWithToken(order)}
+                    / {fundsTotalWithToken(order)}
                   </BodyText>
                 </CellWrapper>
               </TableCell>

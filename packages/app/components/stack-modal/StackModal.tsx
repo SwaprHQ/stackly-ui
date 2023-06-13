@@ -1,7 +1,12 @@
 import Link from "next/link";
 import { ReactNode } from "react";
 
-import { Order, totalOrdersDone } from "@/app/models/order";
+import {
+  Order,
+  OrderProps,
+  getOrderPairSymbols,
+  totalOrdersDone,
+} from "@/app/models/order";
 import { StackedTokenLogoPair } from "@/components/StackedTokenLogoPair";
 import { StackProgress } from "@/components/stack-modal/StackProgress";
 import {
@@ -18,7 +23,8 @@ import {
 import {
   formatFrequencyHours,
   formatTimestampToDateWithTime,
-} from "@/utils/time";
+import { FromToStackTokenPair } from "@/components/FromToStackTokenPair";
+import { calculateAveragePrice } from "@/components/StacksTable";
 
 interface StackModalProps extends ModalBaseProps {
   order: Order;
@@ -83,6 +89,7 @@ export const StackModal = ({ order, isOpen, closeAction }: StackModalProps) => {
             Transactions
           </TitleText>
           <StackProgress order={order} />
+          <StackInfo order={order} />
         </ModalContent>
         <ModalFooter>
           <Button
@@ -98,6 +105,19 @@ export const StackModal = ({ order, isOpen, closeAction }: StackModalProps) => {
     </div>
   );
 };
+
+const StackInfo = ({ order }: OrderProps) => (
+  <div className="flex flex-col justify-between gap-2 px-4 py-3 mt-6 mb-4 md:items-center md:flex-row bg-surface-25 rounded-2xl">
+    <FromToStackTokenPair order={order} />
+    <BodyText size="responsive" className="space-x-1">
+      <span className="text-em-low">Avg buy price:</span>
+      <span className="text-em-med">
+        {calculateAveragePrice(order).toFixed(4)}
+      </span>
+      <span className="text-em-med">{getOrderPairSymbols(order)}</span>
+    </BodyText>
+  </div>
+);
 
 const StackDetail = ({
   title,

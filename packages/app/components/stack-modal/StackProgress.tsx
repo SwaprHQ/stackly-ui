@@ -1,6 +1,6 @@
 import {
   OrderProps,
-  fundsUsedWithToken,
+  fundsTotalWithToken,
   totalOrdersDone,
   totalFundsUsed,
 } from "@/app/models/order";
@@ -17,7 +17,7 @@ export const StackProgress = ({ order }: OrderProps) => (
           <span className="text-em-high">
             {totalFundsUsed(order).toFixed(2)}{" "}
             <span className="text-xs text-em-low">of</span>{" "}
-            {fundsUsedWithToken(order)}
+            {fundsTotalWithToken(order)}
           </span>
         </BodyText>
         <div className="w-4 h-4 rounded-full bg-primary-100"></div>
@@ -29,7 +29,7 @@ export const StackProgress = ({ order }: OrderProps) => (
 
 const OrdersExecuted = ({ order }: OrderProps) => {
   if (!totalOrdersDone(order))
-    return <BodyText className="text-em-low">No orders executed yet</BodyText>;
+    return <BodyText className="text-em-low">No orders executed yet.</BodyText>;
 
   return (
     <div className="flex items-center space-x-1">

@@ -19,11 +19,11 @@ const buyAmountPerSlot = (order: Order) =>
     order.buyToken.decimals
   );
 
-export const fundsUsed = (order: Order) =>
+export const fundsTotal = (order: Order) =>
   convertedAmount(order.amount, order.buyToken.decimals).toFixed(2);
 
-export const fundsUsedWithToken = (order: Order) =>
-  `${fundsUsed(order)} ${order.sellToken.symbol}`;
+export const fundsTotalWithToken = (order: Order) =>
+  `${fundsTotal(order)} ${order.sellToken.symbol}`;
 
 export const totalOrders = (order: Order) => order.orderSlots.length;
 
