@@ -5,7 +5,7 @@ import { EmptyState } from "@/app/stacks/empty-state";
 import { ButtonLink, HeadingText } from "@/ui";
 import { StacksTable } from "@/components/StacksTable";
 import { currentTimestampInSeconds } from "@/utils/datetime";
-import { Order } from "@/app/models/order";
+import { Order } from "@/models/order";
 
 const mockData = {
   orders: [

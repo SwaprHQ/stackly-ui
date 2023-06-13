@@ -1,4 +1,4 @@
-import { OrderProps } from "@/app/models/order";
+import { OrderProps } from "@/models/order";
 
 export const StackedTokenLogoPair = ({ order }: OrderProps) => (
   <div className="flex items-end">

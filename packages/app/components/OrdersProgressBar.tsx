@@ -1,4 +1,4 @@
-import { OrderProps, totalOrdersDone, totalOrders } from "@/app/models/order";
+import { OrderProps, totalOrdersDone, totalOrders } from "@/models/order";
 import React, { useRef, useEffect } from "react";
 
 export const OrdersProgressBar = ({ order }: OrderProps) => {

@@ -1,9 +1,9 @@
 import {
   OrderProps,
-  fundsTotalWithToken,
+  fundsAmountWithToken,
   totalOrdersDone,
   totalFundsUsed,
-} from "@/app/models/order";
+} from "@/models/order";
 import { OrdersProgressBar } from "@/components/OrdersProgressBar";
 import { BodyText } from "@/ui";
 
@@ -17,7 +17,7 @@ export const StackProgress = ({ order }: OrderProps) => (
           <span className="text-em-high">
             {totalFundsUsed(order).toFixed(2)}{" "}
             <span className="text-xs text-em-low">of</span>{" "}
-            {fundsTotalWithToken(order)}
+            {fundsAmountWithToken(order)}
           </span>
         </BodyText>
         <div className="w-4 h-4 rounded-full bg-primary-100"></div>

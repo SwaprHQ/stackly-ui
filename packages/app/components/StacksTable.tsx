@@ -15,11 +15,11 @@ import { StackModal } from "@/components/stack-modal/StackModal";
 import {
   Order,
   OrderProps,
-  fundsTotalWithToken,
+  fundsAmountWithToken,
   getOrderPairSymbols,
   totalFundsUsed,
   totalOrdersDone,
-} from "@/app/models/order";
+} from "@/models/order";
 import { convertedAmount } from "@/utils/numbers";
 import { formatTimestampToDateWithSuffix } from "@/utils/datetime";
 
@@ -138,7 +138,7 @@ export const StacksTable = ({ orders }: { orders: Order[] }) => {
                     {totalFundsUsed(order).toFixed(2)}
                   </BodyText>
                   <BodyText className="text-em-low">
-                    / {fundsTotalWithToken(order)}
+                    / {fundsAmountWithToken(order)}
                   </BodyText>
                 </CellWrapper>
               </TableCell>

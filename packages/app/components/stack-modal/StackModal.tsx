@@ -6,7 +6,7 @@ import {
   OrderProps,
   getOrderPairSymbols,
   totalOrdersDone,
-} from "@/app/models/order";
+} from "@/models/order";
 import { StackedTokenLogoPair } from "@/components/StackedTokenLogoPair";
 import { StackProgress } from "@/components/stack-modal/StackProgress";
 import {
