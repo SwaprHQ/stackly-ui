@@ -26,6 +26,7 @@ import {
 } from "@/utils/datetime";
 import { FromToStackTokenPair } from "@/components/FromToStackTokenPair";
 import { calculateAveragePrice } from "@/components/StacksTable";
+import { TransactionsTable } from "@/components/stack-modal/TransactionsTable";
 
 interface StackModalProps extends ModalBaseProps {
   order: Order;
@@ -91,6 +92,7 @@ export const StackModal = ({ order, isOpen, closeAction }: StackModalProps) => {
           </TitleText>
           <StackProgress order={order} />
           <StackInfo order={order} />
+          <TransactionsTable order={order} />
         </ModalContent>
         <ModalFooter>
           <Button
