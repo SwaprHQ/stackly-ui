@@ -110,7 +110,7 @@ export const StacksTable = ({ orders }: { orders: Order[] }) => {
     <div className="w-full bg-white border rounded-3xl border-surface-50">
       <Table>
         <TableHeader>
-          <TableRow>
+          <TableRow className="h-10 md:h-12">
             <TableHead>Stack</TableHead>
             <TableHead className="text-right">Used funds</TableHead>
             <TableHead className="text-right">Avg. Buy Price</TableHead>
