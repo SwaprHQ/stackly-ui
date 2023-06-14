@@ -26,13 +26,13 @@ import {
 } from "@/utils/datetime";
 import { FromToStackTokenPair } from "@/components/FromToStackTokenPair";
 import { calculateAveragePrice } from "@/components/StacksTable";
-import { TransactionsTable } from "@/components/stack-modal/TransactionsTable";
+import { StackTransactionsTable } from "@/components/stack-modal/StackTransactionsTable";
 
 interface StackModalProps extends ModalBaseProps {
   order: Order;
 }
 
-const transactionExplorerLink = (address: string) =>
+export const transactionExplorerLink = (address: string) =>
   `https://gnosisscan.io/address/${address}#tokentxns`;
 
 export const StackModal = ({ order, isOpen, closeAction }: StackModalProps) => {
@@ -92,7 +92,7 @@ export const StackModal = ({ order, isOpen, closeAction }: StackModalProps) => {
           </TitleText>
           <StackProgress order={order} />
           <StackInfo order={order} />
-          <TransactionsTable order={order} />
+          <StackTransactionsTable order={order} />
         </ModalContent>
         <ModalFooter>
           <Button
