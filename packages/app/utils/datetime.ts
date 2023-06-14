@@ -46,6 +46,18 @@ export const formatTimestampToDateWithTime = (timestamp: Timestamp) => {
   return formattedDate;
 };
 
+//eg.  "1 Jun, 23"
+export const formatTimestampToDate = (timestamp: Timestamp) => {
+  const date = getDateFromTimeStamp(timestamp);
+
+  const day = date.getDate();
+  const month = date.toLocaleString("default", { month: "short" });
+  const year = date.getFullYear();
+
+  const formattedDate = `${day} ${month} ${year}`;
+  return formattedDate;
+};
+
 //eg.  "1 week" | "2 weeks"
 export const formatFrequencyHours = (hours: number) => {
   const oneDayInHours = 24;
