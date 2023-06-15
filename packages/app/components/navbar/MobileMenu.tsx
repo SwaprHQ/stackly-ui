@@ -2,6 +2,7 @@ import { useState } from "react";
 import MenuButton from "./MenuButton";
 import MobileMenuList from "./MobileMenuList";
 import { Button } from "@/ui";
+import { ConnectButton } from "@/components";
 
 export default function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,9 +16,7 @@ export default function MobileMenu() {
       >
         Gnosis
       </Button>
-      <Button size="sm" onClick={() => console.log("connect wallet")}>
-        Connect wallet
-      </Button>
+      <ConnectButton />
       <MenuButton open={isOpen} toggle={() => setIsOpen(!isOpen)} />
       <MobileMenuList open={isOpen} toggle={() => setIsOpen(!isOpen)} />
     </div>
