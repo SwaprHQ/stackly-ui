@@ -4,8 +4,9 @@ import Link from "next/link";
 import MobileMenu from "./MobileMenu";
 import Logo from "./Logo";
 import { Button, ButtonLink } from "@/ui";
+import { ConnectButton } from "@/components";
 
-export default function Navbar() {
+export function Navbar() {
   return (
     <header className="top-0 flex flex-col w-full border-b border-solid h-nav-height bg-surface-25 border-b-surface-75">
       <nav className="flex items-center w-full h-full">
@@ -38,9 +39,7 @@ export default function Navbar() {
           >
             Gnosis
           </Button>
-          <Button size="sm" onClick={() => console.log("connect wallet")}>
-            Connect wallet
-          </Button>
+          <ConnectButton />
         </div>
         <MobileMenu />
       </nav>

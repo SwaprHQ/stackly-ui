@@ -46,7 +46,7 @@ export const Stackbox = () => {
         </div>
         <div className="px-5 py-6">
           <div className="space-y-2">
-            <TitleText weight="bold" className=" text-em-med">
+            <TitleText weight="bold" className="text-em-med">
               Stack WETH every
             </TitleText>
             <div className="flex space-x-2">

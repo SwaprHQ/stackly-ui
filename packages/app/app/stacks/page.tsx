@@ -146,7 +146,6 @@ const mockData = {
     },
   ],
 };
-
 const completedOrders = (orders: Order[]) =>
   orders.filter(
     (order) =>
