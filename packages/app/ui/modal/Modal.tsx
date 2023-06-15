@@ -17,7 +17,7 @@ interface ModalProps extends ModalBaseProps {
 export const dialogPanelStyles = cva(
   [
     "w-full",
-    "overflow-hidden text-left align-middle  ",
+    "overflow-hidden text-left align-middle",
     "bg-white shadow-xl rounded-2xl",
     "transition-all transform ",
   ],
