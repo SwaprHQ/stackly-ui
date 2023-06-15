@@ -3,6 +3,8 @@ const nextConfig = {
   output: "export",
   distDir: "../../dist",
   webpack(config) {
+    config.resolve.fallback = { "pino-pretty": false, lokijs: false };
+
     config.module.rules.push({
       test: /\.svg$/i,
       issuer: /\.[jt]sx?$/,
@@ -10,6 +12,9 @@ const nextConfig = {
     });
 
     return config;
+  },
+  images: {
+    unoptimized: true,
   },
 };
 
