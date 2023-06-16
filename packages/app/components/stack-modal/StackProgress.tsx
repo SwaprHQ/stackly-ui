@@ -16,8 +16,7 @@ export const StackProgress = ({ order }: OrderProps) => (
           Total funds used:{" "}
           <span className="text-em-high">
             {totalFundsUsed(order).toFixed(2)}{" "}
-            <span className="text-xs text-em-low">of</span>{" "}
-            {fundsAmountWithToken(order)}
+            <span className="text-xs">of</span> {fundsAmountWithToken(order)}
           </span>
         </BodyText>
         <div className="w-4 h-4 rounded-full bg-primary-100"></div>
@@ -37,7 +36,8 @@ const OrdersExecuted = ({ order }: OrderProps) => {
         Orders executed:
       </BodyText>
       <BodyText size="responsive">
-        {totalOrdersDone(order)} out of {order.orderSlots.length}
+        {totalOrdersDone(order)} <span className="text-xs">out of</span>{" "}
+        {order.orderSlots.length}
       </BodyText>
     </div>
   );
