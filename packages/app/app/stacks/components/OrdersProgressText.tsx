@@ -1,5 +1,5 @@
 import { ordersDone } from "@/app/stacks/components/StacksTable";
-import { Order } from "@/app/stacks/page";
+import { Order } from "@/models/order";
 import { BodyText } from "@/ui";
 import { formatTimestampToDate } from "@/utils/time";
 

@@ -1,6 +1,5 @@
 import { OrdersProgressText } from "@/app/stacks/components/OrdersProgressText";
 import { CellWrapper } from "./CellWrapper";
-import { Order } from "@/app/stacks/page";
 import {
   BodyText,
   Button,
@@ -13,6 +12,7 @@ import {
   TableRow,
 } from "@/ui";
 import { currentTimestampInSeconds, formatTimestampToDate } from "@/utils/time";
+import { Order } from "@/models/order";
 
 const mockCowOrders = [
   {

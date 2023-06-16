@@ -1,11 +1,7 @@
-import { Modal } from "@/ui/modal";
+import { Modal, ModalBaseProps } from "@/ui/modal";
 import { ReactNode, RefObject } from "react";
 
-export interface DialogBaseProps {
-  isOpen: boolean;
-  closeAction: () => void;
-}
-interface DialogProps extends DialogBaseProps {
+interface DialogProps extends ModalBaseProps {
   children: ReactNode;
   initialFocusRef?: RefObject<HTMLButtonElement | HTMLInputElement>;
 }
@@ -18,8 +14,8 @@ export const Dialog = ({
 }: DialogProps) => (
   <Modal
     isOpen={isOpen}
-    close={closeAction}
-    width="dialog"
+    closeAction={closeAction}
+    maxWidth="sm"
     initialFocusRef={initialFocusRef}
   >
     <div className="flex flex-col items-center px-6 py-8 space-y-3 bg-gray-900 shadow-xl">

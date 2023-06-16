@@ -3,23 +3,16 @@ import { StackTransactionLoading } from "@/components/stackbox/StackTransactionL
 import {
   Modal,
   ModalFooter,
-  Icon,
   Button,
   ModalContent,
   ModalHeaderTitle,
   BodyText,
   TitleText,
+  ModalBaseProps,
 } from "@/ui";
+import { FromToStackTokenPair } from "@/components/FromToStackTokenPair";
 
-interface ConfirmStackModalProps {
-  isOpen: boolean;
-  closeAction: () => void;
-}
-
-export const ConfirmStackModal = ({
-  isOpen,
-  closeAction,
-}: ConfirmStackModalProps) => {
+export const ConfirmStackModal = ({ isOpen, closeAction }: ModalBaseProps) => {
   const focusBtnRef = useRef<HTMLButtonElement>(null);
   const [isTransactionLoadingDialogOpen, setTransactionLoadingDialogOpen] =
     useState(false);
@@ -28,25 +21,31 @@ export const ConfirmStackModal = ({
     setTransactionLoadingDialogOpen(true);
   }
 
+  const fromToken = {
+    id: "absadcas",
+    symbol: "USDC",
+    decimals: 18,
+    name: "usdc",
+  };
+
+  const toToken = {
+    id: "0x213edas",
+    symbol: "WETH",
+    decimals: 18,
+    name: "wrapped eth",
+  };
+
   return (
-    <Modal isOpen={isOpen} close={closeAction} initialFocusRef={focusBtnRef}>
+    <Modal
+      isOpen={isOpen}
+      closeAction={closeAction}
+      initialFocusRef={focusBtnRef}
+    >
       <ModalHeaderTitle title="Confirm Stack" closeAction={closeAction} />
       <ModalContent>
         <div className="space-y-6">
           <div className="flex items-center px-4 py-2 mx-auto space-x-4 bg-surface-25 rounded-3xl w-fit">
-            <div className="flex items-center space-x-2">
-              <div className="w-6 h-6 rounded-full bg-primary-100"></div>
-              <TitleText>USDC</TitleText>
-            </div>
-            <Icon
-              size={36}
-              className="w-12 p-2 rotate-180 rounded-full bg-surface-75"
-              name="arrow-left"
-            />
-            <div className="flex items-center space-x-2">
-              <div className="w-6 h-6 rounded-full bg-primary-100"></div>
-              <TitleText>WETH</TitleText>
-            </div>
+            <FromToStackTokenPair fromToken={fromToken} toToken={toToken} />
           </div>
           <div>
             <TitleText size={2} className="text-center text-em-low">
