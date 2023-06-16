@@ -4,7 +4,7 @@ import { Icon } from "@/ui/icon/Icon";
 import { twMerge } from "tailwind-merge";
 
 interface ButtonProps extends ButtonBaseProps {
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(

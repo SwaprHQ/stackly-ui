@@ -1,7 +1,7 @@
 import { PropsWithChildren } from "react";
 import { Navbar } from "@/components";
-import "../styles/global.css";
 import { Providers } from "@/providers";
+import "../styles/global.css";
 
 export const metadata = {
   title: "Stackly | Stack crypto over time.",

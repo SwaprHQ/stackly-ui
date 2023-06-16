@@ -48,7 +48,7 @@ const CustomConnectButton = ({
         iconRight="caret-down"
         onClick={onClick}
         size="sm"
-        className="border-none shadow-sm rounded-xl flex hover:bg-white focus:bg-white focus:ring-0 active:ring-0"
+        className="border-none shadow-sm rounded-xl flex hover:bg-surface-25 focus:bg-white focus:ring-0 active:ring-0"
       >
         {avatar && (
           <Image
