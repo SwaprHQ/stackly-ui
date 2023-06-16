@@ -72,7 +72,7 @@ export const StackModal = ({ order, isOpen, closeAction }: StackModalProps) => {
           </div>
         </ModalHeader>
         <ModalContent>
-          <div className="grid grid-cols-2 gap-y-5 md:flex md:justify-between">
+          <div className="grid grid-cols-2 gap-5 gap-x-8 md:grid-cols-4">
             <StackDetail title="Starts on">
               {formatTimestampToDateWithTime(firstSlot)}
             </StackDetail>

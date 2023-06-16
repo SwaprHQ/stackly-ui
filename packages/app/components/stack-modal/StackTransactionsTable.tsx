@@ -20,7 +20,7 @@ import { formatTimestampToDate } from "@/utils/datetime";
 import Link from "next/link";
 
 export const StackTransactionsTable = ({ order }: OrderProps) => (
-  <div className="border border-surface-50 rounded-xl">
+  <div className="border border-surface-75 rounded-xl">
     <Table>
       <TableHeader>
         <TableRow>
