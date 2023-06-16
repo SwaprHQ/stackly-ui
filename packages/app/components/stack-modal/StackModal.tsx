@@ -71,8 +71,8 @@ export const StackModal = ({ order, isOpen, closeAction }: StackModalProps) => {
             />
           </div>
         </ModalHeader>
-        <ModalContent>
-          <div className="grid grid-cols-2 gap-5 gap-x-8 md:grid-cols-4">
+        <ModalContent className="px-0">
+          <div className="grid grid-cols-2 gap-5 px-4 gap-x-8 md:grid-cols-4">
             <StackDetail title="Starts on">
               {formatTimestampToDateWithTime(firstSlot)}
             </StackDetail>
@@ -87,12 +87,14 @@ export const StackModal = ({ order, isOpen, closeAction }: StackModalProps) => {
             </StackDetail>
           </div>
           <div className="w-full my-4 border-b border-surface-50"></div>
-          <TitleText size={2} weight="bold">
-            Transactions
-          </TitleText>
-          <StackProgress order={order} />
-          <StackInfo order={order} />
-          <StackTransactionsTable order={order} />
+          <div className="px-4">
+            <TitleText size={2} weight="bold">
+              Transactions
+            </TitleText>
+            <StackProgress order={order} />
+            <StackInfo order={order} />
+            <StackTransactionsTable order={order} />
+          </div>
         </ModalContent>
         <ModalFooter>
           <Button
