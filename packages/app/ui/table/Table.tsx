@@ -73,7 +73,7 @@ const TableHead = forwardRef<
   <th
     ref={ref}
     className={cx(
-      "h-12 px-4 text-left align-middle font-semibold text-sm text-em-low text-muted-foreground [&:has([role=checkbox])]:pr-0",
+      "px-4 text-left align-middle font-semibold text-sm text-em-low text-muted-foreground",
       className
     )}
     {...props}
@@ -85,11 +85,7 @@ const TableCell = forwardRef<
   HTMLTableCellElement,
   React.TdHTMLAttributes<HTMLTableCellElement>
 >(({ className, ...props }, ref) => (
-  <td
-    ref={ref}
-    className={cx("p-4 align-middle [&:has([role=checkbox])]:pr-0", className)}
-    {...props}
-  />
+  <td ref={ref} className={cx("p-4 align-middle", className)} {...props} />
 ));
 TableCell.displayName = "TableCell";
 

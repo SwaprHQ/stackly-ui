@@ -217,7 +217,7 @@ export default function Page() {
           </Button>
           <Modal
             isOpen={isConfirmModalOpen}
-            close={() => setConfirmModalOpen(false)}
+            closeAction={() => setConfirmModalOpen(false)}
           >
             <ModalHeaderTitle
               title="Confirm Stack"
@@ -247,7 +247,7 @@ export default function Page() {
                   </div>
                   <div className="flex items-center justify-between">
                     <p className="text-sm text-em-med">
-                      Total funds to be used
+                      Total Funds to be used
                     </p>
                     <p className="text-sm">1000 USDC</p>
                   </div>
@@ -277,7 +277,7 @@ export default function Page() {
           </Modal>
           <Modal
             isOpen={isTokenPickerOpen}
-            close={() => setTokenPickerOpen(false)}
+            closeAction={() => setTokenPickerOpen(false)}
           >
             <ModalHeaderTitle
               title="Select a token"

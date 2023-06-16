@@ -4,9 +4,10 @@ import { cva, cx } from "class-variance-authority";
 const bodyTextStyles = cva([], {
   variants: {
     size: {
-      3: ["text-md"],
+      3: ["text-base"],
       2: ["text-sm"],
       1: ["text-xs"],
+      responsive: ["text-sm md:text-base"],
     },
   },
   defaultVariants: {
@@ -15,7 +16,7 @@ const bodyTextStyles = cva([], {
 });
 
 interface BodyTextProps extends TextProps {
-  size?: 1 | 2 | 3;
+  size?: 1 | 2 | 3 | "responsive";
 }
 
 export const BodyText = ({
