@@ -121,7 +121,7 @@ export const StacksTable = ({ orders }: { orders: Order[] }) => {
         <TableBody>
           {orders.map((order) => (
             <TableRow key={order.id}>
-              <TableCell className="flex items-center font-medium">
+              <TableCell className="flex items-center font-medium w-max">
                 <StackedTokenLogoPair order={order} />
                 <div className="ml-3 space-y-0.5">
                   <BodyText weight="bold">

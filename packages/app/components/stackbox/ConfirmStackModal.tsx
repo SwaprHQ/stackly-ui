@@ -22,14 +22,14 @@ export const ConfirmStackModal = ({ isOpen, closeAction }: ModalBaseProps) => {
   }
 
   const fromToken = {
-    id: "absadcas",
+    id: "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83",
     symbol: "USDC",
     decimals: 18,
     name: "usdc",
   };
 
   const toToken = {
-    id: "0x213edas",
+    id: "0x6A023CCd1ff6F2045C3309768eAd9E68F978f6e1",
     symbol: "WETH",
     decimals: 18,
     name: "wrapped eth",

@@ -6,6 +6,7 @@ import {
 } from "@/models/order";
 import { OrdersProgressBar } from "@/components/OrdersProgressBar";
 import { BodyText } from "@/ui";
+import { TokenIcon } from "@/components/TokenIcon";
 
 export const StackProgress = ({ order }: OrderProps) => (
   <div className="mt-3 space-y-3">
@@ -19,7 +20,7 @@ export const StackProgress = ({ order }: OrderProps) => (
             <span className="text-xs">of</span> {fundsAmountWithToken(order)}
           </span>
         </BodyText>
-        <div className="w-4 h-4 rounded-full bg-primary-100"></div>
+        <TokenIcon size="xs" token={order.sellToken} />
       </div>
     </div>
     <OrdersProgressBar order={order} />
