@@ -1,9 +1,4 @@
-export interface Token {
-  id: string;
-  decimals: number;
-  name: string;
-  symbol: string;
-}
+import { Token } from "@/models/token/types";
 
 export interface Order {
   id: string;
