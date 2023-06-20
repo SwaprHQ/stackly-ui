@@ -15,17 +15,20 @@ interface TokenIconProps {
 export const TokenIcon = ({ token, className, size }: TokenIconProps) => {
   const { tokenList } = useTokenListContext();
 
-  function getToken(tokenAddress: string) {
+  function getTokenFromList(tokenAddress: string) {
     return tokenList.find(
       (el) => el.address.toUpperCase() === tokenAddress.toUpperCase()
     );
   }
 
   function getTokenLogoURL() {
-    return getToken(token.id)?.logoURI ?? "#";
+    return getTokenFromList(token.id)?.logoURI ?? "#";
   }
 
-  if (!token.id || !isAddress(token.id) || !getToken(token.id))
+  const invalidAddress = !isAddress(token.id);
+  const noTokenOnTheList = !getTokenFromList(token.id);
+
+  if (invalidAddress || noTokenOnTheList)
     return <DefaultTokenIcon token={token} className={className} size={size} />;
 
   return (
