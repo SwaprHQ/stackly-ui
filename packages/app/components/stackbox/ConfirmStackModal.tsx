@@ -45,7 +45,12 @@ export const ConfirmStackModal = ({ isOpen, closeAction }: ModalBaseProps) => {
       <ModalContent>
         <div className="space-y-6">
           <div className="flex items-center px-4 py-2 mx-auto space-x-4 bg-surface-25 rounded-3xl w-fit">
-            <FromToStackTokenPair fromToken={fromToken} toToken={toToken} />
+            <FromToStackTokenPair
+              fromToken={fromToken}
+              fromText={fromToken.symbol}
+              toToken={toToken}
+              toText={toToken.symbol}
+            />
           </div>
           <div>
             <TitleText size={2} className="text-center text-em-low">
