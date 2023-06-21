@@ -14,7 +14,7 @@ import { useNetwork } from "wagmi";
 import defaultGnosisTokenlist from "public/assets/blockchains/gnosis/tokenlist.json";
 import defaultEthereumTokenlist from "public/assets/blockchains/ethereum/tokenlist.json";
 
-import { TokenFromTokenlist } from "@/models/token/types";
+import { Token, TokenFromTokenlist } from "@/models/token/types";
 
 const GNOSIS_CHAIN_ID = 100;
 
@@ -32,10 +32,10 @@ const TOKEN_LIST_BY_CHAIN_URL: { [chainId: number]: string } = {
 
 const TokenListContext = createContext<{
   tokenList: TokenFromTokenlist[];
-  setTokenList: Dispatch<SetStateAction<TokenFromTokenlist[]>>;
+  getTokenLogoURL?: (tokenAddress: string) => string;
+  getTokenFromList?: (tokenAddress: string) => TokenFromTokenlist | undefined;
 }>({
   tokenList: DEFAULT_TOKEN_LIST_BY_CHAIN[GNOSIS_CHAIN_ID],
-  setTokenList: () => {},
 });
 
 const mergeTokenlists = (
@@ -61,6 +61,14 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
   const [tokenList, setTokenList] = useState<TokenFromTokenlist[]>(
     defaultGnosisTokenlist
   );
+
+  const getTokenFromList = (tokenAddress: string) =>
+    tokenList.find(
+      (el) => el.address.toUpperCase() === tokenAddress.toUpperCase()
+    );
+
+  const getTokenLogoURL = (tokenAddress: string) =>
+    getTokenFromList(tokenAddress)?.logoURI ?? "#";
 
   const setupTokenList = useCallback(async () => {
     async function gettokenListData() {
@@ -89,7 +97,9 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
   }, [setupTokenList]);
 
   return (
-    <TokenListContext.Provider value={{ tokenList, setTokenList }}>
+    <TokenListContext.Provider
+      value={{ tokenList, getTokenFromList, getTokenLogoURL }}
+    >
       {children}
     </TokenListContext.Provider>
   );
