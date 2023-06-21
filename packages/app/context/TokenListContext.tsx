@@ -70,18 +70,21 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
   const getTokenLogoURL = (tokenAddress: string) =>
     getTokenFromList(tokenAddress)?.logoURI ?? "#";
 
+  const fetchTokenlistURL = chain
+    ? TOKEN_LIST_BY_CHAIN_URL[chain.id]
+    : TOKEN_LIST_BY_CHAIN_URL[GNOSIS_CHAIN_ID];
+
   const setupTokenList = useCallback(async () => {
     async function gettokenListData() {
-      const res = await fetch(
-        chain
-          ? TOKEN_LIST_BY_CHAIN_URL[chain.id]
-          : TOKEN_LIST_BY_CHAIN_URL[GNOSIS_CHAIN_ID]
-      );
-      // todo: should we throw an error here or a warning? since it should work without it.
-      if (!res.ok) {
-        throw new Error("Failed to fetch tokenlist data");
+      try {
+        const res = await fetch(fetchTokenlistURL);
+        if (!res.ok) {
+          throw new Error("Failed to fetch tokenlist data");
+        }
+        return res.json();
+      } catch (error) {
+        console.error("Error fetching tokenlist data:", error);
       }
-      return res.json();
     }
     const data = await gettokenListData();
 
@@ -90,7 +93,7 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
       data.tokens
     );
     setTokenList(mergedTokenlistTokens);
-  }, [defaultTokenList, chain]);
+  }, [defaultTokenList, fetchTokenlistURL]);
 
   useEffect(() => {
     setupTokenList();
