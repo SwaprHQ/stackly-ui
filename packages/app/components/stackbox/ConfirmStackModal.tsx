@@ -22,14 +22,14 @@ export const ConfirmStackModal = ({ isOpen, closeAction }: ModalBaseProps) => {
   }
 
   const fromToken = {
-    id: "absadcas",
+    id: "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83",
     symbol: "USDC",
     decimals: 18,
     name: "usdc",
   };
 
   const toToken = {
-    id: "0x213edas",
+    id: "0x6A023CCd1ff6F2045C3309768eAd9E68F978f6e1",
     symbol: "WETH",
     decimals: 18,
     name: "wrapped eth",
@@ -45,7 +45,12 @@ export const ConfirmStackModal = ({ isOpen, closeAction }: ModalBaseProps) => {
       <ModalContent>
         <div className="space-y-6">
           <div className="flex items-center px-4 py-2 mx-auto space-x-4 bg-surface-25 rounded-3xl w-fit">
-            <FromToStackTokenPair fromToken={fromToken} toToken={toToken} />
+            <FromToStackTokenPair
+              fromToken={fromToken}
+              fromText={fromToken.symbol}
+              toToken={toToken}
+              toText={toToken.symbol}
+            />
           </div>
           <div>
             <TitleText size={2} className="text-center text-em-low">
