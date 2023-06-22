@@ -1,0 +1,91 @@
+
+[
+  {
+    "address": "0x6cAcDB97e3fC8136805a9E7c342d866ab77D0957",
+    "name": "Swapr on Ethereum mainnet",
+    "symbol": "SWPR",
+    "decimals": 18,
+    "logoURI":
+      "/assets/images/tokens/swapr.png"
+  },
+  {
+    "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    "name": "Wrapped Ether on Ethereum mainnet",
+    "symbol": "WETH",
+    "decimals": 18,
+    "logoURI":
+      "/assets/images/tokens/weth.png"
+  },
+  {
+    "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+    "name": "Dai Stablecoin on Ethereum mainnet",
+    "symbol": "DAI",
+    "decimals": 18,
+    "logoURI":
+      "/assets/images/tokens/dai.png"
+  },
+  {
+    "address": "0x6810e776880C02933D47DB1b9fc05908e5386b96",
+    "name": "Gnosis Token on Ethereum mainnet",
+    "symbol": "GNO",
+    "decimals": 18,
+    "logoURI":
+      "/assets/images/tokens/gno.png"
+  },
+  {
+    "address": "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
+    "name": "Aave Token on Ethereum mainnet",
+    "symbol": "AAVE",
+    "decimals": 18,
+    "logoURI":
+      "/assets/images/tokens/aave.png"
+  },
+  {
+    "address": "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0",
+    "name": "Matic Token on Ethereum mainnet",
+    "symbol": "MATIC",
+    "decimals": 18,
+    "logoURI":
+      "/assets/images/tokens/matic.png"
+  },
+  {
+    "address": "0x111111111117dC0aa78b770fA6A738034120C302",
+    "name": "1INCH Token on Ethereum mainnet",
+    "symbol": "1INCH",
+    "decimals": 18,
+    "logoURI":
+      "/assets/images/tokens/1inch.png"
+  },
+  {
+    "address": "0xba100000625a3754423978a60c9317c58a424e3D",
+    "name": "Balancer on Ethereum mainnet",
+    "symbol": "BAL",
+    "decimals": 18,
+    "logoURI":
+      "/assets/images/tokens/balancer.png"
+  },
+  {
+    "address": "0xDEf1CA1fb7FBcDC777520aa7f396b4E015F497aB",
+    "name": "CoW Protocol Token on Ethereum mainnet",
+    "symbol": "COW",
+    "decimals": 18,
+    "logoURI":
+      "/assets/images/tokens/cow.png"
+  },
+  {
+    "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+    "name": "Wrapped BTC on Ethereum mainnet",
+    "symbol": "WBTC",
+    "decimals": 8,
+    "logoURI":
+      "/assets/images/tokens/wbtc.png"
+  },
+  {
+    "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+    "name": "USDC on Ethereum mainnet",
+    "symbol": "USDC",
+    "decimals": 6,
+    "logoURI":
+      "/assets/images/tokens/usdc.png"
+  }
+]

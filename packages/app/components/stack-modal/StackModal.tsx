@@ -5,6 +5,7 @@ import {
   Order,
   OrderProps,
   getOrderPairSymbols,
+  totalFundsUsed,
   totalOrdersDone,
 } from "@/models/order";
 import { StackedTokenLogoPair } from "@/components/StackedTokenLogoPair";
@@ -25,7 +26,7 @@ import {
   formatTimestampToDateWithTime,
 } from "@/utils/datetime";
 import { FromToStackTokenPair } from "@/components/FromToStackTokenPair";
-import { calculateAveragePrice } from "@/components/StacksTable";
+import { calculateAveragePrice, totalStacked } from "@/components/StacksTable";
 import { StackTransactionsTable } from "@/components/stack-modal/StackTransactionsTable";
 
 interface StackModalProps extends ModalBaseProps {
@@ -113,7 +114,12 @@ export const StackModal = ({ order, isOpen, closeAction }: StackModalProps) => {
 
 const StackInfo = ({ order }: OrderProps) => (
   <div className="flex flex-col justify-between gap-2 px-4 py-3 mt-6 mb-4 md:items-center md:flex-row bg-surface-25 rounded-2xl">
-    <FromToStackTokenPair order={order} />
+    <FromToStackTokenPair
+      fromToken={order.sellToken}
+      fromText={totalFundsUsed(order).toFixed(2)}
+      toToken={order.buyToken}
+      toText={totalStacked(order).toFixed(4)}
+    />
     <BodyText size="responsive" className="space-x-1">
       <span className="text-em-low">Avg buy price:</span>
       <span className="text-em-med">

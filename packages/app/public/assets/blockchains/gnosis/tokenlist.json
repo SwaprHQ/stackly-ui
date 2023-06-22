@@ -1,0 +1,91 @@
+
+[
+  {
+    "address": "0x532801ED6f82FFfD2DAB70A19fC2d7B2772C4f4b",
+    "name": "Swapr on Gnosis chain",
+    "symbol": "SWPR",
+    "decimals": 18,
+    "logoURI":
+      "/assets/images/tokens/swapr.png"
+  },
+  {
+    "address": "0x6A023CCd1ff6F2045C3309768eAd9E68F978f6e1",
+    "name": "Wrapped Ether on Gnosis chain",
+    "symbol": "WETH",
+    "decimals": 18,
+    "logoURI":
+      "/assets/images/tokens/weth.png"
+  },
+  {
+    "address": "0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d",
+    "name": "Wrapped XDAI",
+    "symbol": "WXDAI",
+    "decimals": 18,
+    "logoURI":
+      "/assets/images/tokens/wxdai.png"
+  },
+  {
+    "address": "0x9C58BAcC331c9aa871AFD802DB6379a98e80CEdb",
+    "name": "Gnosis Token on Gnosis chain",
+    "symbol": "GNO",
+    "decimals": 18,
+    "logoURI":
+      "/assets/images/tokens/gno.png"
+  },
+  {
+    "address": "0xDF613aF6B44a31299E48131e9347F034347E2F00",
+    "name": "Aave Token on Gnosis chain",
+    "symbol": "AAVE",
+    "decimals": 18,
+    "logoURI":
+      "/assets/images/tokens/aave.png"
+  },
+  {
+    "address": "0x7122d7661c4564b7C6Cd4878B06766489a6028A2",
+    "name": "Matic Token on Gnosis chain",
+    "symbol": "MATIC",
+    "decimals": 18,
+    "logoURI":
+      "/assets/images/tokens/matic.png"
+  },
+  {
+    "address": "0x7f7440C5098462f833E123B44B8A03E1d9785BAb",
+    "name": "1INCH Token on Gnosis chain",
+    "symbol": "1INCH",
+    "decimals": 18,
+    "logoURI":
+      "/assets/images/tokens/1inch.png"
+  },
+  {
+    "address": "0x7eF541E2a22058048904fE5744f9c7E4C57AF717",
+    "name": "Balancer on Gnosis chain",
+    "symbol": "BAL",
+    "decimals": 18,
+    "logoURI":
+      "/assets/images/tokens/balancer.png"
+  },
+  {
+    "address": "0x177127622c4A00F3d409B75571e12cB3c8973d3c",
+    "name": "CoW Protocol Token on Gnosis chain",
+    "symbol": "COW",
+    "decimals": 18,
+    "logoURI":
+      "/assets/images/tokens/cow.png"
+  },
+  {
+    "address": "0x8e5bBbb09Ed1ebdE8674Cda39A0c169401db4252",
+    "name": "Wrapped BTC on Gnosis",
+    "symbol": "WBTC",
+    "decimals": 8,
+    "logoURI":
+      "/assets/images/tokens/wbtc.png"
+  },
+  {
+    "address": "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83",
+    "name": "USD//C on Gnosis",
+    "symbol": "USDC",
+    "decimals": 6,
+    "logoURI":
+      "/assets/images/tokens/usdc.png"
+  }
+]
