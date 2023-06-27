@@ -4,10 +4,9 @@ import { Tab } from "@headlessui/react";
 import { EmptyState } from "@/app/stacks/empty-state";
 import { ButtonLink, HeadingText } from "@/ui";
 import { StacksTable } from "@/components/StacksTable";
-import { currentTimestampInSeconds } from "@/utils/datetime";
-import { Order } from "@/models/order";
+import { Order, activeOrders, completedOrders } from "@/models/order";
 
-const mockData = {
+const mockOrdersData = {
   orders: [
     {
       id: "0x68b57d8b652aee685c6b8c387616911eca5ed883",
@@ -146,24 +145,43 @@ const mockData = {
     },
   ],
 };
-const completedOrders = (orders: Order[]) =>
-  orders.filter(
-    (order) =>
-      Number(order.endTime) < currentTimestampInSeconds &&
-      order.cancelledAt === null
-  );
 
-const activeOrders = (orders: Order[]) =>
-  orders.filter(
-    (order) =>
-      Number(order.endTime) > currentTimestampInSeconds &&
-      order.cancelledAt === null
-  );
+type ChainId = 1 | 100;
 
-export default function Page() {
-  const data = mockData;
+const COW_API_BASE_URL: Readonly<Record<ChainId, string>> = {
+  1: `https://api.cow.fi/mainnet/api/v1`,
+  100: `https://api.cow.fi/xdai/api/v1`,
+};
 
-  if (!data) return <EmptyState />;
+export async function getCowOrdersAPI(ownerAddress: string) {
+  const address = ownerAddress.toLowerCase();
+  const fetchURL = `${COW_API_BASE_URL[100]}/account/${address}/orders/?limit=500`;
+
+  try {
+    const res = await fetch(fetchURL);
+    if (!res.ok) {
+      throw new Error("Failed to fetch data from cow api. 🐄");
+    }
+    return res.json();
+  } catch (error) {
+    console.error("Error fetching cow api data. 🐄", error);
+  }
+}
+
+async function getOrders(orders: Order[]) {
+  const ordersPromises = orders.map(async (order) => {
+    order.cowData = await getCowOrdersAPI(order.id);
+    return order;
+  });
+  return Promise.all(ordersPromises);
+}
+
+export default async function Page() {
+  const mockdata = mockOrdersData;
+  const orders = await getOrders(mockdata.orders);
+  console.log("orders:", orders);
+
+  if (!mockdata) return <EmptyState />;
 
   return (
     <div className="space-y-8">
@@ -199,10 +217,10 @@ export default function Page() {
           </Tab.List>
           <Tab.Panels>
             <Tab.Panel>
-              <StacksTable orders={activeOrders(data.orders)} />
+              <StacksTable orders={activeOrders(orders)} />
             </Tab.Panel>
             <Tab.Panel>
-              <StacksTable orders={completedOrders(data.orders)} />
+              <StacksTable orders={completedOrders(orders)} />
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>

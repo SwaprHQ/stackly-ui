@@ -1,4 +1,5 @@
 import { Token } from "@/models/token/types";
+import { OrderMetaData } from "@cowprotocol/cow-sdk";
 
 export interface Order {
   id: string;
@@ -13,6 +14,7 @@ export interface Order {
   orderSlots: string[];
   cancelledAt: string | null;
   interval: string;
+  cowData?: OrderMetaData[];
 }
 
 export interface OrderProps {
