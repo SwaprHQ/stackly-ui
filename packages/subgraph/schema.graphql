@@ -1,0 +1,54 @@
+type SubgraphStatus @entity {
+  "SubgraphStatus"
+  id: ID!
+  isInitialized: Boolean!
+  lastSnapshotBlock: BigInt!
+}
+
+type OrderFactory @entity {
+  "OrderFactory"
+  id: ID!
+  "OrderFactory address"
+  address: Bytes!
+  "Order count"
+  orderCount: Int!
+}
+
+#
+# Provides information about an ERC20 token
+#
+type Token @entity {
+  " Token address "
+  id: ID!
+  " Number of decimals the token uses "
+  decimals: Int!
+  " Human-readable name of the token "
+  name: String!
+  " Symbol of the token "
+  symbol: String!
+}
+
+type DCAOrder @entity {
+  "Order address"
+  id: ID!
+  "Order owner"
+  owner: Bytes!
+  "Order receiver"
+  receiver: Bytes!
+  "Sell token address"
+  sellToken: Token!
+  "Buy token address"
+  buyToken: Token!
+  "Total execution slots (orders)"
+  orderSlots: [BigInt!]
+  "Initial DCA amount"
+  amount: BigInt!
+  createdAt: BigInt!
+  cancelledAt: BigInt
+  "start time"
+  startTime: Int!
+  "end time"
+  endTime: Int!
+  "time interval in hours"
+  interval: BigInt!
+}
