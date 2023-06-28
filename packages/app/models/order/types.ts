@@ -14,7 +14,6 @@ export interface Order {
   orderSlots: string[];
   cancelledAt: string | null;
   interval: string;
-  cowData?: OrderMetaData[];
 }
 
 export interface OrderProps {

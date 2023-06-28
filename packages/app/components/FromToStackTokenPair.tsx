@@ -1,5 +1,4 @@
 import { Order, totalFundsUsed } from "@/models/order";
-import { totalStacked } from "@/components/StacksTable";
 import { Icon, TitleText } from "@/ui";
 import { TokenIcon } from "@/components/TokenIcon";
 import { Token } from "@/models/token/types";

@@ -26,8 +26,8 @@ import {
   formatTimestampToDateWithTime,
 } from "@/utils/datetime";
 import { FromToStackTokenPair } from "@/components/FromToStackTokenPair";
-import { calculateAveragePrice, totalStacked } from "@/components/StacksTable";
 import { StackTransactionsTable } from "@/components/stack-modal/StackTransactionsTable";
+import { calculateStackAveragePrice, totalStacked } from "@/models/stack-order";
 
 interface StackModalProps extends ModalBaseProps {
   order: Order;
@@ -123,7 +123,7 @@ const StackInfo = ({ order }: OrderProps) => (
     <BodyText size="responsive" className="space-x-1">
       <span className="text-em-low">Avg buy price:</span>
       <span className="text-em-med">
-        {calculateAveragePrice(order).toFixed(4)}
+        {calculateStackAveragePrice(order).toFixed(4)}
       </span>
       <span className="text-em-med">{getOrderPairSymbols(order)}</span>
     </BodyText>

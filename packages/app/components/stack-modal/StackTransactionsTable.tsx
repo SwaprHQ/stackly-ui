@@ -1,17 +1,11 @@
-import { totalStacked } from "@/components/StacksTable";
 import { transactionExplorerLink } from "@/components/stack-modal/StackModal";
-import {
-  OrderProps,
-  getOrderPairSymbols,
-  totalFundsUsed,
-} from "@/models/order";
+import { OrderProps, getOrderPairSymbols } from "@/models/order";
 import {
   BodyText,
   Table,
   TableBody,
   TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,

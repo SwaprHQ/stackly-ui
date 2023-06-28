@@ -2,9 +2,6 @@ import { Order } from "./types";
 import { convertedAmount } from "@/utils/numbers";
 import { currentTimestampInSeconds } from "@/utils/datetime";
 
-// order
-
-// calculations
 export const totalOrdersDone = (order: Order) => {
   return order.orderSlots.reduce((count, orderTimestamp) => {
     if (Number(orderTimestamp) < currentTimestampInSeconds) return ++count;
@@ -31,19 +28,3 @@ export const totalOrders = (order: Order) => order.orderSlots.length;
 
 export const getOrderPairSymbols = (order: Order) =>
   `${order.buyToken.symbol}/${order.sellToken.symbol}`;
-
-// filters
-
-export const completedOrders = (orders: Order[]) =>
-  orders.filter(
-    (order) =>
-      Number(order.endTime) < currentTimestampInSeconds &&
-      order.cancelledAt === null
-  );
-
-export const activeOrders = (orders: Order[]) =>
-  orders.filter(
-    (order) =>
-      Number(order.endTime) > currentTimestampInSeconds &&
-      order.cancelledAt === null
-  );

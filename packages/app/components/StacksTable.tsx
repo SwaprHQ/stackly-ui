@@ -20,37 +20,8 @@ import {
   totalFundsUsed,
   totalOrdersDone,
 } from "@/models/order";
-import { convertedAmount } from "@/utils/numbers";
 import { formatTimestampToDateWithSuffix } from "@/utils/datetime";
-
-export const calculateAveragePrice = (order: Order) => {
-  let totalExecutedBuyAmount = 0;
-  let totalExecutedSellAmount = 0;
-  
-  if (!order.cowData) return 0;
-  
-  order.cowData.forEach((cowOrder) => {
-    if (cowOrder.executedBuyAmount === "0") return;
-
-    totalExecutedBuyAmount += convertedAmount(
-      cowOrder.executedBuyAmount,
-      order.buyToken.decimals
-    );
-    totalExecutedSellAmount += convertedAmount(
-      cowOrder.executedSellAmount,
-      order.sellToken.decimals
-    );
-  });
-  const averagePrice = totalExecutedSellAmount / totalExecutedBuyAmount;
-  return averagePrice;
-};
-
-export const totalStacked = (order: Order) =>
-  order.cowData?.reduce((acc, cowOrder) => {
-    return (
-      acc + convertedAmount(cowOrder.executedBuyAmount, order.buyToken.decimals)
-    );
-  }, 0) ?? 0;
+import { calculateStackAveragePrice, totalStacked } from "@/models/stack-order";
 
 export const StacksTable = ({ orders }: { orders: Order[] }) => {
   const [stackOrder, setStackOrder] = useState<Order>();
@@ -101,7 +72,7 @@ export const StacksTable = ({ orders }: { orders: Order[] }) => {
               <TableCell className="text-right">
                 <CellWrapper>
                   <BodyText className="text-em-high">
-                    {calculateAveragePrice(order).toFixed(3)}
+                    {calculateStackAveragePrice(order).toFixed(3)}
                   </BodyText>
                   <BodyText className="text-em-low">
                     {getOrderPairSymbols(order)}
