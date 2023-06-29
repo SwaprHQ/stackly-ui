@@ -77,7 +77,7 @@ export const formatFrequencyHours = (hours: number) => {
   } else if (lessThanAWeek) {
     return frequencyString({ name: "day", number: days });
   } else if (lessThanAMonth) {
-    return frequencyString({ name: "hour", number: weeks });
+    return frequencyString({ name: "week", number: weeks });
   } else {
     return frequencyString({ name: "month", number: months });
   }
