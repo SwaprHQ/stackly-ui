@@ -1,5 +1,4 @@
 import { Token } from "@/models/token/types";
-import { OrderMetaData } from "@cowprotocol/cow-sdk";
 
 export interface Order {
   id: string;
