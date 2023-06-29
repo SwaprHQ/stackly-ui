@@ -1,7 +1,10 @@
 import { transactionExplorerLink } from "@/components/stack-modal/StackModal";
+import { cowExplorerUrl } from "@/models/cow-order";
 import { OrderProps, getOrderPairSymbols } from "@/models/order";
+import { StackOrderProps } from "@/models/stack-order";
 import {
   BodyText,
+  Icon,
   Table,
   TableBody,
   TableCaption,
@@ -10,75 +13,134 @@ import {
   TableHeader,
   TableRow,
 } from "@/ui";
-import { formatTimestampToDate } from "@/utils/datetime";
+import { formatDate, formatTimestampToDate } from "@/utils/datetime";
+import { convertedAmount } from "@/utils/numbers";
+import { addressShortner } from "@/utils/token";
+import { Order as CowOrder } from "@cowprotocol/cow-sdk";
 import Link from "next/link";
+import { formatUnits } from "viem";
 
-export const StackTransactionsTable = ({ order }: OrderProps) => (
-  <div className="border border-surface-75 rounded-xl">
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="hidden py-1 md:table-cell">
-            <BodyText size={1}>Transactions</BodyText>
-          </TableHead>
-          <TableHead>
-            <BodyText size={1}>Time</BodyText>
-          </TableHead>
-          <TableHead className="py-1 text-right">
-            <BodyText size={1}> {order.sellToken.symbol} spent</BodyText>
-          </TableHead>
-          <TableHead className="py-1 text-right">
-            <BodyText size={1}>{order.buyToken.symbol} bought</BodyText>
-          </TableHead>
-          <TableHead className="hidden py-1 text-right md:table-cell">
-            <BodyText size={1}>{getOrderPairSymbols(order)}</BodyText>
-          </TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {[30, 24, 13, 8, 1].map((index) => (
-          <TableRow key={index}>
-            <TableCell className="hidden py-2 md:table-cell">
-              <BodyText
-                size={1}
-                className="text-primary-700 hover:underline hover:underline-offset-2"
-              >
-                <Link href={"#"}>0xc...c0b0</Link>
-              </BodyText>
-            </TableCell>
-            <TableCell className="py-2">
-              <BodyText className="text-em-med" size={1}>
-                {formatTimestampToDate("1686746216")}
-              </BodyText>
-            </TableCell>
-            <TableCell className="py-2 text-right ">
-              <BodyText className="text-em-med" size={1}>
-                62.5
-              </BodyText>
-            </TableCell>
-            <TableCell className="py-2 text-right ">
-              <BodyText className="text-em-med" size={1}>
-                0.02975
-              </BodyText>
-            </TableCell>
-            <TableCell className="hidden py-2 text-right md:table-cell">
-              <BodyText className="text-em-med" size={1}>
-                0.000476
-              </BodyText>
-            </TableCell>
+const TRANSACTIONS_NUMBER = 8;
+
+export const StackTransactionsTable = ({ stackOrder }: StackOrderProps) => {
+  return (
+    <div className="border border-surface-75 rounded-xl">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="hidden py-1 md:table-cell">
+              <BodyText size={1}>Transactions</BodyText>
+            </TableHead>
+            <TableHead>
+              <BodyText size={1}>Time</BodyText>
+            </TableHead>
+            <TableHead className="py-1 text-right">
+              <BodyText size={1}> {stackOrder.sellToken.symbol} spent</BodyText>
+            </TableHead>
+            <TableHead className="py-1 text-right">
+              <BodyText size={1}>{stackOrder.buyToken.symbol} bought</BodyText>
+            </TableHead>
+            <TableHead className="hidden py-1 text-right md:table-cell">
+              <BodyText size={1}>{getOrderPairSymbols(stackOrder)}</BodyText>
+            </TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-      <TableCaption className="pb-2 mt-2">
-        <Link
-          href={transactionExplorerLink(order.id)}
-          className="text-primary-700 hover:underline hover:underline-offset-2"
-        >
-          <BodyText weight="medium" size={1}>
-            Check all transactions
-          </BodyText>
-        </Link>
-      </TableCaption>
-    </Table>
-  </div>
+        </TableHeader>
+        {stackOrder.cowOrders ? (
+          <>
+            <TableCowBody cowOrders={stackOrder.cowOrders} />
+            <CheckTransactionsCaption stackOrderId={stackOrder.id} />
+          </>
+        ) : (
+          <FailedToFetchCowData />
+        )}
+      </Table>
+    </div>
+  );
+};
+
+const TableCowBody = ({ cowOrders }: { cowOrders: CowOrder[] }) => {
+  const formatAmount = (amount: string) =>
+    convertedAmount(amount, 18).toFixed(4);
+  const averagePrice = (cowOrder: CowOrder) =>
+    (
+      Number(cowOrder.executedSellAmount) / Number(cowOrder.executedBuyAmount)
+    ).toFixed(4);
+
+  return (
+    <TableBody>
+      {cowOrders.slice(0, TRANSACTIONS_NUMBER).map((cowOrder) => (
+        <TableRow key={cowOrder.uid}>
+          <TableCell className="hidden py-2 md:table-cell">
+            <BodyText
+              size={1}
+              className="text-primary-700 hover:underline hover:underline-offset-2"
+            >
+              <Link
+                target="_blank"
+                href={cowExplorerUrl({
+                  chainId: 100,
+                  uid: cowOrder.uid,
+                })}
+              >
+                {addressShortner(cowOrder.uid)}
+              </Link>
+            </BodyText>
+          </TableCell>
+          <TableCell className="py-2">
+            <BodyText className="text-em-med" size={1}>
+              {formatDate(cowOrder.creationDate)}
+            </BodyText>
+          </TableCell>
+          <TableCell className="py-2 text-right ">
+            <BodyText className="text-em-med" size={1}>
+              {formatAmount(cowOrder.executedSellAmount)}
+            </BodyText>
+          </TableCell>
+          <TableCell className="py-2 text-right ">
+            <BodyText className="text-em-med" size={1}>
+              {formatAmount(cowOrder.executedBuyAmount)}
+            </BodyText>
+          </TableCell>
+          <TableCell className="hidden py-2 text-right md:table-cell">
+            {cowOrder.status === "fulfilled" ? (
+              <BodyText className="text-em-med" size={1}>
+                {averagePrice(cowOrder)}
+              </BodyText>
+            ) : (
+              <BodyText className="text-gray-400 animate-pulse" size={1}>
+                fulfilling
+              </BodyText>
+            )}
+          </TableCell>
+        </TableRow>
+      ))}
+    </TableBody>
+  );
+};
+
+const CheckTransactionsCaption = ({
+  stackOrderId,
+}: {
+  stackOrderId: string;
+}) => (
+  <TableCaption className="pb-2 mt-2">
+    <Link
+      target="_blank"
+      href={transactionExplorerLink(stackOrderId)}
+      className="text-primary-700 hover:underline hover:underline-offset-2"
+    >
+      <BodyText weight="medium" size={1}>
+        Check all transactions
+      </BodyText>
+    </Link>
+  </TableCaption>
+);
+
+const FailedToFetchCowData = () => (
+  <TableCaption className="pb-2 mt-2 space-y-1">
+    <Icon name="warning" className="text-danger-500" />
+    <BodyText weight="medium" size={1} className="text-danger-500">
+      failed to fetch data from cow api
+    </BodyText>
+  </TableCaption>
 );
