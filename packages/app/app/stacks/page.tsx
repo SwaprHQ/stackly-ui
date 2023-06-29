@@ -4,12 +4,12 @@ import { Tab } from "@headlessui/react";
 import { EmptyState } from "@/app/stacks/empty-state";
 import { ButtonLink, HeadingText } from "@/ui";
 import { StacksTable } from "@/components/StacksTable";
+import { getOrders } from "@/models/order";
 import {
   filterActiveOrders,
   filterCompletedOrders,
-  getOrders,
-} from "@/models/order";
-import { getStackOrders } from "@/models/stack-order";
+  getStackOrders,
+} from "@/models/stack-order";
 
 export default async function Page() {
   const mockOrders = await getOrders("0x...."); // todo: change to connected wallet address
@@ -51,10 +51,10 @@ export default async function Page() {
           </Tab.List>
           <Tab.Panels>
             <Tab.Panel>
-              <StacksTable orders={filterActiveOrders(stackOrders)} />
+              <StacksTable stackOrders={filterActiveOrders(stackOrders)} />
             </Tab.Panel>
             <Tab.Panel>
-              <StacksTable orders={filterCompletedOrders(stackOrders)} />
+              <StacksTable stackOrders={filterCompletedOrders(stackOrders)} />
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>

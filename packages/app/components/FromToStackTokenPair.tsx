@@ -1,4 +1,3 @@
-import { Order, totalFundsUsed } from "@/models/order";
 import { Icon, TitleText } from "@/ui";
 import { TokenIcon } from "@/components/TokenIcon";
 import { Token } from "@/models/token/types";

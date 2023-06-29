@@ -13,23 +13,21 @@ import {
 import { StackedTokenLogoPair } from "@/components/StackedTokenLogoPair";
 import { StackModal } from "@/components/stack-modal/StackModal";
 import {
-  Order,
-  OrderProps,
   fundsAmountWithToken,
   getOrderPairSymbols,
   totalFundsUsed,
   totalOrdersDone,
 } from "@/models/order";
 import { formatTimestampToDateWithSuffix } from "@/utils/datetime";
-import { calculateStackAveragePrice, totalStacked } from "@/models/stack-order";
+import { StackOrder, StackOrderProps, calculateStackAveragePrice, totalStacked } from "@/models/stack-order";
 
-export const StacksTable = ({ orders }: { orders: Order[] }) => {
-  const [stackOrder, setStackOrder] = useState<Order>();
+export const StacksTable = ({ stackOrders }: { stackOrders: StackOrder[] }) => {
+  const [stackOrder, setStackOrder] = useState<StackOrder>();
   const [isModalOpen, setModalOpen] = useState(false);
   const closeModal = () => setModalOpen(false);
 
-  const setupAndOpenModal = (order: Order) => {
-    setStackOrder(order);
+  const setupAndOpenModal = (stackOrder: StackOrder) => {
+    setStackOrder(stackOrder);
     setModalOpen(true);
   };
 
@@ -46,7 +44,7 @@ export const StacksTable = ({ orders }: { orders: Order[] }) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {orders.map((order) => (
+          {stackOrders.map((order) => (
             <TableRow key={order.id}>
               <TableCell className="flex items-center font-medium w-max">
                 <StackedTokenLogoPair order={order} />
@@ -81,7 +79,7 @@ export const StacksTable = ({ orders }: { orders: Order[] }) => {
               </TableCell>
               <TableCell className="text-right">
                 <CellWrapper>
-                  <OrdersProgressText order={order} />
+                  <OrdersProgressText stackOrder={order} />
                 </CellWrapper>
               </TableCell>
               <TableCell className="flex justify-end">
@@ -102,7 +100,7 @@ export const StacksTable = ({ orders }: { orders: Order[] }) => {
         <StackModal
           isOpen={isModalOpen}
           closeAction={closeModal}
-          order={stackOrder}
+          stackOrder={stackOrder}
         />
       )}
     </div>
@@ -115,16 +113,16 @@ const CellWrapper = ({ children }: PropsWithChildren) => (
   </div>
 );
 
-const OrdersProgressText = ({ order }: OrderProps) =>
-  totalOrdersDone(order) === 0 ? (
+const OrdersProgressText = ({ stackOrder }: StackOrderProps) =>
+  totalOrdersDone(stackOrder) === 0 ? (
     <BodyText className="text-primary-700">
-      Starts on {formatTimestampToDateWithSuffix(order.orderSlots[0])}
+      Starts on {formatTimestampToDateWithSuffix(stackOrder.orderSlots[0])}
     </BodyText>
   ) : (
     <>
       <BodyText className="text-em-high">
-        {totalOrdersDone(order).toString()}
+        {totalOrdersDone(stackOrder).toString()}
       </BodyText>
-      <BodyText className="text-em-low">{`/ ${order.orderSlots.length} orders`}</BodyText>
+      <BodyText className="text-em-low">{`/ ${stackOrder.orderSlots.length} orders`}</BodyText>
     </>
   );
