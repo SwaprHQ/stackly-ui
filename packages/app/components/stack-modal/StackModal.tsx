@@ -91,7 +91,7 @@ export const StackModal = ({
               Every {formatFrequencyHours(Number(stackOrder.interval))}
             </StackDetail>
             <StackDetail title="Next order">
-              {formatTimestampToDateWithTime(nextSlot)}
+              {nextSlot ? formatTimestampToDateWithTime(nextSlot) : "Complete"}
             </StackDetail>
           </div>
           <div className="w-full my-4 border-b border-surface-50"></div>
