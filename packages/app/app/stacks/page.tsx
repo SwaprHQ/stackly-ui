@@ -10,12 +10,19 @@ import {
   filterCompletedOrders,
   getStackOrders,
 } from "@/models/stack-order";
+import { useAccount } from "wagmi";
+import { NoWalletState } from "@/app/stacks/no-wallet-state";
 
 export default async function Page() {
-  const mockOrders = await getOrders("0x...."); // todo: change to connected wallet address
-  const stackOrders = await getStackOrders(mockOrders);
+  console.log("====== Stacks Page ======");
+  // will be uncommented when we add SDK
+  // const { address } = useAccount();
+  // if (!address) return <NoWalletState />;
 
+  const mockOrders = await getOrders("address");
   if (!mockOrders) return <EmptyState />;
+
+  const stackOrders = await getStackOrders(mockOrders);
 
   return (
     <div className="space-y-8">
@@ -51,10 +58,14 @@ export default async function Page() {
           </Tab.List>
           <Tab.Panels>
             <Tab.Panel>
-              <StacksTable stackOrders={filterActiveOrders(stackOrders)} />
+              {stackOrders && (
+                <StacksTable stackOrders={filterActiveOrders(stackOrders)} />
+              )}
             </Tab.Panel>
             <Tab.Panel>
-              <StacksTable stackOrders={filterCompletedOrders(stackOrders)} />
+              {stackOrders && (
+                <StacksTable stackOrders={filterCompletedOrders(stackOrders)} />
+              )}
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
