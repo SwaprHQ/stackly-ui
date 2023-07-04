@@ -8,7 +8,7 @@ import { getOrders } from "@/models/order";
 import {
   filterActiveOrders,
   filterCompletedOrders,
-  getStackOrders,
+  getStackOrders
 } from "@/models/stack-order";
 // import { useAccount } from "wagmi";
 // import { NoWalletState } from "@/app/stacks/no-wallet-state";
