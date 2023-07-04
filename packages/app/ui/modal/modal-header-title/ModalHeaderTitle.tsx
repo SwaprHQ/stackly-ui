@@ -9,9 +9,9 @@ interface ModalHeaderTitleProps {
 
 export const ModalHeaderTitle = ({
   title,
-  closeAction,
+  closeAction
 }: ModalHeaderTitleProps) => (
-  <ModalHeader>
+  <ModalHeader className="flex items-center justify-between w-full px-4 py-3 border-b border-surface-50">
     <div className="flex items-center justify-between w-full py-2">
       <TitleText>{title}</TitleText>
       <Button
