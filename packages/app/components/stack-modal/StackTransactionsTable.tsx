@@ -1,6 +1,5 @@
-import { transactionExplorerLink } from "@/components/stack-modal/StackModal";
 import { cowExplorerUrl } from "@/models/cow-order";
-import { OrderProps, getOrderPairSymbols } from "@/models/order";
+import { getOrderPairSymbols } from "@/models/order";
 import { StackOrderProps } from "@/models/stack-order";
 import {
   BodyText,
@@ -13,16 +12,26 @@ import {
   TableHeader,
   TableRow,
 } from "@/ui";
-import { formatDate, formatTimestampToDate } from "@/utils/datetime";
+import { formatDate } from "@/utils/datetime";
 import { convertedAmount } from "@/utils/numbers";
 import { addressShortner } from "@/utils/token";
 import { Order as CowOrder } from "@cowprotocol/cow-sdk";
 import Link from "next/link";
-import { formatUnits } from "viem";
+import { useState } from "react";
 
-const TRANSACTIONS_NUMBER = 8;
+const INITIAL_NUMBER_OF_COW_ORDERS = 8;
 
 export const StackTransactionsTable = ({ stackOrder }: StackOrderProps) => {
+  const [cowOrders, setCowOrders] = useState(
+    stackOrder.cowOrders.slice(0, INITIAL_NUMBER_OF_COW_ORDERS)
+  );
+
+  function addMoreOrders() {
+    setCowOrders(stackOrder.cowOrders.slice(0, cowOrders.length + 4));
+  }
+
+  const hasMoreOrders = stackOrder.cowOrders.length > cowOrders.length;
+
   return (
     <div className="border border-surface-75 rounded-xl">
       <Table>
@@ -47,8 +56,17 @@ export const StackTransactionsTable = ({ stackOrder }: StackOrderProps) => {
         </TableHeader>
         {stackOrder.cowOrders ? (
           <>
-            <TableCowBody cowOrders={stackOrder.cowOrders} />
-            <CheckTransactionsCaption stackOrderId={stackOrder.id} />
+            <TableCowBody cowOrders={cowOrders} />
+            {hasMoreOrders && (
+              <TableCaption className="pb-2 mt-2">
+                <div
+                  className="text-sm cursor-pointer text-primary-700 hover:underline hover:underline-offset-2"
+                  onClick={addMoreOrders}
+                >
+                  Show more transactions
+                </div>
+              </TableCaption>
+            )}
           </>
         ) : (
           <FailedToFetchCowData />
@@ -68,7 +86,7 @@ const TableCowBody = ({ cowOrders }: { cowOrders: CowOrder[] }) => {
 
   return (
     <TableBody>
-      {cowOrders.slice(0, TRANSACTIONS_NUMBER).map((cowOrder) => (
+      {cowOrders.map((cowOrder) => (
         <TableRow key={cowOrder.uid}>
           <TableCell className="hidden py-2 md:table-cell">
             <BodyText
@@ -118,29 +136,11 @@ const TableCowBody = ({ cowOrders }: { cowOrders: CowOrder[] }) => {
   );
 };
 
-const CheckTransactionsCaption = ({
-  stackOrderId,
-}: {
-  stackOrderId: string;
-}) => (
-  <TableCaption className="pb-2 mt-2">
-    <Link
-      target="_blank"
-      href={transactionExplorerLink(stackOrderId)}
-      className="text-primary-700 hover:underline hover:underline-offset-2"
-    >
-      <BodyText weight="medium" size={1}>
-        Check all transactions
-      </BodyText>
-    </Link>
-  </TableCaption>
-);
-
 const FailedToFetchCowData = () => (
   <TableCaption className="pb-2 mt-2 space-y-1">
     <Icon name="warning" className="text-danger-500" />
     <BodyText weight="medium" size={1} className="text-danger-500">
-      failed to fetch data from cow api
+      Failed to fetch data from cow api
     </BodyText>
   </TableCaption>
 );
