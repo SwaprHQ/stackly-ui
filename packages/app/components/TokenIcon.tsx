@@ -1,7 +1,6 @@
 import { isAddress } from "viem";
 import { cva } from "class-variance-authority";
 import Image from "next/image";
-import { useNetwork } from "wagmi";
 import { twMerge } from "tailwind-merge";
 import { useTokenListContext } from "@/context/TokenListContext";
 import { Token } from "@/models/token/types";
@@ -13,11 +12,7 @@ interface TokenIconProps {
   token: Token;
 }
 
-export const TokenIcon = ({
-  className,
-  size = "sm",
-  token
-}: TokenIconProps) => {
+export const TokenIcon = ({ className, size, token }: TokenIconProps) => {
   const { getTokenFromList, getTokenLogoURL } = useTokenListContext();
   const [isImgBroken, setIsImgBroken] = useState<Boolean>(false);
 
