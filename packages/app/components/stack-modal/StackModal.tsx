@@ -24,7 +24,7 @@ import {
   formatTimestampToDateWithTime,
 } from "@/utils/datetime";
 import { FromToStackTokenPair } from "@/components/FromToStackTokenPair";
-import { StackTransactionsTable } from "@/components/stack-modal/StackTransactionsTable";
+import { StackOrdersTable } from "@/components/stack-modal/StackOrdersTable";
 import {
   StackOrder,
   StackOrderProps,
@@ -97,11 +97,13 @@ export const StackModal = ({
           <div className="w-full my-4 border-b border-surface-50"></div>
           <div className="px-4">
             <TitleText size={2} weight="bold">
-              Transactions
+              Orders
             </TitleText>
             <StackProgress stackOrder={stackOrder} />
             <StackInfo stackOrder={stackOrder} />
-            <StackTransactionsTable stackOrder={stackOrder} />
+            {stackOrder.cowOrders.length > 0 && (
+              <StackOrdersTable stackOrder={stackOrder} />
+            )}
           </div>
         </ModalContent>
         <ModalFooter>

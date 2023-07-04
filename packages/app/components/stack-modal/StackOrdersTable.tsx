@@ -21,7 +21,7 @@ import { useState } from "react";
 
 const INITIAL_NUMBER_OF_COW_ORDERS = 8;
 
-export const StackTransactionsTable = ({ stackOrder }: StackOrderProps) => {
+export const StackOrdersTable = ({ stackOrder }: StackOrderProps) => {
   const [cowOrders, setCowOrders] = useState(
     stackOrder.cowOrders.slice(0, INITIAL_NUMBER_OF_COW_ORDERS)
   );
@@ -37,8 +37,8 @@ export const StackTransactionsTable = ({ stackOrder }: StackOrderProps) => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="hidden py-1 md:table-cell">
-              <BodyText size={1}>Transactions</BodyText>
+            <TableHead className="py-1 md:table-cell">
+              <BodyText size={1}>Transaction</BodyText>
             </TableHead>
             <TableHead>
               <BodyText size={1}>Time</BodyText>
@@ -63,7 +63,7 @@ export const StackTransactionsTable = ({ stackOrder }: StackOrderProps) => {
                   className="text-sm cursor-pointer text-primary-700 hover:underline hover:underline-offset-2"
                   onClick={addMoreOrders}
                 >
-                  Show more transactions
+                  Show more orders
                 </div>
               </TableCaption>
             )}
@@ -88,7 +88,7 @@ const TableCowBody = ({ cowOrders }: { cowOrders: CowOrder[] }) => {
     <TableBody>
       {cowOrders.map((cowOrder) => (
         <TableRow key={cowOrder.uid}>
-          <TableCell className="hidden py-2 md:table-cell">
+          <TableCell className="py-2 md:table-cell">
             <BodyText
               size={1}
               className="text-primary-700 hover:underline hover:underline-offset-2"

@@ -10,8 +10,8 @@ import {
   filterCompletedOrders,
   getStackOrders,
 } from "@/models/stack-order";
-import { useAccount } from "wagmi";
-import { NoWalletState } from "@/app/stacks/no-wallet-state";
+// import { useAccount } from "wagmi";
+// import { NoWalletState } from "@/app/stacks/no-wallet-state";
 
 export default async function Page() {
   console.log("====== Stacks Page ======");

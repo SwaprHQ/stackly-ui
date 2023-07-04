@@ -35,7 +35,7 @@ const OrdersExecuted = ({ stackOrder }: StackOrderProps) => {
   return (
     <div className="flex items-center space-x-1">
       <BodyText size="responsive" className="text-em-low">
-        Orders executed:
+        Executed:
       </BodyText>
       <BodyText size="responsive">
         {totalOrdersDone(stackOrder)} <span className="text-xs">out of</span>{" "}

@@ -19,7 +19,12 @@ import {
   totalOrdersDone,
 } from "@/models/order";
 import { formatTimestampToDateWithSuffix } from "@/utils/datetime";
-import { StackOrder, StackOrderProps, calculateStackAveragePrice, totalStacked } from "@/models/stack-order";
+import {
+  StackOrder,
+  StackOrderProps,
+  calculateStackAveragePrice,
+  totalStacked,
+} from "@/models/stack-order";
 
 export const StacksTable = ({ stackOrders }: { stackOrders: StackOrder[] }) => {
   const [stackOrder, setStackOrder] = useState<StackOrder>();
