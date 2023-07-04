@@ -3,14 +3,14 @@ import { currentTimestampInSeconds } from "@/utils/datetime";
 
 export const filterCompletedOrders = (orders: StackOrder[]) =>
   orders.filter(
-    (order) =>
+    order =>
       Number(order.endTime) < currentTimestampInSeconds &&
       order.cancelledAt === null
   );
 
 export const filterActiveOrders = (orders: StackOrder[]) =>
   orders.filter(
-    (order) =>
+    order =>
       Number(order.endTime) > currentTimestampInSeconds &&
       order.cancelledAt === null
   );
