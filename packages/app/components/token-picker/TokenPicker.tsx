@@ -1,69 +1,32 @@
 "use client";
 
+import { useTokenListContext } from "@/context/TokenListContext";
 import {
-  BodyText,
+  Divider,
   Modal,
   ModalBaseProps,
   ModalContent,
-  ModalHeaderTitle,
+  ModalHeaderTitle
 } from "@/ui";
+import SearchBar from "@/ui/search/SearchBar";
+import { TokenPickerList } from "./TokenPickerList";
+import { TokenPickerCommonTokens } from "./TokenPickerCommonTokens";
 
 export const TokenPicker = ({ isOpen, closeAction }: ModalBaseProps) => {
+  const { tokenList } = useTokenListContext();
+
   return (
-    <div>
-      <Modal isOpen={isOpen} closeAction={closeAction}>
-        <ModalHeaderTitle title="Select a token" closeAction={closeAction} />
-        <ModalContent>
-          <div className="space-y-4">
-            <input
-              type="search"
-              placeholder="search token name or paste address"
-              className="w-full p-2 bg-surface-75 rounded-xl"
-            />
-            <div className="py-3 space-y-2">
-              <p className="text-xs font-semibold text-em-low">Common tokens</p>
-              <div className="flex items-center space-x-3">
-                <div className="p-2 font-semibold uppercase border text-em-med w-fit rounded-2xl">
-                  Eth
-                </div>
-                <div className="p-2 font-semibold uppercase border text-em-med w-fit rounded-2xl">
-                  Pepe
-                </div>
-                <div className="p-2 font-semibold uppercase border text-em-med w-fit rounded-2xl">
-                  usdc
-                </div>
-              </div>
-            </div>
-            <div className="relative">
-              <div className="-mx-4 overflow-y-auto border-t h-72 border-surface-50">
-                {[
-                  "1Inch",
-                  "Aave",
-                  "DAI",
-                  "USDC",
-                  "Matic",
-                  "Uni",
-                  "pepe",
-                  "Swapr",
-                  "ARB",
-                ].map((token) => (
-                  <div
-                    className="flex justify-between w-full px-4 py-2 border-b cursor-pointer border-surface-50 hover:bg-surface-50"
-                    key={token}
-                    onClick={closeAction}
-                  >
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 rounded-full bg-primary-100" />
-                      <BodyText>{token}</BodyText>
-                    </div>
-                    <BodyText>0</BodyText>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </ModalContent>
-      </Modal>
-    </div>
+    <Modal closeAction={closeAction} isOpen={isOpen}>
+      <ModalHeaderTitle closeAction={closeAction} title="Select a token" />
+      <Divider className="my-1" />
+      <ModalContent className="mt-3 px-0">
+        <SearchBar
+          className="text-em-low mx-6"
+          placeholder="Search token name or paste address"
+        />
+        <TokenPickerCommonTokens />
+        <TokenPickerList closeAction={closeAction} tokenList={tokenList} />
+      </ModalContent>
+    </Modal>
   );
 };
