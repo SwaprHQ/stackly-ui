@@ -20,7 +20,7 @@ export const TokenPickerListRow = ({
   >
     <div className="flex items-center justify-between w-full">
       <div className="flex items-center space-x-3">
-        <TokenIcon token={token} className="w-8 h-8" />
+        <TokenIcon token={token} size="md" />
         <div className="flex flex-col">
           <BodyText size={2}>{token.symbol}</BodyText>
           <BodyText className="text-em-low" size={1}>

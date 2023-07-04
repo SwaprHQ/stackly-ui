@@ -38,11 +38,10 @@ const COMMON_TOKENS = [
 export const TokenPickerCommonTokens = () => (
   <div className="mt-5 px-6">
     <p className="text-xs font-semibold text-em-low">Common tokens</p>
-    <div className="flex flex-wrap mt-2 space-x-2 space-y-2">
+    <div className="flex flex-wrap mt-2 gap-2">
       {COMMON_TOKENS.map((token: Token) => (
         <RadioButton
           checked={false}
-          className="first:pt-2"
           id={`${token.address}${token.symbol}`}
           key={`${token.address}${token.symbol}`}
           name={token.name}
