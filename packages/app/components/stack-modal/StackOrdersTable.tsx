@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { cowExplorerUrl } from "@/models/cow-order";
 import { getOrderPairSymbols } from "@/models/order";
 import { StackOrderProps } from "@/models/stack-order";
@@ -10,27 +11,27 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
+  TableRow
 } from "@/ui";
 import { formatDate } from "@/utils/datetime";
 import { convertedAmount } from "@/utils/numbers";
 import { addressShortner } from "@/utils/token";
 import { Order as CowOrder } from "@cowprotocol/cow-sdk";
 import Link from "next/link";
-import { useState } from "react";
 
 const INITIAL_NUMBER_OF_COW_ORDERS = 8;
 
 export const StackOrdersTable = ({ stackOrder }: StackOrderProps) => {
-  const [cowOrders, setCowOrders] = useState(
-    stackOrder.cowOrders.slice(0, INITIAL_NUMBER_OF_COW_ORDERS)
-  );
+  const initialCowOrders =
+    stackOrder?.cowOrders?.slice(0, INITIAL_NUMBER_OF_COW_ORDERS) ?? [];
+
+  const [cowOrders, setCowOrders] = useState<CowOrder[]>(initialCowOrders);
 
   function addMoreOrders() {
     setCowOrders(stackOrder.cowOrders.slice(0, cowOrders.length + 4));
   }
 
-  const hasMoreOrders = stackOrder.cowOrders.length > cowOrders.length;
+  const hasMoreOrders = stackOrder?.cowOrders?.length > cowOrders.length;
 
   return (
     <div className="border border-surface-75 rounded-xl">
@@ -54,7 +55,7 @@ export const StackOrdersTable = ({ stackOrder }: StackOrderProps) => {
             </TableHead>
           </TableRow>
         </TableHeader>
-        {stackOrder.cowOrders ? (
+        {cowOrders.length > 0 ? (
           <>
             <TableCowBody cowOrders={cowOrders} />
             {hasMoreOrders && (
@@ -86,7 +87,7 @@ const TableCowBody = ({ cowOrders }: { cowOrders: CowOrder[] }) => {
 
   return (
     <TableBody>
-      {cowOrders.map((cowOrder) => (
+      {cowOrders.map(cowOrder => (
         <TableRow key={cowOrder.uid}>
           <TableCell className="py-2 md:table-cell">
             <BodyText
@@ -97,7 +98,7 @@ const TableCowBody = ({ cowOrders }: { cowOrders: CowOrder[] }) => {
                 target="_blank"
                 href={cowExplorerUrl({
                   chainId: 100,
-                  uid: cowOrder.uid,
+                  uid: cowOrder.uid
                 })}
               >
                 {addressShortner(cowOrder.uid)}
