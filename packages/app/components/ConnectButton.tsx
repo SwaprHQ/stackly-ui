@@ -74,7 +74,7 @@ export const ConnectButton = ({
   text,
 }: {
   text?: string;
-  className: string;
+  className?: string;
 }) => {
   return (
     <ConnectKitButton.Custom>
