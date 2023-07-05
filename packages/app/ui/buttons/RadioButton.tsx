@@ -1,7 +1,6 @@
 "use client";
 
 import { cva } from "class-variance-authority";
-import { twMerge } from "tailwind-merge";
 
 interface RadioButtonProps extends React.InputHTMLAttributes<HTMLInputElement> {
   id: string;
@@ -43,7 +42,7 @@ export function RadioButton({
   onChange
 }: RadioButtonProps) {
   return (
-    <div className={twMerge("flex", className)}>
+    <div className="flex">
       <input
         type="radio"
         value={value}
@@ -56,7 +55,8 @@ export function RadioButton({
       <label
         htmlFor={id}
         className={radioButtonStyles({
-          checked
+          checked,
+          className
         })}
       >
         {children}
