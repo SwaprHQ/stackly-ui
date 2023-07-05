@@ -1,12 +1,16 @@
 import { PropsWithChildren } from "react";
 import { Navbar } from "@/components";
+import { Metadata } from "next";
 import { Providers } from "@/providers";
 import "../styles/global.css";
 
-export const metadata = {
+const defaultStacklyUrl = "https://stackly.eth.limo";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(process.env.STACKLY_URL ?? defaultStacklyUrl),
   title: "Stackly | Stack crypto over time.",
   description:
-    "Stackly is a simple, non-custodial tool that uses the CoW protocol to place recurring swaps based on DCA..",
+    "Stackly is a simple, non-custodial tool that uses the CoW protocol to place recurring swaps based on DCA.."
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {
