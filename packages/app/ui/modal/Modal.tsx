@@ -3,6 +3,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, ReactNode, RefObject } from "react";
 import { cva } from "class-variance-authority";
+import { twMerge } from "tailwind-merge";
 
 export interface ModalBaseProps {
   isOpen: boolean;
@@ -19,7 +20,7 @@ export const dialogPanelStyles = cva(
     "w-full",
     "overflow-hidden text-left align-middle",
     "bg-white shadow-xl rounded-2xl",
-    "transition-all transform ",
+    "transition-all transform "
   ],
   {
     variants: {
@@ -28,12 +29,12 @@ export const dialogPanelStyles = cva(
         xl: "max-w-xl",
         lg: "max-w-lg",
         md: "max-w-md",
-        sm: "max-w-sm",
-      },
+        sm: "max-w-sm"
+      }
     },
     defaultVariants: {
-      maxWidth: "md",
-    },
+      maxWidth: "md"
+    }
   }
 );
 
@@ -42,7 +43,7 @@ export function Modal({
   closeAction,
   maxWidth,
   children,
-  initialFocusRef,
+  initialFocusRef
 }: ModalProps) {
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -75,7 +76,12 @@ export function Modal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className={dialogPanelStyles({ maxWidth })}>
+              <Dialog.Panel
+                className={twMerge(
+                  dialogPanelStyles({ maxWidth }),
+                  "divide-y divide-surface-50"
+                )}
+              >
                 {children}
               </Dialog.Panel>
             </Transition.Child>
