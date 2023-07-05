@@ -1,4 +1,3 @@
-// from timestamp
 type Timestamp = string | number;
 
 const getDateFromTimeStamp = (timeStamp: Timestamp) =>
@@ -81,8 +80,6 @@ export const formatFrequencyHours = (hours: number) => {
 //eg.  "1 day" | "4 days"
 const frequencyString = ({ name, number }: { name: string; number: number }) =>
   `${number} ${number === 1 ? name : name.concat("s")}`;
-
-// from date
 
 // eg.  "1 Jun, 23"
 export const formatDate = (date: Date | string) => {

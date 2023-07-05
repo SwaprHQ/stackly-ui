@@ -20,6 +20,7 @@ import { Order as CowOrder } from "@cowprotocol/cow-sdk";
 import Link from "next/link";
 
 const INITIAL_NUMBER_OF_COW_ORDERS = 8;
+const MORE_ORDERS_NUMBER = 4;
 
 export const StackOrdersTable = ({ stackOrder }: StackOrderProps) => {
   const initialCowOrders =
@@ -27,9 +28,10 @@ export const StackOrdersTable = ({ stackOrder }: StackOrderProps) => {
 
   const [cowOrders, setCowOrders] = useState<CowOrder[]>(initialCowOrders);
 
-  function addMoreOrders() {
-    setCowOrders(stackOrder.cowOrders.slice(0, cowOrders.length + 4));
-  }
+  const addMoreOrders = () =>
+    setCowOrders(
+      stackOrder.cowOrders.slice(0, cowOrders.length + MORE_ORDERS_NUMBER)
+    );
 
   const hasMoreOrders = stackOrder?.cowOrders?.length > cowOrders.length;
 
@@ -141,7 +143,7 @@ const FailedToFetchCowData = () => (
   <TableCaption className="pb-2 mt-2 space-y-1">
     <Icon name="warning" className="text-danger-500" />
     <BodyText weight="medium" size={1} className="text-danger-500">
-      Failed to fetch data from cow api
+      Failed to fetch data.
     </BodyText>
   </TableCaption>
 );

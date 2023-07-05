@@ -10,19 +10,19 @@ import {
   filterCompletedOrders,
   getStackOrders
 } from "@/models/stack-order";
-// import { useAccount } from "wagmi";
+// import { useAccount, useNetwork } from "wagmi";
 // import { NoWalletState } from "@/app/stacks/no-wallet-state";
 
 export default async function Page() {
-  console.log("====== Stacks Page ======");
   // will be uncommented when we add SDK
   // const { address } = useAccount();
   // if (!address) return <NoWalletState />;
+  // const { chain } = useNetwork();
+  const chainId = 100; // will be replaced with useNetwork chain when sdk
 
   const mockOrders = await getOrders("address");
   if (!mockOrders) return <EmptyState />;
-
-  const stackOrders = await getStackOrders(mockOrders);
+  const stackOrders = await getStackOrders(chainId, mockOrders);
 
   return (
     <div className="space-y-8">
