@@ -53,7 +53,7 @@ export const StackModal = ({
   return (
     <div>
       <Modal maxWidth="2xl" isOpen={isOpen} closeAction={closeAction}>
-        <ModalHeader className="flex items-center justify-between w-full px-4 py-3 border-b border-surface-50">
+        <ModalHeader>
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center space-x-2">
               <StackedTokenLogoPair order={stackOrder} />
