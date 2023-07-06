@@ -93,7 +93,10 @@ const TokenListRow = ({ closeAction, token }: TokenListRowProps) => (
 );
 
 const TokenList = ({ closeAction, tokenList }: TokenListProps) => (
-  <div className="mt-5 overflow-y-auto h-72 border-t border-surface-50 divide-y divide-surface-50">
+  <div
+    className="mt-5 overflow-y-auto h-72 border-t border-surface-50 divide-y divide-surface-50"
+    id="tokenPickerList"
+  >
     {tokenList.map(token => (
       <TokenListRow
         closeAction={closeAction}
