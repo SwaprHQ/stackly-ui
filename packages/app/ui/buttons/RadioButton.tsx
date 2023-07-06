@@ -10,8 +10,9 @@ export const radioButtonStyles = cva(
   [
     "flex items-center justify-center rounded-full px-3 py-2 space-x-1.5",
     "cursor-pointer select-none font-medium text-xs",
+    "active:ring-4",
     "disabled:bg-surface-75 disabled:text-em-disabled disabled:cursor-not-allowed disabled:ring-0",
-    "focus:outline-none"
+    "focus:outline-none focus:ring-4"
   ],
   {
     variants: {
