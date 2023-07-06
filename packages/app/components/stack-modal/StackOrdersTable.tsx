@@ -80,6 +80,7 @@ export const StackOrdersTable = ({ stackOrder }: StackOrderProps) => {
 };
 
 const TableCowBody = ({ cowOrders }: { cowOrders: CowOrder[] }) => {
+  const chainId = 100; // @todo change it to useNetwork wen sdk
   const formatAmount = (amount: string) =>
     convertedAmount(amount, 18).toFixed(4);
   const averagePrice = (cowOrder: CowOrder) =>
@@ -98,10 +99,7 @@ const TableCowBody = ({ cowOrders }: { cowOrders: CowOrder[] }) => {
             >
               <Link
                 target="_blank"
-                href={cowExplorerUrl({
-                  chainId: 100,
-                  uid: cowOrder.uid
-                })}
+                href={cowExplorerUrl(chainId, cowOrder.uid)}
               >
                 {addressShortner(cowOrder.uid)}
               </Link>
