@@ -40,7 +40,7 @@ export const TokenPicker = ({ isOpen, closeAction }: ModalBaseProps) => {
 };
 
 const SearchBar = () => (
-  <div className="flex items-center bg-surface-50 border border-surface-75 rounded-xl py-2 px-3 text-em-low mx-6">
+  <div className="flex items-center bg-surface-50 border border-surface-75 rounded-xl py-2 px-3 text-em-low">
     <Icon className="text-em-med" name="search" size={18} />
     <input
       className="outline-none font-semibold flex-grow ml-2 bg-surface-50"
@@ -51,7 +51,7 @@ const SearchBar = () => (
 );
 
 const CommonTokens = () => (
-  <div className="mt-5 px-6">
+  <div className="mt-5">
     <p className="text-xs font-semibold text-em-low">Common tokens</p>
     <div className="flex flex-wrap mt-2 gap-2">
       {TOKEN_PICKER_COMMON_TOKENS.map((token: Token) => (
@@ -73,7 +73,7 @@ const CommonTokens = () => (
 
 const TokenListRow = ({ closeAction, token }: TokenListRowProps) => (
   <div
-    className="flex justify-between w-full px-6 py-2 cursor-pointer hover:bg-surface-50"
+    className="flex justify-between w-full py-2 cursor-pointer hover:bg-surface-50"
     key={`${token.address}${token.symbol}`}
     onClick={closeAction}
   >
