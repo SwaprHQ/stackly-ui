@@ -17,10 +17,6 @@ module.exports = {
       xl: "0px 20px 24px -10px rgba(17, 12, 34, 0.1)",
       "2xl": "0px 32px 32px -12px rgba(17, 12, 34, 0.12)"
     },
-    /**
-     * @TODO rename the palette, use more descriptive color names,
-     * keep the gradients on multiples of 50
-     */
     colors: {
       primary: {
         25: "#F9FFF4",

@@ -25,6 +25,10 @@ interface TokenListProps {
 }
 
 export const TokenPicker = ({ isOpen, closeAction }: ModalBaseProps) => {
+  /**
+   * @TODO in STK-93: ensure we don't get duplicated token addresses
+   * @see https://linear.app/swaprdev/issue/STK-93/tokenlist-has-tokens-from-unsupported-chains
+   */
   const { tokenList } = useTokenListContext();
 
   return (
@@ -57,8 +61,8 @@ const CommonTokens = () => (
       {TOKEN_PICKER_COMMON_TOKENS.map((token: Token) => (
         <RadioButton
           checked={false}
-          id={`${token.address}${token.symbol}`}
-          key={`${token.address}${token.symbol}`}
+          id={token.address}
+          key={token.address}
           name={token.name}
           onChange={() => {}}
           value={token.name}
@@ -74,7 +78,7 @@ const CommonTokens = () => (
 const TokenListRow = ({ closeAction, token }: TokenListRowProps) => (
   <div
     className="flex justify-between w-full py-2 cursor-pointer hover:bg-surface-50"
-    key={`${token.address}${token.symbol}`}
+    key={token.address}
     onClick={closeAction}
   >
     <div className="flex items-center justify-between w-full">
@@ -100,7 +104,7 @@ const TokenList = ({ closeAction, tokenList }: TokenListProps) => (
     {tokenList.map(token => (
       <TokenListRow
         closeAction={closeAction}
-        key={`${token.address}${token.symbol}`}
+        key={token.address}
         token={token}
       />
     ))}
