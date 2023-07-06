@@ -48,6 +48,7 @@ export const StackModal = ({
   const firstSlot = orderSlots[0];
   const lastSlot = orderSlots[orderSlots.length - 1];
   const nextSlot = orderSlots[totalOrdersDone(stackOrder)];
+  const stackIsComplete = totalOrdersDone(stackOrder) === orderSlots.length;
 
   return (
     <div>
@@ -91,7 +92,9 @@ export const StackModal = ({
               Every {formatFrequencyHours(Number(stackOrder.interval))}
             </StackDetail>
             <StackDetail title="Next order">
-              {nextSlot ? formatTimestampToDateWithTime(nextSlot) : "Complete"}
+              {stackIsComplete
+                ? "Complete"
+                : formatTimestampToDateWithTime(nextSlot)}
             </StackDetail>
           </div>
           <div className="w-full my-4 border-b border-surface-50"></div>
@@ -107,14 +110,16 @@ export const StackModal = ({
           </div>
         </ModalContent>
         <ModalFooter>
-          <Button
-            size="sm"
-            action="secondary"
-            onClick={() => alert("Are you sure you want to cancel stacking?")}
-            width="full"
-          >
-            Cancel Stacking
-          </Button>
+          {!stackIsComplete && (
+            <Button
+              size="sm"
+              action="secondary"
+              onClick={() => alert("Are you sure you want to cancel stacking?")}
+              width="full"
+            >
+              Cancel Stacking
+            </Button>
+          )}
         </ModalFooter>
       </Modal>
     </div>
