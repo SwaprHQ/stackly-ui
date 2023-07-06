@@ -3,7 +3,6 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, ReactNode, RefObject } from "react";
 import { cva } from "class-variance-authority";
-import { twMerge } from "tailwind-merge";
 
 export interface ModalBaseProps {
   isOpen: boolean;
