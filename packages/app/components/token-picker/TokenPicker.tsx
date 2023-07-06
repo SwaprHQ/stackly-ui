@@ -30,7 +30,7 @@ export const TokenPicker = ({ isOpen, closeAction }: ModalBaseProps) => {
   return (
     <Modal closeAction={closeAction} isOpen={isOpen}>
       <ModalHeaderTitle closeAction={closeAction} title="Select a token" />
-      <ModalContent className="mt-3 pt-3 px-0">
+      <ModalContent>
         <SearchBar />
         <CommonTokens />
         <TokenList closeAction={closeAction} tokenList={tokenList} />

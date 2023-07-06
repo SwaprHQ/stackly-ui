@@ -76,12 +76,7 @@ export function Modal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel
-                className={twMerge(
-                  dialogPanelStyles({ maxWidth }),
-                  "divide-y divide-surface-50"
-                )}
-              >
+              <Dialog.Panel className={dialogPanelStyles({ maxWidth })}>
                 {children}
               </Dialog.Panel>
             </Transition.Child>
