@@ -6,10 +6,6 @@ interface RadioButtonProps extends React.InputHTMLAttributes<HTMLInputElement> {
   id: string;
 }
 
-/**
- * @TODO in STK-91: review RadioButton rings with Design team
- * @see https://linear.app/swaprdev/issue/STK-91/redo-buttons-active-and-focus-borders
- */
 export const radioButtonStyles = cva(
   [
     "flex items-center justify-center rounded-full px-3 py-2 space-x-1.5",

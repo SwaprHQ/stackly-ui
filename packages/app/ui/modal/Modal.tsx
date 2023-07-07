@@ -44,10 +44,6 @@ export function Modal({
   children,
   initialFocusRef
 }: ModalProps) {
-  /**
-   * @TODO in STK-90: review Modal component dividers
-   * @see https://linear.app/swaprdev/issue/STK-90/modal-component-dividers
-   */
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog

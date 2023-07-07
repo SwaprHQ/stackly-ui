@@ -25,10 +25,6 @@ interface TokenListProps {
 }
 
 export const TokenPicker = ({ isOpen, closeAction }: ModalBaseProps) => {
-  /**
-   * @TODO in STK-93: ensure we don't get duplicated token addresses
-   * @see https://linear.app/swaprdev/issue/STK-93/tokenlist-has-tokens-from-unsupported-chains
-   */
   const { tokenList } = useTokenListContext();
 
   return (
