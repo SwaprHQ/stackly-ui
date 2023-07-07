@@ -2,11 +2,9 @@ import Link from "next/link";
 import { ReactNode } from "react";
 
 import {
-  Order,
-  OrderProps,
   getOrderPairSymbols,
   totalFundsUsed,
-  totalOrdersDone,
+  totalOrdersDone
 } from "@/models/order";
 import { StackedTokenLogoPair } from "@/components/StackedTokenLogoPair";
 import { StackProgress } from "@/components/stack-modal/StackProgress";
@@ -19,28 +17,38 @@ import {
   BodyText,
   ModalHeader,
   TitleText,
-  ModalBaseProps,
+  ModalBaseProps
 } from "@/ui";
 import {
   formatFrequencyHours,
-  formatTimestampToDateWithTime,
+  formatTimestampToDateWithTime
 } from "@/utils/datetime";
 import { FromToStackTokenPair } from "@/components/FromToStackTokenPair";
-import { calculateAveragePrice, totalStacked } from "@/components/StacksTable";
-import { StackTransactionsTable } from "@/components/stack-modal/StackTransactionsTable";
+import { StackOrdersTable } from "@/components/stack-modal/StackOrdersTable";
+import {
+  StackOrder,
+  StackOrderProps,
+  calculateStackAveragePrice,
+  totalStacked
+} from "@/models/stack-order";
 
 interface StackModalProps extends ModalBaseProps {
-  order: Order;
+  stackOrder: StackOrder;
 }
 
 export const transactionExplorerLink = (address: string) =>
   `https://gnosisscan.io/address/${address}#tokentxns`;
 
-export const StackModal = ({ order, isOpen, closeAction }: StackModalProps) => {
-  const orderSlots = order.orderSlots;
+export const StackModal = ({
+  stackOrder,
+  isOpen,
+  closeAction
+}: StackModalProps) => {
+  const orderSlots = stackOrder.orderSlots;
   const firstSlot = orderSlots[0];
   const lastSlot = orderSlots[orderSlots.length - 1];
-  const nextSlot = orderSlots[totalOrdersDone(order)];
+  const nextSlot = orderSlots[totalOrdersDone(stackOrder)];
+  const stackIsComplete = totalOrdersDone(stackOrder) === orderSlots.length;
 
   return (
     <div>
@@ -48,14 +56,14 @@ export const StackModal = ({ order, isOpen, closeAction }: StackModalProps) => {
         <ModalHeader>
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center space-x-2">
-              <StackedTokenLogoPair order={order} />
+              <StackedTokenLogoPair order={stackOrder} />
               <Link
                 target="_blank"
-                href={transactionExplorerLink(order.id)}
+                href={transactionExplorerLink(stackOrder.id)}
                 className="flex items-center space-x-0.5 hover:border-em-low border-b-2 border-em-disabled group"
               >
                 <BodyText className="text-em-med">
-                  {order.id.substring(0, 7)}
+                  {stackOrder.id.substring(0, 7)}
                 </BodyText>
                 <Icon
                   className="text-em-med group-hover:animate-bounce"
@@ -81,58 +89,64 @@ export const StackModal = ({ order, isOpen, closeAction }: StackModalProps) => {
               {formatTimestampToDateWithTime(lastSlot)}
             </StackDetail>
             <StackDetail title="Frequency">
-              Every {formatFrequencyHours(Number(order.interval))}
+              Every {formatFrequencyHours(Number(stackOrder.interval))}
             </StackDetail>
             <StackDetail title="Next order">
-              {formatTimestampToDateWithTime(nextSlot)}
+              {stackIsComplete
+                ? "Complete"
+                : formatTimestampToDateWithTime(nextSlot)}
             </StackDetail>
           </div>
           <div className="w-full my-4 border-b border-surface-50"></div>
           <div className="px-4">
             <TitleText size={2} weight="bold">
-              Transactions
+              Orders
             </TitleText>
-            <StackProgress order={order} />
-            <StackInfo order={order} />
-            <StackTransactionsTable order={order} />
+            <StackProgress stackOrder={stackOrder} />
+            <StackInfo stackOrder={stackOrder} />
+            {totalOrdersDone(stackOrder) > 0 && (
+              <StackOrdersTable stackOrder={stackOrder} />
+            )}
           </div>
         </ModalContent>
         <ModalFooter>
-          <Button
-            size="sm"
-            action="secondary"
-            onClick={() => alert("Are you sure you want to cancel stacking?")}
-            width="full"
-          >
-            Cancel Stacking
-          </Button>
+          {!stackIsComplete && (
+            <Button
+              size="sm"
+              action="secondary"
+              onClick={() => alert("Are you sure you want to cancel stacking?")}
+              width="full"
+            >
+              Cancel Stacking
+            </Button>
+          )}
         </ModalFooter>
       </Modal>
     </div>
   );
 };
 
-const StackInfo = ({ order }: OrderProps) => (
+const StackInfo = ({ stackOrder }: StackOrderProps) => (
   <div className="flex flex-col justify-between gap-2 px-4 py-3 mt-6 mb-4 md:items-center md:flex-row bg-surface-25 rounded-2xl">
     <FromToStackTokenPair
-      fromToken={order.sellToken}
-      fromText={totalFundsUsed(order).toFixed(2)}
-      toToken={order.buyToken}
-      toText={totalStacked(order).toFixed(4)}
+      fromToken={stackOrder.sellToken}
+      fromText={totalFundsUsed(stackOrder).toFixed(2)}
+      toToken={stackOrder.buyToken}
+      toText={totalStacked(stackOrder).toFixed(4)}
     />
     <BodyText size="responsive" className="space-x-1">
       <span className="text-em-low">Avg buy price:</span>
       <span className="text-em-med">
-        {calculateAveragePrice(order).toFixed(4)}
+        {calculateStackAveragePrice(stackOrder).toFixed(4)}
       </span>
-      <span className="text-em-med">{getOrderPairSymbols(order)}</span>
+      <span className="text-em-med">{getOrderPairSymbols(stackOrder)}</span>
     </BodyText>
   </div>
 );
 
 const StackDetail = ({
   title,
-  children,
+  children
 }: {
   title: string;
   children: ReactNode;
