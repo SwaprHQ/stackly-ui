@@ -1,20 +1,18 @@
 "use client";
 
 import {
-  Dispatch,
   PropsWithChildren,
-  SetStateAction,
   createContext,
   useCallback,
   useContext,
   useEffect,
-  useState,
+  useState
 } from "react";
 import { useNetwork } from "wagmi";
 import defaultGnosisTokenlist from "public/assets/blockchains/gnosis/tokenlist.json";
 import defaultEthereumTokenlist from "public/assets/blockchains/ethereum/tokenlist.json";
 
-import { Token, TokenFromTokenlist } from "@/models/token/types";
+import { TokenFromTokenlist } from "@/models/token/types";
 
 const GNOSIS_CHAIN_ID = 100;
 
@@ -22,12 +20,12 @@ const DEFAULT_TOKEN_LIST_BY_CHAIN: {
   [chainId: number]: TokenFromTokenlist[];
 } = {
   1: defaultEthereumTokenlist,
-  100: defaultGnosisTokenlist,
+  100: defaultGnosisTokenlist
 };
 
 const TOKEN_LIST_BY_CHAIN_URL: { [chainId: number]: string } = {
   1: "https://tokens.1inch.eth.link/",
-  100: "https://tokens.honeyswap.org/",
+  100: "https://tokens.honeyswap.org/"
 };
 
 const TokenListContext = createContext<{
@@ -35,7 +33,7 @@ const TokenListContext = createContext<{
   getTokenLogoURL?: (tokenAddress: string) => string;
   getTokenFromList?: (tokenAddress: string) => TokenFromTokenlist | undefined;
 }>({
-  tokenList: DEFAULT_TOKEN_LIST_BY_CHAIN[GNOSIS_CHAIN_ID],
+  tokenList: DEFAULT_TOKEN_LIST_BY_CHAIN[GNOSIS_CHAIN_ID]
 });
 
 const mergeTokenlists = (
@@ -44,9 +42,9 @@ const mergeTokenlists = (
 ) =>
   defaultTokenList.concat(
     tokenlist.filter(
-      (token) =>
+      token =>
         !defaultTokenList.some(
-          (defaultToken) => defaultToken.address === token.address
+          defaultToken => defaultToken.address === token.address
         )
     )
   );
@@ -64,7 +62,7 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
 
   const getTokenFromList = (tokenAddress: string) =>
     tokenList.find(
-      (el) => el.address.toUpperCase() === tokenAddress.toUpperCase()
+      token => token.address.toUpperCase() === tokenAddress?.toUpperCase()
     );
 
   const getTokenLogoURL = (tokenAddress: string) =>
