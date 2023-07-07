@@ -17,14 +17,14 @@ To get started with Stackly, follow these steps:
 1. Clone the repository:
 
 ```
-git clone https://github.com/ImpeccableHQ/stackly-ui
+git clone https://github.com/SwaprHQ/stackly-ui.git
 ```
 
 2. Install the dependencies:
 
 ```
-cd stackly
-yarn
+cd stackly-ui
+yarn install
 ```
 
 3. Start the development server:

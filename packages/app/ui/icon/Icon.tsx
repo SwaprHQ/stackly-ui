@@ -11,6 +11,7 @@ import WarningIcon from "../../public/assets/icons/warning.svg";
 import CheckIcon from "../../public/assets/icons/check.svg";
 import ArrowLeftIcon from "../../public/assets/icons/arrow-left.svg";
 import ArrowExternalIcon from "../../public/assets/icons/arrow-external.svg";
+import SearchIcon from "../../public/assets/icons/search.svg";
 
 export type IconName =
   | "close"
@@ -24,7 +25,8 @@ export type IconName =
   | "swap"
   | "caret-down"
   | "caret-left"
-  | "caret-right";
+  | "caret-right"
+  | "search";
 
 export const iconMap: Record<IconName, any> = {
   blocks: BlocksIcon,
@@ -39,6 +41,7 @@ export const iconMap: Record<IconName, any> = {
   "caret-down": CaretDownIcon,
   "caret-left": CaretLeftIcon,
   "caret-right": CaretRightIcon,
+  search: SearchIcon
 };
 
 const getIcon = (name: IconName) => iconMap[name];
@@ -47,7 +50,7 @@ export const Icon = ({
   name,
   size = 20,
   alt,
-  className,
+  className
 }: {
   name: IconName;
   size?: number;
