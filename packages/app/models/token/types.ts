@@ -1,5 +1,5 @@
 export interface Token {
-  id: string;
+  address: string;
   decimals: number;
   name: string;
   symbol: string;
