@@ -11,8 +11,8 @@
     }
   },
   "scripts": {
-    "lint": "prettier --check . !./dist !./.turbo && eslint \"./**!(dist|.turbo)/*+(.tsx|.ts)\"",
-    "format": "prettier --write . !./dist !./.turbo && eslint --fix \"./**!(dist|.turbo)/*+(.tsx|.ts)\"",
+    "lint": "npx prettier --check . !./dist !./.turbo && eslint \"./**!(dist|.turbo)/*+(.tsx|.ts)\"",
+    "format": "npx prettier --write . !./dist !./.turbo && eslint --fix \"./**!(dist|.turbo)/*+(.tsx|.ts)\"",
     "typechain": "node --experimental-specifier-resolution=node ./bin/typechain.js",
     "clean": "rimraf ./dist",
     "build": "yarn clean && tsc",
