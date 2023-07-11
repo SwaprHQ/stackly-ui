@@ -15,7 +15,7 @@ export const Stackbox = () => {
   const openTokenPicker = () => setTokenPickerIsOpen(true);
   const closeTokenPicker = () => setTokenPickerIsOpen(false);
 
-  const searchBarRef = useRef<HTMLInputElement>(null);
+  const searchTokenBarRef = useRef<HTMLInputElement>(null);
 
   return (
     <div>
@@ -89,7 +89,7 @@ export const Stackbox = () => {
       </div>
       <TokenPicker
         closeAction={closeTokenPicker}
-        initialFocusRef={searchBarRef}
+        initialFocusRef={searchTokenBarRef}
         isOpen={isTokenPickerOpen}
       />
       <ConfirmStackModal
