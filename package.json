@@ -12,6 +12,7 @@
   ],
   "scripts": {
     "build": "turbo run build",
+    "build:app": "cd packages/sdk && yarn typechain && turbo run build --filter=@stackly/sdk --filter=app",
     "dev": "turbo run dev",
     "start": "turbo run start",
     "lint": "turbo run lint",
