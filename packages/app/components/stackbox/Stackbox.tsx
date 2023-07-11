@@ -1,7 +1,7 @@
 "use client";
 
 import { BodyText, Button, Icon, RadioButton, TitleText } from "@/ui";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { ConfirmStackModal } from "./ConfirmStackModal";
 import { TokenPicker } from "@/components/token-picker/TokenPicker";
 
@@ -14,6 +14,8 @@ export const Stackbox = () => {
 
   const openTokenPicker = () => setTokenPickerIsOpen(true);
   const closeTokenPicker = () => setTokenPickerIsOpen(false);
+
+  const searchBarRef = useRef<HTMLInputElement>(null);
 
   return (
     <div>
@@ -85,7 +87,11 @@ export const Stackbox = () => {
           </Button>
         </div>
       </div>
-      <TokenPicker isOpen={isTokenPickerOpen} closeAction={closeTokenPicker} />
+      <TokenPicker
+        closeAction={closeTokenPicker}
+        initialFocusRef={searchBarRef}
+        isOpen={isTokenPickerOpen}
+      />
       <ConfirmStackModal
         isOpen={isConfirmStackOpen}
         closeAction={closeConfirmStack}

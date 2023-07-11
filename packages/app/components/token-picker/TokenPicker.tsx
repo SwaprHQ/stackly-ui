@@ -12,12 +12,16 @@ import {
   ModalHeaderTitle,
   RadioButton
 } from "@/ui";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, RefObject, forwardRef, useEffect, useState } from "react";
 import { TokenIcon } from "../TokenIcon";
 import { TOKEN_PICKER_COMMON_TOKENS } from "./constants";
-import EmptyStateImg from "public/assets/images/empty-state-stacks-coins.svg";
+import EmptyStateImg from "public/assets/images/empty-state-token-picker.svg";
 
 const HALF_SECOND = 500;
+
+interface TokenPickerProps extends ModalBaseProps {
+  initialFocusRef?: RefObject<HTMLInputElement>;
+}
 
 interface SearchBarProps {
   onSearch: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -35,7 +39,11 @@ interface TokenListProps {
   tokenSearchQuery?: string;
 }
 
-export const TokenPicker = ({ isOpen, closeAction }: ModalBaseProps) => {
+export const TokenPicker = ({
+  closeAction,
+  initialFocusRef,
+  isOpen
+}: TokenPickerProps) => {
   const [tokenSearchQuery, setTokenSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState(tokenSearchQuery);
 
@@ -64,10 +72,18 @@ export const TokenPicker = ({ isOpen, closeAction }: ModalBaseProps) => {
   }, [debouncedQuery]);
 
   return (
-    <Modal closeAction={closeAction} isOpen={isOpen}>
+    <Modal
+      closeAction={closeAction}
+      isOpen={isOpen}
+      initialFocusRef={initialFocusRef}
+    >
       <ModalHeaderTitle closeAction={closeAction} title="Select a token" />
       <ModalContent>
-        <SearchBar onSearch={handleTokenSearchInput} value={debouncedQuery} />
+        <SearchBar
+          ref={initialFocusRef}
+          onSearch={handleTokenSearchInput}
+          value={debouncedQuery}
+        />
         <CommonTokens />
         <TokenList
           closeAction={closeAction}
@@ -80,18 +96,22 @@ export const TokenPicker = ({ isOpen, closeAction }: ModalBaseProps) => {
   );
 };
 
-const SearchBar = ({ onSearch, value }: SearchBarProps) => (
-  <div className="flex items-center bg-surface-50 border border-surface-75 rounded-xl py-2 px-3 text-em-low">
-    <Icon className="text-em-med" name="search" size={18} />
-    <input
-      className="outline-none font-semibold flex-grow ml-2 bg-surface-50"
-      onChange={onSearch}
-      value={value}
-      placeholder="Search token name or paste address"
-      type="text"
-    />
-  </div>
+const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(
+  ({ onSearch, value }, ref) => (
+    <div className="flex items-center bg-surface-50 border border-surface-75 rounded-xl py-2 px-3 text-em-low">
+      <Icon className="text-em-med" name="search" size={18} />
+      <input
+        className="outline-none font-semibold flex-grow ml-2 bg-surface-50 text-sm"
+        onChange={onSearch}
+        value={value}
+        placeholder="Search token name or paste address"
+        type="text"
+        ref={ref}
+      />
+    </div>
+  )
 );
+SearchBar.displayName = "Token Picker Search";
 
 const CommonTokens = () => (
   <div className="mt-5">
