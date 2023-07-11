@@ -31,6 +31,7 @@ import {
   calculateStackAveragePrice,
   totalStacked
 } from "@/models/stack-order";
+import { formatTokenValue } from "@/utils/token";
 
 interface StackModalProps extends ModalBaseProps {
   stackOrder: StackOrder;
@@ -130,14 +131,14 @@ const StackInfo = ({ stackOrder }: StackOrderProps) => (
   <div className="flex flex-col justify-between gap-2 px-4 py-3 mt-6 mb-4 md:items-center md:flex-row bg-surface-25 rounded-2xl">
     <FromToStackTokenPair
       fromToken={stackOrder.sellToken}
-      fromText={totalFundsUsed(stackOrder).toFixed(2)}
+      fromText={formatTokenValue(totalFundsUsed(stackOrder))}
       toToken={stackOrder.buyToken}
-      toText={totalStacked(stackOrder).toFixed(4)}
+      toText={formatTokenValue(totalStacked(stackOrder))}
     />
     <BodyText size="responsive" className="space-x-1">
       <span className="text-em-low">Avg buy price:</span>
       <span className="text-em-med">
-        {calculateStackAveragePrice(stackOrder).toFixed(4)}
+        {formatTokenValue(calculateStackAveragePrice(stackOrder))}
       </span>
       <span className="text-em-med">{getOrderPairSymbols(stackOrder)}</span>
     </BodyText>
