@@ -5,9 +5,9 @@ export const calculateStackAveragePrice = (order: StackOrder) => {
   let totalExecutedBuyAmount = 0;
   let totalExecutedSellAmount = 0;
 
-  if (!order.cowOrders) return 0;
+  if (order.cowOrders.length === 0) return 0;
 
-  order.cowOrders.forEach((cowOrder) => {
+  order.cowOrders.forEach(cowOrder => {
     if (cowOrder.executedBuyAmount === "0") return;
 
     totalExecutedBuyAmount += convertedAmount(
