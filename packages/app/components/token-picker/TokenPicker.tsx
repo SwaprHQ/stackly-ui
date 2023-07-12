@@ -58,6 +58,11 @@ export const TokenPicker = ({
     setDebouncedQuery(event.target.value);
   };
 
+  const handleModalClose = () => {
+    if (debouncedQuery) tokenListClearSearchCleanup();
+    closeAction();
+  };
+
   /**
    * Updates the token query value after 0.5s from the last
    * keystroke of 'debouncedTerm'
@@ -73,11 +78,11 @@ export const TokenPicker = ({
 
   return (
     <Modal
-      closeAction={closeAction}
+      closeAction={handleModalClose}
       isOpen={isOpen}
       initialFocusRef={initialFocusRef}
     >
-      <ModalHeaderTitle closeAction={closeAction} title="Select a token" />
+      <ModalHeaderTitle closeAction={handleModalClose} title="Select a token" />
       <ModalContent>
         <SearchBar
           ref={initialFocusRef}
@@ -86,7 +91,7 @@ export const TokenPicker = ({
         />
         <CommonTokens />
         <TokenList
-          closeAction={closeAction}
+          closeAction={handleModalClose}
           onClearSearchClick={tokenListClearSearchCleanup}
           tokenList={tokenList}
           tokenSearchQuery={tokenSearchQuery}
