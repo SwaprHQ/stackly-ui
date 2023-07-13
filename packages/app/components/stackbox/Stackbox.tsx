@@ -3,11 +3,16 @@
 import { BodyText, Button, Icon, RadioButton, TitleText } from "@/ui";
 import { useRef, useState } from "react";
 import { ConfirmStackModal } from "./ConfirmStackModal";
-import { TokenPicker } from "@/components/token-picker/TokenPicker";
+import { TokenPicker, DatePicker } from "@/components";
 
 export const Stackbox = () => {
   const [isConfirmStackOpen, setConfirmStackIsOpen] = useState(false);
   const [isTokenPickerOpen, setTokenPickerIsOpen] = useState(false);
+
+  const [frequency, setFrequency] = useState<string>("0");
+
+  const [startDateTime, setStartDateTime] = useState<Date>(new Date());
+  const [endDateTime, setEndDateTime] = useState<Date>(new Date());
 
   const openConfirmStack = () => setConfirmStackIsOpen(true);
   const closeConfirmStack = () => setConfirmStackIsOpen(false);
@@ -46,42 +51,72 @@ export const Stackbox = () => {
             />
           </div>
         </div>
-        <div className="px-5 py-6">
+        <div className="px-5 py-6 space-y-6">
           <div className="space-y-2">
             <TitleText weight="bold" className="text-em-med">
               Stack WETH every
             </TitleText>
-            <div className="flex space-x-2">
-              <RadioButton
-                name="hour"
-                id="hour"
-                checked={true}
-                value={"0"}
-                onChange={() => {}}
-              >
-                Hour
-              </RadioButton>
-              <RadioButton
-                name="week"
-                id="week"
-                checked={false}
-                value={"1"}
-                onChange={() => {}}
-              >
-                Week
-              </RadioButton>
-              <RadioButton
-                name="month"
-                id="month"
-                checked={false}
-                value={"2"}
-                onChange={() => {}}
-              >
-                Month
-              </RadioButton>
+            <div className="space-y-6">
+              <div className="flex space-x-2">
+                <RadioButton
+                  name="hour"
+                  id="hour"
+                  checked={frequency === "0"}
+                  value={"0"}
+                  onChange={(event) => setFrequency(event.target.value)}
+                >
+                  <BodyText size={2}>Hour</BodyText>
+                </RadioButton>
+                <RadioButton
+                  name="day"
+                  id="day"
+                  checked={frequency === "1"}
+                  value={"1"}
+                  onChange={(event) => setFrequency(event.target.value)}
+                >
+                  <BodyText size={2}>Day</BodyText>
+                </RadioButton>
+                <RadioButton
+                  name="week"
+                  id="week"
+                  checked={frequency === "2"}
+                  value={"2"}
+                  onChange={(event) => setFrequency(event.target.value)}
+                >
+                  <BodyText size={2}>Week</BodyText>
+                </RadioButton>
+                <RadioButton
+                  name="month"
+                  id="month"
+                  checked={frequency === "4"}
+                  value={"4"}
+                  onChange={(event) => setFrequency(event.target.value)}
+                >
+                  <BodyText size={2}>Month</BodyText>
+                </RadioButton>
+              </div>
+              <div className="flex rounded-2xl border border-surface-50 divide-x divide-surface-50">
+                <div className="flex flex-col w-full px-4 py-3 space-y-2">
+                  <BodyText size={2}>Starting from</BodyText>
+                  <DatePicker
+                    dateTime={startDateTime}
+                    setDateTime={setStartDateTime}
+                    timeCaption="Start time"
+                    className="w-full"
+                  />
+                </div>
+                <div className="flex flex-col w-full px-4 py-3 space-y-2">
+                  <BodyText size={2}>Until</BodyText>
+                  <DatePicker
+                    dateTime={endDateTime}
+                    setDateTime={setEndDateTime}
+                    timeCaption="End time"
+                    className="w-full"
+                  />
+                </div>
+              </div>
             </div>
           </div>
-          <p className="py-12 mx-auto w-fit text-em-low">The stackbox™</p>
           <Button width="full" onClick={openConfirmStack}>
             Stack Now
           </Button>
