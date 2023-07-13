@@ -34,7 +34,7 @@ interface TokenListRowProps {
 
 interface TokenListProps {
   closeAction: () => void;
-  onClearSearchClick: () => void;
+  onClearSearch: () => void;
   tokenList: Token[];
   tokenSearchQuery?: string;
 }
@@ -49,7 +49,7 @@ export const TokenPicker = ({
 
   const { tokenList } = useTokenListContext();
 
-  const tokenListClearSearchCleanup = () => {
+  const tokenListSearchCleanup = () => {
     setDebouncedQuery("");
     setTokenSearchQuery("");
   };
@@ -59,7 +59,7 @@ export const TokenPicker = ({
   };
 
   const handleModalClose = () => {
-    if (debouncedQuery) tokenListClearSearchCleanup();
+    if (debouncedQuery) tokenListSearchCleanup();
     closeAction();
   };
 
@@ -92,7 +92,7 @@ export const TokenPicker = ({
         <CommonTokens />
         <TokenList
           closeAction={handleModalClose}
-          onClearSearchClick={tokenListClearSearchCleanup}
+          onClearSearch={tokenListSearchCleanup}
           tokenList={tokenList}
           tokenSearchQuery={tokenSearchQuery}
         />
@@ -162,7 +162,7 @@ const TokenListRow = ({ closeAction, token }: TokenListRowProps) => (
 
 const TokenList = ({
   closeAction,
-  onClearSearchClick,
+  onClearSearch,
   tokenList,
   tokenSearchQuery
 }: TokenListProps) => {
@@ -170,8 +170,8 @@ const TokenList = ({
     tokenList
   );
 
-  const handleClearSearchClick = () => {
-    onClearSearchClick();
+  const handleClearSearch = () => {
+    onClearSearch();
     setFilteredTokenList(tokenList);
   };
 
@@ -203,11 +203,7 @@ const TokenList = ({
             <div className="flex items-center justify-center flex-col mt-8 space-y-4">
               <EmptyStateImg />
               <BodyText>{`Nothing found for "${tokenSearchQuery}"`}</BodyText>
-              <Button
-                action="secondary"
-                onClick={handleClearSearchClick}
-                size="md"
-              >
+              <Button action="secondary" onClick={handleClearSearch} size="md">
                 Clear search
               </Button>
             </div>
