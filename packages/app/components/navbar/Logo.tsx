@@ -1,11 +1,12 @@
-import StacklyLogoIcon from "../../public/assets/images/stackly-logo-icon.svg";
-import StacklyLogoName from "../../public/assets/images/stackly-logo-name.svg";
+"use client";
+
+import { StacklyLogoIcon, StacklyLogoNameImg } from "@/public/assets";
 
 export default function Logo() {
   return (
     <>
       <StacklyLogoIcon title="Stackly logo icon" />
-      <StacklyLogoName
+      <StacklyLogoNameImg
         title="Stackly logo name"
         className="hidden ml-3 md:block"
       />

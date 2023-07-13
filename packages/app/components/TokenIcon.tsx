@@ -1,3 +1,5 @@
+"use client";
+
 import { isAddress } from "viem";
 import { cva } from "class-variance-authority";
 import Image from "next/image";
