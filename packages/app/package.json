@@ -16,6 +16,7 @@
     "@cowprotocol/cow-sdk": "^2.1.0",
     "@headlessui/react": "^1.7.14",
     "@headlessui/tailwindcss": "^0.1.3",
+    "@stackly/sdk": "workspace:*",
     "class-variance-authority": "^0.6.0",
     "connectkit": "^1.4.0",
     "next": "^13.4.1",

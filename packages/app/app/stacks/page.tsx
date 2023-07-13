@@ -13,10 +13,11 @@ import {
 
 export default async function Page() {
   const chainId = 100; // will be replaced with useNetwork chain when sdk
+  const address = "0x05a4ed2367bd2f0aa63cc14897850be7474bc722";
+  const orders = await getOrders(chainId, address);
 
-  const mockOrders = await getOrders("address");
-  if (!mockOrders) return <EmptyState />;
-  const stackOrders = await getStackOrders(chainId, mockOrders);
+  if (!orders) return <EmptyState />;
+  const stackOrders = await getStackOrders(chainId, orders);
 
   const completedOrders = filterCompletedOrders(stackOrders);
   const hasCompletedOrders = completedOrders.length > 0;

@@ -1,12 +1,13 @@
 import {
   fundsAmountWithToken,
   totalOrdersDone,
-  totalFundsUsed,
+  totalFundsUsed
 } from "@/models/order";
 import { OrdersProgressBar } from "@/components/OrdersProgressBar";
 import { BodyText } from "@/ui";
 import { TokenIcon } from "@/components/TokenIcon";
 import { StackOrderProps } from "@/models/stack-order";
+import { formatTokenValue } from "@/utils/token";
 
 export const StackProgress = ({ stackOrder }: StackOrderProps) => (
   <div className="mt-3 space-y-3">
@@ -16,7 +17,7 @@ export const StackProgress = ({ stackOrder }: StackOrderProps) => (
         <BodyText size="responsive" className="text-em-low">
           Total funds used:{" "}
           <span className="text-em-high">
-            {totalFundsUsed(stackOrder).toFixed(2)}{" "}
+            {formatTokenValue(totalFundsUsed(stackOrder), 2)}{" "}
             <span className="text-xs">of</span>{" "}
             {fundsAmountWithToken(stackOrder)}
           </span>

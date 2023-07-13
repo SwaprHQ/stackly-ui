@@ -25,6 +25,7 @@ import {
   calculateStackAveragePrice,
   totalStacked
 } from "@/models/stack-order";
+import { formatTokenValue } from "@/utils/token";
 
 export const StacksTable = ({ stackOrders }: { stackOrders: StackOrder[] }) => {
   const [stackOrder, setStackOrder] = useState<StackOrder>();
@@ -55,7 +56,7 @@ export const StacksTable = ({ stackOrders }: { stackOrders: StackOrder[] }) => {
                 <StackedTokenLogoPair order={order} />
                 <div className="ml-3 space-y-0.5">
                   <BodyText weight="bold">
-                    {totalStacked(order).toFixed(3)}
+                    {formatTokenValue(totalStacked(order))}
                   </BodyText>
                   <CaptionText className="text-em-low">
                     {getOrderPairSymbols(order)}
@@ -65,7 +66,7 @@ export const StacksTable = ({ stackOrders }: { stackOrders: StackOrder[] }) => {
               <TableCell className="text-right">
                 <CellWrapper>
                   <BodyText className="text-em-high">
-                    {totalFundsUsed(order).toFixed(2)}
+                    {formatTokenValue(totalFundsUsed(order), 2)}
                   </BodyText>
                   <BodyText className="text-em-low">
                     / {fundsAmountWithToken(order)}
@@ -75,7 +76,7 @@ export const StacksTable = ({ stackOrders }: { stackOrders: StackOrder[] }) => {
               <TableCell className="text-right">
                 <CellWrapper>
                   <BodyText className="text-em-high">
-                    {calculateStackAveragePrice(order).toFixed(3)}
+                    {formatTokenValue(calculateStackAveragePrice(order))}
                   </BodyText>
                   <BodyText className="text-em-low">
                     {getOrderPairSymbols(order)}

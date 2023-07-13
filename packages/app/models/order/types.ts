@@ -1,20 +1,6 @@
-import { Token } from "@/models/token/types";
+import { Order as StacklyOrder } from "@stackly/sdk/dist/vaults/subgraph";
 
-export interface Order {
-  id: string;
-  owner: string;
-  receiver: string;
-  amount: string;
-  sellToken: Token;
-  buyToken: Token;
-  createdAt: string;
-  startTime: number;
-  endTime: number;
-  orderSlots: string[];
-  cancelledAt: string | null;
-  interval: string;
-}
-
+export interface Order extends StacklyOrder {}
 export interface OrderProps {
   order: Order;
 }
