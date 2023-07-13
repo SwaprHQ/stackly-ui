@@ -39,15 +39,15 @@ const TokenListContext = createContext<{
 const mergeTokenlists = (
   defaultTokenList: TokenFromTokenlist[],
   tokenlist: TokenFromTokenlist[]
-) =>
-  defaultTokenList.concat(
-    tokenlist.filter(
-      token =>
-        !defaultTokenList.some(
-          defaultToken => defaultToken.address === token.address
-        )
-    )
-  );
+) => {
+  const addresses = new Set(defaultTokenList.map(token => token.address));
+  const mergedLists = [
+    ...defaultTokenList,
+    ...tokenlist.filter(token => !addresses.has(token.address))
+  ];
+
+  return mergedLists;
+};
 
 export const TokenListProvider = ({ children }: PropsWithChildren) => {
   const { chain } = useNetwork();
@@ -73,7 +73,7 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
     : TOKEN_LIST_BY_CHAIN_URL[GNOSIS_CHAIN_ID];
 
   const setupTokenList = useCallback(async () => {
-    async function gettokenListData() {
+    async function getTokenListData() {
       try {
         const res = await fetch(fetchTokenlistURL);
         if (!res.ok) {
@@ -84,14 +84,16 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
         console.error("Error fetching tokenlist data:", error);
       }
     }
-    const data = await gettokenListData();
+    const data = await getTokenListData();
 
     const mergedTokenlistTokens = mergeTokenlists(
       defaultTokenList,
-      data.tokens
+      data.tokens.filter(
+        (token: TokenFromTokenlist) => token.chainId === chain?.id
+      )
     );
     setTokenList(mergedTokenlistTokens);
-  }, [defaultTokenList, fetchTokenlistURL]);
+  }, [defaultTokenList, fetchTokenlistURL, chain?.id]);
 
   useEffect(() => {
     setupTokenList();

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import PlusIcon from "../../public/assets/icons/plus.svg";
 import HamburgerIcon from "../../public/assets/icons/hamburger.svg";
 import CloseIcon from "../../public/assets/icons/close.svg";
