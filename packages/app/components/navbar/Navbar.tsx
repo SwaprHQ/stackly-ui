@@ -12,6 +12,7 @@ export function Navbar() {
       <nav className="flex items-center w-full h-full">
         <div>
           <Link
+            passHref
             tabIndex={0}
             href="/"
             title="Stackly Home"

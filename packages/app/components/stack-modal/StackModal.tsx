@@ -59,6 +59,7 @@ export const StackModal = ({
             <div className="flex items-center space-x-2">
               <StackedTokenLogoPair order={stackOrder} />
               <Link
+                passHref
                 target="_blank"
                 href={transactionExplorerLink(stackOrder.id)}
                 className="flex items-center space-x-0.5 hover:border-em-low border-b-2 border-em-disabled group"
