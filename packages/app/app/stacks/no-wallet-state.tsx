@@ -1,3 +1,5 @@
+"use client";
+
 import { ConnectButton } from "@/components";
 import { HeadingText } from "@/ui";
 import NoWalletStateImage from "@/public/assets/images/no-wallet-state.svg";

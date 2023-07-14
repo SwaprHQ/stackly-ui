@@ -5,8 +5,14 @@ import MobileMenu from "./MobileMenu";
 import Logo from "./Logo";
 import { ButtonLink } from "@/ui";
 import { ConnectButton, SelectNetwork } from "@/components";
+import { useAccount, useNetwork } from "wagmi";
 
 export function Navbar() {
+  const { address } = useAccount();
+  const { chain } = useNetwork();
+  const stacksHref =
+    address && chain ? `/stacks/${chain.id}/${address}` : "/stacks";
+
   return (
     <header className="top-0 flex flex-col w-full border-b border-solid h-nav-height bg-surface-25 border-b-surface-75">
       <nav className="flex items-center w-full h-full">
@@ -27,7 +33,7 @@ export function Navbar() {
             action="quaternary"
             size="sm"
             iconLeft="blocks"
-            href="/stacks"
+            href={stacksHref}
           >
             Your stacks
           </ButtonLink>

@@ -5,15 +5,24 @@ import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
 import { ChainIcon } from "connectkit";
 import { Listbox, Transition } from "@headlessui/react";
 import { Fragment } from "react";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { ChainId } from "@stackly/sdk";
 
 export const SelectNetwork = () => {
   const { switchNetwork } = useSwitchNetwork();
   const { chain, chains } = useNetwork();
   const { isConnected } = useAccount();
+  const router = useRouter();
+  const pathname = usePathname();
+  const params = useParams();
 
   if (!isConnected || !chain) return <></>;
 
   const onValueChange = (networkId: string) => {
+    if (pathname.includes("stacks/"))
+      router.push(`/stacks/${networkId}/${params.address}`);
+
     switchNetwork && switchNetwork(Number(networkId));
   };
 
@@ -25,7 +34,7 @@ export const SelectNetwork = () => {
           iconRight="caret-down"
           size="sm"
           action="tertiary"
-          className="border-none shadow-sm rounded-xl flex flex-row focus:bg-white focus:ring-0 active:ring-0 h-10"
+          className="flex flex-row h-10 border-none shadow-sm rounded-xl focus:bg-white focus:ring-0 active:ring-0"
         >
           <ChainIcon size={20} id={chain.id} unsupported={chain.unsupported} />
           <span className="hidden md:inline-block">
@@ -38,11 +47,11 @@ export const SelectNetwork = () => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <Listbox.Options className="absolute mt-1 max-h-60 w-auto overflow-auto rounded-2xl bg-white py-1 text-base shadow-md  focus:outline-none sm:text-sm">
+          <Listbox.Options className="absolute w-auto py-1 mt-1 overflow-auto text-base bg-white shadow-md max-h-60 rounded-2xl focus:outline-none sm:text-sm">
             {chains.map(({ id, name }) => (
               <Listbox.Option
                 key={id}
-                className="relative cursor-pointer select-none py-2 pr-10 pl-4 hover:bg-surface-75"
+                className="relative py-2 pl-4 pr-10 cursor-pointer select-none hover:bg-surface-75"
                 value={id.toString()}
               >
                 {({ selected }) => {
@@ -56,7 +65,7 @@ export const SelectNetwork = () => {
                         <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-amber-600">
                           <Icon
                             name="check"
-                            className="h-4 w-4 text-primary-600"
+                            className="w-4 h-4 text-primary-600"
                           />
                         </span>
                       ) : null}
