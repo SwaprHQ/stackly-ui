@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  BodyText,
-  Button,
-  ChipButton,
-  Icon,
-  RadioButton,
-  TitleText
-} from "@/ui";
+import { BodyText, Button, Icon, RadioButton, TitleText } from "@/ui";
 import { useRef, useState } from "react";
 import { ConfirmStackModal } from "./ConfirmStackModal";
 import { TokenPicker } from "@/components/token-picker/TokenPicker";
@@ -18,7 +11,7 @@ import { cx } from "class-variance-authority";
 const TOKEN_FROM_LABEL = "Deposit from";
 const TOKEN_TO_LABEL = "To receive";
 
-interface SelectTokenChipProps {
+interface SelectTokenButtonProps {
   label: string;
   onClick: (isTokenFrom?: boolean) => void;
   token?: TokenFromTokenlist;
@@ -47,7 +40,7 @@ export const Stackbox = () => {
       <div className="max-w-lg mx-auto my-24 bg-white shadow-2xl rounded-2xl">
         <div className="px-5 py-4 border shadow-lg border-surface-50 rounded-2xl">
           <div className="flex items-end justify-between pb-4 border-b border-surface-50">
-            <SelectTokenChip
+            <SelectTokenButton
               label={TOKEN_FROM_LABEL}
               onClick={openTokenPicker}
               token={tokenFrom}
@@ -56,7 +49,7 @@ export const Stackbox = () => {
               name="arrow-left"
               className="flex items-center justify-center p-2 w-16 h-9 bg-surface-50 rounded-2xl rotate-180"
             />
-            <SelectTokenChip
+            <SelectTokenButton
               label={TOKEN_TO_LABEL}
               onClick={openTokenPicker}
               token={tokenTo}
@@ -125,26 +118,36 @@ export const Stackbox = () => {
   );
 };
 
-const SelectTokenChip = ({ label, onClick, token }: SelectTokenChipProps) => {
+const SelectTokenButton = ({
+  label,
+  onClick,
+  token,
+}: SelectTokenButtonProps) => {
   const isTokenFrom = label === TOKEN_FROM_LABEL;
   const handleButtonClick = () => onClick(isTokenFrom);
 
   return (
     <div
       className={cx("flex flex-col space-y-2", {
-        "items-end": !isTokenFrom
+        "items-end": !isTokenFrom,
       })}
     >
       <BodyText className="text-em-low">{label}</BodyText>
       {token ? (
-        <ChipButton id={token.address} onClick={handleButtonClick} size="sm">
+        <Button
+          action="secondary"
+          className="leading-6 rounded-xl"
+          onClick={handleButtonClick}
+          size="sm"
+        >
           <TokenIcon token={token} />
-          <p className="font-semibold ml-1.5">{token.symbol}</p>
-        </ChipButton>
+          <BodyText className="font-semibold ml-1.5">{token.symbol}</BodyText>
+          <Icon name="caret-down" size={18} />
+        </Button>
       ) : (
         <Button
           action="secondary"
-          className="leading-6"
+          className="leading-6 rounded-xl"
           onClick={handleButtonClick}
           size="sm"
         >
