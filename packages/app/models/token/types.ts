@@ -1,5 +1,5 @@
 export interface Token {
-  id: string;
+  address: string;
   decimals: number;
   name: string;
   symbol: string;
@@ -11,5 +11,5 @@ export interface TokenFromTokenlist {
   logoURI: string;
   name: string;
   symbol: string;
-  chainId?: number;
+  chainId: number;
 }

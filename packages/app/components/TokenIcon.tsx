@@ -1,35 +1,44 @@
 import { isAddress } from "viem";
 import { cva } from "class-variance-authority";
 import Image from "next/image";
-import { useNetwork } from "wagmi";
 import { twMerge } from "tailwind-merge";
 import { useTokenListContext } from "@/context/TokenListContext";
 import { Token } from "@/models/token/types";
+import { useState } from "react";
 
 interface TokenIconProps {
-  token: Token;
   className?: string;
   size?: "lg" | "md" | "sm" | "xs";
+  token: Token;
 }
 
-export const TokenIcon = ({ token, className, size }: TokenIconProps) => {
+export const TokenIcon = ({ className, size, token }: TokenIconProps) => {
   const { getTokenFromList, getTokenLogoURL } = useTokenListContext();
+  const [isImgBroken, setIsImgBroken] = useState<Boolean>(false);
 
   const getTokenMethodsUndefined = !getTokenFromList || !getTokenLogoURL;
-  const invalidAddress = !isAddress(token.id);
+  const invalidAddress = !isAddress(token.address);
   const noTokenOnTheList =
-    !getTokenMethodsUndefined && !getTokenFromList(token.id);
+    !getTokenMethodsUndefined && !getTokenFromList(token.address);
 
-  if (getTokenMethodsUndefined || invalidAddress || noTokenOnTheList)
+  if (
+    getTokenMethodsUndefined ||
+    invalidAddress ||
+    noTokenOnTheList ||
+    isImgBroken
+  )
     return <DefaultTokenIcon token={token} className={className} size={size} />;
 
   return (
     <Image
-      src={getTokenLogoURL(token.id)}
+      src={getTokenLogoURL(token.address)}
       className={tokenIconStyles({ size, className })}
       alt={token.name}
       width={54}
       height={54}
+      onError={() => {
+        setIsImgBroken(true);
+      }}
     />
   );
 };
@@ -54,11 +63,11 @@ export const tokenIconStyles = cva(
         lg: ["w-10 h-10 text-[7px]"],
         md: ["w-8 h-8 text-[6px]"],
         sm: ["w-6 h-6 text-[5px]"],
-        xs: ["w-5 h-5 text-[4px]"],
-      },
+        xs: ["w-5 h-5 text-[4px]"]
+      }
     },
     defaultVariants: {
-      size: "md",
-    },
+      size: "sm"
+    }
   }
 );

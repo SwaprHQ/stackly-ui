@@ -1,25 +1,21 @@
-import { Button } from "@/ui/buttons";
-import { ModalHeader } from "@/ui/modal/ModalHeader";
-import { TitleText } from "@/ui/text";
+import { Button, ModalHeader, TitleText } from "@/ui";
 
 interface ModalHeaderTitleProps {
-  title: string;
   closeAction: () => void;
+  title: string;
 }
 
 export const ModalHeaderTitle = ({
-  title,
   closeAction,
+  title
 }: ModalHeaderTitleProps) => (
   <ModalHeader>
-    <div className="flex items-center justify-between w-full">
-      <TitleText>{title}</TitleText>
-      <Button
-        action="quaternary"
-        iconLeft="close"
-        size="icon"
-        onClick={closeAction}
-      />
-    </div>
+    <TitleText size={2}>{title}</TitleText>
+    <Button
+      action="quaternary"
+      iconLeft="close"
+      size="icon"
+      onClick={closeAction}
+    />
   </ModalHeader>
 );

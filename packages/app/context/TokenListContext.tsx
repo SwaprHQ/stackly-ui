@@ -1,20 +1,18 @@
 "use client";
 
 import {
-  Dispatch,
   PropsWithChildren,
-  SetStateAction,
   createContext,
   useCallback,
   useContext,
   useEffect,
-  useState,
+  useState
 } from "react";
 import { useNetwork } from "wagmi";
 import defaultGnosisTokenlist from "public/assets/blockchains/gnosis/tokenlist.json";
 import defaultEthereumTokenlist from "public/assets/blockchains/ethereum/tokenlist.json";
 
-import { Token, TokenFromTokenlist } from "@/models/token/types";
+import { TokenFromTokenlist } from "@/models/token/types";
 
 const GNOSIS_CHAIN_ID = 100;
 
@@ -22,12 +20,12 @@ const DEFAULT_TOKEN_LIST_BY_CHAIN: {
   [chainId: number]: TokenFromTokenlist[];
 } = {
   1: defaultEthereumTokenlist,
-  100: defaultGnosisTokenlist,
+  100: defaultGnosisTokenlist
 };
 
 const TOKEN_LIST_BY_CHAIN_URL: { [chainId: number]: string } = {
   1: "https://tokens.1inch.eth.link/",
-  100: "https://tokens.honeyswap.org/",
+  100: "https://tokens.honeyswap.org/"
 };
 
 const TokenListContext = createContext<{
@@ -35,21 +33,21 @@ const TokenListContext = createContext<{
   getTokenLogoURL?: (tokenAddress: string) => string;
   getTokenFromList?: (tokenAddress: string) => TokenFromTokenlist | undefined;
 }>({
-  tokenList: DEFAULT_TOKEN_LIST_BY_CHAIN[GNOSIS_CHAIN_ID],
+  tokenList: DEFAULT_TOKEN_LIST_BY_CHAIN[GNOSIS_CHAIN_ID]
 });
 
 const mergeTokenlists = (
   defaultTokenList: TokenFromTokenlist[],
   tokenlist: TokenFromTokenlist[]
-) =>
-  defaultTokenList.concat(
-    tokenlist.filter(
-      (token) =>
-        !defaultTokenList.some(
-          (defaultToken) => defaultToken.address === token.address
-        )
-    )
-  );
+) => {
+  const addresses = new Set(defaultTokenList.map(token => token.address));
+  const mergedLists = [
+    ...defaultTokenList,
+    ...tokenlist.filter(token => !addresses.has(token.address))
+  ];
+
+  return mergedLists;
+};
 
 export const TokenListProvider = ({ children }: PropsWithChildren) => {
   const { chain } = useNetwork();
@@ -64,7 +62,7 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
 
   const getTokenFromList = (tokenAddress: string) =>
     tokenList.find(
-      (el) => el.address.toUpperCase() === tokenAddress.toUpperCase()
+      token => token.address.toUpperCase() === tokenAddress?.toUpperCase()
     );
 
   const getTokenLogoURL = (tokenAddress: string) =>
@@ -75,7 +73,7 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
     : TOKEN_LIST_BY_CHAIN_URL[GNOSIS_CHAIN_ID];
 
   const setupTokenList = useCallback(async () => {
-    async function gettokenListData() {
+    async function getTokenListData() {
       try {
         const res = await fetch(fetchTokenlistURL);
         if (!res.ok) {
@@ -86,14 +84,16 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
         console.error("Error fetching tokenlist data:", error);
       }
     }
-    const data = await gettokenListData();
+    const data = await getTokenListData();
 
     const mergedTokenlistTokens = mergeTokenlists(
       defaultTokenList,
-      data.tokens
+      data.tokens.filter(
+        (token: TokenFromTokenlist) => token.chainId === chain?.id
+      )
     );
     setTokenList(mergedTokenlistTokens);
-  }, [defaultTokenList, fetchTokenlistURL]);
+  }, [defaultTokenList, fetchTokenlistURL, chain?.id]);
 
   useEffect(() => {
     setupTokenList();

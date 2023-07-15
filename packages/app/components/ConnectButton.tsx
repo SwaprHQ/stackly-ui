@@ -39,7 +39,7 @@ const CustomConnectButton = ({
   return (
     <div className="flex bg-gray-alpha-50 rounded-xl p-0.5 justify-center items-center md:space-x-3">
       {balance && (
-        <BodyText size={2} className="ml-3 text-em-med hidden md:block">
+        <BodyText size={2} className="hidden ml-3 text-em-med md:block">
           {formattedBalance(balance)}
         </BodyText>
       )}
@@ -48,7 +48,8 @@ const CustomConnectButton = ({
         iconRight="caret-down"
         onClick={onClick}
         size="sm"
-        className="border-none shadow-sm rounded-xl flex hover:bg-surface-25 focus:bg-white focus:ring-0 active:ring-0"
+        width="full"
+        className="flex border-none shadow-sm rounded-xl hover:bg-surface-25 focus:bg-white focus:ring-0 active:ring-0"
       >
         {avatar && (
           <Image
@@ -68,7 +69,13 @@ const CustomConnectButton = ({
   );
 };
 
-export const ConnectButton = () => {
+export const ConnectButton = ({
+  className,
+  text,
+}: {
+  text?: string;
+  className?: string;
+}) => {
   return (
     <ConnectKitButton.Custom>
       {({ isConnected, show, address, ensName }) => {
@@ -76,8 +83,8 @@ export const ConnectButton = () => {
 
         if (!isConnected || !address)
           return (
-            <Button size="sm" onClick={show}>
-              Connect
+            <Button size="sm" width="fit" onClick={show} className={className}>
+              {text ? text : "Connect"}
             </Button>
           );
 
