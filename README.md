@@ -25,6 +25,7 @@ git clone https://github.com/SwaprHQ/stackly-ui.git
 ```
 cd stackly-ui
 yarn install
+yarn build:dev
 ```
 
 3. Start the development server:
@@ -44,6 +45,23 @@ yarn build
 ```
 
 This command will create a production build of the project in the `dist` directory. You can then deploy the contents of this directory to your server or hosting provider.
+
+## FAQ
+
+- `Cannot read properties of undefined (reading Component).`
+
+  This may happen due to circular dependencies between imports. Check if you have three or more components creating a circle of imports wich may lead to a component being invoked prior its initialization. A quick way to solve this would be checking the way you're exporting the problematic component. Check `packages/app/components/index.ts` to see an example on how to solve these exports.
+
+- Error fetching `generated/contracts`.
+
+  This may happen due to app build failures. Try deleting `node_modules`, then re-install and rebuild the app before launch it again. Note that if you don't rebuild the app (`yarn build:app`) you may get some errors due to generated code during the build step not being present.
+
+  ```bash
+  rm -rf node_modules
+  yarn install
+  yarn build:app
+  yarn dev
+  ```
 
 ## Contributing
 
