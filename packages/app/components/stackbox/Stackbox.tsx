@@ -1,15 +1,11 @@
 "use client";
 
-import { BodyText, Button, Icon, RadioButton, TitleText } from "@/ui";
 import { useRef, useState } from "react";
-import { ConfirmStackModal } from "./ConfirmStackModal";
-import { TokenPicker } from "@/components/token-picker/TokenPicker";
-import { TokenFromTokenlist } from "@/models/token";
-import { TokenIcon } from "../TokenIcon";
 import { cx } from "class-variance-authority";
 
-const TOKEN_FROM_LABEL = "Deposit from";
-const TOKEN_TO_LABEL = "To receive";
+import { BodyText, Button, Icon, RadioButton, TitleText } from "@/ui";
+import { ConfirmStackModal, TokenIcon, TokenPicker } from "@/components";
+import { TokenFromTokenlist } from "@/models/token";
 
 interface SelectTokenButtonProps {
   label: string;
@@ -18,22 +14,21 @@ interface SelectTokenButtonProps {
 }
 
 export const Stackbox = () => {
+  const searchTokenBarRef = useRef<HTMLInputElement>(null);
   const [isConfirmStackOpen, setConfirmStackIsOpen] = useState(false);
-  const [isTokenPickerOpen, setTokenPickerIsOpen] = useState(false);
   const [isPickingTokenFrom, setIsPickingTokenFrom] = useState<boolean>(false);
+  const [isTokenPickerOpen, setTokenPickerIsOpen] = useState(false);
   const [tokenFrom, setTokenFrom] = useState<TokenFromTokenlist>();
   const [tokenTo, setTokenTo] = useState<TokenFromTokenlist>();
 
-  const openConfirmStack = () => setConfirmStackIsOpen(true);
   const closeConfirmStack = () => setConfirmStackIsOpen(false);
-
+  const closeTokenPicker = () => setTokenPickerIsOpen(false);
+  const openConfirmStack = () => setConfirmStackIsOpen(true);
   const openTokenPicker = (isTokenFrom = true) => {
-    setIsPickingTokenFrom(Boolean(isTokenFrom));
+    setIsPickingTokenFrom(isTokenFrom);
     setTokenPickerIsOpen(true);
   };
-  const closeTokenPicker = () => setTokenPickerIsOpen(false);
-
-  const searchTokenBarRef = useRef<HTMLInputElement>(null);
+  const selectToken = isPickingTokenFrom ? setTokenFrom : setTokenTo;
 
   return (
     <>
@@ -41,7 +36,7 @@ export const Stackbox = () => {
         <div className="px-5 py-4 border shadow-lg border-surface-50 rounded-2xl">
           <div className="flex items-end justify-between pb-4 border-b border-surface-50">
             <SelectTokenButton
-              label={TOKEN_FROM_LABEL}
+              label="Deposit from"
               onClick={openTokenPicker}
               token={tokenFrom}
             />
@@ -50,7 +45,7 @@ export const Stackbox = () => {
               className="flex items-center justify-center p-2 w-16 h-9 bg-surface-50 rounded-2xl rotate-180"
             />
             <SelectTokenButton
-              label={TOKEN_TO_LABEL}
+              label="To receive"
               onClick={openTokenPicker}
               token={tokenTo}
             />
@@ -108,7 +103,7 @@ export const Stackbox = () => {
         closeAction={closeTokenPicker}
         initialFocusRef={searchTokenBarRef}
         isOpen={isTokenPickerOpen}
-        onTokenSelect={isPickingTokenFrom ? setTokenFrom : setTokenTo}
+        onTokenSelect={selectToken}
       />
       <ConfirmStackModal
         isOpen={isConfirmStackOpen}
@@ -123,7 +118,7 @@ const SelectTokenButton = ({
   onClick,
   token,
 }: SelectTokenButtonProps) => {
-  const isTokenFrom = label === TOKEN_FROM_LABEL;
+  const isTokenFrom = label.toLowerCase().includes("deposit");
   const handleButtonClick = () => onClick(isTokenFrom);
 
   return (

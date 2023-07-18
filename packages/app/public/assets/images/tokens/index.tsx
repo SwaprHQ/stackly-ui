@@ -1,3 +1,5 @@
+"use client";
+
 import OneInchTokenImg from "./1inch.png";
 import AaveTokenImg from "./aave.png";
 import BalancerTokenImg from "./balancer.png";
@@ -27,5 +29,5 @@ export {
   WbtcTokenImg,
   WethTokenImg,
   WxdaiTokenImg,
-  XdaiTokenImg
+  XdaiTokenImg,
 };

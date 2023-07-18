@@ -1,3 +1,5 @@
+"use client";
+
 import ArrowExternalIcon from "./arrow-external.svg";
 import ArrowLeftIcon from "./arrow-left.svg";
 import FourBlocksIcon from "./blocks.svg";
@@ -27,5 +29,5 @@ export {
   SearchIcon,
   StacklyLogoIcon,
   SwapIcon,
-  WarningIcon
+  WarningIcon,
 };

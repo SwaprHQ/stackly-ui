@@ -1,3 +1,5 @@
+"use client";
+
 import DotsSpinnerImg from "./dots-spinner.svg";
 import EmptyStateNoWalletImg from "./empty-state-no-wallet.svg";
 import EmptyStateStacksImg from "./empty-state-stacks-coins.svg";
@@ -10,5 +12,5 @@ export {
   EmptyStateNoWalletImg,
   EmptyStateStacksImg,
   EmptyStateTokenPickerImg,
-  StacklyLogoNameImg
+  StacklyLogoNameImg,
 };

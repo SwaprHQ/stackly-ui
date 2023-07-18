@@ -1,3 +1,5 @@
+"use client";
+
 import { useRef, useState } from "react";
 import { StackTransactionLoading } from "@/components/stackbox/StackTransactionLoading";
 import {
@@ -8,16 +10,14 @@ import {
   ModalHeaderTitle,
   BodyText,
   TitleText,
-  ModalBaseProps
+  ModalBaseProps,
 } from "@/ui";
 import { FromToStackTokenPair } from "@/components/FromToStackTokenPair";
 
 export const ConfirmStackModal = ({ isOpen, closeAction }: ModalBaseProps) => {
   const focusBtnRef = useRef<HTMLButtonElement>(null);
-  const [
-    isTransactionLoadingDialogOpen,
-    setTransactionLoadingDialogOpen
-  ] = useState(false);
+  const [isTransactionLoadingDialogOpen, setTransactionLoadingDialogOpen] =
+    useState(false);
 
   function stack() {
     setTransactionLoadingDialogOpen(true);
@@ -27,14 +27,14 @@ export const ConfirmStackModal = ({ isOpen, closeAction }: ModalBaseProps) => {
     address: "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83",
     symbol: "USDC",
     decimals: 18,
-    name: "usdc"
+    name: "usdc",
   };
 
   const toToken = {
     address: "0x6A023CCd1ff6F2045C3309768eAd9E68F978f6e1",
     symbol: "WETH",
     decimals: 18,
-    name: "wrapped eth"
+    name: "wrapped eth",
   };
 
   return (

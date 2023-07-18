@@ -10,7 +10,7 @@ import {
   Modal,
   ModalBaseProps,
   ModalContent,
-  ModalHeaderTitle
+  ModalHeaderTitle,
 } from "@/ui";
 import { EmptyStateTokenPickerImg } from "@/public/assets";
 import { TokenFromTokenlist } from "@/models/token/types";
@@ -45,11 +45,11 @@ interface TokenListProps {
   tokenSearchQuery?: string;
 }
 
-export const TokenPicker = ({
+const TokenPicker = ({
   closeAction,
   initialFocusRef,
   isOpen,
-  onTokenSelect
+  onTokenSelect,
 }: TokenPickerProps) => {
   const [tokenSearchQuery, setTokenSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState(tokenSearchQuery);
@@ -132,7 +132,9 @@ SearchBar.displayName = "Token Picker Search";
 
 const CommonTokens = ({ onTokenSelect }: CommonTokensProps) => (
   <div className="mt-5">
-    <p className="text-xs font-semibold text-em-low">Common tokens</p>
+    <BodyText className="text-xs font-semibold text-em-low">
+      Common tokens
+    </BodyText>
     <div className="flex flex-wrap mt-2 gap-2">
       {TOKEN_PICKER_COMMON_TOKENS.map((token: TokenFromTokenlist) => (
         <ChipButton
@@ -143,7 +145,7 @@ const CommonTokens = ({ onTokenSelect }: CommonTokensProps) => (
           size="sm"
         >
           <TokenIcon token={token} />
-          <p className="font-semibold ml-1.5">{token.symbol}</p>
+          <BodyText className="font-semibold ml-1.5">{token.symbol}</BodyText>
         </ChipButton>
       ))}
     </div>
@@ -175,11 +177,10 @@ const TokenList = ({
   onClearSearch,
   onTokenSelect,
   tokenList,
-  tokenSearchQuery
+  tokenSearchQuery,
 }: TokenListProps) => {
-  const [filteredTokenList, setFilteredTokenList] = useState<
-    TokenFromTokenlist[]
-  >(tokenList);
+  const [filteredTokenList, setFilteredTokenList] =
+    useState<TokenFromTokenlist[]>(tokenList);
 
   const handleClearSearch = () => {
     onClearSearch();
@@ -189,7 +190,7 @@ const TokenList = ({
   useEffect(() => {
     if (tokenSearchQuery) {
       const filteredItems = tokenList.filter(
-        token =>
+        (token) =>
           token.symbol.toLowerCase().includes(tokenSearchQuery.toLowerCase()) ||
           token.name.toLowerCase().includes(tokenSearchQuery.toLowerCase())
       );
@@ -203,7 +204,7 @@ const TokenList = ({
   return (
     <div className="mt-5 overflow-y-auto h-72 border-t border-surface-50 divide-y divide-surface-50">
       {filteredTokenList.length
-        ? filteredTokenList.map(token => (
+        ? filteredTokenList.map((token) => (
             <TokenListRow
               onTokenSelect={onTokenSelect}
               key={token.address}
@@ -222,3 +223,5 @@ const TokenList = ({
     </div>
   );
 };
+
+export default TokenPicker;
