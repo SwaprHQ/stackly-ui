@@ -1,11 +1,12 @@
 "use client";
 
-import { ConnectKitProvider } from "connectkit";
 import { PropsWithChildren } from "react";
+
+import { ConnectKitProvider } from "connectkit";
 import { WagmiConfig } from "wagmi";
+
 import { config } from "./wagmi-config";
-import { TokenListProvider } from "@/context/TokenListContext";
-import { ModalContextProvider } from "@/context/ModalContext";
+import { ModalContextProvider, TokenListProvider } from "@/context";
 
 export const Providers = ({ children }: PropsWithChildren) => {
   return (
