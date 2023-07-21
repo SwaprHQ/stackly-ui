@@ -27,15 +27,19 @@ import {
   totalStacked,
 } from "@/models/stack-order";
 import { formatTokenValue } from "@/utils/token";
+import { useModalContext } from "@/context/ModalContext";
 
 export const StacksTable = ({ stackOrders }: { stackOrders: StackOrder[] }) => {
   const [stackOrder, setStackOrder] = useState<StackOrder>();
   const [isModalOpen, setModalOpen] = useState(false);
-  const closeModal = () => setModalOpen(false);
+
+  const { openModal, modalToOpen, closeModal } = useModalContext();
+  const closeModal2 = () => setModalOpen(false);
 
   const setupAndOpenModal = (stackOrder: StackOrder) => {
     setStackOrder(stackOrder);
     setModalOpen(true);
+    openModal("stack");
   };
 
   return (
@@ -106,7 +110,7 @@ export const StacksTable = ({ stackOrders }: { stackOrders: StackOrder[] }) => {
       {stackOrder && (
         <StackModal
           isOpen={isModalOpen}
-          closeAction={closeModal}
+          closeAction={closeModal2}
           stackOrder={stackOrder}
         />
       )}
