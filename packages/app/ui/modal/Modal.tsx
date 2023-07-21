@@ -2,7 +2,7 @@
 
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, ReactNode, RefObject } from "react";
-import { cva } from "class-variance-authority";
+import { cva, cx } from "class-variance-authority";
 
 export interface ModalBaseProps {
   isOpen: boolean;
@@ -10,6 +10,7 @@ export interface ModalBaseProps {
 }
 interface ModalProps extends ModalBaseProps {
   children: ReactNode;
+  className?: string;
   maxWidth?: "2xl" | "xl" | "lg" | "md" | "sm";
   initialFocusRef?: RefObject<HTMLButtonElement | HTMLInputElement>;
 }
@@ -38,6 +39,7 @@ export const dialogPanelStyles = cva(
 );
 
 export function Modal({
+  className,
   isOpen,
   closeAction,
   maxWidth,
@@ -75,7 +77,9 @@ export function Modal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className={dialogPanelStyles({ maxWidth })}>
+              <Dialog.Panel
+                className={cx(dialogPanelStyles({ maxWidth }), className)}
+              >
                 {children}
               </Dialog.Panel>
             </Transition.Child>
