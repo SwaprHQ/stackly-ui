@@ -6,7 +6,8 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useState
+  useMemo,
+  useState,
 } from "react";
 import { useNetwork } from "wagmi";
 import defaultGnosisTokenlist from "public/assets/blockchains/gnosis/tokenlist.json";
@@ -20,12 +21,12 @@ const DEFAULT_TOKEN_LIST_BY_CHAIN: {
   [chainId: number]: TokenFromTokenlist[];
 } = {
   1: defaultEthereumTokenlist,
-  100: defaultGnosisTokenlist
+  100: defaultGnosisTokenlist,
 };
 
 const TOKEN_LIST_BY_CHAIN_URL: { [chainId: number]: string } = {
   1: "https://tokens.1inch.eth.link/",
-  100: "https://tokens.honeyswap.org/"
+  100: "https://tokens.honeyswap.org/",
 };
 
 const TokenListContext = createContext<{
@@ -33,17 +34,17 @@ const TokenListContext = createContext<{
   getTokenLogoURL?: (tokenAddress: string) => string;
   getTokenFromList?: (tokenAddress: string) => TokenFromTokenlist | undefined;
 }>({
-  tokenList: DEFAULT_TOKEN_LIST_BY_CHAIN[GNOSIS_CHAIN_ID]
+  tokenList: DEFAULT_TOKEN_LIST_BY_CHAIN[GNOSIS_CHAIN_ID],
 });
 
 const mergeTokenlists = (
   defaultTokenList: TokenFromTokenlist[],
   tokenlist: TokenFromTokenlist[]
 ) => {
-  const addresses = new Set(defaultTokenList.map(token => token.address));
+  const addresses = new Set(defaultTokenList.map((token) => token.address));
   const mergedLists = [
     ...defaultTokenList,
-    ...tokenlist.filter(token => !addresses.has(token.address))
+    ...tokenlist.filter((token) => !addresses.has(token.address)),
   ];
 
   return mergedLists;
@@ -62,7 +63,7 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
 
   const getTokenFromList = (tokenAddress: string) =>
     tokenList.find(
-      token => token.address.toUpperCase() === tokenAddress?.toUpperCase()
+      (token) => token.address.toUpperCase() === tokenAddress?.toUpperCase()
     );
 
   const getTokenLogoURL = (tokenAddress: string) =>
@@ -99,10 +100,23 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
     setupTokenList();
   }, [setupTokenList]);
 
+  const tokenListContext = useMemo(
+    () => ({
+      tokenList,
+      getTokenFromList: (tokenAddress: string) =>
+        tokenList.find(
+          (token) => token.address.toUpperCase() === tokenAddress?.toUpperCase()
+        ),
+      getTokenLogoURL: (tokenAddress: string) =>
+        tokenList.find(
+          (token) => token.address.toUpperCase() === tokenAddress?.toUpperCase()
+        )?.logoURI ?? "#",
+    }),
+    [tokenList]
+  );
+
   return (
-    <TokenListContext.Provider
-      value={{ tokenList, getTokenFromList, getTokenLogoURL }}
-    >
+    <TokenListContext.Provider value={tokenListContext}>
       {children}
     </TokenListContext.Provider>
   );

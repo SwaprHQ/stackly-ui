@@ -1,8 +1,12 @@
 "use client";
 
-import { createContext, useContext, ReactNode, useState } from "react";
+import { createContext, useContext, ReactNode, useState, useMemo } from "react";
 
-type ModalId = "stack" | "tokenPicker";
+export enum ModalId {
+  CONFIRM_STACK = "confirmStack",
+  STACK = "stack",
+  TOKEN_PICKER = "tokenPicker",
+}
 
 export interface ModalContextProps {
   modalToOpen: ModalId | null;
@@ -25,16 +29,17 @@ export const ModalContextProvider = ({
 }: ModalContextProviderProps) => {
   const [modalToOpen, setModalToOpen] = useState<ModalId | null>(null);
 
-  const closeModal = () => {
-    setModalToOpen(null);
-  };
-
-  const openModal = (id: ModalId) => {
-    setModalToOpen(id);
-  };
+  const modalContext = useMemo(
+    () => ({
+      modalToOpen,
+      closeModal: () => setModalToOpen(null),
+      openModal: (id: ModalId) => setModalToOpen(id),
+    }),
+    [modalToOpen]
+  );
 
   return (
-    <ModalContext.Provider value={{ modalToOpen, closeModal, openModal }}>
+    <ModalContext.Provider value={modalContext}>
       {children}
     </ModalContext.Provider>
   );
