@@ -13,7 +13,7 @@ import {
 import { TokenFromTokenlist } from "@/models/token";
 import { useAccount, useBalance, useNetwork } from "wagmi";
 import { formatUnits } from "viem";
-import { ModalId, useModalContext } from "@/context";
+import { ModalId, useModalContext } from "@/contexts";
 
 interface SelectTokenButtonProps {
   label: string;
