@@ -11,7 +11,7 @@ import {
   TableRow,
 } from "@/ui";
 import { StackedTokenLogoPair } from "@/components/StackedTokenLogoPair";
-import { StackModal } from "@/components/stack-modal/StackModal";
+import { StackModal } from "@/components/stacks/StackModal";
 import {
   fundsAmountWithToken,
   getOrderPairSymbols,
@@ -27,19 +27,16 @@ import {
   totalStacked,
 } from "@/models/stack-order";
 import { formatTokenValue } from "@/utils/token";
-import { useModalContext } from "@/context/ModalContext";
+import { ModalId, useModalContext } from "@/context";
 
 export const StacksTable = ({ stackOrders }: { stackOrders: StackOrder[] }) => {
   const [stackOrder, setStackOrder] = useState<StackOrder>();
-  const [isModalOpen, setModalOpen] = useState(false);
 
-  const { openModal, modalToOpen, closeModal } = useModalContext();
-  const closeModal2 = () => setModalOpen(false);
+  const { closeModal, modalToOpen, openModal } = useModalContext();
 
   const setupAndOpenModal = (stackOrder: StackOrder) => {
     setStackOrder(stackOrder);
-    setModalOpen(true);
-    openModal("stack");
+    openModal(ModalId.STACK);
   };
 
   return (
@@ -109,8 +106,8 @@ export const StacksTable = ({ stackOrders }: { stackOrders: StackOrder[] }) => {
       </Table>
       {stackOrder && (
         <StackModal
-          isOpen={isModalOpen}
-          closeAction={closeModal2}
+          isOpen={modalToOpen === ModalId.STACK}
+          closeAction={closeModal}
           stackOrder={stackOrder}
         />
       )}

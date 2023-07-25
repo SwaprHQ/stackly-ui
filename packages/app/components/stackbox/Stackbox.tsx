@@ -13,6 +13,7 @@ import {
 import { TokenFromTokenlist } from "@/models/token";
 import { useAccount, useBalance, useNetwork } from "wagmi";
 import { formatUnits } from "viem";
+import { ModalId, useModalContext } from "@/context";
 
 interface SelectTokenButtonProps {
   label: string;
@@ -50,11 +51,10 @@ const balanceOptions = [
 
 export const Stackbox = () => {
   const searchTokenBarRef = useRef<HTMLInputElement>(null);
-  const [isConfirmStackOpen, setConfirmStackIsOpen] = useState(false);
   const [isPickingTokenFrom, setIsPickingTokenFrom] = useState<boolean>(false);
-  const [isTokenPickerOpen, setTokenPickerIsOpen] = useState(false);
   const [tokenFrom, setTokenFrom] = useState<TokenFromTokenlist>();
   const [tokenTo, setTokenTo] = useState<TokenFromTokenlist>();
+  const { closeModal, modalToOpen, openModal } = useModalContext();
 
   const { chain } = useNetwork();
   const { address } = useAccount();
@@ -73,12 +73,10 @@ export const Stackbox = () => {
     new Date(endDateByFrequency[frequency])
   );
 
-  const closeConfirmStack = () => setConfirmStackIsOpen(false);
-  const closeTokenPicker = () => setTokenPickerIsOpen(false);
-  const openConfirmStack = () => setConfirmStackIsOpen(true);
+  const openConfirmStack = () => openModal(ModalId.CONFIRM_STACK);
   const openTokenPicker = (isTokenFrom = true) => {
     setIsPickingTokenFrom(isTokenFrom);
-    setTokenPickerIsOpen(true);
+    openModal(ModalId.TOKEN_PICKER);
   };
   const selectToken = isPickingTokenFrom ? setTokenFrom : setTokenTo;
 
@@ -109,139 +107,137 @@ export const Stackbox = () => {
   };
 
   return (
-    <>
-      <div className="max-w-lg mx-auto my-24 bg-white shadow-2xl rounded-2xl">
-        <div className="px-5 py-4 border shadow-lg border-surface-50 rounded-2xl">
-          <div className="flex items-end justify-between pb-4 border-b border-surface-50">
-            <SelectTokenButton
-              label="Deposit from"
-              onClick={openTokenPicker}
-              token={tokenFrom}
-            />
-            <Icon
-              name="arrow-left"
-              className="flex items-center justify-center p-2 w-16 h-9 bg-surface-50 rounded-2xl rotate-180"
-            />
-            <SelectTokenButton
-              label="To receive"
-              onClick={openTokenPicker}
-              token={tokenTo}
-            />
-          </div>
-          <div className="py-2">
-            <input
-              type="number"
-              pattern="[0-9]*"
-              placeholder="0.0"
-              className="w-full py-3 text-4xl text-em-med font-semibold outline-none"
-              value={tokenAmount}
-              onKeyDown={(evt) =>
-                ["e", "E", "+", "-"].includes(evt.key) && evt.preventDefault()
-              }
-              onChange={(event) => {
-                setTokenAmount(event.target.value);
-              }}
-            />
-            {tokenFrom && balance && (
-              <div className="flex justify-between items-center">
-                <div className="flex space-x-1">
-                  {balanceOptions.map(({ name, divider }) => (
-                    <Button
-                      key={name}
-                      action="secondary"
-                      width="fit"
-                      size="xs"
-                      onClick={() => {
-                        setTokenAmount(
-                          formatUnits(
-                            balance.value / BigInt(divider),
-                            tokenFrom.decimals
-                          )
-                        );
-                      }}
+    <div className="max-w-lg mx-auto my-24 bg-white shadow-2xl rounded-2xl">
+      <div className="px-5 py-4 border shadow-lg border-surface-50 rounded-2xl">
+        <div className="flex items-end justify-between pb-4 border-b border-surface-50">
+          <SelectTokenButton
+            label="Deposit from"
+            onClick={openTokenPicker}
+            token={tokenFrom}
+          />
+          <Icon
+            name="arrow-left"
+            className="flex items-center justify-center p-2 w-16 h-9 bg-surface-50 rounded-2xl rotate-180"
+          />
+          <SelectTokenButton
+            label="To receive"
+            onClick={openTokenPicker}
+            token={tokenTo}
+          />
+        </div>
+        <div className="py-2">
+          <input
+            type="number"
+            pattern="[0-9]*"
+            placeholder="0.0"
+            className="w-full py-3 text-4xl text-em-med font-semibold outline-none"
+            value={tokenAmount}
+            onKeyDown={(evt) =>
+              ["e", "E", "+", "-"].includes(evt.key) && evt.preventDefault()
+            }
+            onChange={(event) => {
+              setTokenAmount(event.target.value);
+            }}
+          />
+          {tokenFrom && balance && (
+            <div className="flex justify-between items-center">
+              <div className="flex space-x-1">
+                {balanceOptions.map(({ name, divider }) => (
+                  <Button
+                    key={name}
+                    action="secondary"
+                    width="fit"
+                    size="xs"
+                    onClick={() => {
+                      setTokenAmount(
+                        formatUnits(
+                          balance.value / BigInt(divider),
+                          tokenFrom.decimals
+                        )
+                      );
+                    }}
+                  >
+                    {name}
+                  </Button>
+                ))}
+              </div>
+              <div className="flex space-x-1 items-center">
+                <TokenIcon token={tokenFrom} size="2xs" />
+                <BodyText className="text-em-high">
+                  <span className="text-em-low">Balance:</span>{" "}
+                  {formattedBalance(balance)}
+                </BodyText>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="px-5 py-6 space-y-6">
+        <div className="space-y-2">
+          <TitleText weight="bold" className="text-em-med">
+            Stack WETH every
+          </TitleText>
+          <div className="space-y-6">
+            <div className="flex space-x-2">
+              {frequencyOptions.map(({ option, name }) => {
+                const isSelected = frequency === option;
+                return (
+                  <RadioButton
+                    key={option}
+                    name={option}
+                    id={option}
+                    checked={isSelected}
+                    value={option}
+                    onChange={(event) => setFrequency(event.target.value)}
+                  >
+                    <BodyText
+                      size={2}
+                      className={!isSelected ? "text-em-med" : ""}
                     >
                       {name}
-                    </Button>
-                  ))}
-                </div>
-                <div className="flex space-x-1 items-center">
-                  <TokenIcon token={tokenFrom} size="2xs" />
-                  <BodyText className="text-em-high">
-                    <span className="text-em-low">Balance:</span>{" "}
-                    {formattedBalance(balance)}
-                  </BodyText>
-                </div>
+                    </BodyText>
+                  </RadioButton>
+                );
+              })}
+            </div>
+            <div className="flex flex-col md:flex-row rounded-2xl border border-surface-50 divide-y md:divide-x divide-surface-50">
+              <div className="flex flex-col w-full px-4 py-3 space-y-2">
+                <BodyText size={2}>Starting from</BodyText>
+                <DatePicker
+                  dateTime={startDateTime}
+                  setDateTime={setStartDateTime}
+                  timeCaption="Start time"
+                  className="w-full"
+                />
               </div>
-            )}
-          </div>
-        </div>
-        <div className="px-5 py-6 space-y-6">
-          <div className="space-y-2">
-            <TitleText weight="bold" className="text-em-med">
-              Stack WETH every
-            </TitleText>
-            <div className="space-y-6">
-              <div className="flex space-x-2">
-                {frequencyOptions.map(({ option, name }) => {
-                  const isSelected = frequency === option;
-                  return (
-                    <RadioButton
-                      key={option}
-                      name={option}
-                      id={option}
-                      checked={isSelected}
-                      value={option}
-                      onChange={(event) => setFrequency(event.target.value)}
-                    >
-                      <BodyText
-                        size={2}
-                        className={!isSelected ? "text-em-med" : ""}
-                      >
-                        {name}
-                      </BodyText>
-                    </RadioButton>
-                  );
-                })}
-              </div>
-              <div className="flex flex-col md:flex-row rounded-2xl border border-surface-50 divide-y md:divide-x divide-surface-50">
-                <div className="flex flex-col w-full px-4 py-3 space-y-2">
-                  <BodyText size={2}>Starting from</BodyText>
-                  <DatePicker
-                    dateTime={startDateTime}
-                    setDateTime={setStartDateTime}
-                    timeCaption="Start time"
-                    className="w-full"
-                  />
-                </div>
-                <div className="flex flex-col w-full px-4 py-3 space-y-2">
-                  <BodyText size={2}>Until</BodyText>
-                  <DatePicker
-                    dateTime={endDateTime}
-                    setDateTime={setEndDateTime}
-                    timeCaption="End time"
-                    className="w-full"
-                    fromDate={startDateTime}
-                  />
-                </div>
+              <div className="flex flex-col w-full px-4 py-3 space-y-2">
+                <BodyText size={2}>Until</BodyText>
+                <DatePicker
+                  dateTime={endDateTime}
+                  setDateTime={setEndDateTime}
+                  timeCaption="End time"
+                  className="w-full"
+                  fromDate={startDateTime}
+                />
               </div>
             </div>
           </div>
-          <Button width="full" onClick={openConfirmStack}>
-            Stack Now
-          </Button>
         </div>
+        <Button width="full" onClick={openConfirmStack}>
+          Stack Now
+        </Button>
       </div>
       <TokenPicker
-        closeAction={closeTokenPicker}
+        closeAction={closeModal}
         initialFocusRef={searchTokenBarRef}
-        isOpen={isTokenPickerOpen}
+        isOpen={modalToOpen === ModalId.TOKEN_PICKER}
         onTokenSelect={selectToken}
       />
       <ConfirmStackModal
-        isOpen={isConfirmStackOpen}
-        closeAction={closeConfirmStack}
+        isOpen={modalToOpen === ModalId.CONFIRM_STACK}
+        closeAction={closeModal}
       />
-    </>
+    </div>
   );
 };
 
