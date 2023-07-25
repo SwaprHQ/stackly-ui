@@ -8,7 +8,3 @@ export interface StackOrder extends Order {
 export interface StackOrderProps {
   stackOrder: StackOrder;
 }
-
-export interface StackOrdersProps {
-  stackOrders: StackOrder[];
-}

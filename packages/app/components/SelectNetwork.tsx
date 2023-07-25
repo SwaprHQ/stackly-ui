@@ -5,26 +5,16 @@ import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
 import { ChainIcon } from "connectkit";
 import { Listbox, Transition } from "@headlessui/react";
 import { Fragment } from "react";
-import { useParams, usePathname, useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
-import { ChainId } from "@stackly/sdk";
 
 export const SelectNetwork = () => {
   const { switchNetwork } = useSwitchNetwork();
   const { chain, chains } = useNetwork();
   const { isConnected } = useAccount();
-  const router = useRouter();
-  const pathname = usePathname();
-  const params = useParams();
 
   if (!isConnected || !chain) return <></>;
 
-  const onValueChange = (networkId: string) => {
-    if (pathname.includes("stacks/"))
-      router.push(`/stacks/${networkId}/${params.address}`);
-
+  const onValueChange = (networkId: string) =>
     switchNetwork && switchNetwork(Number(networkId));
-  };
 
   return (
     <Listbox value={chain.id.toString()} onChange={onValueChange}>
