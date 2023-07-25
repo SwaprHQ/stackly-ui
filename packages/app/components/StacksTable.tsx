@@ -11,7 +11,7 @@ import {
   TableRow,
 } from "@/ui";
 import { StackedTokenLogoPair } from "@/components/StackedTokenLogoPair";
-import { StackModal } from "@/components/stacks/StackModal";
+import { StackModal } from "@/components/stack-tabs/StackModal";
 import {
   fundsAmountWithToken,
   getOrderPairSymbols,
