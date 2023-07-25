@@ -31,9 +31,9 @@ export const ModalContextProvider = ({
 
   const modalContext = useMemo(
     () => ({
-      openModalId,
       closeModal: () => setOpenModalId(null),
       openModal: (id: ModalId) => setOpenModalId(id),
+      openModalId,
     }),
     [openModalId]
   );
