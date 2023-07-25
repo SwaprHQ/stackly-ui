@@ -9,7 +9,7 @@ import {
   totalOrdersDone,
 } from "@/models/order";
 import { StackedTokenLogoPair } from "@/components/StackedTokenLogoPair";
-import { StackProgress } from "@/components/stacks/StackProgress";
+import { StackProgress } from "@/components/stack-tabs/StackProgress";
 import {
   Modal,
   ModalFooter,
@@ -26,7 +26,7 @@ import {
   formatTimestampToDateWithTime,
 } from "@/utils/datetime";
 import { FromToStackTokenPair } from "@/components/FromToStackTokenPair";
-import { StackOrdersTable } from "@/components/stacks/StackOrdersTable";
+import { StackOrdersTable } from "@/components/stack-tabs/StackOrdersTable";
 import {
   StackOrder,
   StackOrderProps,
