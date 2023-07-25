@@ -1,5 +1,5 @@
-import { EmptyStateStacksImg } from "@/public/assets";
 import { ButtonLink, HeadingText } from "@/ui";
+import { EmptyStateStacksImg } from "@/public/assets";
 
 export default function EmptyState() {
   return (
