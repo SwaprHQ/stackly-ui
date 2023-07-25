@@ -1,4 +1,4 @@
-import { Stackbox } from "@/components/stackbox/Stackbox";
+import { Stackbox } from "@/components";
 
 export default function Page() {
   return (
