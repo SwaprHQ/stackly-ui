@@ -1,42 +1,54 @@
 "use client";
 
-import { BodyText, Button, Icon, RadioButton, TitleText } from "@/ui";
 import { useRef, useState } from "react";
-import { ConfirmStackModal } from "./ConfirmStackModal";
-import { TokenPicker } from "@/components/token-picker/TokenPicker";
+import { cx } from "class-variance-authority";
+
+import { BodyText, Button, Icon, RadioButton, TitleText } from "@/ui";
+import { ConfirmStackModal, TokenIcon, TokenPicker } from "@/components";
+import { TokenFromTokenlist } from "@/models/token";
+
+interface SelectTokenButtonProps {
+  label: string;
+  onClick: (isTokenFrom?: boolean) => void;
+  token?: TokenFromTokenlist;
+}
 
 export const Stackbox = () => {
-  const [isConfirmStackOpen, setConfirmStackIsOpen] = useState(false);
-  const [isTokenPickerOpen, setTokenPickerIsOpen] = useState(false);
-
-  const openConfirmStack = () => setConfirmStackIsOpen(true);
-  const closeConfirmStack = () => setConfirmStackIsOpen(false);
-
-  const openTokenPicker = () => setTokenPickerIsOpen(true);
-  const closeTokenPicker = () => setTokenPickerIsOpen(false);
-
   const searchTokenBarRef = useRef<HTMLInputElement>(null);
+  const [isConfirmStackOpen, setConfirmStackIsOpen] = useState(false);
+  const [isPickingTokenFrom, setIsPickingTokenFrom] = useState<boolean>(false);
+  const [isTokenPickerOpen, setTokenPickerIsOpen] = useState(false);
+  const [tokenFrom, setTokenFrom] = useState<TokenFromTokenlist>();
+  const [tokenTo, setTokenTo] = useState<TokenFromTokenlist>();
+
+  const closeConfirmStack = () => setConfirmStackIsOpen(false);
+  const closeTokenPicker = () => setTokenPickerIsOpen(false);
+  const openConfirmStack = () => setConfirmStackIsOpen(true);
+  const openTokenPicker = (isTokenFrom = true) => {
+    setIsPickingTokenFrom(isTokenFrom);
+    setTokenPickerIsOpen(true);
+  };
+  const selectToken = isPickingTokenFrom ? setTokenFrom : setTokenTo;
 
   return (
-    <div>
+    <>
       <div className="max-w-lg mx-auto my-24 bg-white shadow-2xl rounded-2xl">
         <div className="px-5 py-4 border shadow-lg border-surface-50 rounded-2xl">
           <div className="flex items-end justify-between pb-4 border-b border-surface-50">
-            <div className="space-y-2">
-              <BodyText className="text-em-low">Deposit from</BodyText>
-              <Button action="secondary" size="sm" onClick={openTokenPicker}>
-                select token
-              </Button>
-            </div>
-            <div className="flex items-center justify-center p-2 w-14 bg-surface-50 rounded-2xl">
-              <Icon name="arrow-left" className="rotate-180" />
-            </div>
-            <div className="space-y-2">
-              <p className="text-sm font-semibold text-em-low">To receive in</p>
-              <Button action="secondary" size="sm" onClick={openTokenPicker}>
-                select token
-              </Button>
-            </div>
+            <SelectTokenButton
+              label="Deposit from"
+              onClick={openTokenPicker}
+              token={tokenFrom}
+            />
+            <Icon
+              name="arrow-left"
+              className="flex items-center justify-center p-2 w-16 h-9 bg-surface-50 rounded-2xl rotate-180"
+            />
+            <SelectTokenButton
+              label="To receive"
+              onClick={openTokenPicker}
+              token={tokenTo}
+            />
           </div>
           <div className="py-2">
             <input
@@ -91,11 +103,52 @@ export const Stackbox = () => {
         closeAction={closeTokenPicker}
         initialFocusRef={searchTokenBarRef}
         isOpen={isTokenPickerOpen}
+        onTokenSelect={selectToken}
       />
       <ConfirmStackModal
         isOpen={isConfirmStackOpen}
         closeAction={closeConfirmStack}
       />
+    </>
+  );
+};
+
+const SelectTokenButton = ({
+  label,
+  onClick,
+  token,
+}: SelectTokenButtonProps) => {
+  const isTokenFrom = label.toLowerCase().includes("deposit");
+  const handleButtonClick = () => onClick(isTokenFrom);
+
+  return (
+    <div
+      className={cx("flex flex-col space-y-2", {
+        "items-end": !isTokenFrom,
+      })}
+    >
+      <BodyText className="text-em-low">{label}</BodyText>
+      {token ? (
+        <Button
+          action="secondary"
+          className="leading-6 rounded-xl"
+          onClick={handleButtonClick}
+          size="sm"
+        >
+          <TokenIcon token={token} />
+          <BodyText className="font-semibold ml-1.5">{token.symbol}</BodyText>
+          <Icon name="caret-down" size={18} />
+        </Button>
+      ) : (
+        <Button
+          action="secondary"
+          className="leading-6 rounded-xl"
+          onClick={handleButtonClick}
+          size="sm"
+        >
+          Select token
+        </Button>
+      )}
     </div>
   );
 };
