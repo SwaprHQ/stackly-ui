@@ -1,7 +1,7 @@
-// @ts-nocheck
 "use client";
 
 import {
+  StackOrder,
   filterActiveOrders,
   filterCompletedOrders,
   getStackOrders,
@@ -10,7 +10,7 @@ import { Tab } from "@headlessui/react";
 import { BodyText, ButtonLink, HeadingText } from "@/ui";
 import { StacksTable } from "@/components/StacksTable";
 import { EmptyState } from "@/app/stacks/empty-state";
-import { getOrders } from "@/models/order";
+import { Order, getOrders } from "@/models/order";
 import { ChainId } from "@stackly/sdk";
 import { useEffect, useState } from "react";
 
@@ -20,33 +20,43 @@ export interface StackOrdersProps {
 }
 
 export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
-  const [currentOrders, setCurrentOrders] = useState([]);
-  const [currentStackOrders, setCurrentStackOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [completedOrders, setCompletedOrders] = useState<StackOrder[]>([]);
+  const [activeOrders, setActiveOrders] = useState<StackOrder[]>([]);
+  const [currentOrders, setCurrentOrders] = useState<Order[]>([]);
+  const [currentStackOrders, setCurrentStackOrders] = useState<StackOrder[]>(
+    []
+  );
 
   useEffect(() => {
-    async function fetchData() {
+    async function fetchOrdersData() {
       const orders = await getOrders(chainId, address.toLowerCase());
       if (orders) setCurrentOrders(orders);
     }
-    fetchData();
+    fetchOrdersData();
   }, [address, chainId]);
 
   useEffect(() => {
-    async function fetchData() {
+    async function fetchStackOrdersData() {
       const stackOrders = await getStackOrders(chainId, currentOrders);
       if (stackOrders) setCurrentStackOrders(stackOrders);
     }
-    fetchData();
-  }, [currentOrders]);
+    fetchStackOrdersData();
+  }, [chainId, currentOrders]);
+
+  useEffect(() => {
+    if (currentStackOrders?.length) {
+      setCompletedOrders(filterCompletedOrders(currentStackOrders));
+      setActiveOrders(filterActiveOrders(currentStackOrders));
+      setLoading(false);
+    }
+  }, [currentStackOrders]);
 
   if (currentOrders.length === 0) return <EmptyState />;
 
-  const completedOrders = filterCompletedOrders(currentStackOrders);
-  const hasCompletedOrders = completedOrders.length > 0;
-  const activeOrders = filterActiveOrders(currentStackOrders);
-  const hasActiveOrders = activeOrders.length > 0;
-
-  return (
+  return loading ? (
+    <div>Loading...</div>
+  ) : (
     <>
       <div className="flex items-center justify-between">
         <HeadingText size={3}>Your stacks</HeadingText>
@@ -80,14 +90,14 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
           </Tab.List>
           <Tab.Panels>
             <Tab.Panel>
-              {hasActiveOrders ? (
+              {activeOrders.length ? (
                 <StacksTable stackOrders={activeOrders} />
               ) : (
                 <EmptyStacks text=" No active stacks" />
               )}
             </Tab.Panel>
             <Tab.Panel>
-              {hasCompletedOrders ? (
+              {completedOrders.length ? (
                 <StacksTable stackOrders={completedOrders} />
               ) : (
                 <EmptyStacks text="No completed stacks" />

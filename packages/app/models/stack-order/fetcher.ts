@@ -7,8 +7,6 @@ export async function getStackOrders(
   chainId: ChainId,
   orders: Order[]
 ): Promise<StackOrder[]> {
-  console.log("getStackOrders");
-
   const ordersPromises = orders.map(async (order): Promise<StackOrder> => {
     const cowOrders = await getCowOrders(chainId, order.id);
     return { ...order, cowOrders };
