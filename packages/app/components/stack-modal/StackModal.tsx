@@ -4,11 +4,7 @@
 import Link from "next/link";
 import { ReactNode } from "react";
 
-import {
-  getOrderPairSymbols,
-  totalFundsUsed,
-  totalOrdersDone,
-} from "@/models/order";
+import { getOrderPairSymbols, totalOrdersDone } from "@/models/order";
 import { StackedTokenLogoPair } from "@/components/StackedTokenLogoPair";
 import { StackProgress } from "@/components/stack-modal/StackProgress";
 import {
@@ -32,7 +28,9 @@ import {
   StackOrder,
   StackOrderProps,
   calculateStackAveragePrice,
+  totalStackOrdersDone,
   totalStacked,
+  totalFundsUsed,
 } from "@/models/stack-order";
 import { formatTokenValue } from "@/utils/token";
 
@@ -109,7 +107,7 @@ export const StackModal = ({
             </TitleText>
             <StackProgress stackOrder={stackOrder} />
             <StackInfo stackOrder={stackOrder} />
-            {totalOrdersDone(stackOrder) > 0 && (
+            {totalStackOrdersDone(stackOrder) > 0 && (
               <StackOrdersTable stackOrder={stackOrder} />
             )}
           </div>

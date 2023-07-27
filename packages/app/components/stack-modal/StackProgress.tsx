@@ -1,14 +1,14 @@
 // @ts-nocheck
 
-import {
-  fundsAmountWithToken,
-  totalOrdersDone,
-  totalFundsUsed,
-} from "@/models/order";
+import { fundsAmountWithToken, totalOrdersDone } from "@/models/order";
 import { OrdersProgressBar } from "@/components/OrdersProgressBar";
 import { BodyText } from "@/ui";
 import { TokenIcon } from "@/components/TokenIcon";
-import { StackOrderProps } from "@/models/stack-order";
+import {
+  StackOrderProps,
+  totalStackOrdersDone,
+  totalFundsUsed,
+} from "@/models/stack-order";
 import { formatTokenValue } from "@/utils/token";
 
 export const StackProgress = ({ stackOrder }: StackOrderProps) => (
@@ -41,8 +41,8 @@ const OrdersExecuted = ({ stackOrder }: StackOrderProps) => {
         Executed:
       </BodyText>
       <BodyText size="responsive">
-        {totalOrdersDone(stackOrder)} <span className="text-xs">out of</span>{" "}
-        {stackOrder.orderSlots.length}
+        {totalStackOrdersDone(stackOrder)}{" "}
+        <span className="text-xs">out of</span> {stackOrder.orderSlots.length}
       </BodyText>
     </div>
   );
