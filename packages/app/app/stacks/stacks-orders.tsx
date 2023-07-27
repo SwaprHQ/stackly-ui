@@ -13,6 +13,7 @@ import { EmptyState } from "@/app/stacks/empty-state";
 import { Order, getOrders } from "@/models/order";
 import { ChainId } from "@stackly/sdk";
 import { useEffect, useState } from "react";
+import { cx } from "class-variance-authority";
 
 export interface StackOrdersProps {
   address: string;
@@ -52,66 +53,64 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
     }
   }, [currentStackOrders]);
 
-  if (currentOrders.length === 0) return <EmptyState />;
+  if (!loading && currentOrders.length === 0) return <EmptyState />;
 
-  return loading ? (
-    <div>Loading...</div>
-  ) : (
-    <>
-      <div className="flex items-center justify-between">
-        <HeadingText size={3}>Your stacks</HeadingText>
-        <ButtonLink
-          iconLeft="plus"
-          href="/"
-          width="fit"
-          size="sm"
-          className="hidden sm:flex"
-        >
-          Create New Stack
-        </ButtonLink>
-      </div>
-      <div className="space-y-6">
-        <Tab.Group>
-          <Tab.List>
-            <div className="flex space-x-2">
-              <Tab
-                as="button"
-                className="px-3 py-1.5 font-semibold rounded-lg ui-selected:bg-surface-75 ui-not-selected:text-em-low outline-none active:ring-2 active:ring-gray-100"
-              >
-                Active Stacks
-              </Tab>
-              <Tab
-                as="button"
-                className="px-3 py-1.5 font-semibold rounded-lg ui-selected:bg-surface-75 ui-not-selected:text-em-low outline-none active:ring-2 active:ring-gray-100"
-              >
-                Completed stacks
-              </Tab>
-            </div>
-          </Tab.List>
-          <Tab.Panels>
-            <Tab.Panel>
-              {activeOrders.length ? (
-                <StacksTable stackOrders={activeOrders} />
-              ) : (
-                <EmptyStacks text=" No active stacks" />
-              )}
-            </Tab.Panel>
-            <Tab.Panel>
-              {completedOrders.length ? (
-                <StacksTable stackOrders={completedOrders} />
-              ) : (
-                <EmptyStacks text="No completed stacks" />
-              )}
-            </Tab.Panel>
-          </Tab.Panels>
-        </Tab.Group>
-      </div>
-    </>
+  return (
+    <div className="space-y-6">
+      <Tab.Group>
+        <Tab.List>
+          <div className="flex space-x-2">
+            <Tab
+              as="button"
+              className="px-3 py-1.5 font-semibold rounded-lg ui-selected:bg-surface-75 ui-not-selected:text-em-low outline-none active:ring-2 active:ring-gray-100"
+            >
+              Active Stacks
+            </Tab>
+            <Tab
+              as="button"
+              className="px-3 py-1.5 font-semibold rounded-lg ui-selected:bg-surface-75 ui-not-selected:text-em-low outline-none active:ring-2 active:ring-gray-100"
+            >
+              Completed stacks
+            </Tab>
+          </div>
+        </Tab.List>
+        <Tab.Panels>
+          {loading ? (
+            <EmptyStacks className="animate-pulse" text="Loading..." />
+          ) : (
+            <>
+              <Tab.Panel>
+                {activeOrders.length ? (
+                  <StacksTable stackOrders={activeOrders} />
+                ) : (
+                  <EmptyStacks text="No active stacks" />
+                )}
+              </Tab.Panel>
+              <Tab.Panel>
+                {completedOrders.length ? (
+                  <StacksTable stackOrders={completedOrders} />
+                ) : (
+                  <EmptyStacks text="No completed stacks" />
+                )}
+              </Tab.Panel>
+            </>
+          )}
+        </Tab.Panels>
+      </Tab.Group>
+    </div>
   );
 };
 
-const EmptyStacks = ({ text }: { text: string }) => (
+const EmptyStacks = ({
+  text,
+  className,
+}: {
+  text: string;
+  className?: string;
+}) => (
   <div className="py-12 bg-white rounded-xl">
-    <BodyText className="text-center text-em-low">{text}</BodyText>
+    <BodyText className={cx("text-center text-em-low", className)}>
+      {text}
+    </BodyText>
   </div>
 );
