@@ -23,6 +23,7 @@ import {
   StackOrderProps,
   calculateStackAveragePrice,
   totalFundsUsed,
+  totalStackOrdersDone,
   totalStacked,
 } from "@/models/stack-order";
 import { formatTokenValue } from "@/utils/token";
@@ -127,7 +128,7 @@ const OrdersProgressText = ({ stackOrder }: StackOrderProps) =>
   ) : (
     <>
       <BodyText className="text-em-high">
-        {totalOrdersDone(stackOrder).toString()}
+        {totalStackOrdersDone(stackOrder).toString()}
       </BodyText>
       <BodyText className="text-em-low">{`/ ${stackOrder.orderSlots.length} orders`}</BodyText>
     </>
