@@ -5,6 +5,7 @@ import { createContext, useContext, ReactNode, useState, useMemo } from "react";
 export enum ModalId {
   CONFIRM_STACK = "confirmStack",
   STACK = "stack",
+  TOAST_CONTAINER = "toastContainer",
   TOKEN_PICKER = "tokenPicker",
 }
 

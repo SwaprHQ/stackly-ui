@@ -4,4 +4,5 @@ export * from "./icon/Icon";
 export * from "./modal";
 export * from "./table/Table";
 export * from "./text";
+export * from "./toast/Toast";
 export * from "./Calendar";
