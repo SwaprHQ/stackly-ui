@@ -8,7 +8,7 @@ export default function NotFound() {
   const discordLink = process.env.DISCORD_URL ? process.env.DISCORD_URL : "#";
 
   return (
-    <div className="flex flex-col items-center justify-center max-w-xl mx-auto space-y-7">
+    <div className="flex flex-col items-center justify-center max-w-xl mx-auto my-32 space-y-7">
       <StacksImg />
       <HeadingText size={3}>Page not found</HeadingText>
       <HeadingText className="text-center text-em-med">
