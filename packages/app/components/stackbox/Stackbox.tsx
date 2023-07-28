@@ -54,7 +54,7 @@ export const Stackbox = () => {
   const [isPickingTokenFrom, setIsPickingTokenFrom] = useState<boolean>(false);
   const [tokenFrom, setTokenFrom] = useState<TokenFromTokenlist>();
   const [tokenTo, setTokenTo] = useState<TokenFromTokenlist>();
-  const { closeModal, modalToOpen, openModal } = useModalContext();
+  const { closeModal, openModalId, openModal } = useModalContext();
 
   const { chain } = useNetwork();
   const { address } = useAccount();
@@ -230,11 +230,11 @@ export const Stackbox = () => {
       <TokenPicker
         closeAction={closeModal}
         initialFocusRef={searchTokenBarRef}
-        isOpen={modalToOpen === ModalId.TOKEN_PICKER}
+        isOpen={openModalId === ModalId.TOKEN_PICKER}
         onTokenSelect={selectToken}
       />
       <ConfirmStackModal
-        isOpen={modalToOpen === ModalId.CONFIRM_STACK}
+        isOpen={openModalId === ModalId.CONFIRM_STACK}
         closeAction={closeModal}
       />
     </div>

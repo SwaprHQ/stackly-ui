@@ -9,13 +9,13 @@ export enum ModalId {
 }
 
 export interface ModalContextProps {
-  modalToOpen: ModalId | null;
+  openModalId: ModalId | null;
   closeModal: () => void;
   openModal: (id: ModalId) => void;
 }
 
 export const ModalContext = createContext<ModalContextProps>({
-  modalToOpen: null,
+  openModalId: null,
   closeModal: () => {},
   openModal: (id: ModalId) => {},
 });
@@ -27,15 +27,15 @@ export interface ModalContextProviderProps {
 export const ModalContextProvider = ({
   children,
 }: ModalContextProviderProps) => {
-  const [modalToOpen, setModalToOpen] = useState<ModalId | null>(null);
+  const [openModalId, setOpenModalId] = useState<ModalId | null>(null);
 
   const modalContext = useMemo(
     () => ({
-      modalToOpen,
-      closeModal: () => setModalToOpen(null),
-      openModal: (id: ModalId) => setModalToOpen(id),
+      openModalId,
+      closeModal: () => setOpenModalId(null),
+      openModal: (id: ModalId) => setOpenModalId(id),
     }),
-    [modalToOpen]
+    [openModalId]
   );
 
   return (

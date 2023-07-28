@@ -34,7 +34,7 @@ import { ModalId, useModalContext } from "@/contexts";
 export const StacksTable = ({ stackOrders }: { stackOrders: StackOrder[] }) => {
   const [stackOrder, setStackOrder] = useState<StackOrder>();
 
-  const { closeModal, modalToOpen, openModal } = useModalContext();
+  const { closeModal, openModalId, openModal } = useModalContext();
 
   const setupAndOpenModal = (stackOrder: StackOrder) => {
     setStackOrder(stackOrder);
@@ -108,7 +108,7 @@ export const StacksTable = ({ stackOrders }: { stackOrders: StackOrder[] }) => {
       </Table>
       {stackOrder && (
         <StackModal
-          isOpen={modalToOpen === ModalId.STACK}
+          isOpen={openModalId === ModalId.STACK}
           closeAction={closeModal}
           stackOrder={stackOrder}
         />
