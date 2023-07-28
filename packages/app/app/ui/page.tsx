@@ -1,7 +1,11 @@
 "use client";
 
+import { useRef, useState } from "react";
+
 import { UISection } from "@/app/ui/sections/UISection";
 import { UISubSection } from "@/app/ui/sections/UISubSection";
+import { ConfirmStackModal, TokenPicker } from "@/components";
+import { ModalId, useModalContext } from "@/contexts";
 import {
   Button,
   ButtonLink,
@@ -10,10 +14,6 @@ import {
   DialogFooterActions,
   Icon,
   IconName,
-  Modal,
-  ModalContent,
-  ModalFooter,
-  ModalHeaderTitle,
   iconMap,
   ChipButton,
   RadioButton,
@@ -23,20 +23,82 @@ import {
   HeadingText,
   OverlineText,
   DialogContent,
+  Toast,
+  Severity,
 } from "@/ui";
-import { useRef, useState } from "react";
 
 export default function Page() {
   //  radioButtons
   const [activeRadionButton, setActiveRadioButton] = useState("0");
-  // modals
-  const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
-  const [isTokenPickerOpen, setTokenPickerOpen] = useState(false);
   // dialogs
   const [isErrorDialogOpen, setErrorDialogOpen] = useState(false);
   const [isOpenCancelStackingDialog, setOpenCancelStackingDialog] =
     useState(false);
   const dialogBtnRef = useRef<HTMLButtonElement>(null);
+  const { closeModal, openModalId, openModal } = useModalContext();
+
+  const dialogButtons = [
+    {
+      label: "Confirm",
+      onClick: () => setOpenCancelStackingDialog(true),
+    },
+    {
+      label: "Error",
+      onClick: () => setErrorDialogOpen(true),
+    },
+  ];
+
+  const modalButtons = [
+    {
+      label: "Confirm Stack",
+      onClick: () => openModal(ModalId.CONFIRM_STACK),
+    },
+    {
+      label: "Token Picker",
+      onClick: () => openModal(ModalId.TOKEN_PICKER),
+    },
+    {
+      label: "Toast",
+      onClick: () => openModal(ModalId.TOAST_CONTAINER),
+    },
+  ];
+
+  const textComponents = [
+    {
+      sizes: [3, 2, 1],
+      TextComponent: DisplayText,
+      title: "Display",
+    },
+
+    {
+      sizes: [6, 5, 4, 3, 2, 1],
+      TextComponent: HeadingText,
+      title: "Heading",
+    },
+
+    {
+      sizes: [2, 1],
+      TextComponent: TitleText,
+      title: "Title",
+    },
+
+    {
+      sizes: [3, 2, 1],
+      TextComponent: BodyText,
+      title: "Body",
+    },
+
+    {
+      sizes: [2, 1],
+      TextComponent: CaptionText,
+      title: "Caption",
+    },
+
+    {
+      TextComponent: OverlineText,
+      title: "Overline",
+    },
+  ];
 
   return (
     <div className="my-10">
@@ -201,159 +263,41 @@ export default function Page() {
       </UISection>
       <UISection title="Modal">
         <UISubSection title="Examples">
-          <Button
-            action="tertiary"
-            size="sm"
-            onClick={() => setConfirmModalOpen(true)}
-          >
-            confirm modal
-          </Button>
-          <Button
-            action="tertiary"
-            size="sm"
-            onClick={() => setTokenPickerOpen(true)}
-          >
-            token picker
-          </Button>
-          <Modal
-            isOpen={isConfirmModalOpen}
-            closeAction={() => setConfirmModalOpen(false)}
-          >
-            <ModalHeaderTitle
-              title="Confirm Stack"
-              closeAction={() => setConfirmModalOpen(false)}
+          {modalButtons.map((modal) => (
+            <DialogModalButton
+              key={modal.label}
+              label={modal.label}
+              onClick={modal.onClick}
             />
-            <ModalContent>
-              <div className="space-y-6">
-                <div className="flex items-center justify-center p-2 bg-surface-25 rounded-xl">
-                  <p>USDC</p>
-                  <Icon className="rotate-180" name="arrow-left" />
-                  <p>WETH</p>
-                </div>
-                <div>
-                  <p className="text-lg font-semibold text-center text-em-low">
-                    Stacks <span className="text-em-high">62.5 USDC</span> worth
-                    of <span className="text-em-high">WETH</span> every hour
-                  </p>
-                </div>
-                <div className="w-full h-32 p-3 space-y-2 bg-surface-25 rounded-xl">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm text-em-med">Starts on</p>
-                    <p className="text-sm">1 Jun 23, 2:00 PM</p>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm text-em-med">Ends on</p>
-                    <p className="text-sm">30 Jun 23, 2:00 PM</p>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm text-em-med">
-                      Total Funds to be used
-                    </p>
-                    <p className="text-sm">1000 USDC</p>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm text-em-med">Stack fee</p>
-                    <p className="text-sm">0.05%</p>
-                  </div>
-                </div>
-              </div>
-            </ModalContent>
-            <ModalFooter>
-              <Button
-                action="tertiary"
-                onClick={() => console.log("cancel")}
-                width="full"
-              >
-                Cancel
-              </Button>
-              <Button
-                action="primary"
-                onClick={() => console.log("stack")}
-                width="full"
-              >
-                Stack now
-              </Button>
-            </ModalFooter>
-          </Modal>
-          <Modal
-            isOpen={isTokenPickerOpen}
-            closeAction={() => setTokenPickerOpen(false)}
+          ))}
+          <ConfirmStackModal
+            isOpen={openModalId === ModalId.CONFIRM_STACK}
+            closeAction={closeModal}
+          />
+          <TokenPicker
+            closeAction={closeModal}
+            isOpen={openModalId === ModalId.TOKEN_PICKER}
+            onTokenSelect={closeModal}
+          />
+          <Toast
+            closeAction={closeModal}
+            isOpen={openModalId === ModalId.TOAST_CONTAINER}
+            severity={Severity.SUCCESS}
+            title="Your stack creation was successful"
           >
-            <ModalHeaderTitle
-              title="Select a token"
-              closeAction={() => setTokenPickerOpen(false)}
-            />
-            <ModalContent>
-              <div className="space-y-4">
-                <input
-                  type="search"
-                  placeholder="search token name or paste address"
-                  className="w-full p-2 bg-surface-75 rounded-xl"
-                />
-                <div className="py-3 space-y-2">
-                  <p className="text-xs font-semibold text-em-low">
-                    Common tokens
-                  </p>
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 font-semibold uppercase border text-em-med w-fit rounded-2xl">
-                      Eth
-                    </div>
-                    <div className="p-2 font-semibold uppercase border text-em-med w-fit rounded-2xl">
-                      Pepe
-                    </div>
-                    <div className="p-2 font-semibold uppercase border text-em-med w-fit rounded-2xl">
-                      usdc
-                    </div>
-                  </div>
-                </div>
-                <div className="relative">
-                  <div className="-mx-4 overflow-y-auto border-t h-72 border-surface-50">
-                    {[
-                      "1Inch",
-                      "Aave",
-                      "DAI",
-                      "USDC",
-                      "Matic",
-                      "Uni",
-                      "pepe",
-                      "Swapr",
-                      "ARB",
-                    ].map((token) => (
-                      <div
-                        className="flex justify-between w-full px-4 py-2 border-b cursor-pointer border-surface-50 hover:bg-surface-50"
-                        key={token}
-                        onClick={() => setTokenPickerOpen(false)}
-                      >
-                        <div className="flex items-center space-x-3">
-                          <div className="w-8 h-8 rounded-full bg-primary-100" />
-                          <BodyText weight="medium">{token}</BodyText>
-                        </div>
-                        <p>0</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </ModalContent>
-          </Modal>
+            <BodyText className="text-em-med">View your stacks</BodyText>
+          </Toast>
         </UISubSection>
       </UISection>
       <UISection title="Dialog">
         <UISubSection title="Examples">
-          <Button
-            action="tertiary"
-            size="sm"
-            onClick={() => setOpenCancelStackingDialog(true)}
-          >
-            confirm dialog
-          </Button>
-          <Button
-            action="tertiary"
-            size="sm"
-            onClick={() => setErrorDialogOpen(true)}
-          >
-            error dialog
-          </Button>
+          {dialogButtons.map((dialog) => (
+            <DialogModalButton
+              key={dialog.label}
+              label={dialog.label}
+              onClick={dialog.onClick}
+            />
+          ))}
           <Dialog
             initialFocusRef={dialogBtnRef}
             isOpen={isOpenCancelStackingDialog}
@@ -395,68 +339,55 @@ export default function Page() {
         title="Text components"
         description="Text components accept variant, bold and classname props."
       >
-        <UISubSection title="Display">
-          <div className="space-y-2">
-            {([3, 2, 1] as Array<1 | 2 | 3>).map((size) => (
-              <div className="flex items-baseline space-x-4" key={size}>
-                <p>{size}.</p>
-                <DisplayText size={size}>
-                  I want to DCA with Stackly
-                </DisplayText>
-              </div>
-            ))}
-          </div>
-        </UISubSection>
-        <UISubSection title="Heading">
-          <div className="space-y-2">
-            {([6, 5, 4, 3, 2, 1] as Array<1 | 2 | 3 | 4 | 5 | 6>).map(
-              (size) => (
-                <div className="flex items-baseline space-x-4" key={size}>
-                  <p>{size}.</p>
-                  <HeadingText size={size}>
-                    I want to DCA with Stackly
-                  </HeadingText>
-                </div>
-              )
-            )}
-          </div>
-        </UISubSection>
-        <UISubSection title="Title">
-          <div className="space-y-2">
-            {([2, 1] as Array<1 | 2>).map((size) => (
-              <div className="flex items-baseline space-x-4" key={size}>
-                <p>{size}.</p>
-                <TitleText size={size}>I want to DCA with Stackly</TitleText>
-              </div>
-            ))}
-          </div>
-        </UISubSection>
-        <UISubSection title="Body">
-          <div className="space-y-2">
-            {([3, 2, 1] as Array<1 | 2>).map((size) => (
-              <div className="flex items-baseline space-x-4" key={size}>
-                <p>{size}.</p>
-                <BodyText size={size}>I want to DCA with Stackly</BodyText>
-              </div>
-            ))}
-          </div>
-        </UISubSection>
-        <UISubSection title="Caption">
-          <div className="space-y-2">
-            {([2, 1] as Array<1 | 2>).map((size) => (
-              <div className="flex items-baseline space-x-4" key={size}>
-                <p>{size}.</p>
-                <CaptionText size={size}>
-                  I want to DCA with Stackly
-                </CaptionText>
-              </div>
-            ))}
-          </div>
-        </UISubSection>
-        <UISubSection title="Overline">
-          <OverlineText> I want to DCA with Stackly</OverlineText>
-        </UISubSection>
+        {textComponents.map((textSection) => (
+          <ExampleTextComponents
+            key={textSection.title}
+            sizes={textSection.sizes}
+            TextComponent={textSection.TextComponent}
+            title={textSection.title}
+          />
+        ))}
       </UISection>
     </div>
   );
 }
+
+interface DialogModalButtonProps {
+  label: string;
+  onClick: (args?: any) => void;
+}
+
+const DialogModalButton = ({ label, onClick }: DialogModalButtonProps) => (
+  <Button action="tertiary" size="sm" onClick={onClick}>
+    {label}
+  </Button>
+);
+
+interface ExampleTextComponentProps {
+  sizes?: number[];
+  TextComponent: any;
+  title: string;
+}
+
+const ExampleTextComponents = ({
+  sizes,
+  TextComponent,
+  title,
+}: ExampleTextComponentProps) => (
+  <UISubSection title={title}>
+    <div className="space-y-2">
+      {sizes ? (
+        sizes.map((size) => (
+          <div className="flex items-baseline space-x-4" key={size}>
+            <p>{size}.</p>
+            <TextComponent size={size}>
+              I want to DCA with Stackly
+            </TextComponent>
+          </div>
+        ))
+      ) : (
+        <TextComponent>I want to DCA with Stackly</TextComponent>
+      )}
+    </div>
+  </UISubSection>
+);
