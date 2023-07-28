@@ -13,7 +13,7 @@ import {
   TableRow,
 } from "@/ui";
 import { StackedTokenLogoPair } from "@/components/StackedTokenLogoPair";
-import { StackModal } from "@/components/stack-tabs/StackModal";
+import { StackModal } from "@/components/stack-modal/StackModal";
 import {
   fundsAmountWithToken,
   getOrderPairSymbols,
