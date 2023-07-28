@@ -1,5 +1,3 @@
-"use client";
-
 import StackOfCoinsImage from "@/public/assets/images/empty-state-stacks-coins.svg";
 import { ButtonLink, HeadingText } from "@/ui";
 
