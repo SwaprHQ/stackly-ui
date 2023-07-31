@@ -69,10 +69,7 @@ export function DatePicker({
           </Popover.Button>
           {open && (
             <>
-              <div
-                className="max-md:fixed max-md:inset-0 max-md:bg-black/30"
-                aria-hidden="true"
-              />
+              <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
               <Popover.Panel
                 ref={setPopperElement as Ref<HTMLDivElement>}
                 style={styles.popper}
@@ -149,7 +146,7 @@ export function DatePicker({
                         </div>
                       </div>
                       <Button
-                        action="secondary"
+                        action="primary"
                         onClick={() => {
                           const newDate = new Date(currentDate);
                           newDate.setHours(Number(hours));
