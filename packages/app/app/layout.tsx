@@ -8,9 +8,9 @@ const defaultStacklyUrl = "https://stackly.eth.limo";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.STACKLY_URL ?? defaultStacklyUrl),
-  title: "Stackly | Stack crypto over time.",
+  title: "Stackly | Effortless DCA.",
   description:
-    "Stackly is a simple, non-custodial tool that uses the CoW protocol to place recurring swaps based on DCA.."
+    "Stackly is a non-custodial tool that places recurring swaps based on dollar cost average (DCA) investment strategy.",
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {
