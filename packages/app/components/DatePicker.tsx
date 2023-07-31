@@ -9,7 +9,7 @@ import { Dispatch, Ref, SetStateAction, useEffect, useState } from "react";
 import { usePopper } from "react-popper";
 import { twMerge } from "tailwind-merge";
 
-interface IDatePicker {
+interface DatePickerProps {
   dateTime: Date;
   setDateTime: Dispatch<SetStateAction<Date>>;
   className?: string;
@@ -23,7 +23,7 @@ export function DatePicker({
   className,
   timeCaption,
   fromDate,
-}: IDatePicker) {
+}: DatePickerProps) {
   const [currentDate, setCurrentDate] = useState<Date>(new Date(dateTime));
   const [hours, setHours] = useState(format(currentDate, "HH"));
   const [minutes, setMinutes] = useState(format(currentDate, "mm"));
@@ -62,7 +62,7 @@ export function DatePicker({
             className={twMerge(
               "flex justify-between items-center focus:border-0",
               className
-            )} // text-em-low if default dates
+            )}
           >
             <span>{formattedDate()}</span>
             <Icon name="caret-down" className="mr-2 h-4 w-4 text-black" />
@@ -92,7 +92,7 @@ export function DatePicker({
                       className=""
                       fromDate={fromDate || new Date()}
                     />
-                    <div className="flex flex-col space-y-2 p-4 pt-2">
+                    <div className="flex flex-col space-y-2 p-4">
                       <div className="flex justify-between items-center">
                         <span>{timeCaption}</span>
                         <div className="flex space-x-2  items-center">
@@ -107,14 +107,14 @@ export function DatePicker({
                                 evt.preventDefault()
                               }
                               onChange={(event) => {
-                                const value = event.target.value;
-                                const numberValue = Number(value);
+                                const hours = event.target.value;
+                                const hoursNumber = Number(hours);
                                 if (
-                                  numberValue >= 0 &&
-                                  numberValue < 24 &&
-                                  value.length < 3
+                                  hoursNumber >= 0 &&
+                                  hoursNumber < 24 &&
+                                  hours.length < 3
                                 ) {
-                                  setHours(value);
+                                  setHours(hours);
                                 }
                               }}
                             />
@@ -131,14 +131,14 @@ export function DatePicker({
                                 evt.preventDefault()
                               }
                               onChange={(event) => {
-                                const value = event.target.value;
-                                const numberValue = Number(value);
+                                const minutes = event.target.value;
+                                const minutesNumber = Number(minutes);
                                 if (
-                                  numberValue >= 0 &&
-                                  numberValue < 60 &&
-                                  value.length < 3
+                                  minutesNumber >= 0 &&
+                                  minutesNumber < 60 &&
+                                  minutes.length < 3
                                 ) {
-                                  setMinutes(event.target.value);
+                                  setMinutes(minutes);
                                 }
                               }}
                             />
