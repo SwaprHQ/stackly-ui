@@ -7,6 +7,12 @@ export const metadata = {
   title: "Stackly | Stack crypto over time.",
   description:
     "Stackly is a simple, non-custodial tool that uses the CoW protocol to place recurring swaps based on DCA..",
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: 0,
+  },
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {
