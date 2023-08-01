@@ -7,10 +7,10 @@ import {
   getStackOrders,
 } from "@/models/stack-order";
 import { Tab } from "@headlessui/react";
-import { BodyText, ButtonLink, HeadingText } from "@/ui";
+import { BodyText } from "@/ui";
 import { StacksTable } from "@/components/StacksTable";
 import { EmptyState } from "@/app/stacks/empty-state";
-import { Order, getOrders } from "@/models/order";
+import { getOrders } from "@/models/order";
 import { ChainId } from "@stackly/sdk";
 import { useEffect, useState } from "react";
 import { cx } from "class-variance-authority";
@@ -24,36 +24,32 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
   const [loading, setLoading] = useState(true);
   const [completedOrders, setCompletedOrders] = useState<StackOrder[]>([]);
   const [activeOrders, setActiveOrders] = useState<StackOrder[]>([]);
-  const [currentOrders, setCurrentOrders] = useState<Order[]>([]);
   const [currentStackOrders, setCurrentStackOrders] = useState<StackOrder[]>(
     []
   );
 
   useEffect(() => {
-    async function fetchOrdersData() {
-      const orders = await getOrders(chainId, address.toLowerCase());
-      if (orders) setCurrentOrders(orders);
-    }
-    fetchOrdersData();
-  }, [address, chainId]);
+    function fetchData() {
+      getOrders(chainId, address.toLowerCase())
+        .then(async (orders) => {
+          if (!orders) return;
 
-  useEffect(() => {
-    async function fetchStackOrdersData() {
-      const stackOrders = await getStackOrders(chainId, currentOrders);
-      if (stackOrders) setCurrentStackOrders(stackOrders);
+          const stackOrders = await getStackOrders(chainId, orders);
+          if (stackOrders.length > 0) setCurrentStackOrders(stackOrders);
+        })
+        .finally(() => setLoading(false));
     }
-    fetchStackOrdersData();
-  }, [chainId, currentOrders]);
+    fetchData();
+  }, [address, chainId]);
 
   useEffect(() => {
     if (currentStackOrders?.length) {
       setCompletedOrders(filterCompletedOrders(currentStackOrders));
       setActiveOrders(filterActiveOrders(currentStackOrders));
-      setLoading(false);
     }
   }, [currentStackOrders]);
 
-  if (!loading && currentOrders.length === 0) return <EmptyState />;
+  if (!loading && currentStackOrders.length === 0) return <EmptyState />;
 
   return (
     <div className="space-y-6">
