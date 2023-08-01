@@ -6,5 +6,6 @@ import TokenPicker from "./token-picker/TokenPicker";
 export * from "./stackbox";
 export * from "./FromToStackTokenPair";
 export * from "./TokenIcon";
+export * from "./DatePicker";
 
 export { ConnectButton, Navbar, SelectNetwork, TokenPicker };
