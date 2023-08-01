@@ -22,11 +22,11 @@ export interface StackOrdersProps {
 
 export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
   const [loading, setLoading] = useState(true);
-  const [completedOrders, setCompletedOrders] = useState<StackOrder[]>([]);
-  const [activeOrders, setActiveOrders] = useState<StackOrder[]>([]);
   const [currentStackOrders, setCurrentStackOrders] = useState<StackOrder[]>(
     []
   );
+  const activeOrders = filterActiveOrders(currentStackOrders);
+  const completedOrders = filterCompletedOrders(currentStackOrders);
 
   useEffect(() => {
     function fetchData() {
@@ -41,13 +41,6 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
     }
     fetchData();
   }, [address, chainId]);
-
-  useEffect(() => {
-    if (currentStackOrders?.length) {
-      setCompletedOrders(filterCompletedOrders(currentStackOrders));
-      setActiveOrders(filterActiveOrders(currentStackOrders));
-    }
-  }, [currentStackOrders]);
 
   if (!loading && currentStackOrders.length === 0) return <EmptyState />;
 
