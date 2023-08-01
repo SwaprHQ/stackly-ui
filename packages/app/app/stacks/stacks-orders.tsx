@@ -32,7 +32,7 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
     function fetchData() {
       getOrders(chainId, address.toLowerCase())
         .then(async (orders) => {
-          if (!orders) return;
+          if (!orders || orders.length === 0) return;
 
           const stackOrders = await getStackOrders(chainId, orders);
           if (stackOrders.length > 0) setCurrentStackOrders(stackOrders);
