@@ -43,7 +43,7 @@ export function DatePicker({
     if (isToday(dateTime)) return format(dateTime, "'Today at' HH:mm");
     if (isTomorrow(dateTime)) return format(dateTime, "'Tomorrow at' HH:mm");
 
-    return format(dateTime, "dd MMM Y at HH:mm");
+    return format(dateTime, "dd MMM Y 'at' HH:mm");
   };
 
   useEffect(() => {
