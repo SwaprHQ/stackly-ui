@@ -29,17 +29,14 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
   const completedOrders = filterCompletedOrders(currentStackOrders);
 
   useEffect(() => {
-    function fetchData() {
-      getOrders(chainId, address.toLowerCase())
-        .then(async (orders) => {
-          if (!orders || orders.length === 0) return;
+    getOrders(chainId, address.toLowerCase())
+      .then(async (orders) => {
+        if (!orders || orders.length === 0) return;
 
-          const stackOrders = await getStackOrders(chainId, orders);
-          if (stackOrders.length > 0) setCurrentStackOrders(stackOrders);
-        })
-        .finally(() => setLoading(false));
-    }
-    fetchData();
+        const stackOrders = await getStackOrders(chainId, orders);
+        if (stackOrders.length > 0) setCurrentStackOrders(stackOrders);
+      })
+      .finally(() => setLoading(false));
   }, [address, chainId]);
 
   if (!loading && currentStackOrders.length === 0) return <EmptyState />;
