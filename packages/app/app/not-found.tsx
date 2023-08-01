@@ -14,7 +14,7 @@ export default function NotFound() {
       <HeadingText className="text-center text-em-med">
         {`We're sorry, but the page you are looking for cannot be found. Please
         check the URL and try again. If you believe this is an error, please
-        contact us on our`}{" "}
+        contact us on our `}
         <Link
           href={discordLink}
           className="cursor-pointer hover:underline underline-offset-2 text-em-high"
