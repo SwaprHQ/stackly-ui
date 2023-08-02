@@ -1,9 +1,7 @@
-import { Button, Icon, IconName, ModalHeader, TitleText } from "@/ui";
+import { Button, ModalHeader, TitleText } from "@/ui";
 
 interface ModalHeaderTitleProps {
   closeAction: () => void;
-  icon?: IconName;
-  iconClassname?: string;
   title: string;
 }
 
