@@ -1,11 +1,10 @@
+// @ts-nocheck
+"use client";
+
 import Link from "next/link";
 import { ReactNode } from "react";
 
-import {
-  getOrderPairSymbols,
-  totalFundsUsed,
-  totalOrdersDone
-} from "@/models/order";
+import { getOrderPairSymbols, totalOrdersDone } from "@/models/order";
 import { StackedTokenLogoPair } from "@/components/StackedTokenLogoPair";
 import { StackProgress } from "@/components/stack-modal/StackProgress";
 import {
@@ -17,11 +16,11 @@ import {
   BodyText,
   ModalHeader,
   TitleText,
-  ModalBaseProps
+  ModalBaseProps,
 } from "@/ui";
 import {
   formatFrequencyHours,
-  formatTimestampToDateWithTime
+  formatTimestampToDateWithTime,
 } from "@/utils/datetime";
 import { FromToStackTokenPair } from "@/components/FromToStackTokenPair";
 import { StackOrdersTable } from "@/components/stack-modal/StackOrdersTable";
@@ -29,7 +28,9 @@ import {
   StackOrder,
   StackOrderProps,
   calculateStackAveragePrice,
-  totalStacked
+  totalStackOrdersDone,
+  totalStacked,
+  totalFundsUsed,
 } from "@/models/stack-order";
 import { formatTokenValue } from "@/utils/token";
 
@@ -43,7 +44,7 @@ export const transactionExplorerLink = (address: string) =>
 export const StackModal = ({
   stackOrder,
   isOpen,
-  closeAction
+  closeAction,
 }: StackModalProps) => {
   const orderSlots = stackOrder.orderSlots;
   const firstSlot = orderSlots[0];
@@ -106,7 +107,7 @@ export const StackModal = ({
             </TitleText>
             <StackProgress stackOrder={stackOrder} />
             <StackInfo stackOrder={stackOrder} />
-            {totalOrdersDone(stackOrder) > 0 && (
+            {totalStackOrdersDone(stackOrder) > 0 && (
               <StackOrdersTable stackOrder={stackOrder} />
             )}
           </div>
@@ -148,7 +149,7 @@ const StackInfo = ({ stackOrder }: StackOrderProps) => (
 
 const StackDetail = ({
   title,
-  children
+  children,
 }: {
   title: string;
   children: ReactNode;

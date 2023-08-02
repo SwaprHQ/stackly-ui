@@ -1,7 +1,8 @@
 import { useState } from "react";
+import Link from "next/link";
 import { cowExplorerUrl } from "@/models/cow-order";
 import { getOrderPairSymbols } from "@/models/order";
-import { StackOrderProps } from "@/models/stack-order";
+import { StackOrder, StackOrderProps } from "@/models/stack-order";
 import {
   BodyText,
   Icon,
@@ -11,13 +12,12 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
+  TableRow,
 } from "@/ui";
 import { formatDate } from "@/utils/datetime";
 import { convertedAmount } from "@/utils/numbers";
 import { addressShortner } from "@/utils/token";
 import { Order as CowOrder } from "@cowprotocol/cow-sdk";
-import Link from "next/link";
 
 const INITIAL_NUMBER_OF_COW_ORDERS = 8;
 const MORE_ORDERS_NUMBER = 4;
@@ -59,7 +59,7 @@ export const StackOrdersTable = ({ stackOrder }: StackOrderProps) => {
         </TableHeader>
         {cowOrders.length > 0 ? (
           <>
-            <TableCowBody cowOrders={cowOrders} />
+            <TableCowBody stackOrder={stackOrder} cowOrders={cowOrders} />
             {hasMoreOrders && (
               <TableCaption className="pb-2 mt-2">
                 <div
@@ -79,10 +79,14 @@ export const StackOrdersTable = ({ stackOrder }: StackOrderProps) => {
   );
 };
 
-const TableCowBody = ({ cowOrders }: { cowOrders: CowOrder[] }) => {
-  const chainId = 100; // @todo change it to useNetwork wen sdk
-  const formatAmount = (amount: string) =>
-    convertedAmount(amount, 18).toFixed(4);
+const TableCowBody = ({
+  stackOrder,
+  cowOrders,
+}: {
+  stackOrder: StackOrder;
+  cowOrders: CowOrder[];
+}) => {
+  const chainId = 100; // @todo use context or useNetwork hook
   const averagePrice = (cowOrder: CowOrder) =>
     (
       Number(cowOrder.executedSellAmount) / Number(cowOrder.executedBuyAmount)
@@ -90,7 +94,7 @@ const TableCowBody = ({ cowOrders }: { cowOrders: CowOrder[] }) => {
 
   return (
     <TableBody>
-      {cowOrders.map(cowOrder => (
+      {cowOrders.map((cowOrder) => (
         <TableRow key={cowOrder.uid}>
           <TableCell className="py-2 md:table-cell">
             <BodyText
@@ -112,12 +116,18 @@ const TableCowBody = ({ cowOrders }: { cowOrders: CowOrder[] }) => {
           </TableCell>
           <TableCell className="py-2 text-right ">
             <BodyText className="text-em-med" size={1}>
-              {formatAmount(cowOrder.executedSellAmount)}
+              {convertedAmount(
+                cowOrder.executedSellAmount,
+                stackOrder.sellToken.decimals
+              ).toFixed(4)}
             </BodyText>
           </TableCell>
           <TableCell className="py-2 text-right ">
             <BodyText className="text-em-med" size={1}>
-              {formatAmount(cowOrder.executedBuyAmount)}
+              {convertedAmount(
+                cowOrder.executedBuyAmount,
+                stackOrder.buyToken.decimals
+              ).toFixed(4)}
             </BodyText>
           </TableCell>
           <TableCell className="hidden py-2 text-right md:table-cell">

@@ -8,22 +8,23 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
+  TableRow,
 } from "@/ui";
 import { StackedTokenLogoPair } from "@/components/StackedTokenLogoPair";
 import { StackModal } from "@/components/stack-modal/StackModal";
 import {
   fundsAmountWithToken,
   getOrderPairSymbols,
-  totalFundsUsed,
-  totalOrdersDone
+  totalOrdersDone,
 } from "@/models/order";
 import { formatTimestampToDateWithSuffix } from "@/utils/datetime";
 import {
   StackOrder,
   StackOrderProps,
   calculateStackAveragePrice,
-  totalStacked
+  totalFundsUsed,
+  totalStackOrdersDone,
+  totalStacked,
 } from "@/models/stack-order";
 import { formatTokenValue } from "@/utils/token";
 
@@ -50,7 +51,7 @@ export const StacksTable = ({ stackOrders }: { stackOrders: StackOrder[] }) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {stackOrders.map(order => (
+          {stackOrders.map((order) => (
             <TableRow key={order.id}>
               <TableCell className="flex items-center font-medium w-max">
                 <StackedTokenLogoPair order={order} />
@@ -127,7 +128,7 @@ const OrdersProgressText = ({ stackOrder }: StackOrderProps) =>
   ) : (
     <>
       <BodyText className="text-em-high">
-        {totalOrdersDone(stackOrder).toString()}
+        {totalStackOrdersDone(stackOrder).toString()}
       </BodyText>
       <BodyText className="text-em-low">{`/ ${stackOrder.orderSlots.length} orders`}</BodyText>
     </>
