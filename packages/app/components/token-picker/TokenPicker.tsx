@@ -1,81 +1,162 @@
 "use client";
 
-import { useTokenListContext } from "@/context/TokenListContext";
-import { Token } from "@/models/token/types";
+import { ChangeEvent, RefObject, forwardRef, useEffect, useState } from "react";
+
 import {
   BodyText,
+  Button,
+  ChipButton,
   Icon,
   Modal,
   ModalBaseProps,
   ModalContent,
   ModalHeaderTitle,
-  RadioButton
 } from "@/ui";
-import { TokenIcon } from "../TokenIcon";
+import { EmptyStateTokenPickerImg } from "@/public/assets";
+import { TokenFromTokenlist } from "@/models/token/types";
+import { TokenIcon } from "@/components";
 import { TOKEN_PICKER_COMMON_TOKENS } from "./constants";
+import { useTokenListContext } from "@/context/TokenListContext";
 
+const HALF_SECOND = 500;
+
+interface TokenPickerProps extends ModalBaseProps {
+  initialFocusRef?: RefObject<HTMLInputElement>;
+  onTokenSelect: (token: TokenFromTokenlist) => void;
+}
+
+interface CommonTokensProps {
+  onTokenSelect: (token: TokenFromTokenlist) => void;
+}
+
+interface SearchBarProps {
+  onSearch: (event: ChangeEvent<HTMLInputElement>) => void;
+  value: string;
+}
 interface TokenListRowProps {
-  token: Token;
-  closeAction: () => void;
+  token: TokenFromTokenlist;
+  onTokenSelect: (token: TokenFromTokenlist) => void;
 }
 
 interface TokenListProps {
-  closeAction: () => void;
-  tokenList: Token[];
+  onClearSearch: () => void;
+  onTokenSelect: (token: TokenFromTokenlist) => void;
+  tokenList: TokenFromTokenlist[];
+  tokenSearchQuery?: string;
 }
 
-export const TokenPicker = ({ isOpen, closeAction }: ModalBaseProps) => {
+const TokenPicker = ({
+  closeAction,
+  initialFocusRef,
+  isOpen,
+  onTokenSelect,
+}: TokenPickerProps) => {
+  const [tokenSearchQuery, setTokenSearchQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState(tokenSearchQuery);
+
   const { tokenList } = useTokenListContext();
 
+  const tokenListSearchCleanup = () => {
+    setDebouncedQuery("");
+    setTokenSearchQuery("");
+  };
+
+  const handleTokenSearchInput = (event: ChangeEvent<HTMLInputElement>) => {
+    setDebouncedQuery(event.target.value);
+  };
+
+  const handleModalClose = () => {
+    if (debouncedQuery) tokenListSearchCleanup();
+    closeAction();
+  };
+
+  const handleTokenSelect = (token: TokenFromTokenlist) => {
+    onTokenSelect(token);
+    handleModalClose();
+  };
+
+  /**
+   * Updates the token query value after 0.5s from the last
+   * keystroke of 'debouncedTerm'
+   */
+  useEffect(() => {
+    const timer = setTimeout(
+      () => setTokenSearchQuery(debouncedQuery),
+      HALF_SECOND
+    );
+
+    return () => clearTimeout(timer);
+  }, [debouncedQuery]);
+
   return (
-    <Modal closeAction={closeAction} isOpen={isOpen}>
-      <ModalHeaderTitle closeAction={closeAction} title="Select a token" />
+    <Modal
+      closeAction={handleModalClose}
+      isOpen={isOpen}
+      initialFocusRef={initialFocusRef}
+    >
+      <ModalHeaderTitle closeAction={handleModalClose} title="Select a token" />
       <ModalContent>
-        <SearchBar />
-        <CommonTokens />
-        <TokenList closeAction={closeAction} tokenList={tokenList} />
+        <SearchBar
+          ref={initialFocusRef}
+          onSearch={handleTokenSearchInput}
+          value={debouncedQuery}
+        />
+        <CommonTokens onTokenSelect={handleTokenSelect} />
+        <TokenList
+          onClearSearch={tokenListSearchCleanup}
+          onTokenSelect={handleTokenSelect}
+          tokenList={tokenList}
+          tokenSearchQuery={tokenSearchQuery}
+        />
       </ModalContent>
     </Modal>
   );
 };
 
-const SearchBar = () => (
-  <div className="flex items-center bg-surface-50 border border-surface-75 rounded-xl py-2 px-3 text-em-low">
-    <Icon className="text-em-med" name="search" size={18} />
-    <input
-      className="outline-none font-semibold flex-grow ml-2 bg-surface-50"
-      placeholder="Search token name or paste address"
-      type="text"
-    />
-  </div>
+const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(
+  ({ onSearch, value }, ref) => (
+    <div className="flex items-center bg-surface-50 border border-surface-75 rounded-xl py-2 px-3 text-em-low">
+      <Icon className="text-em-med" name="search" size={18} />
+      <input
+        className="outline-none font-semibold flex-grow ml-2 bg-surface-50 text-sm"
+        onChange={onSearch}
+        value={value}
+        placeholder="Search token name or paste address"
+        type="text"
+        ref={ref}
+      />
+    </div>
+  )
 );
+SearchBar.displayName = "Token Picker Search";
 
-const CommonTokens = () => (
+const CommonTokens = ({ onTokenSelect }: CommonTokensProps) => (
   <div className="mt-5">
-    <p className="text-xs font-semibold text-em-low">Common tokens</p>
+    <BodyText className="text-xs font-semibold text-em-low">
+      Common tokens
+    </BodyText>
     <div className="flex flex-wrap mt-2 gap-2">
-      {TOKEN_PICKER_COMMON_TOKENS.map((token: Token) => (
-        <RadioButton
-          checked={false}
+      {TOKEN_PICKER_COMMON_TOKENS.map((token: TokenFromTokenlist) => (
+        <ChipButton
           id={token.address}
           key={token.address}
           name={token.name}
-          onChange={() => {}}
-          value={token.name}
+          onClick={() => onTokenSelect(token)}
+          size="sm"
         >
           <TokenIcon token={token} />
-          <p className="font-semibold ml-1.5">{token.symbol}</p>
-        </RadioButton>
+          <BodyText className="font-semibold ml-1.5">{token.symbol}</BodyText>
+        </ChipButton>
       ))}
     </div>
   </div>
 );
 
-const TokenListRow = ({ closeAction, token }: TokenListRowProps) => (
+const TokenListRow = ({ onTokenSelect, token }: TokenListRowProps) => (
   <div
     className="flex justify-between w-full py-2 cursor-pointer hover:bg-surface-50"
     key={token.address}
-    onClick={closeAction}
+    onClick={() => onTokenSelect(token)}
   >
     <div className="flex items-center justify-between w-full">
       <div className="flex items-center space-x-3">
@@ -92,17 +173,55 @@ const TokenListRow = ({ closeAction, token }: TokenListRowProps) => (
   </div>
 );
 
-const TokenList = ({ closeAction, tokenList }: TokenListProps) => (
-  <div
-    className="mt-5 overflow-y-auto h-72 border-t border-surface-50 divide-y divide-surface-50"
-    id="tokenPickerList"
-  >
-    {tokenList.map(token => (
-      <TokenListRow
-        closeAction={closeAction}
-        key={token.address}
-        token={token}
-      />
-    ))}
-  </div>
-);
+const TokenList = ({
+  onClearSearch,
+  onTokenSelect,
+  tokenList,
+  tokenSearchQuery,
+}: TokenListProps) => {
+  const [filteredTokenList, setFilteredTokenList] =
+    useState<TokenFromTokenlist[]>(tokenList);
+
+  const handleClearSearch = () => {
+    onClearSearch();
+    setFilteredTokenList(tokenList);
+  };
+
+  useEffect(() => {
+    if (tokenSearchQuery) {
+      const filteredItems = tokenList.filter(
+        (token) =>
+          token.symbol.toLowerCase().includes(tokenSearchQuery.toLowerCase()) ||
+          token.name.toLowerCase().includes(tokenSearchQuery.toLowerCase())
+      );
+
+      setFilteredTokenList(filteredItems);
+    } else {
+      setFilteredTokenList(tokenList);
+    }
+  }, [tokenList, tokenSearchQuery]);
+
+  return (
+    <div className="mt-5 overflow-y-auto h-72 border-t border-surface-50 divide-y divide-surface-50">
+      {filteredTokenList.length
+        ? filteredTokenList.map((token) => (
+            <TokenListRow
+              onTokenSelect={onTokenSelect}
+              key={token.address}
+              token={token}
+            />
+          ))
+        : tokenSearchQuery && (
+            <div className="flex items-center justify-center flex-col mt-8 space-y-4">
+              <EmptyStateTokenPickerImg />
+              <BodyText>{`Nothing found for "${tokenSearchQuery}"`}</BodyText>
+              <Button action="secondary" onClick={handleClearSearch} size="md">
+                Clear search
+              </Button>
+            </div>
+          )}
+    </div>
+  );
+};
+
+export default TokenPicker;
