@@ -10,7 +10,7 @@ import { useState } from "react";
 
 interface TokenIconProps {
   className?: string;
-  size?: "lg" | "md" | "sm" | "xs";
+  size?: "lg" | "md" | "sm" | "xs" | "2xs";
   token: Token;
 }
 
@@ -65,11 +65,12 @@ export const tokenIconStyles = cva(
         lg: ["w-10 h-10 text-[7px]"],
         md: ["w-8 h-8 text-[6px]"],
         sm: ["w-6 h-6 text-[5px]"],
-        xs: ["w-5 h-5 text-[4px]"]
-      }
+        xs: ["w-5 h-5 text-[4px]"],
+        "2xs": ["w-4 h-4 text-[4px]"],
+      },
     },
     defaultVariants: {
-      size: "sm"
-    }
+      size: "sm",
+    },
   }
 );
