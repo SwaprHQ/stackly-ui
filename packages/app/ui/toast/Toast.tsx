@@ -52,7 +52,7 @@ export const Toast = ({
 
   return (
     <Modal
-      className={cx("py-6 pl-6 pr-4 !w-fit", toastStyles({ position }))}
+      className={toastStyles({ position })}
       closeAction={closeAction}
       isOpen={isOpen}
       withOpacity={false}
@@ -95,7 +95,7 @@ export const Toast = ({
   );
 };
 
-export const toastStyles = cva("fixed", {
+export const toastStyles = cva("py-6 pl-6 pr-4 !w-fit fixed", {
   variants: {
     position: {
       [ToastPosition.BOTTOM_LEFT]: "bottom-4 left-4",
