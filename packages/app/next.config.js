@@ -2,6 +2,8 @@
 const nextConfig = {
   output: "export",
   distDir: "../../dist",
+  reactStrictMode: true,
+  trailingSlash: true,
   webpack(config) {
     config.resolve.fallback = { "pino-pretty": false, lokijs: false };
 
