@@ -3,6 +3,7 @@
 import {
   StackOrder,
   filterActiveOrders,
+  filterCancelledOrders,
   filterCompletedOrders,
   getStackOrders,
 } from "@/models/stack-order";
@@ -27,6 +28,7 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
   );
   const activeOrders = filterActiveOrders(currentStackOrders);
   const completedOrders = filterCompletedOrders(currentStackOrders);
+  const cancelledOrders = filterCancelledOrders(currentStackOrders);
 
   useEffect(() => {
     getOrders(chainId, address.toLowerCase())
@@ -58,6 +60,12 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
             >
               Completed stacks
             </Tab>
+            <Tab
+              as="button"
+              className="px-3 py-1.5 font-semibold rounded-lg ui-selected:bg-surface-75 ui-not-selected:text-em-low outline-none active:ring-2 active:ring-gray-100"
+            >
+              Cancelled stacks
+            </Tab>
           </div>
         </Tab.List>
         <Tab.Panels>
@@ -77,6 +85,13 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
                   <StacksTable stackOrders={completedOrders} />
                 ) : (
                   <EmptyStacks text="No completed stacks" />
+                )}
+              </Tab.Panel>
+              <Tab.Panel>
+                {cancelledOrders.length ? (
+                  <StacksTable stackOrders={cancelledOrders} />
+                ) : (
+                  <EmptyStacks text="No cancelled stacks" />
                 )}
               </Tab.Panel>
             </>
