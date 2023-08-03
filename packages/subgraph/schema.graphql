@@ -18,13 +18,15 @@ type OrderFactory @entity {
 # Provides information about an ERC20 token
 #
 type Token @entity {
-  " Token address "
+  "Token address "
   id: ID!
-  " Number of decimals the token uses "
+  "Token address"
+  address: Bytes!
+  "Number of decimals the token uses "
   decimals: Int!
-  " Human-readable name of the token "
+  "Human-readable name of the token "
   name: String!
-  " Symbol of the token "
+  "Symbol of the token "
   symbol: String!
 }
 

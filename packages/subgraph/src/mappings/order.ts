@@ -18,6 +18,7 @@ export function createOrReturnTokenEntity(contractAddress: Address): Token {
   }
   let tokenContract = ERC20Contract.bind(contractAddress);
   token = new Token(contractAddress.toHex());
+  token.address = contractAddress;
   token.name = tokenContract.name();
   token.symbol = tokenContract.symbol();
   token.decimals = tokenContract.decimals();

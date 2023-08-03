@@ -36,6 +36,19 @@ yarn dev
 
 The development server will start at http://localhost:3000.
 
+## Subgraph
+
+To update the subgraph.yaml, go to `bin/build-subgraph.ts` and update the subgraph json. This script will run before deployment to create a new `subgraph.yaml`.
+
+Make sure that, `bin/config.ts` is updated to reflect the latest changes for contract `address` and `startBlock`.
+
+To deploy the Subgraph, you need to run the following commands:
+
+```
+yarn build
+yarn deploy
+```
+
 ## Deployment
 
 To deploy the Stackly project to production, you can use the following command:
