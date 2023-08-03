@@ -1,5 +1,4 @@
 import { GraphQLClient } from "graphql-request";
-import { filterAllButCancelledOrders } from "@/models/order/filters";
 import { getUserOrders, getSubgraphEndpoint, ChainId } from "@stackly/sdk";
 
 export async function getOrders(chainId: ChainId, address: string) {
@@ -9,7 +8,7 @@ export async function getOrders(chainId: ChainId, address: string) {
 
     if (!orders) throw "Failed to fetch subgraph data";
 
-    return filterAllButCancelledOrders(orders);
+    return orders;
   } catch (e) {
     console.error(e);
   }
