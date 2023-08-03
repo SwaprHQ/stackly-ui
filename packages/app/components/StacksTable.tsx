@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/ui";
-import { StackedTokenLogoPair } from "@/components/StackedTokenLogoPair";
+import { StackedTokenLogoPair } from "@/components";
 import { StackModal } from "@/components/stack-modal/StackModal";
 import {
   fundsAmountWithToken,

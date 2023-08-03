@@ -1,9 +1,9 @@
 import { DotsSpinnerImg } from "@/public/assets";
 import { Dialog, DialogContent, ModalBaseProps } from "@/ui";
 
-export const StackTransactionLoading = ({
+export const DialogConfirmTransactionLoading = ({
   closeAction,
-  isOpen
+  isOpen,
 }: ModalBaseProps) => (
   <Dialog closeAction={closeAction} isOpen={isOpen}>
     <DotsSpinnerImg className="animate-spin" />
