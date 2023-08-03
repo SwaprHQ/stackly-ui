@@ -7,7 +7,7 @@ export async function getOrders(chainId: ChainId, address: string) {
     const graphqlClient = new GraphQLClient(getSubgraphEndpoint(chainId));
     const orders = await getUserOrders(graphqlClient, address);
 
-    if (!orders) throw new Error("Failed to fetch SDK data");
+    if (!orders) throw "Failed to fetch subgraph data";
 
     return filterAllButCancelledOrders(orders);
   } catch (e) {
