@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 
 import { getOrderPairSymbols, totalOrdersDone } from "@/models/order";
 import { StackedTokenLogoPair } from "@/components/StackedTokenLogoPair";
@@ -17,6 +17,9 @@ import {
   ModalHeader,
   TitleText,
   ModalBaseProps,
+  DialogContent,
+  DialogFooterActions,
+  Dialog,
 } from "@/ui";
 import {
   formatFrequencyHours,
@@ -31,8 +34,12 @@ import {
   totalStackOrdersDone,
   totalStacked,
   totalFundsUsed,
+  totalFundsUsedRaw,
 } from "@/models/stack-order";
 import { formatTokenValue } from "@/utils/token";
+import { getDCAOrderContract } from "@stackly/sdk";
+import { useEthersSigner } from "@/utils/ethers";
+import { convertedAmount } from "@/utils/numbers";
 
 interface StackModalProps extends ModalBaseProps {
   stackOrder: StackOrder;
@@ -46,11 +53,41 @@ export const StackModal = ({
   isOpen,
   closeAction,
 }: StackModalProps) => {
+  const [isOpenCancelStackingDialog, setIsOpenCancelStackingDialog] =
+    useState(false);
+
   const orderSlots = stackOrder.orderSlots;
   const firstSlot = orderSlots[0];
   const lastSlot = orderSlots[orderSlots.length - 1];
   const nextSlot = orderSlots[totalOrdersDone(stackOrder)];
-  const stackIsComplete = totalOrdersDone(stackOrder) === orderSlots.length;
+  const remainingFunds =
+    convertedAmount(stackOrder.amount, stackOrder.buyToken.decimals) -
+    totalFundsUsed(stackOrder);
+
+  const stackIsComplete =
+    totalOrdersDone(stackOrder) === orderSlots.length && remainingFunds === 0;
+
+  const signer = useEthersSigner();
+
+  const cancelStack = async () => {
+    if (!signer) return;
+
+    try {
+      // setIsCanceling(true);
+
+      const tx = await getDCAOrderContract(stackOrder.id, signer).cancel();
+      console.log("tx:", tx);
+      // setCancelOrderTransaction(tx);
+      const receipt = await tx.wait();
+      console.log("receipt:", receipt);
+      // setCancelOrderReceipt(receipt);
+      // console.log('receipt:', receipt)
+      // setIsCanceling(false);
+    } catch (e) {
+      // setIsCanceling(false);
+      console.error("error", e);
+    }
+  };
 
   return (
     <div>
@@ -113,11 +150,11 @@ export const StackModal = ({
           </div>
         </ModalContent>
         <ModalFooter>
-          {!stackIsComplete && (
+          {!stackOrder.cancelledAt && !stackIsComplete && (
             <Button
               size="sm"
               action="secondary"
-              onClick={() => alert("Are you sure you want to cancel stacking?")}
+              onClick={() => setIsOpenCancelStackingDialog(true)}
               width="full"
             >
               Cancel Stacking
@@ -125,6 +162,22 @@ export const StackModal = ({
           )}
         </ModalFooter>
       </Modal>
+      <Dialog
+        isOpen={isOpenCancelStackingDialog}
+        closeAction={() => setIsOpenCancelStackingDialog(false)}
+      >
+        <DialogContent
+          title=" Are you sure you want to cancel stacking?"
+          description="The remaining funds will be sent back to your
+                wallet."
+        />
+        <DialogFooterActions
+          primaryAction={() => setIsOpenCancelStackingDialog(false)}
+          primaryText="Keep stacking"
+          secondaryAction={() => cancelStack()}
+          secondaryText="Cancel"
+        />
+      </Dialog>
     </div>
   );
 };
