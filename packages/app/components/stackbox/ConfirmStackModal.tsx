@@ -43,11 +43,7 @@ export const ConfirmStackModal = ({ isOpen, closeAction }: ModalBaseProps) => {
       closeAction={closeAction}
       initialFocusRef={focusBtnRef}
     >
-      <ModalHeaderTitle
-        closeAction={closeAction}
-        title="Confirm Stack"
-        withDivider
-      />
+      <ModalHeaderTitle closeAction={closeAction} title="Confirm Stack" />
       <ModalContent>
         <div className="space-y-6">
           <div className="flex items-center px-4 py-2 mx-auto space-x-4 bg-surface-25 rounded-3xl w-fit">
