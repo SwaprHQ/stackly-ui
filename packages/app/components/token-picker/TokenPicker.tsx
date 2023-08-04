@@ -94,11 +94,7 @@ const TokenPicker = ({
       isOpen={isOpen}
       initialFocusRef={initialFocusRef}
     >
-      <ModalHeaderTitle
-        closeAction={handleModalClose}
-        title="Select a token"
-        withDivider
-      />
+      <ModalHeaderTitle closeAction={handleModalClose} title="Select a token" />
       <ModalContent>
         <SearchBar
           ref={initialFocusRef}
