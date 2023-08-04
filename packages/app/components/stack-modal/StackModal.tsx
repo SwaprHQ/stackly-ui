@@ -5,8 +5,6 @@ import Link from "next/link";
 import { ReactNode, useState } from "react";
 
 import { getOrderPairSymbols, totalOrdersDone } from "@/models/order";
-import { StackedTokenLogoPair } from "@/components/StackedTokenLogoPair";
-import { StackProgress } from "@/components/stack-modal/StackProgress";
 import {
   Modal,
   ModalFooter,
@@ -25,8 +23,6 @@ import {
   formatFrequencyHours,
   formatTimestampToDateWithTime,
 } from "@/utils/datetime";
-import { FromToStackTokenPair } from "@/components/FromToStackTokenPair";
-import { StackOrdersTable } from "@/components/stack-modal/StackOrdersTable";
 import {
   StackOrder,
   StackOrderProps,
@@ -34,16 +30,24 @@ import {
   totalStackOrdersDone,
   totalStacked,
   totalFundsUsed,
-  totalFundsUsedRaw,
 } from "@/models/stack-order";
 import { formatTokenValue } from "@/utils/token";
 import { getDCAOrderContract } from "@stackly/sdk";
 import { useEthersSigner } from "@/utils/ethers";
 import { convertedAmount } from "@/utils/numbers";
+import {
+  StackedTokenLogoPair,
+  DialogConfirmTransactionLoading,
+  FromToStackTokenPair,
+} from "@/components";
+import { StackProgress } from "@/components/stack-modal/StackProgress";
+import { StackOrdersTable } from "@/components/stack-modal/StackOrdersTable";
 
 interface StackModalProps extends ModalBaseProps {
   stackOrder: StackOrder;
 }
+
+export const txEplorerLink = (tx: string) => `https://gnosisscan.io/tx/${tx}`;
 
 export const transactionExplorerLink = (address: string) =>
   `https://gnosisscan.io/address/${address}#tokentxns`;
@@ -53,45 +57,62 @@ export const StackModal = ({
   isOpen,
   closeAction,
 }: StackModalProps) => {
-  const [isOpenCancelStackingDialog, setIsOpenCancelStackingDialog] =
-    useState(false);
+  const signer = useEthersSigner();
+
+  const [isOpenCancelationDialog, setIsOpenCancelationDialog] = useState(false);
+  const [isCancelationProcessing, setIsCancelationProcessing] = useState(false);
+  const [isCancelationSuccess, setIsCancelationSuccess] = useState(false);
+  const [cancelationTx, setCancelationTx] = useState();
 
   const orderSlots = stackOrder.orderSlots;
   const firstSlot = orderSlots[0];
   const lastSlot = orderSlots[orderSlots.length - 1];
   const nextSlot = orderSlots[totalOrdersDone(stackOrder)];
+
   const remainingFunds =
     convertedAmount(stackOrder.amount, stackOrder.buyToken.decimals) -
     totalFundsUsed(stackOrder);
 
+  const remainingFundsDescription =
+    remainingFunds > 0 &&
+    `remaining funds, ${remainingFunds} ${stackOrder.sellToken.symbol}`;
+
   const stackIsComplete =
     totalOrdersDone(stackOrder) === orderSlots.length && remainingFunds === 0;
-
-  const signer = useEthersSigner();
 
   const cancelStack = async () => {
     if (!signer) return;
 
     try {
-      // setIsCanceling(true);
-
+      setIsCancelationProcessing(true);
       const tx = await getDCAOrderContract(stackOrder.id, signer).cancel();
-      console.log("tx:", tx);
-      // setCancelOrderTransaction(tx);
-      const receipt = await tx.wait();
-      console.log("receipt:", receipt);
-      // setCancelOrderReceipt(receipt);
-      // console.log('receipt:', receipt)
-      // setIsCanceling(false);
+      setCancelationTx(tx);
+      await tx.wait().then(() => {
+        setIsCancelationProcessing(false);
+        setIsCancelationSuccess(true);
+      });
     } catch (e) {
-      // setIsCanceling(false);
+      setIsCancelationProcessing(false);
       console.error("error", e);
     }
   };
 
   return (
     <div>
-      <Modal maxWidth="2xl" isOpen={isOpen} closeAction={closeAction}>
+      <Modal
+        maxWidth="2xl"
+        isOpen={isOpen}
+        closeAction={() => {
+          if (
+            !(
+              isCancelationProcessing ||
+              isOpenCancelationDialog ||
+              isCancelationSuccess
+            )
+          )
+            closeAction();
+        }}
+      >
         <ModalHeader>
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center space-x-2">
@@ -154,7 +175,7 @@ export const StackModal = ({
             <Button
               size="sm"
               action="secondary"
-              onClick={() => setIsOpenCancelStackingDialog(true)}
+              onClick={() => setIsOpenCancelationDialog(true)}
               width="full"
             >
               Cancel Stacking
@@ -163,25 +184,61 @@ export const StackModal = ({
         </ModalFooter>
       </Modal>
       <Dialog
-        isOpen={isOpenCancelStackingDialog}
-        closeAction={() => setIsOpenCancelStackingDialog(false)}
+        isOpen={isOpenCancelationDialog}
+        closeAction={() => setIsOpenCancelationDialog(false)}
       >
         <DialogContent
           title=" Are you sure you want to cancel stacking?"
-          description="The remaining funds will be sent back to your
-                wallet."
+          description={`The ${remainingFundsDescription}, will be sent to your wallet`}
         />
         <DialogFooterActions
-          primaryAction={() => setIsOpenCancelStackingDialog(false)}
-          primaryText="Keep stacking"
-          secondaryAction={() => cancelStack()}
+          primaryAction={() => cancelStack()}
+          primaryText="Proceed"
+          secondaryAction={() => setIsOpenCancelationDialog(false)}
           secondaryText="Cancel"
+        />
+      </Dialog>
+      <DialogConfirmTransactionLoading isOpen={isCancelationProcessing}>
+        {cancelationTx && cancelationTx.hash && (
+          <CancelTransactionLink txHash={cancelationTx.hash} />
+        )}
+      </DialogConfirmTransactionLoading>
+      <Dialog
+        isOpen={isCancelationSuccess}
+        closeAction={() => setIsCancelationSuccess(false)}
+      >
+        <Icon name="check" className="text-primary-400" size={38} />
+        <DialogContent
+          title="Stack Cancelled"
+          description={`The ${remainingFundsDescription}, were sent to your wallet`}
+        />
+        {cancelationTx && cancelationTx.hash && (
+          <CancelTransactionLink txHash={cancelationTx.hash} />
+        )}
+        <DialogFooterActions
+          primaryAction={() => {
+            // close modals
+            setIsCancelationSuccess(false);
+            setIsCancelationProcessing(false);
+            closeAction();
+            // todo: update stacks list
+          }}
+          primaryText="Back to Stacks"
         />
       </Dialog>
     </div>
   );
 };
 
+const CancelTransactionLink = ({ txHash }) => (
+  <a
+    className="capitalize text-primary-100"
+    href={txEplorerLink(txHash)}
+    target="blank"
+  >
+    check transaction
+  </a>
+);
 const StackInfo = ({ stackOrder }: StackOrderProps) => (
   <div className="flex flex-col justify-between gap-2 px-4 py-3 mt-6 mb-4 md:items-center md:flex-row bg-surface-25 rounded-2xl">
     <FromToStackTokenPair
