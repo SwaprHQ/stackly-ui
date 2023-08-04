@@ -1,4 +1,4 @@
-import { Order as StacklyOrder } from "@stackly/sdk/dist/vaults/subgraph";
+import { Order as StacklyOrder } from "@stackly/sdk";
 
 export interface Order extends StacklyOrder {}
 export interface OrderProps {
