@@ -28,7 +28,13 @@ import {
 } from "@/models/stack-order";
 import { formatTokenValue } from "@/utils/token";
 
-export const StacksTable = ({ stackOrders }: { stackOrders: StackOrder[] }) => {
+export const StacksTable = ({
+  stackOrders,
+  refetchStacks,
+}: {
+  stackOrders: StackOrder[];
+  refetchStacks: () => void;
+}) => {
   const [stackOrder, setStackOrder] = useState<StackOrder>();
   const [isModalOpen, setModalOpen] = useState(false);
   const closeModal = () => setModalOpen(false);
@@ -105,6 +111,7 @@ export const StacksTable = ({ stackOrders }: { stackOrders: StackOrder[] }) => {
       </Table>
       {stackOrder && (
         <StackModal
+          refetchStacks={refetchStacks}
           isOpen={isModalOpen}
           closeAction={closeModal}
           stackOrder={stackOrder}

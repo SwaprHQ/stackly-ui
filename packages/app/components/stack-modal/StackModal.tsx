@@ -45,6 +45,7 @@ import { StackOrdersTable } from "@/components/stack-modal/StackOrdersTable";
 
 interface StackModalProps extends ModalBaseProps {
   stackOrder: StackOrder;
+  refetchStacks: () => void;
 }
 
 export const txEplorerLink = (tx: string) => `https://gnosisscan.io/tx/${tx}`;
@@ -55,14 +56,17 @@ export const transactionExplorerLink = (address: string) =>
 export const StackModal = ({
   stackOrder,
   isOpen,
+  refetchStacks,
   closeAction,
 }: StackModalProps) => {
   const signer = useEthersSigner();
 
-  const [isOpenCancelationDialog, setIsOpenCancelationDialog] = useState(false);
-  const [isCancelationProcessing, setIsCancelationProcessing] = useState(false);
-  const [isCancelationSuccess, setIsCancelationSuccess] = useState(false);
-  const [cancelationTx, setCancelationTx] = useState();
+  const [isOpenCancellationDialog, setIsOpenCancellationDialog] =
+    useState(false);
+  const [isCancellationProcessing, setIsCancellationProcessing] =
+    useState(false);
+  const [isCancellationSuccess, setIsCancellationSuccess] = useState(false);
+  const [cancellationTx, setCancellationTx] = useState();
 
   const orderSlots = stackOrder.orderSlots;
   const firstSlot = orderSlots[0];
@@ -84,15 +88,15 @@ export const StackModal = ({
     if (!signer) return;
 
     try {
-      setIsCancelationProcessing(true);
+      setIsCancellationProcessing(true);
       const tx = await getDCAOrderContract(stackOrder.id, signer).cancel();
-      setCancelationTx(tx);
+      setCancellationTx(tx);
       await tx.wait().then(() => {
-        setIsCancelationProcessing(false);
-        setIsCancelationSuccess(true);
+        setIsCancellationProcessing(false);
+        setIsCancellationSuccess(true);
       });
     } catch (e) {
-      setIsCancelationProcessing(false);
+      setIsCancellationProcessing(false);
       console.error("error", e);
     }
   };
@@ -105,9 +109,9 @@ export const StackModal = ({
         closeAction={() => {
           if (
             !(
-              isCancelationProcessing ||
-              isOpenCancelationDialog ||
-              isCancelationSuccess
+              isCancellationProcessing ||
+              isOpenCancellationDialog ||
+              isCancellationSuccess
             )
           )
             closeAction();
@@ -175,7 +179,7 @@ export const StackModal = ({
             <Button
               size="sm"
               action="secondary"
-              onClick={() => setIsOpenCancelationDialog(true)}
+              onClick={() => setIsOpenCancellationDialog(true)}
               width="full"
             >
               Cancel Stacking
@@ -184,8 +188,8 @@ export const StackModal = ({
         </ModalFooter>
       </Modal>
       <Dialog
-        isOpen={isOpenCancelationDialog}
-        closeAction={() => setIsOpenCancelationDialog(false)}
+        isOpen={isOpenCancellationDialog}
+        closeAction={() => setIsOpenCancellationDialog(false)}
       >
         <DialogContent
           title=" Are you sure you want to cancel stacking?"
@@ -194,34 +198,37 @@ export const StackModal = ({
         <DialogFooterActions
           primaryAction={() => cancelStack()}
           primaryText="Proceed"
-          secondaryAction={() => setIsOpenCancelationDialog(false)}
+          secondaryAction={() => setIsOpenCancellationDialog(false)}
           secondaryText="Cancel"
         />
       </Dialog>
-      <DialogConfirmTransactionLoading isOpen={isCancelationProcessing}>
-        {cancelationTx && cancelationTx.hash && (
-          <CancelTransactionLink txHash={cancelationTx.hash} />
+      <DialogConfirmTransactionLoading
+        isOpen={isCancellationProcessing}
+        title={cancellationTx && "Proceeding cancellation"}
+        description={cancellationTx && "Waiting for transaction confirmation."}
+      >
+        {cancellationTx && cancellationTx.hash && (
+          <CancelTransactionLink txHash={cancellationTx.hash} />
         )}
       </DialogConfirmTransactionLoading>
       <Dialog
-        isOpen={isCancelationSuccess}
-        closeAction={() => setIsCancelationSuccess(false)}
+        isOpen={isCancellationSuccess}
+        closeAction={() => setIsCancellationSuccess(false)}
       >
         <Icon name="check" className="text-primary-400" size={38} />
         <DialogContent
           title="Stack Cancelled"
           description={`The ${remainingFundsDescription}, were sent to your wallet`}
         />
-        {cancelationTx && cancelationTx.hash && (
-          <CancelTransactionLink txHash={cancelationTx.hash} />
+        {cancellationTx && cancellationTx.hash && (
+          <CancelTransactionLink txHash={cancellationTx.hash} />
         )}
         <DialogFooterActions
           primaryAction={() => {
-            // close modals
-            setIsCancelationSuccess(false);
-            setIsCancelationProcessing(false);
+            refetchStacks();
+            setIsCancellationSuccess(false);
+            setIsCancellationProcessing(false);
             closeAction();
-            // todo: update stacks list
           }}
           primaryText="Back to Stacks"
         />

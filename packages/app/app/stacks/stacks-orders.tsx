@@ -1,5 +1,8 @@
 "use client";
 
+import { useCallback, useEffect, useState } from "react";
+import { cx } from "class-variance-authority";
+import { Tab } from "@headlessui/react";
 import {
   StackOrder,
   filterActiveOrders,
@@ -7,14 +10,11 @@ import {
   filterCompletedOrders,
   getStackOrders,
 } from "@/models/stack-order";
-import { Tab } from "@headlessui/react";
+import { ChainId } from "@stackly/sdk";
 import { BodyText } from "@/ui";
 import { StacksTable } from "@/components/StacksTable";
 import { EmptyState } from "@/app/stacks/empty-state";
 import { getOrders } from "@/models/order";
-import { ChainId } from "@stackly/sdk";
-import { useEffect, useState } from "react";
-import { cx } from "class-variance-authority";
 
 export interface StackOrdersProps {
   address: string;
@@ -30,7 +30,7 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
   const completedOrders = filterCompletedOrders(currentStackOrders);
   const cancelledOrders = filterCancelledOrders(currentStackOrders);
 
-  useEffect(() => {
+  const fetchData = useCallback(() => {
     getOrders(chainId, address.toLowerCase())
       .then(async (orders) => {
         if (!orders || orders.length === 0) return;
@@ -40,6 +40,8 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
       })
       .finally(() => setLoading(false));
   }, [address, chainId]);
+
+  useEffect(() => fetchData(), [fetchData]);
 
   if (!loading && currentStackOrders.length === 0) return <EmptyState />;
 
@@ -75,21 +77,30 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
             <>
               <Tab.Panel>
                 {activeOrders.length ? (
-                  <StacksTable stackOrders={activeOrders} />
+                  <StacksTable
+                    stackOrders={activeOrders}
+                    refetchStacks={fetchData}
+                  />
                 ) : (
                   <EmptyStacks text="No active stacks" />
                 )}
               </Tab.Panel>
               <Tab.Panel>
                 {completedOrders.length ? (
-                  <StacksTable stackOrders={completedOrders} />
+                  <StacksTable
+                    stackOrders={completedOrders}
+                    refetchStacks={fetchData}
+                  />
                 ) : (
                   <EmptyStacks text="No completed stacks" />
                 )}
               </Tab.Panel>
               <Tab.Panel>
                 {cancelledOrders.length ? (
-                  <StacksTable stackOrders={cancelledOrders} />
+                  <StacksTable
+                    stackOrders={cancelledOrders}
+                    refetchStacks={fetchData}
+                  />
                 ) : (
                   <EmptyStacks text="No cancelled stacks" />
                 )}
