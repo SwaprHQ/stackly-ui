@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { TokenIcon } from "@/components/TokenIcon";
 import { OrderProps } from "@/models/order";
 
