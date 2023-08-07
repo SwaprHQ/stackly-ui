@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { fundsAmountWithToken, totalOrdersDone } from "@/models/order";
 import { OrdersProgressBar } from "@/components/OrdersProgressBar";
 import { BodyText } from "@/ui";

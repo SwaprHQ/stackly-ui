@@ -3038,7 +3038,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stackly/sdk@workspace:*, @stackly/sdk@workspace:packages/sdk":
+"@stackly/sdk@workspace:^, @stackly/sdk@workspace:packages/sdk":
   version: 0.0.0-use.local
   resolution: "@stackly/sdk@workspace:packages/sdk"
   dependencies:
@@ -4539,7 +4539,7 @@ __metadata:
     "@headlessui/react": ^1.7.14
     "@headlessui/tailwindcss": ^0.1.3
     "@popperjs/core": ^2.11.8
-    "@stackly/sdk": "workspace:*"
+    "@stackly/sdk": "workspace:^"
     "@svgr/webpack": ^8.0.1
     "@types/node": 20.3.1
     "@types/react": 18.2.13

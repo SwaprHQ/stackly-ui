@@ -23,6 +23,8 @@ export type Token = {
   __typename?: "Token";
   /**  Token address  */
   id: Scalars["ID"];
+  /**  Token address  */
+  address: Scalars["String"];
   /**  Number of decimals the token uses  */
   decimals: Scalars["Int"];
   /**  Human-readable name of the token  */
@@ -60,12 +62,14 @@ const OrderFragment = gql`
     amount
     sellToken {
       id
+      address
       decimals
       name
       symbol
     }
     buyToken {
       id
+      address
       decimals
       name
       symbol
