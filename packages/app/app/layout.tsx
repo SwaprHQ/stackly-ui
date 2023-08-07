@@ -1,8 +1,9 @@
 import { PropsWithChildren } from "react";
+
 import { Navbar } from "@/components";
 import { Metadata } from "next";
 import { Providers } from "@/providers";
-import "../styles/global.css";
+import "@/styles/global.css";
 
 const defaultStacklyUrl = "https://stackly.eth.limo";
 

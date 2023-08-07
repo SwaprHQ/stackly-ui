@@ -1,6 +1,7 @@
 "use client";
 
 import { PropsWithChildren } from "react";
+
 import { twMerge } from "tailwind-merge";
 
 interface ModalContentProps extends PropsWithChildren {

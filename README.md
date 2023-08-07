@@ -59,15 +59,32 @@ yarn build
 
 This command will create a production build of the project in the `dist` directory. You can then deploy the contents of this directory to your server or hosting provider.
 
-## FAQ
+## Code Guidelines
+
+### React Contexts
+
+React Context checks values using simple equality (`==`). For that reason, we need to stabilize our contexts or we would be triggering a re-render for any update on Context values, even irrelevant changes. For that purpose, we use the `useMemo()` hook always for custom Contexts, as most of the time we will wrap the whole app with our custom Contexts and re-rendering might get really cumbersome at times.
+
+- For example, check files in: `packages/app/context/`
+- For more information, check: https://react.dev/learn/passing-data-deeply-with-context
+
+## Troubleshooting
+
+- `Unhandled Runtime Error` for NextJS
+
+  This usually happens on NextJS v13.2.4 and up, when you export a client component (using the `"use client"` directive) using a normal function. A quick fix for this bug is to turn the normal function into an arrow function.
+
+- `app-index.js:31 Warning: Extra attributes from the server: data-new-gr-c-s-check-loaded,data-gr-ext-installed` or similar
+
+  This may happen due to different browser extensions like `Grammarly` and `LanguageTool` passing down extra attributes that will make a mismatch between server and client renders. Disabling/configuring the troublesome extensions to not run in the development ports (like port `3000`) should fix this issue.
 
 - `Cannot read properties of undefined (reading Component).`
 
-  This may happen due to circular dependencies between imports. Check if you have three or more components creating a circle of imports wich may lead to a component being invoked prior its initialization. A quick way to solve this would be checking the way you're exporting the problematic component. Check `packages/app/components/index.ts` to see an example on how to solve these exports.
+  This may happen due to circular dependencies between imports. Check if you have three or more components creating a circle of imports which may lead to a component being invoked before its initialization. A quick way to solve this would be to check the way you're exporting the problematic component. Check `packages/app/components/index.ts` to see an example of how to solve these exports.
 
 - Error fetching `generated/contracts`.
 
-  This may happen due to app build failures. Try deleting `node_modules`, then re-install and rebuild the app before launch it again. Note that if you don't rebuild the app (`yarn build:app`) you may get some errors due to generated code during the build step not being present.
+  This may happen due to app build failures. Try deleting `node_modules`, then re-install and rebuild the app before launching it again. Note that if you don't rebuild the app (`yarn build:app`) you may get some errors due to generated code during the build step not being present.
 
   ```bash
   rm -rf node_modules

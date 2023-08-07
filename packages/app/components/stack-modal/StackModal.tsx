@@ -52,79 +52,77 @@ export const StackModal = ({
   const stackIsComplete = totalOrdersDone(stackOrder) === orderSlots.length;
 
   return (
-    <div>
-      <Modal maxWidth="2xl" isOpen={isOpen} closeAction={closeAction}>
-        <ModalHeader>
-          <div className="flex items-center justify-between w-full">
-            <div className="flex items-center space-x-2">
-              <StackedTokenLogoPair order={stackOrder} />
-              <Link
-                passHref
-                target="_blank"
-                href={transactionExplorerLink(stackOrder.id)}
-                className="flex items-center space-x-0.5 hover:border-em-low border-b-2 border-em-disabled group"
-              >
-                <BodyText className="text-em-med">
-                  {stackOrder.id.substring(0, 7)}
-                </BodyText>
-                <Icon
-                  className="text-em-med group-hover:animate-bounce"
-                  name="arrow-external"
-                  size={16}
-                />
-              </Link>
-            </div>
-            <Button
-              action="quaternary"
-              iconLeft="close"
-              size="icon"
-              onClick={closeAction}
-            />
-          </div>
-        </ModalHeader>
-        <ModalContent className="px-0">
-          <div className="grid grid-cols-2 gap-5 px-4 gap-x-8 md:grid-cols-4">
-            <StackDetail title="Starts on">
-              {formatTimestampToDateWithTime(firstSlot)}
-            </StackDetail>
-            <StackDetail title="Ends on">
-              {formatTimestampToDateWithTime(lastSlot)}
-            </StackDetail>
-            <StackDetail title="Frequency">
-              Every {formatFrequencyHours(Number(stackOrder.interval))}
-            </StackDetail>
-            <StackDetail title="Next order">
-              {stackIsComplete
-                ? "Complete"
-                : formatTimestampToDateWithTime(nextSlot)}
-            </StackDetail>
-          </div>
-          <div className="w-full my-4 border-b border-surface-50"></div>
-          <div className="px-4">
-            <TitleText size={2} weight="bold">
-              Orders
-            </TitleText>
-            <StackProgress stackOrder={stackOrder} />
-            <StackInfo stackOrder={stackOrder} />
-            {totalStackOrdersDone(stackOrder) > 0 && (
-              <StackOrdersTable stackOrder={stackOrder} />
-            )}
-          </div>
-        </ModalContent>
-        <ModalFooter>
-          {!stackIsComplete && (
-            <Button
-              size="sm"
-              action="secondary"
-              onClick={() => alert("Are you sure you want to cancel stacking?")}
-              width="full"
+    <Modal maxWidth="2xl" isOpen={isOpen} closeAction={closeAction}>
+      <ModalHeader>
+        <div className="flex items-center justify-between w-full">
+          <div className="flex items-center space-x-2">
+            <StackedTokenLogoPair order={stackOrder} />
+            <Link
+              passHref
+              target="_blank"
+              href={transactionExplorerLink(stackOrder.id)}
+              className="flex items-center space-x-0.5 hover:border-em-low border-b-2 border-em-disabled group"
             >
-              Cancel Stacking
-            </Button>
+              <BodyText className="text-em-med">
+                {stackOrder.id.substring(0, 7)}
+              </BodyText>
+              <Icon
+                className="text-em-med group-hover:animate-bounce"
+                name="arrow-external"
+                size={16}
+              />
+            </Link>
+          </div>
+          <Button
+            action="quaternary"
+            iconLeft="close"
+            size="icon"
+            onClick={closeAction}
+          />
+        </div>
+      </ModalHeader>
+      <ModalContent className="px-0">
+        <div className="grid grid-cols-2 gap-5 px-4 gap-x-8 md:grid-cols-4">
+          <StackDetail title="Starts on">
+            {formatTimestampToDateWithTime(firstSlot)}
+          </StackDetail>
+          <StackDetail title="Ends on">
+            {formatTimestampToDateWithTime(lastSlot)}
+          </StackDetail>
+          <StackDetail title="Frequency">
+            Every {formatFrequencyHours(Number(stackOrder.interval))}
+          </StackDetail>
+          <StackDetail title="Next order">
+            {stackIsComplete
+              ? "Complete"
+              : formatTimestampToDateWithTime(nextSlot)}
+          </StackDetail>
+        </div>
+        <div className="w-full my-4 border-b border-surface-50"></div>
+        <div className="px-4">
+          <TitleText size={2} weight="bold">
+            Orders
+          </TitleText>
+          <StackProgress stackOrder={stackOrder} />
+          <StackInfo stackOrder={stackOrder} />
+          {totalStackOrdersDone(stackOrder) > 0 && (
+            <StackOrdersTable stackOrder={stackOrder} />
           )}
-        </ModalFooter>
-      </Modal>
-    </div>
+        </div>
+      </ModalContent>
+      <ModalFooter>
+        {!stackIsComplete && (
+          <Button
+            size="sm"
+            action="secondary"
+            onClick={() => alert("Are you sure you want to cancel stacking?")}
+            width="full"
+          >
+            Cancel Stacking
+          </Button>
+        )}
+      </ModalFooter>
+    </Modal>
   );
 };
 
