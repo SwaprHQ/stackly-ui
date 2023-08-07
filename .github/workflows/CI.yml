@@ -34,11 +34,11 @@ jobs:
       - name: 🎪 Install dependencies
         run: yarn install --immutable
 
+      - name: 🛠️ Build
+        run: yarn build:app
+
       - name: 🚑 Typecheck
         run: yarn typecheck
 
       - name: 🔬 Lint
         run: yarn lint
-
-      - name: 🛠️ build
-        run: yarn build:app
