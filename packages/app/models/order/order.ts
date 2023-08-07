@@ -1,6 +1,6 @@
-import { Order } from "./types";
 import { convertedAmount } from "@/utils/numbers";
 import { currentTimestampInSeconds } from "@/utils/datetime";
+import { Order } from "@stackly/sdk";
 
 export const totalOrdersDone = (order: Order) => {
   return order.orderSlots.reduce((count, orderTimestamp) => {
