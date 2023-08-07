@@ -9,7 +9,7 @@ import {
 import { Tab } from "@headlessui/react";
 import { BodyText } from "@/ui";
 import { StacksTable } from "@/components/StacksTable";
-import { EmptyState } from "@/app/stacks/empty-state";
+import EmptyState from "./empty-state";
 import { getOrders } from "@/models/order";
 import { ChainId } from "@stackly/sdk";
 import { useEffect, useState } from "react";
