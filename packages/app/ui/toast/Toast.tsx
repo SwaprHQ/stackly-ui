@@ -57,25 +57,23 @@ export const Toast = ({
       isOpen={isOpen}
       withOpacity={false}
     >
-      <div className="flex items-center">
-        {severity && (
-          <Icon
-            className={cx({
-              "text-danger-500": severity === Severity.ERROR,
-              "text-primary-700": severity === Severity.SUCCESS,
-            })}
-            size={24}
-            name={severity}
-          />
+      <div className="flex items-center justify-between">
+        {severity ? (
+          <div className="flex">
+            <Icon
+              className={cx({
+                "text-danger-500": severity === Severity.ERROR,
+                "text-primary-700": severity === Severity.SUCCESS,
+              })}
+              size={24}
+              name={severity}
+            />
+            <ToastTitle hasSeverity={hasSeverity} title={title} />
+          </div>
+        ) : (
+          <ToastTitle hasSeverity={hasSeverity} title={title} />
         )}
-        <TitleText
-          className={cx({
-            "ml-3": hasSeverity,
-          })}
-          size={2}
-        >
-          {title}
-        </TitleText>
+
         <Button
           action="quaternary"
           className="ml-3"
@@ -108,3 +106,19 @@ export const toastStyles = cva("py-6 pl-6 pr-4 !w-fit fixed", {
     position: ToastPosition.TOP_RIGHT,
   },
 });
+
+interface ToastTitleProps {
+  hasSeverity: boolean;
+  title: string;
+}
+
+const ToastTitle = ({ hasSeverity, title }: ToastTitleProps) => (
+  <TitleText
+    className={cx({
+      "ml-3": hasSeverity,
+    })}
+    size={2}
+  >
+    {title}
+  </TitleText>
+);

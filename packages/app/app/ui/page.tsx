@@ -30,6 +30,7 @@ import {
 export default function Page() {
   //  radioButtons
   const [activeRadionButton, setActiveRadioButton] = useState("0");
+  const [toastSeverity, setToastSeverity] = useState<Severity>();
   // dialogs
   const [isErrorDialogOpen, setErrorDialogOpen] = useState(false);
   const [isOpenCancelStackingDialog, setOpenCancelStackingDialog] =
@@ -60,6 +61,21 @@ export default function Page() {
     {
       label: "Toast",
       onClick: () => openModal(ModalId.TOAST_CONTAINER),
+    },
+  ];
+
+  const toastRadioButtons = [
+    {
+      name: "Error",
+      value: Severity.ERROR,
+    },
+    {
+      name: "Success",
+      value: Severity.SUCCESS,
+    },
+    {
+      name: "None (default)",
+      value: "",
     },
   ];
 
@@ -262,6 +278,23 @@ export default function Page() {
         </div>
       </UISection>
       <UISection title="Modal">
+        <BodyText>Customize the Toast severity</BodyText>
+        <div className="flex space-x-2">
+          {toastRadioButtons.map((radioButton) => (
+            <RadioButton
+              key={radioButton.value}
+              name={radioButton.name}
+              id={radioButton.name}
+              checked={toastSeverity === radioButton.value}
+              value={radioButton.value}
+              onChange={(e) => {
+                setToastSeverity(e.target.value as Severity);
+              }}
+            >
+              {radioButton.name}
+            </RadioButton>
+          ))}
+        </div>
         <UISubSection title="Examples">
           {modalButtons.map((modal) => (
             <DialogModalButton
@@ -282,10 +315,12 @@ export default function Page() {
           <Toast
             closeAction={closeModal}
             isOpen={openModalId === ModalId.TOAST_CONTAINER}
-            severity={Severity.SUCCESS}
-            title="Your stack creation was successful"
+            severity={toastSeverity}
+            title="This is the Toast title"
           >
-            <BodyText className="text-em-med">View your stacks</BodyText>
+            <BodyText className="text-em-med">
+              This is the Toast child, used as description.
+            </BodyText>
           </Toast>
         </UISubSection>
       </UISection>
