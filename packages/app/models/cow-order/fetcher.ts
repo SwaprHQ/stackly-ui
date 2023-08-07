@@ -6,7 +6,7 @@ const buildUrl = (chainId: 1 | 100, address: string) =>
 export async function getCowOrders(chainId: 1 | 100, address: string) {
   try {
     const res = await fetch(buildUrl(chainId, address));
-    if (!res.ok) throw new Error("Failed to fetch data");
+    if (!res.ok) throw "Failed to fetch cow data";
     return res.json();
   } catch (error) {
     console.error("🐄 Cow API", error);

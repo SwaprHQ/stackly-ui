@@ -39,7 +39,10 @@ const CustomConnectButton = ({
   return (
     <div className="flex bg-gray-alpha-50 rounded-xl p-0.5 justify-center items-center md:space-x-3">
       {balance && (
-        <BodyText size={2} className="hidden ml-3 text-em-med md:block">
+        <BodyText
+          size={2}
+          className="hidden ml-3 text-em-med md:block min-w-max"
+        >
           {formattedBalance(balance)}
         </BodyText>
       )}

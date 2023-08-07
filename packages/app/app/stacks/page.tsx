@@ -1,27 +1,15 @@
 "use client";
 
-import { Tab } from "@headlessui/react";
-import { EmptyState } from "@/app/stacks/empty-state";
-import { BodyText, ButtonLink, HeadingText } from "@/ui";
-import { StacksTable } from "@/components/StacksTable";
-import { getOrders } from "@/models/order";
-import {
-  filterActiveOrders,
-  filterCompletedOrders,
-  getStackOrders
-} from "@/models/stack-order";
+import { StackOrders } from "@/app/stacks/stacks-orders";
+import { useAccount, useNetwork } from "wagmi";
+import { NoWalletState } from "@/app/stacks/no-wallet-state";
+import { ButtonLink, HeadingText } from "@/ui";
 
-export default async function Page() {
-  const chainId = 100; // will be replaced with useNetwork chain when sdk
+export default function Page() {
+  const { chain } = useNetwork();
+  const { address, isDisconnected } = useAccount();
 
-  const mockOrders = await getOrders("address");
-  if (!mockOrders) return <EmptyState />;
-  const stackOrders = await getStackOrders(chainId, mockOrders);
-
-  const completedOrders = filterCompletedOrders(stackOrders);
-  const hasCompletedOrders = completedOrders.length > 0;
-  const activeOrders = filterActiveOrders(stackOrders);
-  const hasActiveOrders = activeOrders.length > 0;
+  if (isDisconnected) return <NoWalletState />;
 
   return (
     <div className="space-y-8">
@@ -37,48 +25,18 @@ export default async function Page() {
           Create New Stack
         </ButtonLink>
       </div>
-      <div className="space-y-6">
-        <Tab.Group>
-          <Tab.List>
-            <div className="flex space-x-2">
-              <Tab
-                as="button"
-                className="px-3 py-1.5 font-semibold rounded-lg ui-selected:bg-surface-75 ui-not-selected:text-em-low outline-none active:ring-2 active:ring-gray-100"
-              >
-                Active Stacks
-              </Tab>
-              <Tab
-                as="button"
-                className="px-3 py-1.5 font-semibold rounded-lg ui-selected:bg-surface-75 ui-not-selected:text-em-low outline-none active:ring-2 active:ring-gray-100"
-              >
-                Completed stacks
-              </Tab>
-            </div>
-          </Tab.List>
-          <Tab.Panels>
-            <Tab.Panel>
-              {hasActiveOrders ? (
-                <StacksTable stackOrders={activeOrders} />
-              ) : (
-                <EmptyStacks text=" No active stacks" />
-              )}
-            </Tab.Panel>
-            <Tab.Panel>
-              {hasCompletedOrders ? (
-                <StacksTable stackOrders={completedOrders} />
-              ) : (
-                <EmptyStacks text="No completed stacks" />
-              )}
-            </Tab.Panel>
-          </Tab.Panels>
-        </Tab.Group>
-      </div>
+      {chain && address ? (
+        <StackOrders chainId={chain.id} address={address} />
+      ) : (
+        <Loading />
+      )}
     </div>
   );
 }
 
-const EmptyStacks = ({ text }: { text: string }) => (
-  <div className="py-12 my-12 bg-white rounded-xl">
-    <BodyText className="text-center text-em-low">{text}</BodyText>
+const Loading = () => (
+  <div className="space-y-6">
+    <div className="h-12 rounded-lg bg-surface-50 animate-pulse"></div>
+    <div className="h-32 rounded-lg bg-surface-50 animate-pulse"></div>
   </div>
 );

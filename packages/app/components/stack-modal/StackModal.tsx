@@ -1,11 +1,10 @@
+// @ts-nocheck
+"use client";
+
 import Link from "next/link";
 import { ReactNode } from "react";
 
-import {
-  getOrderPairSymbols,
-  totalFundsUsed,
-  totalOrdersDone
-} from "@/models/order";
+import { getOrderPairSymbols, totalOrdersDone } from "@/models/order";
 import { StackedTokenLogoPair } from "@/components/StackedTokenLogoPair";
 import { StackProgress } from "@/components/stack-modal/StackProgress";
 import {
@@ -17,11 +16,11 @@ import {
   BodyText,
   ModalHeader,
   TitleText,
-  ModalBaseProps
+  ModalBaseProps,
 } from "@/ui";
 import {
   formatFrequencyHours,
-  formatTimestampToDateWithTime
+  formatTimestampToDateWithTime,
 } from "@/utils/datetime";
 import { FromToStackTokenPair } from "@/components/FromToStackTokenPair";
 import { StackOrdersTable } from "@/components/stack-modal/StackOrdersTable";
@@ -29,8 +28,11 @@ import {
   StackOrder,
   StackOrderProps,
   calculateStackAveragePrice,
-  totalStacked
+  totalStackOrdersDone,
+  totalStacked,
+  totalFundsUsed,
 } from "@/models/stack-order";
+import { formatTokenValue } from "@/utils/token";
 
 interface StackModalProps extends ModalBaseProps {
   stackOrder: StackOrder;
@@ -42,7 +44,7 @@ export const transactionExplorerLink = (address: string) =>
 export const StackModal = ({
   stackOrder,
   isOpen,
-  closeAction
+  closeAction,
 }: StackModalProps) => {
   const orderSlots = stackOrder.orderSlots;
   const firstSlot = orderSlots[0];
@@ -58,6 +60,7 @@ export const StackModal = ({
             <div className="flex items-center space-x-2">
               <StackedTokenLogoPair order={stackOrder} />
               <Link
+                passHref
                 target="_blank"
                 href={transactionExplorerLink(stackOrder.id)}
                 className="flex items-center space-x-0.5 hover:border-em-low border-b-2 border-em-disabled group"
@@ -104,7 +107,7 @@ export const StackModal = ({
             </TitleText>
             <StackProgress stackOrder={stackOrder} />
             <StackInfo stackOrder={stackOrder} />
-            {totalOrdersDone(stackOrder) > 0 && (
+            {totalStackOrdersDone(stackOrder) > 0 && (
               <StackOrdersTable stackOrder={stackOrder} />
             )}
           </div>
@@ -130,14 +133,14 @@ const StackInfo = ({ stackOrder }: StackOrderProps) => (
   <div className="flex flex-col justify-between gap-2 px-4 py-3 mt-6 mb-4 md:items-center md:flex-row bg-surface-25 rounded-2xl">
     <FromToStackTokenPair
       fromToken={stackOrder.sellToken}
-      fromText={totalFundsUsed(stackOrder).toFixed(2)}
+      fromText={formatTokenValue(totalFundsUsed(stackOrder))}
       toToken={stackOrder.buyToken}
-      toText={totalStacked(stackOrder).toFixed(4)}
+      toText={formatTokenValue(totalStacked(stackOrder))}
     />
     <BodyText size="responsive" className="space-x-1">
       <span className="text-em-low">Avg buy price:</span>
       <span className="text-em-med">
-        {calculateStackAveragePrice(stackOrder).toFixed(4)}
+        {formatTokenValue(calculateStackAveragePrice(stackOrder))}
       </span>
       <span className="text-em-med">{getOrderPairSymbols(stackOrder)}</span>
     </BodyText>
@@ -146,7 +149,7 @@ const StackInfo = ({ stackOrder }: StackOrderProps) => (
 
 const StackDetail = ({
   title,
-  children
+  children,
 }: {
   title: string;
   children: ReactNode;
