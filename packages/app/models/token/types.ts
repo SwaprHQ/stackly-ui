@@ -1,10 +1,3 @@
-export interface Token {
-  address: string;
-  decimals: number;
-  name: string;
-  symbol: string;
-}
-
 export interface TokenFromTokenlist {
   address: string;
   decimals: number;

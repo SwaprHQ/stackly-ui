@@ -11,6 +11,8 @@ import {
   DatePicker,
 } from "@/components";
 import { TokenFromTokenlist } from "@/models/token";
+import { useAccount, useBalance, useNetwork } from "wagmi";
+import { formatUnits } from "viem";
 
 interface SelectTokenButtonProps {
   label: string;
@@ -40,6 +42,12 @@ const startDateTimeTimestamp = new Date().setMinutes(
   new Date().getMinutes() + 30
 );
 
+const balanceOptions = [
+  { name: "25%", divider: 4 },
+  { name: "50%", divider: 2 },
+  { name: "Max", divider: 1 },
+];
+
 export const Stackbox = () => {
   const searchTokenBarRef = useRef<HTMLInputElement>(null);
   const [isConfirmStackOpen, setConfirmStackIsOpen] = useState(false);
@@ -48,8 +56,16 @@ export const Stackbox = () => {
   const [tokenFrom, setTokenFrom] = useState<TokenFromTokenlist>();
   const [tokenTo, setTokenTo] = useState<TokenFromTokenlist>();
 
-  const [frequency, setFrequency] = useState<string>(HOUR_OPTION);
+  const { chain } = useNetwork();
+  const { address } = useAccount();
+  const { data: balance } = useBalance({
+    address: Boolean(tokenFrom) ? address : undefined,
+    token: tokenFrom?.address as `0x${string}`,
+    chainId: chain?.id,
+  });
+  const [tokenAmount, setTokenAmount] = useState("");
 
+  const [frequency, setFrequency] = useState<string>(HOUR_OPTION);
   const [startDateTime, setStartDateTime] = useState<Date>(
     new Date(startDateTimeTimestamp)
   );
@@ -69,6 +85,28 @@ export const Stackbox = () => {
   useEffect(() => {
     setEndDateTime(new Date(endDateByFrequency[frequency]));
   }, [frequency]);
+
+  const formattedBalance = (balanceData: NonNullable<typeof balance>) => {
+    const SIGNIFICANT_DIGITS = 5;
+
+    /* parseFloat has limitations with big numbers, if number is too big it only shows part of it */
+    const valueFloat = parseFloat(balanceData.formatted);
+    const [integer] = balanceData.formatted.split(".");
+
+    const significantDigits =
+      integer === "0"
+        ? SIGNIFICANT_DIGITS
+        : integer.length + SIGNIFICANT_DIGITS;
+
+    let valueString = "0";
+
+    if (valueFloat !== 0)
+      valueString = valueFloat.toLocaleString(undefined, {
+        maximumSignificantDigits: significantDigits,
+      });
+
+    return valueString;
+  };
 
   return (
     <>
@@ -93,9 +131,48 @@ export const Stackbox = () => {
           <div className="py-2">
             <input
               type="number"
+              pattern="[0-9]*"
               placeholder="0.0"
-              className="w-full py-3 text-4xl font-semibold outline-none"
+              className="w-full py-3 text-4xl text-em-med font-semibold outline-none"
+              value={tokenAmount}
+              onKeyDown={(evt) =>
+                ["e", "E", "+", "-"].includes(evt.key) && evt.preventDefault()
+              }
+              onChange={(event) => {
+                setTokenAmount(event.target.value);
+              }}
             />
+            {tokenFrom && balance && (
+              <div className="flex justify-between items-center">
+                <div className="flex space-x-1">
+                  {balanceOptions.map(({ name, divider }) => (
+                    <Button
+                      key={name}
+                      action="secondary"
+                      width="fit"
+                      size="xs"
+                      onClick={() => {
+                        setTokenAmount(
+                          formatUnits(
+                            balance.value / BigInt(divider),
+                            tokenFrom.decimals
+                          )
+                        );
+                      }}
+                    >
+                      {name}
+                    </Button>
+                  ))}
+                </div>
+                <div className="flex space-x-1 items-center">
+                  <TokenIcon token={tokenFrom} size="2xs" />
+                  <BodyText className="text-em-high">
+                    <span className="text-em-low">Balance:</span>{" "}
+                    {formattedBalance(balance)}
+                  </BodyText>
+                </div>
+              </div>
+            )}
           </div>
         </div>
         <div className="px-5 py-6 space-y-6">

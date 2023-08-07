@@ -1,4 +1,3 @@
-// @ts-nocheck
 "use client";
 
 import Link from "next/link";
@@ -53,6 +52,10 @@ export const txEplorerLink = (tx: string) => `https://gnosisscan.io/tx/${tx}`;
 export const transactionExplorerLink = (address: string) =>
   `https://gnosisscan.io/address/${address}#tokentxns`;
 
+interface CancellationTransaction {
+  hash: string;
+}
+
 export const StackModal = ({
   stackOrder,
   isOpen,
@@ -66,7 +69,8 @@ export const StackModal = ({
   const [isCancellationProcessing, setIsCancellationProcessing] =
     useState(false);
   const [isCancellationSuccess, setIsCancellationSuccess] = useState(false);
-  const [cancellationTx, setCancellationTx] = useState();
+  const [cancellationTx, setCancellationTx] =
+    useState<CancellationTransaction>();
 
   const orderSlots = stackOrder.orderSlots;
   const firstSlot = orderSlots[0];
@@ -237,7 +241,7 @@ export const StackModal = ({
   );
 };
 
-const CancelTransactionLink = ({ txHash }) => (
+const CancelTransactionLink = ({ txHash }: { txHash: string }) => (
   <a
     className="capitalize text-primary-100"
     href={txEplorerLink(txHash)}
