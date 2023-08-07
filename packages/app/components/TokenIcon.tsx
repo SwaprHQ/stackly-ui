@@ -4,7 +4,7 @@ import { isAddress } from "viem";
 import { cva } from "class-variance-authority";
 import Image from "next/image";
 import { twMerge } from "tailwind-merge";
-import { useTokenListContext } from "@/context/TokenListContext";
+import { useTokenListContext } from "@/contexts";
 import { Token } from "@/models/token/types";
 import { useState } from "react";
 

@@ -16,7 +16,7 @@ import { EmptyStateTokenPickerImg } from "@/public/assets";
 import { TokenFromTokenlist } from "@/models/token/types";
 import { TokenIcon } from "@/components";
 import { TOKEN_PICKER_COMMON_TOKENS } from "./constants";
-import { useTokenListContext } from "@/context/TokenListContext";
+import { useTokenListContext } from "@/contexts";
 
 const HALF_SECOND = 500;
 
