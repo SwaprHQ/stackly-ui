@@ -16,6 +16,7 @@ export const buttonStyles = cva(
         lg: "px-14 py-3 md:py-4 text-lg md:px-24 space-x-4",
         md: "px-8 md:px-12 py-2 space-x-2",
         sm: "px-4 py-2 text-sm space-x-2",
+        xs: "px-2 py-1 text-xs space-x-1",
         icon: "p-2",
       },
       action: {
@@ -80,7 +81,7 @@ export const buttonStyles = cva(
   }
 );
 
-export type SizeProps = "sm" | "md" | "lg" | "icon";
+export type SizeProps = "xs" | "sm" | "md" | "lg" | "icon";
 
 export interface ButtonBaseProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -98,6 +99,7 @@ export interface ButtonBaseProps
 }
 
 export const iconSizeMap: Record<SizeProps, any> = {
+  xs: 16,
   sm: 18,
   icon: 20,
   md: 22,
