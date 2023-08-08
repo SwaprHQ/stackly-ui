@@ -12,8 +12,8 @@ import {
 } from "@/models/stack-order";
 import { ChainId } from "@stackly/sdk";
 import { BodyText } from "@/ui";
-import { StacksTable } from "@/components/StacksTable";
-import { EmptyState } from "@/app/stacks/empty-state";
+import { StacksTable } from "@/components";
+import EmptyState from "./empty-state";
 import { getOrders } from "@/models/order";
 
 export interface StackOrdersProps {

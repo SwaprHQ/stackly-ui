@@ -7,15 +7,15 @@ interface ModalHeaderTitleProps {
 
 export const ModalHeaderTitle = ({
   closeAction,
-  title
+  title,
 }: ModalHeaderTitleProps) => (
   <ModalHeader>
     <TitleText size={2}>{title}</TitleText>
     <Button
       action="quaternary"
       iconLeft="close"
-      size="icon"
       onClick={closeAction}
+      size="icon"
     />
   </ModalHeader>
 );

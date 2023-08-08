@@ -1,8 +1,8 @@
 import { Stackbox } from "@/components";
 
-export default function Page() {
+export default function Home() {
   return (
-    <div className="w-full max-w-screen-xl px-4 mx-auto">
+    <div className="w-full px-4 mx-auto">
       <Stackbox />
     </div>
   );

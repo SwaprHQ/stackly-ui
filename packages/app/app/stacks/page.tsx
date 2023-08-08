@@ -2,7 +2,7 @@
 
 import { StackOrders } from "@/app/stacks/stacks-orders";
 import { useAccount, useNetwork } from "wagmi";
-import { NoWalletState } from "@/app/stacks/no-wallet-state";
+import NoWalletState from "./no-wallet-state";
 import { ButtonLink, HeadingText } from "@/ui";
 
 export default function Page() {

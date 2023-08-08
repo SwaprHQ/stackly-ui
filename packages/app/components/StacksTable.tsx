@@ -1,3 +1,5 @@
+"use client";
+
 import { PropsWithChildren, useState } from "react";
 import {
   BodyText,
@@ -27,6 +29,7 @@ import {
   totalStacked,
 } from "@/models/stack-order";
 import { formatTokenValue } from "@/utils/token";
+import { ModalId, useModalContext } from "@/contexts";
 
 export const StacksTable = ({
   stackOrders,
@@ -36,12 +39,12 @@ export const StacksTable = ({
   refetchStacks: () => void;
 }) => {
   const [stackOrder, setStackOrder] = useState<StackOrder>();
-  const [isModalOpen, setModalOpen] = useState(false);
-  const closeModal = () => setModalOpen(false);
+
+  const { closeModal, openModalId, openModal } = useModalContext();
 
   const setupAndOpenModal = (stackOrder: StackOrder) => {
     setStackOrder(stackOrder);
-    setModalOpen(true);
+    openModal(ModalId.STACK);
   };
 
   return (
@@ -112,7 +115,7 @@ export const StacksTable = ({
       {stackOrder && (
         <StackModal
           refetchStacks={refetchStacks}
-          isOpen={isModalOpen}
+          isOpen={openModalId === ModalId.STACK}
           closeAction={closeModal}
           stackOrder={stackOrder}
         />
