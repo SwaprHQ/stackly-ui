@@ -1,6 +1,6 @@
 import { Icon, TitleText } from "@/ui";
 import { TokenIcon } from "@/components/TokenIcon";
-import { Token } from "@stackly/sdk";
+import { Token } from "@/models/token";
 
 interface FromToStackTokenPairProps {
   fromToken: Token;

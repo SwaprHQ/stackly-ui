@@ -250,6 +250,7 @@ const CancelTransactionLink = ({ txHash }: { txHash: string }) => (
     check transaction
   </a>
 );
+
 const StackInfo = ({ stackOrder }: StackOrderProps) => (
   <div className="flex flex-col justify-between gap-2 px-4 py-3 mt-6 mb-4 md:items-center md:flex-row bg-surface-25 rounded-2xl">
     <FromToStackTokenPair

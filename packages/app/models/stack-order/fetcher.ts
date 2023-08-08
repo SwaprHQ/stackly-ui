@@ -1,7 +1,6 @@
 import { ChainId, Order } from "@stackly/sdk";
 import { getCowOrders } from "@/models/cow-order";
 import { StackOrder } from "@/models/stack-order/types";
-import { ChainId } from "@stackly/sdk";
 
 export async function getStackOrders(
   chainId: ChainId,
