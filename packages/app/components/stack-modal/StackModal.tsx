@@ -112,11 +112,9 @@ export const StackModal = ({
         isOpen={isOpen}
         closeAction={() => {
           if (
-            !(
-              isCancellationProcessing ||
-              isOpenCancellationDialog ||
-              isCancellationSuccess
-            )
+            isCancellationProcessing &&
+            isOpenCancellationDialog &&
+            isCancellationSuccess
           )
             closeAction();
         }}
