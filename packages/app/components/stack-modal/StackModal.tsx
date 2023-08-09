@@ -78,7 +78,7 @@ export const StackModal = ({
   const nextSlot = orderSlots[totalOrdersDone(stackOrder)];
 
   const remainingFunds =
-    convertedAmount(stackOrder.amount, stackOrder.buyToken.decimals) -
+    convertedAmount(stackOrder.amount, stackOrder.sellToken.decimals) -
     totalFundsUsed(stackOrder);
 
   const remainingFundsDescription =
@@ -210,7 +210,7 @@ export const StackModal = ({
         description={cancellationTx && "Waiting for transaction confirmation."}
       >
         {cancellationTx?.hash && (
-          <CancelTransactionLink txHash={"cancellationTx.hash"} />
+          <CancelTransactionLink txHash={cancellationTx.hash} />
         )}
       </DialogConfirmTransactionLoading>
       <Dialog
