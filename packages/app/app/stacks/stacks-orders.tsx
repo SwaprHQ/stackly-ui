@@ -26,9 +26,21 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
   const [currentStackOrders, setCurrentStackOrders] = useState<StackOrder[]>(
     []
   );
-  const activeOrders = filterActiveOrders(currentStackOrders);
-  const completedOrders = filterCompletedOrders(currentStackOrders);
-  const cancelledOrders = filterCancelledOrders(currentStackOrders);
+
+  const ordersByType = [
+    {
+      orders: filterActiveOrders(currentStackOrders),
+      emptyText: "No active stacks",
+    },
+    {
+      orders: filterCompletedOrders(currentStackOrders),
+      emptyText: "No complete stacks",
+    },
+    {
+      orders: filterCancelledOrders(currentStackOrders),
+      emptyText: "No cancelled stacks",
+    },
+  ];
 
   const fetchStacks = useCallback(() => {
     getOrders(chainId, address.toLowerCase())
@@ -75,11 +87,7 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
             <EmptyStacks className="animate-pulse" text="Loading..." />
           ) : (
             <>
-              {[
-                { orders: activeOrders, emptyText: "No active stacks" },
-                { orders: completedOrders, emptyText: "No complete stacks" },
-                { orders: cancelledOrders, emptyText: "No cancelled stacks" },
-              ].map((stacks) => (
+              {ordersByType.map((stacks) => (
                 <Tab.Panel key={stacks.emptyText}>
                   {stacks.orders.length ? (
                     <StacksTable
