@@ -18,7 +18,7 @@ import { FREQUENCY_OPTIONS } from "@/models/stack";
 
 interface SelectTokenButtonProps {
   label: string;
-  onClick: (isTokenFrom?: boolean) => void;
+  onClick: (isFromToken?: boolean) => void;
   token?: TokenFromTokenlist;
 }
 
@@ -49,16 +49,16 @@ const balanceOptions = [
 
 export const Stackbox = () => {
   const searchTokenBarRef = useRef<HTMLInputElement>(null);
-  const [isPickingTokenFrom, setIsPickingTokenFrom] = useState<boolean>(false);
-  const [tokenFrom, setTokenFrom] = useState<TokenFromTokenlist>();
-  const [tokenTo, setTokenTo] = useState<TokenFromTokenlist>();
+  const [isPickingFromToken, setIsPickingFromToken] = useState<boolean>(false);
+  const [fromToken, setFromToken] = useState<TokenFromTokenlist>();
+  const [toToken, setToToken] = useState<TokenFromTokenlist>();
   const { closeModal, openModalId, openModal } = useModalContext();
 
   const { chain } = useNetwork();
   const { address } = useAccount();
   const { data: balance } = useBalance({
-    address: Boolean(tokenFrom) ? address : undefined,
-    token: tokenFrom?.address as `0x${string}`,
+    address: Boolean(fromToken) ? address : undefined,
+    token: fromToken?.address as `0x${string}`,
     chainId: chain?.id,
   });
   const [tokenAmount, setTokenAmount] = useState("");
@@ -80,8 +80,8 @@ export const Stackbox = () => {
     setEndDateTime(new Date(endDateByFrequency[frequency]));
   }, [frequency]);
 
-  const openTokenPicker = (isTokenFrom = true) => {
-    setIsPickingTokenFrom(isTokenFrom);
+  const openTokenPicker = (isFromToken = true) => {
+    setIsPickingFromToken(isFromToken);
     openModal(ModalId.TOKEN_PICKER);
   };
 
@@ -99,8 +99,8 @@ export const Stackbox = () => {
     }
 
     if (
-      tokenTo &&
-      tokenFrom &&
+      fromToken &&
+      toToken &&
       !endTimeBeforeStartTime &&
       tokenAmount &&
       !tokenAmountIsZero
@@ -109,7 +109,7 @@ export const Stackbox = () => {
       openModal(ModalId.CONFIRM_STACK);
     }
   };
-  const selectToken = isPickingTokenFrom ? setTokenFrom : setTokenTo;
+  const selectToken = isPickingFromToken ? setFromToken : setToToken;
 
   const formattedBalance = (balanceData: NonNullable<typeof balance>) => {
     const SIGNIFICANT_DIGITS = 5;
@@ -140,7 +140,7 @@ export const Stackbox = () => {
           <SelectTokenButton
             label="Deposit from"
             onClick={openTokenPicker}
-            token={tokenFrom}
+            token={fromToken}
           />
           <Icon
             name="arrow-left"
@@ -149,7 +149,7 @@ export const Stackbox = () => {
           <SelectTokenButton
             label="To receive"
             onClick={openTokenPicker}
-            token={tokenTo}
+            token={toToken}
           />
         </div>
         <div className="py-2">
@@ -177,7 +177,7 @@ export const Stackbox = () => {
                 setShowTokenAmountError(false);
             }}
           />
-          {tokenFrom && balance && (
+          {fromToken && balance && (
             <div className="flex justify-between items-center">
               <div className="flex space-x-1">
                 {balanceOptions.map(({ name, divider }) => (
@@ -190,7 +190,7 @@ export const Stackbox = () => {
                       setTokenAmount(
                         formatUnits(
                           balance.value / BigInt(divider),
-                          tokenFrom.decimals
+                          fromToken.decimals
                         )
                       );
                     }}
@@ -200,7 +200,7 @@ export const Stackbox = () => {
                 ))}
               </div>
               <div className="flex space-x-1 items-center">
-                <TokenIcon token={tokenFrom} size="2xs" />
+                <TokenIcon token={fromToken} size="2xs" />
                 <BodyText className="text-em-high">
                   <span className="text-em-low">Balance:</span>{" "}
                   {formattedBalance(balance)}
@@ -283,10 +283,10 @@ export const Stackbox = () => {
         isOpen={openModalId === ModalId.TOKEN_PICKER}
         onTokenSelect={selectToken}
       />
-      {tokenTo && tokenFrom && (
+      {fromToken && toToken && (
         <ConfirmStackModal
-          tokenTo={tokenTo}
-          tokenFrom={tokenFrom}
+          toToken={toToken}
+          fromToken={fromToken}
           amount={tokenAmount}
           frequency={frequency}
           startTime={startDateTime}
@@ -304,13 +304,13 @@ const SelectTokenButton = ({
   onClick,
   token,
 }: SelectTokenButtonProps) => {
-  const isTokenFrom = label.toLowerCase().includes("deposit");
-  const handleButtonClick = () => onClick(isTokenFrom);
+  const isFromToken = label.toLowerCase().includes("deposit");
+  const handleButtonClick = () => onClick(isFromToken);
 
   return (
     <div
       className={cx("flex flex-col space-y-2", {
-        "items-end": !isTokenFrom,
+        "items-end": !isFromToken,
       })}
     >
       <BodyText className="text-em-low">{label}</BodyText>

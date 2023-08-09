@@ -13,7 +13,7 @@ export const FromToStackTokenPair = ({
   fromToken,
   fromText,
   toToken,
-  toText
+  toText,
 }: FromToStackTokenPairProps) => (
   <div className="flex items-center space-x-4 rounded-3xl w-fit">
     <div className="flex items-center space-x-2">

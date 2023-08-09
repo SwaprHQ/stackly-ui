@@ -18,8 +18,8 @@ import { format } from "date-fns";
 import { FREQUENCY_OPTIONS } from "@/models/stack";
 
 interface ConfirmStackModalProps extends ModalBaseProps {
-  tokenFrom: Token;
-  tokenTo: Token;
+  fromToken: Token;
+  toToken: Token;
   amount: string;
   frequency: FREQUENCY_OPTIONS;
   startTime: Date;
@@ -51,8 +51,8 @@ enum CREATE_STACK_STEPS {
 const INITAL_ORDER = 1;
 
 export const ConfirmStackModal = ({
-  tokenFrom,
-  tokenTo,
+  fromToken,
+  toToken,
   amount,
   frequency,
   startTime,
@@ -94,19 +94,19 @@ export const ConfirmStackModal = ({
         <div className="space-y-6">
           <div className="flex items-center px-4 py-2 mx-auto space-x-4 bg-surface-25 rounded-3xl w-fit">
             <FromToStackTokenPair
-              fromToken={tokenFrom}
-              fromText={tokenFrom.symbol}
-              toToken={tokenTo}
-              toText={tokenTo.symbol}
+              fromToken={fromToken}
+              fromText={fromToken.symbol}
+              toToken={toToken}
+              toText={toToken.symbol}
             />
           </div>
           <div>
             <TitleText size={2} className="text-center text-em-low">
               Stacks{" "}
               <span className="text-em-high">
-                {amountPerOrder} {tokenFrom.symbol}
+                {amountPerOrder} {fromToken.symbol}
               </span>{" "}
-              worth of <span className="text-em-high">{tokenTo.symbol}</span>{" "}
+              worth of <span className="text-em-high">{toToken.symbol}</span>{" "}
               every {frequencyTitles[frequency]}
             </TitleText>
           </div>
@@ -124,7 +124,7 @@ export const ConfirmStackModal = ({
                 Total funds to be used
               </BodyText>
               <BodyText className="text-end">
-                {amount} {tokenFrom.symbol}
+                {amount} {fromToken.symbol}
               </BodyText>
             </div>
             <div className="flex items-center justify-between">
@@ -148,7 +148,7 @@ export const ConfirmStackModal = ({
             ref={focusBtnRef}
             className="whitespace-nowrap"
           >
-            Approve {tokenFrom.symbol}
+            Approve {fromToken.symbol}
           </Button>
         )}
         <Button
