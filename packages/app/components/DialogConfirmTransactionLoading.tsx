@@ -14,17 +14,12 @@ export const DialogConfirmTransactionLoading = ({
   closeAction,
   isOpen,
   children,
-  title,
-  description,
+  title = "Waiting for confirmation",
+  description = "Confirm this transaction in your wallet.",
 }: DialogConfirmTransactionLoadingProps) => (
   <Dialog closeAction={closeAction ? closeAction : () => {}} isOpen={isOpen}>
     <DotsSpinnerImg className="animate-spin" />
-    <DialogContent
-      description={
-        description ? description : "Confirm this transaction in your wallet."
-      }
-      title={title ? title : "Waiting for confirmation"}
-    />
+    <DialogContent description={description} title={title} />
     {children}
   </Dialog>
 );
