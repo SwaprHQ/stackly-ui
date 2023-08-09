@@ -75,36 +75,22 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
             <EmptyStacks className="animate-pulse" text="Loading..." />
           ) : (
             <>
-              <Tab.Panel>
-                {activeOrders.length ? (
-                  <StacksTable
-                    stackOrders={activeOrders}
-                    refetchStacks={fetchStacks}
-                  />
-                ) : (
-                  <EmptyStacks text="No active stacks" />
-                )}
-              </Tab.Panel>
-              <Tab.Panel>
-                {completedOrders.length ? (
-                  <StacksTable
-                    stackOrders={completedOrders}
-                    refetchStacks={fetchStacks}
-                  />
-                ) : (
-                  <EmptyStacks text="No completed stacks" />
-                )}
-              </Tab.Panel>
-              <Tab.Panel>
-                {cancelledOrders.length ? (
-                  <StacksTable
-                    stackOrders={cancelledOrders}
-                    refetchStacks={fetchStacks}
-                  />
-                ) : (
-                  <EmptyStacks text="No cancelled stacks" />
-                )}
-              </Tab.Panel>
+              {[
+                { orders: activeOrders, emptyText: "No active stacks" },
+                { orders: completedOrders, emptyText: "No complete stacks" },
+                { orders: cancelledOrders, emptyText: "No cancelled stacks" },
+              ].map((stacks) => (
+                <Tab.Panel key={stacks.emptyText}>
+                  {stacks.orders.length ? (
+                    <StacksTable
+                      stackOrders={stacks.orders}
+                      refetchStacks={fetchStacks}
+                    />
+                  ) : (
+                    <EmptyStacks text={stacks.emptyText} />
+                  )}
+                </Tab.Panel>
+              ))}
             </>
           )}
         </Tab.Panels>
