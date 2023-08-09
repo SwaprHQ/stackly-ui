@@ -14,6 +14,7 @@ import { TokenFromTokenlist } from "@/models/token";
 import { useAccount, useBalance, useNetwork } from "wagmi";
 import { formatUnits } from "viem";
 import { ModalId, useModalContext } from "@/contexts";
+import { FREQUENCY_OPTIONS } from "@/models/stack";
 
 interface SelectTokenButtonProps {
   label: string;
@@ -21,23 +22,20 @@ interface SelectTokenButtonProps {
   token?: TokenFromTokenlist;
 }
 
-const HOUR_OPTION = "hour";
-const DAY_OPTION = "day";
-const WEEK_OPTION = "week";
-const MONTH_OPTION = "month";
-
 const frequencyOptions = [
-  { option: HOUR_OPTION, name: "Hour" },
-  { option: DAY_OPTION, name: "Day" },
-  { option: WEEK_OPTION, name: "Week" },
-  { option: MONTH_OPTION, name: "Month" },
+  { option: FREQUENCY_OPTIONS.hour, name: "Hour" },
+  { option: FREQUENCY_OPTIONS.day, name: "Day" },
+  { option: FREQUENCY_OPTIONS.week, name: "Week" },
+  { option: FREQUENCY_OPTIONS.month, name: "Month" },
 ];
 
 const endDateByFrequency: Record<string, number> = {
-  [HOUR_OPTION]: new Date().setDate(new Date().getDate() + 2),
-  [DAY_OPTION]: new Date().setMonth(new Date().getMonth() + 1),
-  [WEEK_OPTION]: new Date().setMonth(new Date().getMonth() + 3),
-  [MONTH_OPTION]: new Date().setFullYear(new Date().getFullYear() + 1),
+  [FREQUENCY_OPTIONS.hour]: new Date().setDate(new Date().getDate() + 2),
+  [FREQUENCY_OPTIONS.day]: new Date().setMonth(new Date().getMonth() + 1),
+  [FREQUENCY_OPTIONS.week]: new Date().setMonth(new Date().getMonth() + 3),
+  [FREQUENCY_OPTIONS.month]: new Date().setFullYear(
+    new Date().getFullYear() + 1
+  ),
 };
 const startDateTimeTimestamp = new Date().setMinutes(
   new Date().getMinutes() + 30
@@ -65,7 +63,9 @@ export const Stackbox = () => {
   });
   const [tokenAmount, setTokenAmount] = useState("");
 
-  const [frequency, setFrequency] = useState<string>(HOUR_OPTION);
+  const [frequency, setFrequency] = useState<FREQUENCY_OPTIONS>(
+    FREQUENCY_OPTIONS.hour
+  );
   const [startDateTime, setStartDateTime] = useState<Date>(
     new Date(startDateTimeTimestamp)
   );
@@ -73,16 +73,43 @@ export const Stackbox = () => {
     new Date(endDateByFrequency[frequency])
   );
 
-  const openConfirmStack = () => openModal(ModalId.CONFIRM_STACK);
-  const openTokenPicker = (isTokenFrom = true) => {
-    setIsPickingTokenFrom(isTokenFrom);
-    openModal(ModalId.TOKEN_PICKER);
-  };
-  const selectToken = isPickingTokenFrom ? setTokenFrom : setTokenTo;
+  const [showTokenAmountError, setShowTokenAmountError] = useState(false);
+  const [showDateTimeError, setDateTimeError] = useState(false);
 
   useEffect(() => {
     setEndDateTime(new Date(endDateByFrequency[frequency]));
   }, [frequency]);
+
+  const openTokenPicker = (isTokenFrom = true) => {
+    setIsPickingTokenFrom(isTokenFrom);
+    openModal(ModalId.TOKEN_PICKER);
+  };
+
+  const openConfirmStack = () => {
+    const endTimeBeforeStartTime =
+      endDateTime.getTime() <= startDateTime.getTime();
+    const tokenAmountIsZero = tokenAmount === "0";
+
+    if (!tokenAmount) {
+      setShowTokenAmountError(true);
+    }
+
+    if (endTimeBeforeStartTime) {
+      setDateTimeError(true);
+    }
+
+    if (
+      tokenTo &&
+      tokenFrom &&
+      !endTimeBeforeStartTime &&
+      tokenAmount &&
+      !tokenAmountIsZero
+    ) {
+      setDateTimeError(false);
+      openModal(ModalId.CONFIRM_STACK);
+    }
+  };
+  const selectToken = isPickingTokenFrom ? setTokenFrom : setTokenTo;
 
   const formattedBalance = (balanceData: NonNullable<typeof balance>) => {
     const SIGNIFICANT_DIGITS = 5;
@@ -130,13 +157,24 @@ export const Stackbox = () => {
             type="number"
             pattern="[0-9]*"
             placeholder="0.0"
-            className="w-full py-3 text-4xl text-em-med font-semibold outline-none"
+            className={cx(
+              "w-full py-3 text-4xl text-em-med font-semibold outline-none",
+              {
+                "animate-wiggle-alert bg-transparent placeholder:text-current text-gray-400":
+                  showTokenAmountError,
+              }
+            )}
             value={tokenAmount}
             onKeyDown={(evt) =>
               ["e", "E", "+", "-"].includes(evt.key) && evt.preventDefault()
             }
             onChange={(event) => {
+              if (showTokenAmountError) setShowTokenAmountError(false);
               setTokenAmount(event.target.value);
+            }}
+            onAnimationEnd={(e) => {
+              if (e.animationName === "red-alert")
+                setShowTokenAmountError(false);
             }}
           />
           {tokenFrom && balance && (
@@ -188,7 +226,9 @@ export const Stackbox = () => {
                     id={option}
                     checked={isSelected}
                     value={option}
-                    onChange={(event) => setFrequency(event.target.value)}
+                    onChange={(event) =>
+                      setFrequency(event.target.value as FREQUENCY_OPTIONS)
+                    }
                   >
                     <BodyText
                       size={2}
@@ -200,26 +240,36 @@ export const Stackbox = () => {
                 );
               })}
             </div>
-            <div className="flex flex-col md:flex-row rounded-2xl border border-surface-50 divide-y md:divide-x divide-surface-50">
-              <div className="flex flex-col w-full px-4 py-3 space-y-2">
-                <BodyText size={2}>Starting from</BodyText>
-                <DatePicker
-                  dateTime={startDateTime}
-                  setDateTime={setStartDateTime}
-                  timeCaption="Start time"
-                  className="w-full"
-                />
+            <div className="space-y-1">
+              <div className="flex flex-col md:flex-row rounded-2xl border border-surface-50 divide-y md:divide-x divide-surface-50">
+                <div className="flex flex-col w-full px-4 py-3 space-y-2">
+                  <BodyText size={2}>Starting from</BodyText>
+                  <DatePicker
+                    dateTime={startDateTime}
+                    setDateTime={setStartDateTime}
+                    timeCaption="Start time"
+                    className="w-full"
+                  />
+                </div>
+                <div className="flex flex-col w-full px-4 py-3 space-y-2">
+                  <BodyText size={2}>Until</BodyText>
+                  <DatePicker
+                    dateTime={endDateTime}
+                    setDateTime={setEndDateTime}
+                    timeCaption="End time"
+                    className="w-full"
+                    fromDate={startDateTime}
+                  />
+                </div>
               </div>
-              <div className="flex flex-col w-full px-4 py-3 space-y-2">
-                <BodyText size={2}>Until</BodyText>
-                <DatePicker
-                  dateTime={endDateTime}
-                  setDateTime={setEndDateTime}
-                  timeCaption="End time"
-                  className="w-full"
-                  fromDate={startDateTime}
-                />
-              </div>
+              {showDateTimeError && (
+                <div className="flex space-x-1 items-center text-danger-500">
+                  <Icon name="warning" size={12} />
+                  <BodyText size={1}>
+                    Please select an end time after start time
+                  </BodyText>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -233,10 +283,18 @@ export const Stackbox = () => {
         isOpen={openModalId === ModalId.TOKEN_PICKER}
         onTokenSelect={selectToken}
       />
-      <ConfirmStackModal
-        isOpen={openModalId === ModalId.CONFIRM_STACK}
-        closeAction={closeModal}
-      />
+      {tokenTo && tokenFrom && (
+        <ConfirmStackModal
+          tokenTo={tokenTo}
+          tokenFrom={tokenFrom}
+          amount={tokenAmount}
+          frequency={frequency}
+          startTime={startDateTime}
+          endTime={endDateTime}
+          isOpen={openModalId === ModalId.CONFIRM_STACK}
+          closeAction={closeModal}
+        />
+      )}
     </div>
   );
 };
