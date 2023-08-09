@@ -10,9 +10,7 @@ interface TokenWithId extends TokenWithoutIdAndAddress {
   address: string;
 }
 
-type TokenWithAddressAndId = TokenWithAddress & TokenWithId;
-
-export type Token = TokenWithAddress | TokenWithId | TokenWithAddressAndId;
+export type Token = TokenWithAddress | TokenWithId | TokenSubgraph;
 
 export interface TokenFromTokenlist {
   address: string;
