@@ -30,7 +30,7 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
   const completedOrders = filterCompletedOrders(currentStackOrders);
   const cancelledOrders = filterCancelledOrders(currentStackOrders);
 
-  const fetchData = useCallback(() => {
+  const fetchStacks = useCallback(() => {
     getOrders(chainId, address.toLowerCase())
       .then(async (orders) => {
         if (!orders || orders.length === 0) return;
@@ -41,7 +41,7 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
       .finally(() => setLoading(false));
   }, [address, chainId]);
 
-  useEffect(() => fetchData(), [fetchData]);
+  useEffect(() => fetchStacks(), [fetchStacks]);
 
   if (!loading && currentStackOrders.length === 0) return <EmptyState />;
 
@@ -79,7 +79,7 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
                 {activeOrders.length ? (
                   <StacksTable
                     stackOrders={activeOrders}
-                    refetchStacks={fetchData}
+                    refetchStacks={fetchStacks}
                   />
                 ) : (
                   <EmptyStacks text="No active stacks" />
@@ -89,7 +89,7 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
                 {completedOrders.length ? (
                   <StacksTable
                     stackOrders={completedOrders}
-                    refetchStacks={fetchData}
+                    refetchStacks={fetchStacks}
                   />
                 ) : (
                   <EmptyStacks text="No completed stacks" />
@@ -99,7 +99,7 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
                 {cancelledOrders.length ? (
                   <StacksTable
                     stackOrders={cancelledOrders}
-                    refetchStacks={fetchData}
+                    refetchStacks={fetchStacks}
                   />
                 ) : (
                   <EmptyStacks text="No cancelled stacks" />
