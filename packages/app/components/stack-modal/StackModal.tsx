@@ -101,7 +101,7 @@ export const StackModal = ({
       setIsCancellationSuccess(true);
     } catch (e) {
       setIsCancellationProcessing(false);
-      console.error("error", e);
+      console.error("Cancel stack error", e);
     }
   };
 
@@ -197,7 +197,7 @@ export const StackModal = ({
       >
         <DialogContent
           title=" Are you sure you want to cancel stacking?"
-          description={`The ${remainingFundsDescription}, will be sent to your wallet`}
+          description={`The ${remainingFundsDescription} will be sent to your wallet.`}
         />
         <DialogFooterActions
           primaryAction={() => cancelStack()}
@@ -211,8 +211,8 @@ export const StackModal = ({
         title={cancellationTx && "Proceeding cancellation"}
         description={cancellationTx && "Waiting for transaction confirmation."}
       >
-        {cancellationTx && cancellationTx.hash && (
-          <CancelTransactionLink txHash={cancellationTx.hash} />
+        {cancellationTx?.hash && (
+          <CancelTransactionLink txHash={"cancellationTx.hash"} />
         )}
       </DialogConfirmTransactionLoading>
       <Dialog
@@ -222,9 +222,9 @@ export const StackModal = ({
         <Icon name="check" className="text-primary-400" size={38} />
         <DialogContent
           title="Stack Cancelled"
-          description={`The ${remainingFundsDescription}, were sent to your wallet`}
+          description={`The ${remainingFundsDescription} were sent to your wallet.`}
         />
-        {cancellationTx && cancellationTx.hash && (
+        {cancellationTx?.hash && (
           <CancelTransactionLink txHash={cancellationTx.hash} />
         )}
         <DialogFooterActions
@@ -243,11 +243,11 @@ export const StackModal = ({
 
 const CancelTransactionLink = ({ txHash }: { txHash: string }) => (
   <a
-    className="capitalize text-primary-100"
+    className="flex items-center text-primary-100 hover:underline hover:underline-offset-4"
     href={txEplorerLink(txHash)}
     target="blank"
   >
-    check transaction
+    Check Transaction <Icon size={16} name="arrow-external" className="ml-1" />
   </a>
 );
 

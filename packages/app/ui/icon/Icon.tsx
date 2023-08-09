@@ -37,10 +37,8 @@ export const iconMap: Record<IconName, any> = {
   search: IconList.SearchIcon,
   stackly: IconList.StacklyLogoIcon,
   swap: IconList.SwapIcon,
-  warning: IconList.WarningIcon
+  warning: IconList.WarningIcon,
 };
-
-const getIcon = (name: IconName) => iconMap[name];
 
 export const Icon = ({ alt, className, name, size = 20 }: IconProps) => {
   const IconComponent = iconMap[name];
