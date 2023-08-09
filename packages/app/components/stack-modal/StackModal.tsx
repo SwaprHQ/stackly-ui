@@ -49,7 +49,7 @@ interface StackModalProps extends ModalBaseProps {
 
 export const txEplorerLink = (tx: string) => `https://gnosisscan.io/tx/${tx}`;
 
-export const transactionExplorerLink = (address: string) =>
+export const addressExplorerLink = (address: string) =>
   `https://gnosisscan.io/address/${address}#tokentxns`;
 
 interface CancellationTransaction {
@@ -95,10 +95,10 @@ export const StackModal = ({
       setIsCancellationProcessing(true);
       const tx = await getDCAOrderContract(stackOrder.id, signer).cancel();
       setCancellationTx(tx);
-      await tx.wait().then(() => {
-        setIsCancellationProcessing(false);
-        setIsCancellationSuccess(true);
-      });
+
+      await tx.wait();
+      setIsCancellationProcessing(false);
+      setIsCancellationSuccess(true);
     } catch (e) {
       setIsCancellationProcessing(false);
       console.error("error", e);
@@ -106,7 +106,7 @@ export const StackModal = ({
   };
 
   return (
-    <div>
+    <>
       <Modal
         maxWidth="2xl"
         isOpen={isOpen}
@@ -128,7 +128,7 @@ export const StackModal = ({
               <Link
                 passHref
                 target="_blank"
-                href={transactionExplorerLink(stackOrder.id)}
+                href={addressExplorerLink(stackOrder.id)}
                 className="flex items-center space-x-0.5 hover:border-em-low border-b-2 border-em-disabled group"
               >
                 <BodyText className="text-em-med">
@@ -237,7 +237,7 @@ export const StackModal = ({
           primaryText="Back to Stacks"
         />
       </Dialog>
-    </div>
+    </>
   );
 };
 
