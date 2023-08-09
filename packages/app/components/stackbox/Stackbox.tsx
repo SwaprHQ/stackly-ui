@@ -2,13 +2,22 @@
 
 import { useRef, useState, useEffect } from "react";
 import { cx } from "class-variance-authority";
+import Link from "next/link";
 
-import { BodyText, Button, Icon, RadioButton, TitleText } from "@/ui";
+import {
+  BodyText,
+  Button,
+  Icon,
+  RadioButton,
+  Severity,
+  TitleText,
+  Toast,
+} from "@/ui";
 import {
   ConfirmStackModal,
+  DatePicker,
   TokenIcon,
   TokenPicker,
-  DatePicker,
 } from "@/components";
 import { TokenFromTokenlist } from "@/models/token";
 import { useAccount, useBalance, useNetwork } from "wagmi";
@@ -237,6 +246,20 @@ export const Stackbox = () => {
         isOpen={openModalId === ModalId.CONFIRM_STACK}
         closeAction={closeModal}
       />
+      <Toast
+        closeAction={closeModal}
+        isOpen={openModalId === ModalId.TOAST_CONTAINER}
+        severity={Severity.SUCCESS}
+        title="Your stack creation was successful"
+      >
+        <Link
+          className="flex items-center space-x-0.5 hover:border-em-low border-b-2 border-em-disabled group"
+          href="/stacks"
+          onClick={closeModal}
+        >
+          <BodyText className="text-em-med">View your stacks</BodyText>
+        </Link>
+      </Toast>
     </div>
   );
 };
