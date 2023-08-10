@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { StackTransactionLoading } from "@/components/stackbox/StackTransactionLoading";
 import {
   Modal,
   ModalFooter,
@@ -12,7 +11,10 @@ import {
   TitleText,
   ModalBaseProps,
 } from "@/ui";
-import { FromToStackTokenPair } from "@/components/FromToStackTokenPair";
+import {
+  FromToStackTokenPair,
+  DialogConfirmTransactionLoading,
+} from "@/components";
 import { Token } from "@/models/token";
 import { format } from "date-fns";
 import { FREQUENCY_OPTIONS } from "@/models/stack";
@@ -161,7 +163,7 @@ export const ConfirmStackModal = ({
           Stack now
         </Button>
       </ModalFooter>
-      <StackTransactionLoading
+      <DialogConfirmTransactionLoading
         isOpen={isTransactionLoadingDialogOpen}
         closeAction={() => setTransactionLoadingDialogOpen(false)}
       />
