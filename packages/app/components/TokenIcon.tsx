@@ -1,12 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import { isAddress } from "viem";
 import { cva } from "class-variance-authority";
 import Image from "next/image";
 import { twMerge } from "tailwind-merge";
 import { useTokenListContext } from "@/contexts";
-import { Token } from "@/models/token/types";
-import { useState } from "react";
+import { Token } from "@/models/token";
 
 interface TokenIconProps {
   className?: string;
