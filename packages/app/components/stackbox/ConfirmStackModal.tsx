@@ -28,13 +28,6 @@ interface ConfirmStackModalProps extends ModalBaseProps {
   endTime: Date;
 }
 
-const frequencyTitles = {
-  [FREQUENCY_OPTIONS.hour]: "hour",
-  [FREQUENCY_OPTIONS.day]: "day",
-  [FREQUENCY_OPTIONS.week]: "week",
-  [FREQUENCY_OPTIONS.month]: "month",
-};
-
 const HOUR_IN_MILISECONDS = 60 * 60 * 1000;
 const DAY_IN_MILISECONDS = 24 * HOUR_IN_MILISECONDS;
 
@@ -109,7 +102,7 @@ export const ConfirmStackModal = ({
                 {amountPerOrder} {fromToken.symbol}
               </span>{" "}
               worth of <span className="text-em-high">{toToken.symbol}</span>{" "}
-              every {frequencyTitles[frequency]}
+              every {FREQUENCY_OPTIONS[frequency]}
             </TitleText>
           </div>
           <div className="w-full p-5 space-y-2 bg-surface-25 rounded-xl">

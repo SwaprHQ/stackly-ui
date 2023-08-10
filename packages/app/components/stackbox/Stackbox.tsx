@@ -99,20 +99,15 @@ export const Stackbox = () => {
       endDateTime.getTime() <= startDateTime.getTime();
     const tokenAmountIsZero = tokenAmount === "0";
 
-    if (!tokenAmount) {
-      setShowTokenAmountError(true);
-    }
-
-    if (endTimeBeforeStartTime) {
-      setDateTimeError(true);
-    }
+    if (!tokenAmount) setShowTokenAmountError(true);
+    if (endTimeBeforeStartTime) setDateTimeError(true);
 
     if (
       fromToken &&
       toToken &&
-      !endTimeBeforeStartTime &&
       tokenAmount &&
-      !tokenAmountIsZero
+      !tokenAmountIsZero &&
+      !endTimeBeforeStartTime
     ) {
       setDateTimeError(false);
       openModal(ModalId.CONFIRM_STACK);
