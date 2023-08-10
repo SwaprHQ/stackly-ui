@@ -91,8 +91,8 @@ module.exports = {
       },
       keyframes: {
         wiggle: {
-          "0%, 100%": { transform: "translateY(-3px)" },
-          "50%": { transform: "translateY(3px)" },
+          "0%, 100%": { transform: "translateX(-3px)" },
+          "50%": { transform: "translateX(3px)" },
         },
         "red-alert": {
           "0%": { color: "#F03D3D" },

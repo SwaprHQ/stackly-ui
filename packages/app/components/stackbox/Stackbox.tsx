@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, AnimationEventHandler } from "react";
 import { cx } from "class-variance-authority";
 import Link from "next/link";
 
@@ -29,6 +29,8 @@ interface SelectTokenButtonProps {
   label: string;
   onClick: (isFromToken?: boolean) => void;
   token?: TokenFromTokenlist;
+  className?: string;
+  onAnimationEnd: AnimationEventHandler<HTMLElement>;
 }
 
 const frequencyOptions = [
@@ -83,7 +85,9 @@ export const Stackbox = () => {
   );
 
   const [showTokenAmountError, setShowTokenAmountError] = useState(false);
-  const [showDateTimeError, setDateTimeError] = useState(false);
+  const [showDateTimeError, setShowDateTimeError] = useState(false);
+  const [showFromTokenError, setShowFromTokenError] = useState(false);
+  const [showToTokenError, setShowToTokenError] = useState(false);
 
   useEffect(() => {
     setEndDateTime(new Date(endDateByFrequency[frequency]));
@@ -100,7 +104,9 @@ export const Stackbox = () => {
     const tokenAmountIsZero = tokenAmount === "0";
 
     if (!tokenAmount) setShowTokenAmountError(true);
-    if (endTimeBeforeStartTime) setDateTimeError(true);
+    if (endTimeBeforeStartTime) setShowDateTimeError(true);
+    if (!fromToken) setShowFromTokenError(true);
+    if (!toToken) setShowToTokenError(true);
 
     if (
       fromToken &&
@@ -109,7 +115,7 @@ export const Stackbox = () => {
       !tokenAmountIsZero &&
       !endTimeBeforeStartTime
     ) {
-      setDateTimeError(false);
+      setShowDateTimeError(false);
       openModal(ModalId.CONFIRM_STACK);
     }
   };
@@ -145,6 +151,10 @@ export const Stackbox = () => {
             label="Deposit from"
             onClick={openTokenPicker}
             token={fromToken}
+            className={cx({ "animate-wiggle": showFromTokenError })}
+            onAnimationEnd={() => {
+              setShowFromTokenError(false);
+            }}
           />
           <Icon
             name="arrow-left"
@@ -154,6 +164,10 @@ export const Stackbox = () => {
             label="To receive"
             onClick={openTokenPicker}
             token={toToken}
+            className={cx({ "animate-wiggle": showToTokenError })}
+            onAnimationEnd={() => {
+              setShowToTokenError(false);
+            }}
           />
         </div>
         <div className="py-2">
@@ -321,6 +335,8 @@ const SelectTokenButton = ({
   label,
   onClick,
   token,
+  className,
+  onAnimationEnd,
 }: SelectTokenButtonProps) => {
   const isFromToken = label.toLowerCase().includes("deposit");
   const handleButtonClick = () => onClick(isFromToken);
@@ -346,9 +362,10 @@ const SelectTokenButton = ({
       ) : (
         <Button
           action="secondary"
-          className="leading-6 rounded-xl"
+          className={cx("leading-6 rounded-xl", className)}
           onClick={handleButtonClick}
           size="sm"
+          onAnimationEnd={onAnimationEnd}
         >
           Select token
         </Button>
