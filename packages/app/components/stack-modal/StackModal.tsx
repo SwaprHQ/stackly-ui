@@ -41,6 +41,7 @@ import {
 } from "@/components";
 import { StackProgress } from "@/components/stack-modal/StackProgress";
 import { StackOrdersTable } from "@/components/stack-modal/StackOrdersTable";
+import { ModalId } from "@/contexts";
 
 interface StackModalProps extends ModalBaseProps {
   stackOrder: StackOrder;
@@ -112,9 +113,9 @@ export const StackModal = ({
         isOpen={isOpen}
         closeAction={() => {
           if (
-            isCancellationProcessing &&
-            isOpenCancellationDialog &&
-            isCancellationSuccess
+            !isCancellationProcessing &&
+            !isOpenCancellationDialog &&
+            !isCancellationSuccess
           )
             closeAction();
         }}
