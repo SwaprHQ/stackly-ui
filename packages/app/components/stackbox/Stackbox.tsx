@@ -63,7 +63,7 @@ export const Stackbox = () => {
   const [isPickingTokenFrom, setIsPickingTokenFrom] = useState<boolean>(false);
   const [tokenFrom, setTokenFrom] = useState<TokenFromTokenlist>();
   const [tokenTo, setTokenTo] = useState<TokenFromTokenlist>();
-  const { closeModal, openModalId, openModal } = useModalContext();
+  const { closeModal, isModalOpen, openModal } = useModalContext();
 
   const { chain } = useNetwork();
   const { address } = useAccount();
@@ -126,7 +126,7 @@ export const Stackbox = () => {
           />
           <Icon
             name="arrow-left"
-            className="flex items-center justify-center p-2 w-16 h-9 bg-surface-50 rounded-2xl rotate-180"
+            className="flex items-center justify-center w-16 p-2 rotate-180 h-9 bg-surface-50 rounded-2xl"
           />
           <SelectTokenButton
             label="To receive"
@@ -139,7 +139,7 @@ export const Stackbox = () => {
             type="number"
             pattern="[0-9]*"
             placeholder="0.0"
-            className="w-full py-3 text-4xl text-em-med font-semibold outline-none"
+            className="w-full py-3 text-4xl font-semibold outline-none text-em-med"
             value={tokenAmount}
             onKeyDown={(evt) =>
               ["e", "E", "+", "-"].includes(evt.key) && evt.preventDefault()
@@ -149,7 +149,7 @@ export const Stackbox = () => {
             }}
           />
           {tokenFrom && balance && (
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
               <div className="flex space-x-1">
                 {balanceOptions.map(({ name, divider }) => (
                   <Button
@@ -170,7 +170,7 @@ export const Stackbox = () => {
                   </Button>
                 ))}
               </div>
-              <div className="flex space-x-1 items-center">
+              <div className="flex items-center space-x-1">
                 <TokenIcon token={tokenFrom} size="2xs" />
                 <BodyText className="text-em-high">
                   <span className="text-em-low">Balance:</span>{" "}
@@ -209,7 +209,7 @@ export const Stackbox = () => {
                 );
               })}
             </div>
-            <div className="flex flex-col md:flex-row rounded-2xl border border-surface-50 divide-y md:divide-x divide-surface-50">
+            <div className="flex flex-col border divide-y md:flex-row rounded-2xl border-surface-50 md:divide-x divide-surface-50">
               <div className="flex flex-col w-full px-4 py-3 space-y-2">
                 <BodyText size={2}>Starting from</BodyText>
                 <DatePicker
@@ -237,25 +237,25 @@ export const Stackbox = () => {
         </Button>
       </div>
       <TokenPicker
-        closeAction={closeModal}
+        closeAction={() => closeModal(ModalId.TOKEN_PICKER)}
         initialFocusRef={searchTokenBarRef}
-        isOpen={openModalId === ModalId.TOKEN_PICKER}
+        isOpen={isModalOpen(ModalId.TOKEN_PICKER)}
         onTokenSelect={selectToken}
       />
       <ConfirmStackModal
-        isOpen={openModalId === ModalId.CONFIRM_STACK}
-        closeAction={closeModal}
+        isOpen={isModalOpen(ModalId.CONFIRM_STACK)}
+        closeAction={() => closeModal(ModalId.CONFIRM_STACK)}
       />
       <Toast
-        closeAction={closeModal}
-        isOpen={openModalId === ModalId.TOAST_CONTAINER}
+        closeAction={() => {}}
+        isOpen={false}
         severity={Severity.SUCCESS}
         title="Your stack creation was successful"
       >
         <Link
+          passHref
           className="flex items-center space-x-0.5 hover:border-em-low border-b-2 border-em-disabled group"
           href="/stacks"
-          onClick={closeModal}
         >
           <BodyText className="text-em-med">View your stacks</BodyText>
         </Link>
