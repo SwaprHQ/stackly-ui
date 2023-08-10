@@ -12,8 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/ui";
-import { StackedTokenLogoPair } from "@/components/StackedTokenLogoPair";
-import { StackModal } from "@/components/stack-modal/StackModal";
+import { StackedTokenLogoPair, StackModal } from "@/components";
 import {
   fundsAmountWithToken,
   getOrderPairSymbols,
@@ -31,7 +30,15 @@ import {
 import { formatTokenValue } from "@/utils/token";
 import { ModalId, useModalContext } from "@/contexts";
 
-export const StacksTable = ({ stackOrders }: { stackOrders: StackOrder[] }) => {
+interface StacksTableProps {
+  stackOrders: StackOrder[];
+  refetchStacks: () => void;
+}
+
+export const StacksTable = ({
+  stackOrders,
+  refetchStacks,
+}: StacksTableProps) => {
   const [stackOrder, setStackOrder] = useState<StackOrder>();
 
   const { closeModal, openModalId, openModal } = useModalContext();
@@ -108,6 +115,7 @@ export const StacksTable = ({ stackOrders }: { stackOrders: StackOrder[] }) => {
       </Table>
       {stackOrder && (
         <StackModal
+          refetchStacks={refetchStacks}
           isOpen={openModalId === ModalId.STACK}
           closeAction={closeModal}
           stackOrder={stackOrder}

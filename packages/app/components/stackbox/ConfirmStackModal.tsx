@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { StackTransactionLoading } from "@/components/stackbox/StackTransactionLoading";
 import {
   Modal,
   ModalFooter,
@@ -12,7 +11,10 @@ import {
   TitleText,
   ModalBaseProps,
 } from "@/ui";
-import { FromToStackTokenPair } from "@/components/FromToStackTokenPair";
+import {
+  FromToStackTokenPair,
+  DialogConfirmTransactionLoading,
+} from "@/components";
 
 export const ConfirmStackModal = ({ isOpen, closeAction }: ModalBaseProps) => {
   const focusBtnRef = useRef<HTMLButtonElement>(null);
@@ -90,7 +92,7 @@ export const ConfirmStackModal = ({ isOpen, closeAction }: ModalBaseProps) => {
           Stack now
         </Button>
       </ModalFooter>
-      <StackTransactionLoading
+      <DialogConfirmTransactionLoading
         isOpen={isTransactionLoadingDialogOpen}
         closeAction={() => setTransactionLoadingDialogOpen(false)}
       />

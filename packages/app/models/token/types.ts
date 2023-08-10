@@ -1,9 +1,6 @@
-export interface Token {
-  address: string;
-  decimals: number;
-  name: string;
-  symbol: string;
-}
+import { TokenSubgraph } from "@stackly/sdk";
+
+export type Token = TokenSubgraph | Omit<TokenSubgraph, "id">;
 
 export interface TokenFromTokenlist {
   address: string;
