@@ -1,14 +1,17 @@
 import { StackOrder } from "@/models/stack-order";
 import { convertedAmount } from "@/utils/numbers";
 
-export const totalStackOrdersDone = (order: StackOrder) =>
-  order.cowOrders.length;
+export const totalStackOrdersDone = (order: StackOrder) => {
+  if (!order?.cowOrders?.length) return 0;
+
+  return order.cowOrders.length;
+};
 
 export const calculateStackAveragePrice = (order: StackOrder) => {
   let totalExecutedBuyAmount = 0;
   let totalExecutedSellAmount = 0;
 
-  if (order.cowOrders.length === 0) return 0;
+  if (!order?.cowOrders?.length) return 0;
 
   order.cowOrders.forEach((cowOrder) => {
     if (cowOrder.executedBuyAmount === "0") return;
