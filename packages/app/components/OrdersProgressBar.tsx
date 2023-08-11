@@ -1,16 +1,16 @@
-import { OrderProps, totalOrderSlotsDone } from "@/models/order";
+import { StackOrderProps, totalStackOrdersDone } from "@/models/stack-order";
 import React, { useRef, useEffect } from "react";
 
-export const OrdersProgressBar = ({ order }: OrderProps) => {
+export const OrdersProgressBar = ({ stackOrder }: StackOrderProps) => {
   const progressBarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (progressBarRef.current) {
       const width =
-        (100 * totalOrderSlotsDone(order)) / order.orderSlots.length;
+        (100 * totalStackOrdersDone(stackOrder)) / stackOrder.orderSlots.length;
       progressBarRef.current.style.width = `${width}%`;
     }
-  }, [order]);
+  }, [stackOrder]);
 
   return (
     <div className="w-full h-2 rounded-lg bg-surface-75">

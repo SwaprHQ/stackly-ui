@@ -25,7 +25,7 @@ export const StackProgress = ({ stackOrder }: StackOrderProps) => (
         <TokenIcon size="xs" token={stackOrder.sellToken} />
       </div>
     </div>
-    <OrdersProgressBar order={stackOrder} />
+    <OrdersProgressBar stackOrder={stackOrder} />
   </div>
 );
 
