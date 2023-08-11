@@ -26,7 +26,7 @@ import {
   Toast,
   Severity,
 } from "@/ui";
-import { FREQUENCY_OPTIONS } from "../../models/stack";
+import { FREQUENCY_OPTIONS } from "@/models/stack";
 
 export default function Page() {
   //  radioButtons

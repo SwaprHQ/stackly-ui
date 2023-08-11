@@ -311,6 +311,7 @@ export const Stackbox = () => {
           endTime={endDateTime}
           isOpen={openModalId === ModalId.CONFIRM_STACK}
           closeAction={closeModal}
+          key={`${fromToken.address}-$${tokenAmount}`}
         />
       )}
       <Toast
