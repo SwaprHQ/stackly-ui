@@ -41,6 +41,7 @@ import {
 } from "@/components";
 import { StackProgress } from "@/components/stack-modal/StackProgress";
 import { StackOrdersTable } from "@/components/stack-modal/StackOrdersTable";
+import { ModalId, useModalContext } from "@/contexts";
 
 interface StackModalProps extends ModalBaseProps {
   stackOrder: StackOrder;
@@ -63,12 +64,8 @@ export const StackModal = ({
   closeAction,
 }: StackModalProps) => {
   const signer = useEthersSigner();
+  const { closeModal, isModalOpen, openModal } = useModalContext();
 
-  const [isOpenCancellationDialog, setIsOpenCancellationDialog] =
-    useState(false);
-  const [isCancellationProcessing, setIsCancellationProcessing] =
-    useState(false);
-  const [isCancellationSuccess, setIsCancellationSuccess] = useState(false);
   const [cancellationTx, setCancellationTx] =
     useState<CancellationTransaction>();
 
@@ -92,15 +89,14 @@ export const StackModal = ({
     if (!signer) return;
 
     try {
-      setIsCancellationProcessing(true);
+      openModal(ModalId.CANCEL_STACK_PROCESSING);
       const tx = await getDCAOrderContract(stackOrder.id, signer).cancel();
       setCancellationTx(tx);
-
       await tx.wait();
-      setIsCancellationProcessing(false);
-      setIsCancellationSuccess(true);
+      closeModal(ModalId.CANCEL_STACK_PROCESSING);
+      openModal(ModalId.CANCEL_STACK_SUCCESS);
     } catch (e) {
-      setIsCancellationProcessing(false);
+      closeModal(ModalId.CANCEL_STACK_PROCESSING);
       console.error("Cancel stack error", e);
     }
   };
@@ -112,9 +108,9 @@ export const StackModal = ({
         isOpen={isOpen}
         closeAction={() => {
           if (
-            isCancellationProcessing &&
-            isOpenCancellationDialog &&
-            isCancellationSuccess
+            !isModalOpen(ModalId.CANCEL_STACK_CONFIRM) &&
+            !isModalOpen(ModalId.CANCEL_STACK_PROCESSING) &&
+            !isModalOpen(ModalId.CANCEL_STACK_SUCCESS)
           )
             closeAction();
         }}
@@ -181,7 +177,7 @@ export const StackModal = ({
             <Button
               size="sm"
               action="secondary"
-              onClick={() => setIsOpenCancellationDialog(true)}
+              onClick={() => openModal(ModalId.CANCEL_STACK_CONFIRM)}
               width="full"
             >
               Cancel Stacking
@@ -190,8 +186,8 @@ export const StackModal = ({
         </ModalFooter>
       </Modal>
       <Dialog
-        isOpen={isOpenCancellationDialog}
-        closeAction={() => setIsOpenCancellationDialog(false)}
+        isOpen={isModalOpen(ModalId.CANCEL_STACK_CONFIRM)}
+        closeAction={() => closeModal(ModalId.CANCEL_STACK_CONFIRM)}
       >
         <DialogContent
           title=" Are you sure you want to cancel stacking?"
@@ -200,12 +196,12 @@ export const StackModal = ({
         <DialogFooterActions
           primaryAction={() => cancelStack()}
           primaryText="Proceed"
-          secondaryAction={() => setIsOpenCancellationDialog(false)}
+          secondaryAction={() => closeModal(ModalId.CANCEL_STACK_CONFIRM)}
           secondaryText="Cancel"
         />
       </Dialog>
       <DialogConfirmTransactionLoading
-        isOpen={isCancellationProcessing}
+        isOpen={isModalOpen(ModalId.CANCEL_STACK_PROCESSING)}
         title={cancellationTx && "Proceeding cancellation"}
         description={cancellationTx && "Waiting for transaction confirmation."}
       >
@@ -214,8 +210,8 @@ export const StackModal = ({
         )}
       </DialogConfirmTransactionLoading>
       <Dialog
-        isOpen={isCancellationSuccess}
-        closeAction={() => setIsCancellationSuccess(false)}
+        isOpen={isModalOpen(ModalId.CANCEL_STACK_SUCCESS)}
+        closeAction={() => closeModal(ModalId.CANCEL_STACK_SUCCESS)}
       >
         <Icon name="check" className="text-primary-400" size={38} />
         <DialogContent
@@ -228,8 +224,8 @@ export const StackModal = ({
         <DialogFooterActions
           primaryAction={() => {
             refetchStacks();
-            setIsCancellationSuccess(false);
-            setIsCancellationProcessing(false);
+            closeModal(ModalId.CANCEL_STACK_PROCESSING);
+            closeModal(ModalId.CANCEL_STACK_SUCCESS);
             closeAction();
           }}
           primaryText="Back to Stacks"
