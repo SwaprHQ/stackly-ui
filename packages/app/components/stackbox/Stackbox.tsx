@@ -23,7 +23,6 @@ import { useAccount, useBalance, useNetwork } from "wagmi";
 import { formatUnits, parseUnits } from "viem";
 import { ModalId, useModalContext } from "@/contexts";
 import { FREQUENCY_OPTIONS } from "@/models/stack";
-import { BigNumber } from "ethers";
 import Link from "next/link";
 
 interface SelectTokenButtonProps {
@@ -106,16 +105,20 @@ export const Stackbox = () => {
       endDateTime.getTime() <= startDateTime.getTime();
     const tokenAmountIsZero = tokenAmount === "0";
 
-    if (!tokenAmount) setShowTokenAmountError(true);
     if (endTimeBeforeStartTime) setShowDateTimeError(true);
-    if (!fromToken) setShowFromTokenError(true);
-    if (!toToken) setShowToTokenError(true);
+    if (!fromToken || !toToken) {
+      if (!fromToken) setShowFromTokenError(true);
+      if (!toToken) setShowToTokenError(true);
+
+      return;
+    }
+
+    if (!tokenAmount) setShowTokenAmountError(true);
     if (
       fromToken &&
       balance &&
-      BigNumber.from(balance.value).lt(
-        parseUnits(tokenAmount, fromToken.decimals)
-      )
+      tokenAmount &&
+      BigInt(balance.value) < parseUnits(tokenAmount, fromToken.decimals)
     )
       setShowInsufficentBalanceError(true);
 
@@ -126,12 +129,9 @@ export const Stackbox = () => {
       !tokenAmountIsZero &&
       !endTimeBeforeStartTime &&
       balance &&
-      BigNumber.from(balance.value).gte(
-        parseUnits(tokenAmount, fromToken.decimals)
-      )
+      BigInt(balance.value) >= parseUnits(tokenAmount, fromToken.decimals)
     ) {
       setShowDateTimeError(false);
-      setShowInsufficentBalanceError(false);
       openModal(ModalId.CONFIRM_STACK);
     }
   };
@@ -203,7 +203,8 @@ export const Stackbox = () => {
               ["e", "E", "+", "-"].includes(evt.key) && evt.preventDefault()
             }
             onChange={(event) => {
-              if (showTokenAmountError) setShowTokenAmountError(false);
+              setShowTokenAmountError(false);
+              setShowInsufficentBalanceError(false);
               setTokenAmount(event.target.value);
             }}
             onAnimationEnd={(e) => {
@@ -221,6 +222,8 @@ export const Stackbox = () => {
                     width="fit"
                     size="xs"
                     onClick={() => {
+                      setShowTokenAmountError(false);
+                      setShowInsufficentBalanceError(false);
                       setTokenAmount(
                         formatUnits(
                           balance.value / BigInt(divider),
