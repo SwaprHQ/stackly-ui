@@ -38,7 +38,7 @@ export interface ModalContextProviderProps {
   children: ReactNode;
 }
 
-type Action = { id: ModalId; type: "add" | "remove" };
+type Action = { id: ModalId; type: ActionType };
 
 function ModalReducer(openModals: ModalId[], action: Action) {
   switch (action.type) {
@@ -74,16 +74,15 @@ export const ModalContextProvider = ({
     });
   };
 
-  const isModalOpen = (modalId: ModalId) => openModals.includes(modalId);
+  const modalContext = useMemo(() => {
+    const isModalOpen = (modalId: ModalId) => openModals.includes(modalId);
 
-  const modalContext = useMemo(
-    () => ({
+    return {
       closeModal,
       openModal,
       isModalOpen,
-    }),
-    [isModalOpen]
-  );
+    };
+  }, [openModals]);
 
   return (
     <ModalContext.Provider value={modalContext}>
