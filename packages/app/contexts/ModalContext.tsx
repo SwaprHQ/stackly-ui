@@ -1,43 +1,89 @@
 "use client";
 
-import { createContext, useContext, ReactNode, useState, useMemo } from "react";
+import {
+  createContext,
+  useContext,
+  ReactNode,
+  useMemo,
+  useReducer,
+} from "react";
 
 export enum ModalId {
-  CONFIRM_STACK = "confirmStack",
+  CONFIRM_STACK = "confirm_stack",
   STACK = "stack",
-  TOAST_CONTAINER = "toastContainer",
-  TOKEN_PICKER = "tokenPicker",
+  TOKEN_PICKER = "token_picker",
+  CANCEL_STACK_CONFIRM = "cancel_stack_confirm",
+  CANCEL_STACK_PROCESSING = "cancel_stack_processing",
+  CANCEL_STACK_SUCCESS = "cancel_stack_success",
+  SUCCESS_STACK_TOAST = "success_stack_toast",
+}
+
+enum ActionType {
+  ADD = "add",
+  REMOVE = "remove",
 }
 
 export interface ModalContextProps {
-  openModalId: ModalId | null;
-  closeModal: () => void;
+  closeModal: (id: ModalId) => void;
   openModal: (id: ModalId) => void;
+  isModalOpen: (id: ModalId) => boolean;
 }
 
 export const ModalContext = createContext<ModalContextProps>({
-  openModalId: null,
-  closeModal: () => {},
+  closeModal: (id: ModalId) => {},
   openModal: (id: ModalId) => {},
+  isModalOpen: (id: ModalId) => false,
 });
 
 export interface ModalContextProviderProps {
   children: ReactNode;
 }
 
+type Action = { id: ModalId; type: ActionType };
+
+function ModalReducer(openModals: ModalId[], action: Action) {
+  switch (action.type) {
+    case ActionType.ADD: {
+      return [...openModals, action.id];
+    }
+    case ActionType.REMOVE: {
+      return openModals.filter((modal: string) => modal !== action.id);
+    }
+    default: {
+      console.error("Unknown modal action: " + action.type);
+      return openModals;
+    }
+  }
+}
+
 export const ModalContextProvider = ({
   children,
 }: ModalContextProviderProps) => {
-  const [openModalId, setOpenModalId] = useState<ModalId | null>(null);
+  const [openModals, dispatch] = useReducer(ModalReducer, []);
 
-  const modalContext = useMemo(
-    () => ({
-      closeModal: () => setOpenModalId(null),
-      openModal: (id: ModalId) => setOpenModalId(id),
-      openModalId,
-    }),
-    [openModalId]
-  );
+  const openModal = (modalId: ModalId) => {
+    dispatch({
+      type: ActionType.ADD,
+      id: modalId,
+    });
+  };
+
+  const closeModal = (modalId: ModalId) => {
+    dispatch({
+      type: ActionType.REMOVE,
+      id: modalId,
+    });
+  };
+
+  const modalContext = useMemo(() => {
+    const isModalOpen = (modalId: ModalId) => openModals.includes(modalId);
+
+    return {
+      closeModal,
+      openModal,
+      isModalOpen,
+    };
+  }, [openModals]);
 
   return (
     <ModalContext.Provider value={modalContext}>

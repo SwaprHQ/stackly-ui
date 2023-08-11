@@ -41,7 +41,7 @@ export const StacksTable = ({
 }: StacksTableProps) => {
   const [stackOrder, setStackOrder] = useState<StackOrder>();
 
-  const { closeModal, openModalId, openModal } = useModalContext();
+  const { closeModal, isModalOpen, openModal } = useModalContext();
 
   const setupAndOpenModal = (stackOrder: StackOrder) => {
     setStackOrder(stackOrder);
@@ -116,8 +116,8 @@ export const StacksTable = ({
       {stackOrder && (
         <StackModal
           refetchStacks={refetchStacks}
-          isOpen={openModalId === ModalId.STACK}
-          closeAction={closeModal}
+          isOpen={isModalOpen(ModalId.STACK)}
+          closeAction={() => closeModal(ModalId.STACK)}
           stackOrder={stackOrder}
         />
       )}

@@ -34,10 +34,12 @@ export default function Page() {
   const [toastSeverity, setToastSeverity] = useState<Severity>();
   // dialogs
   const [isErrorDialogOpen, setErrorDialogOpen] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+
   const [isOpenCancelStackingDialog, setOpenCancelStackingDialog] =
     useState(false);
   const dialogBtnRef = useRef<HTMLButtonElement>(null);
-  const { closeModal, openModalId, openModal } = useModalContext();
+  const { closeModal, isModalOpen, openModal } = useModalContext();
 
   const dialogButtons = [
     {
@@ -58,10 +60,6 @@ export default function Page() {
     {
       label: "Token Picker",
       onClick: () => openModal(ModalId.TOKEN_PICKER),
-    },
-    {
-      label: "Toast",
-      onClick: () => openModal(ModalId.TOAST_CONTAINER),
     },
   ];
 
@@ -279,23 +277,6 @@ export default function Page() {
         </div>
       </UISection>
       <UISection title="Modal">
-        <BodyText>Customize the Toast severity</BodyText>
-        <div className="flex space-x-2">
-          {toastRadioButtons.map((radioButton) => (
-            <RadioButton
-              key={radioButton.value}
-              name={radioButton.name}
-              id={radioButton.name}
-              checked={toastSeverity === radioButton.value}
-              value={radioButton.value}
-              onChange={(e) => {
-                setToastSeverity(e.target.value as Severity);
-              }}
-            >
-              {radioButton.name}
-            </RadioButton>
-          ))}
-        </div>
         <UISubSection title="Examples">
           {modalButtons.map((modal) => (
             <DialogModalButton
@@ -321,24 +302,14 @@ export default function Page() {
             frequency={FREQUENCY_OPTIONS.day}
             startTime={new Date()}
             endTime={new Date()}
-            isOpen={openModalId === ModalId.CONFIRM_STACK}
-            closeAction={closeModal}
+            isOpen={isModalOpen(ModalId.CONFIRM_STACK)}
+            closeAction={() => closeModal(ModalId.CONFIRM_STACK)}
           />
           <TokenPicker
-            closeAction={closeModal}
-            isOpen={openModalId === ModalId.TOKEN_PICKER}
-            onTokenSelect={closeModal}
+            closeAction={() => closeModal(ModalId.TOKEN_PICKER)}
+            isOpen={isModalOpen(ModalId.TOKEN_PICKER)}
+            onTokenSelect={() => openModal(ModalId.TOKEN_PICKER)}
           />
-          <Toast
-            closeAction={closeModal}
-            isOpen={openModalId === ModalId.TOAST_CONTAINER}
-            severity={toastSeverity}
-            title="This is the Toast title"
-          >
-            <BodyText className="text-em-med">
-              This is the Toast child, used as description.
-            </BodyText>
-          </Toast>
         </UISubSection>
       </UISection>
       <UISection title="Dialog">
@@ -385,6 +356,54 @@ export default function Page() {
               secondaryText="Dismiss"
             />
           </Dialog>
+          <Toast
+            closeAction={() => setShowToast(false)}
+            isOpen={showToast}
+            severity={toastSeverity}
+            title="This is the Toast title"
+          >
+            <BodyText className="text-em-med">
+              This is the Toast child, used as description.
+            </BodyText>
+          </Toast>
+        </UISubSection>
+      </UISection>
+      <UISection title="Toast">
+        <BodyText>Customize the Toast severity</BodyText>
+        <div className="flex space-x-2">
+          {toastRadioButtons.map((radioButton) => (
+            <RadioButton
+              key={radioButton.value}
+              name={radioButton.name}
+              id={radioButton.name}
+              checked={toastSeverity === radioButton.value}
+              value={radioButton.value}
+              onChange={(e) => {
+                setToastSeverity(e.target.value as Severity);
+              }}
+            >
+              {radioButton.name}
+            </RadioButton>
+          ))}
+        </div>
+        <Toast
+          closeAction={() => setShowToast(false)}
+          isOpen={showToast}
+          severity={toastSeverity}
+          title="This is the Toast title"
+        >
+          <BodyText className="text-em-med">
+            This is the Toast child, used as description.
+          </BodyText>
+        </Toast>
+        <UISubSection title="Examples">
+          <Button
+            action="tertiary"
+            size="sm"
+            onClick={() => setShowToast(true)}
+          >
+            show toast
+          </Button>
         </UISubSection>
       </UISection>
       <UISection
