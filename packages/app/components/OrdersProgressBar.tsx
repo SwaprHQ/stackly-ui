@@ -1,4 +1,4 @@
-import { OrderProps, totalOrdersDone, totalOrders } from "@/models/order";
+import { OrderProps, totalOrderSlotsDone } from "@/models/order";
 import React, { useRef, useEffect } from "react";
 
 export const OrdersProgressBar = ({ order }: OrderProps) => {
@@ -6,7 +6,8 @@ export const OrdersProgressBar = ({ order }: OrderProps) => {
 
   useEffect(() => {
     if (progressBarRef.current) {
-      const width = (100 * totalOrdersDone(order)) / totalOrders(order);
+      const width =
+        (100 * totalOrderSlotsDone(order)) / order.orderSlots.length;
       progressBarRef.current.style.width = `${width}%`;
     }
   }, [order]);

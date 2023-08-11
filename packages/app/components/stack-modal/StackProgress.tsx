@@ -1,4 +1,4 @@
-import { fundsAmountWithToken, totalOrdersDone } from "@/models/order";
+import { fundsAmountWithToken, totalOrderSlotsDone } from "@/models/order";
 import { OrdersProgressBar } from "@/components/OrdersProgressBar";
 import { BodyText } from "@/ui";
 import { TokenIcon } from "@/components/TokenIcon";
@@ -30,7 +30,7 @@ export const StackProgress = ({ stackOrder }: StackOrderProps) => (
 );
 
 const OrdersExecuted = ({ stackOrder }: StackOrderProps) => {
-  if (!totalOrdersDone(stackOrder))
+  if (!totalOrderSlotsDone(stackOrder))
     return <BodyText className="text-em-low">No orders executed yet.</BodyText>;
 
   return (
