@@ -1,6 +1,16 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { parseUnits } from "viem";
+import { format } from "date-fns";
+import { useAccount, useNetwork } from "wagmi";
+import {
+  ChainId,
+  createDCAOrderWithNonce,
+  getERC20Contract,
+  getOrderFactory,
+  getOrderFactoryAddress,
+} from "@stackly/sdk";
 import {
   Modal,
   ModalFooter,
@@ -14,10 +24,12 @@ import {
 import {
   FromToStackTokenPair,
   DialogConfirmTransactionLoading,
+  TransactionLink,
 } from "@/components";
 import { Token } from "@/models/token";
-import { format } from "date-fns";
-import { FREQUENCY_OPTIONS } from "@/models/stack";
+import { FREQUENCY_OPTIONS, Transaction } from "@/models/stack";
+import { useEthersSigner } from "@/utils/ethers";
+import { ModalId, useModalContext } from "@/contexts";
 
 interface ConfirmStackModalProps extends ModalBaseProps {
   fromToken: Token;
@@ -26,6 +38,7 @@ interface ConfirmStackModalProps extends ModalBaseProps {
   frequency: FREQUENCY_OPTIONS;
   startTime: Date;
   endTime: Date;
+  onSuccess: () => void;
 }
 
 const HOUR_IN_MILISECONDS = 60 * 60 * 1000;
@@ -36,6 +49,13 @@ const frequencySeconds = {
   [FREQUENCY_OPTIONS.day]: DAY_IN_MILISECONDS,
   [FREQUENCY_OPTIONS.week]: 7 * DAY_IN_MILISECONDS,
   [FREQUENCY_OPTIONS.month]: 30 * DAY_IN_MILISECONDS,
+};
+
+const frequencyIntervalInHours = {
+  [FREQUENCY_OPTIONS.hour]: 1,
+  [FREQUENCY_OPTIONS.day]: 24,
+  [FREQUENCY_OPTIONS.week]: 24 * 7,
+  [FREQUENCY_OPTIONS.month]: 24 * 30,
 };
 
 enum CREATE_STACK_STEPS {
@@ -54,21 +74,22 @@ export const ConfirmStackModal = ({
   endTime,
   isOpen,
   closeAction,
+  onSuccess,
 }: ConfirmStackModalProps) => {
+  const { address } = useAccount();
+  const { chain } = useNetwork();
+  const signer = useEthersSigner({ chainId: chain?.id });
+  const { closeModal, isModalOpen, openModal } = useModalContext();
+
   const focusBtnRef = useRef<HTMLButtonElement>(null);
+
   const [step, setStep] = useState(CREATE_STACK_STEPS.approve);
+  const [allowance, setAllowance] = useState<string>();
 
-  const [isTransactionLoadingDialogOpen, setTransactionLoadingDialogOpen] =
-    useState(false);
+  const [approveTx, setApproveTx] = useState<Transaction>();
+  const [stackCreationTx, setStackCreationTx] = useState<Transaction>();
 
-  const createStack = () => {
-    setTransactionLoadingDialogOpen(true);
-  };
-
-  const approveToken = () => {
-    setStep(CREATE_STACK_STEPS.create);
-  };
-
+  const rawAmount = parseUnits(amount, fromToken.decimals);
   const estimatedNumberOfOrders =
     Math.floor(
       (endTime.getTime() - startTime.getTime()) / frequencySeconds[frequency]
@@ -77,6 +98,92 @@ export const ConfirmStackModal = ({
   const amountPerOrder = (parseFloat(amount) / estimatedNumberOfOrders).toFixed(
     2
   );
+
+  useEffect(() => {
+    if (allowance && BigInt(allowance) >= rawAmount)
+      setStep(CREATE_STACK_STEPS.create);
+  }, [allowance, rawAmount]);
+
+  useEffect(() => {
+    if (!signer || !address) {
+      return;
+    }
+
+    try {
+      const factoryAddress = getOrderFactoryAddress(chain?.id as ChainId);
+      getERC20Contract(fromToken.address, signer)
+        .allowance(address, factoryAddress)
+        .then((value) => setAllowance(value.toString()));
+    } catch (e) {
+      console.error(e);
+    }
+  }, [signer, address, fromToken.address, chain]);
+
+  const approveFromToken = async () => {
+    if (!signer || !address || !chain) {
+      return;
+    }
+
+    const sellTokenContract = getERC20Contract(fromToken.address, signer);
+
+    try {
+      openModal(ModalId.APPROVE_PROCESSING);
+      const approveFactoryTransaction = await sellTokenContract.approve(
+        getOrderFactoryAddress(chain.id),
+        rawAmount
+      );
+      setApproveTx(approveFactoryTransaction);
+
+      await approveFactoryTransaction.wait();
+
+      setStep(CREATE_STACK_STEPS.create);
+      closeModal(ModalId.APPROVE_PROCESSING);
+    } catch (e) {
+      closeModal(ModalId.APPROVE_PROCESSING);
+      console.error(e);
+    }
+  };
+
+  const timeToUnix = (time: Date) => Math.round(time.getTime() / 1000);
+
+  const createStack = async () => {
+    if (!signer || !address || !chain) {
+      return;
+    }
+
+    const initParams: Parameters<typeof createDCAOrderWithNonce>[1] = {
+      nonce: timeToUnix(new Date()),
+      owner: address as string,
+      receiver: address as string,
+      sellToken: fromToken.address,
+      buyToken: toToken.address,
+      amount: rawAmount.toString(),
+      startTime: timeToUnix(startTime),
+      endTime: timeToUnix(endTime),
+      interval: frequencyIntervalInHours[frequency],
+    };
+
+    const orderFactory = getOrderFactory(
+      getOrderFactoryAddress(chain.id),
+      signer
+    );
+
+    try {
+      openModal(ModalId.STACK_CREATION_PROCESSING);
+      const createOrderTransaction = await createDCAOrderWithNonce(
+        orderFactory,
+        initParams
+      );
+      setStackCreationTx(createOrderTransaction);
+
+      await createOrderTransaction.wait();
+      closeModal(ModalId.STACK_CREATION_PROCESSING);
+      onSuccess();
+    } catch (e) {
+      closeModal(ModalId.STACK_CREATION_PROCESSING);
+      console.error(e);
+    }
+  };
 
   return (
     <Modal
@@ -138,7 +245,7 @@ export const ConfirmStackModal = ({
         {step === CREATE_STACK_STEPS.approve && (
           <Button
             action="primary"
-            onClick={approveToken}
+            onClick={approveFromToken}
             width="full"
             ref={focusBtnRef}
             className="whitespace-nowrap"
@@ -157,9 +264,21 @@ export const ConfirmStackModal = ({
         </Button>
       </ModalFooter>
       <DialogConfirmTransactionLoading
-        isOpen={isTransactionLoadingDialogOpen}
-        closeAction={() => setTransactionLoadingDialogOpen(false)}
-      />
+        isOpen={isModalOpen(ModalId.APPROVE_PROCESSING)}
+        title={approveTx && "Proceeding approval"}
+        description={approveTx && "Waiting for transaction confirmation."}
+      >
+        {approveTx?.hash && <TransactionLink hash={approveTx.hash} />}
+      </DialogConfirmTransactionLoading>
+      <DialogConfirmTransactionLoading
+        isOpen={isModalOpen(ModalId.STACK_CREATION_PROCESSING)}
+        title={stackCreationTx && "Proceeding stack creation"}
+        description={stackCreationTx && "Waiting for transaction confirmation."}
+      >
+        {stackCreationTx?.hash && (
+          <TransactionLink hash={stackCreationTx.hash} />
+        )}
+      </DialogConfirmTransactionLoading>
     </Modal>
   );
 };

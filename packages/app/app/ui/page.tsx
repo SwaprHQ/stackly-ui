@@ -304,6 +304,7 @@ export default function Page() {
             endTime={new Date()}
             isOpen={isModalOpen(ModalId.CONFIRM_STACK)}
             closeAction={() => closeModal(ModalId.CONFIRM_STACK)}
+            onSuccess={() => {}}
           />
           <TokenPicker
             closeAction={() => closeModal(ModalId.TOKEN_PICKER)}

@@ -132,6 +132,7 @@ export const Stackbox = () => {
       BigInt(balance.value) >= parseUnits(tokenAmount, fromToken.decimals)
     ) {
       setShowDateTimeError(false);
+      setShowInsufficentBalanceError(false);
       openModal(ModalId.CONFIRM_STACK);
     }
   };
@@ -335,6 +336,10 @@ export const Stackbox = () => {
           isOpen={isModalOpen(ModalId.CONFIRM_STACK)}
           closeAction={() => closeModal(ModalId.CONFIRM_STACK)}
           key={`${fromToken.address}-$${tokenAmount}`}
+          onSuccess={() => {
+            closeModal(ModalId.CONFIRM_STACK);
+            openModal(ModalId.SUCCESS_STACK_TOAST);
+          }}
         />
       )}
       <Toast
