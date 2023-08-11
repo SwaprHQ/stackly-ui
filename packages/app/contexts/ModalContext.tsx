@@ -15,6 +15,7 @@ export enum ModalId {
   CANCEL_STACK_CONFIRM = "cancel_stack_confirm",
   CANCEL_STACK_PROCESSING = "cancel_stack_processing",
   CANCEL_STACK_SUCCESS = "cancel_stack_success",
+  SUCCESS_STACK_TOAST = "success_stack_toast",
 }
 
 enum ActionType {
