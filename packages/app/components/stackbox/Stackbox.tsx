@@ -21,9 +21,10 @@ import {
 } from "@/components";
 import { TokenFromTokenlist } from "@/models/token";
 import { useAccount, useBalance, useNetwork } from "wagmi";
-import { formatUnits } from "viem";
+import { formatUnits, parseUnits } from "viem";
 import { ModalId, useModalContext } from "@/contexts";
 import { FREQUENCY_OPTIONS } from "@/models/stack";
+import { BigNumber } from "ethers";
 
 interface SelectTokenButtonProps {
   label: string;
@@ -88,6 +89,8 @@ export const Stackbox = () => {
   const [showDateTimeError, setShowDateTimeError] = useState(false);
   const [showFromTokenError, setShowFromTokenError] = useState(false);
   const [showToTokenError, setShowToTokenError] = useState(false);
+  const [showInsufficentBalanceError, setShowInsufficentBalanceError] =
+    useState(false);
 
   useEffect(() => {
     setEndDateTime(new Date(endDateByFrequency[frequency]));
@@ -107,15 +110,28 @@ export const Stackbox = () => {
     if (endTimeBeforeStartTime) setShowDateTimeError(true);
     if (!fromToken) setShowFromTokenError(true);
     if (!toToken) setShowToTokenError(true);
+    if (
+      fromToken &&
+      balance &&
+      BigNumber.from(balance.value).lt(
+        parseUnits(tokenAmount, fromToken.decimals)
+      )
+    )
+      setShowInsufficentBalanceError(true);
 
     if (
       fromToken &&
       toToken &&
       tokenAmount &&
       !tokenAmountIsZero &&
-      !endTimeBeforeStartTime
+      !endTimeBeforeStartTime &&
+      balance &&
+      BigNumber.from(balance.value).gte(
+        parseUnits(tokenAmount, fromToken.decimals)
+      )
     ) {
       setShowDateTimeError(false);
+      setShowInsufficentBalanceError(false);
       openModal(ModalId.CONFIRM_STACK);
     }
   };
@@ -291,8 +307,12 @@ export const Stackbox = () => {
             </div>
           </div>
         </div>
-        <Button width="full" onClick={openConfirmStack}>
-          Stack Now
+        <Button
+          width="full"
+          onClick={openConfirmStack}
+          className={cx({ "animate-wiggle": showInsufficentBalanceError })}
+        >
+          {showInsufficentBalanceError ? "Insufficent Balance" : "Stack Now"}
         </Button>
       </div>
       <TokenPicker
