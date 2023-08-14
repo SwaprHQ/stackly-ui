@@ -30,6 +30,7 @@ import { Token } from "@/models/token";
 import { FREQUENCY_OPTIONS, Transaction } from "@/models/stack";
 import { useEthersSigner } from "@/utils/ethers";
 import { ModalId, useModalContext } from "@/contexts";
+import { dateToUnixTimestamp } from "@/utils/datetime";
 
 interface ConfirmStackModalProps extends ModalBaseProps {
   fromToken: Token;
@@ -105,9 +106,7 @@ export const ConfirmStackModal = ({
   }, [allowance, rawAmount]);
 
   useEffect(() => {
-    if (!signer || !address) {
-      return;
-    }
+    if (!signer || !address) return;
 
     try {
       const factoryAddress = getOrderFactoryAddress(chain?.id as ChainId);
@@ -120,14 +119,12 @@ export const ConfirmStackModal = ({
   }, [signer, address, fromToken.address, chain]);
 
   const approveFromToken = async () => {
-    if (!signer || !address || !chain) {
-      return;
-    }
+    if (!signer || !address || !chain) return;
 
     const sellTokenContract = getERC20Contract(fromToken.address, signer);
 
     try {
-      openModal(ModalId.APPROVE_PROCESSING);
+      openModal(ModalId.STACK_APPROVE_PROCESSING);
       const approveFactoryTransaction = await sellTokenContract.approve(
         getOrderFactoryAddress(chain.id),
         rawAmount
@@ -137,29 +134,25 @@ export const ConfirmStackModal = ({
       await approveFactoryTransaction.wait();
 
       setStep(CREATE_STACK_STEPS.create);
-      closeModal(ModalId.APPROVE_PROCESSING);
+      closeModal(ModalId.STACK_APPROVE_PROCESSING);
     } catch (e) {
-      closeModal(ModalId.APPROVE_PROCESSING);
+      closeModal(ModalId.STACK_APPROVE_PROCESSING);
       console.error(e);
     }
   };
 
-  const timeToUnix = (time: Date) => Math.round(time.getTime() / 1000);
-
   const createStack = async () => {
-    if (!signer || !address || !chain) {
-      return;
-    }
+    if (!signer || !address || !chain) return;
 
     const initParams: Parameters<typeof createDCAOrderWithNonce>[1] = {
-      nonce: timeToUnix(new Date()),
+      nonce: dateToUnixTimestamp(new Date()),
       owner: address as string,
       receiver: address as string,
       sellToken: fromToken.address,
       buyToken: toToken.address,
       amount: rawAmount.toString(),
-      startTime: timeToUnix(startTime),
-      endTime: timeToUnix(endTime),
+      startTime: dateToUnixTimestamp(startTime),
+      endTime: dateToUnixTimestamp(endTime),
       interval: frequencyIntervalInHours[frequency],
     };
 
@@ -264,7 +257,7 @@ export const ConfirmStackModal = ({
         </Button>
       </ModalFooter>
       <DialogConfirmTransactionLoading
-        isOpen={isModalOpen(ModalId.APPROVE_PROCESSING)}
+        isOpen={isModalOpen(ModalId.STACK_APPROVE_PROCESSING)}
         title={approveTx && "Proceeding approval"}
         description={approveTx && "Waiting for transaction confirmation."}
       >
