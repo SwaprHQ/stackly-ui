@@ -16,7 +16,7 @@ import { StackedTokenLogoPair, StackModal } from "@/components";
 import {
   fundsAmountWithToken,
   getOrderPairSymbols,
-  totalOrdersDone,
+  totalOrderSlotsDone,
 } from "@/models/order";
 import { formatTimestampToDateWithSuffix } from "@/utils/datetime";
 import {
@@ -132,7 +132,7 @@ const CellWrapper = ({ children }: PropsWithChildren) => (
 );
 
 const OrdersProgressText = ({ stackOrder }: StackOrderProps) =>
-  totalOrdersDone(stackOrder) === 0 ? (
+  totalOrderSlotsDone(stackOrder) === 0 ? (
     <BodyText className="text-primary-700">
       Starts on {formatTimestampToDateWithSuffix(stackOrder.orderSlots[0])}
     </BodyText>
