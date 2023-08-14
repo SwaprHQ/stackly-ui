@@ -2,7 +2,7 @@ import { convertedAmount } from "@/utils/numbers";
 import { currentTimestampInSeconds } from "@/utils/datetime";
 import { Order } from "@stackly/sdk";
 
-export const totalOrdersDone = (order: Order) => {
+export const totalOrderSlotsDone = (order: Order) => {
   return order.orderSlots.reduce((count, orderTimestamp) => {
     if (Number(orderTimestamp) < currentTimestampInSeconds) return ++count;
     return count;
@@ -14,8 +14,6 @@ export const fundsAmount = (order: Order) =>
 
 export const fundsAmountWithToken = (order: Order) =>
   `${fundsAmount(order)} ${order.sellToken.symbol}`;
-
-export const totalOrders = (order: Order) => order.orderSlots.length;
 
 export const getOrderPairSymbols = (order: Order) =>
   `${order.buyToken.symbol}/${order.sellToken.symbol}`;
