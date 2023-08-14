@@ -29,11 +29,13 @@ import {
   totalStackOrdersDone,
   totalStacked,
   totalFundsUsed,
+  stackIsFinishedWithFunds,
+  stackIsComplete,
+  stackRemainingFundsWithToken,
 } from "@/models/stack-order";
 import { formatTokenValue } from "@/utils/token";
 import { getDCAOrderContract } from "@stackly/sdk";
 import { useEthersSigner } from "@/utils/ethers";
-import { convertedAmount } from "@/utils/numbers";
 import {
   StackedTokenLogoPair,
   DialogConfirmTransactionLoading,
@@ -74,16 +76,36 @@ export const StackModal = ({
   const lastSlot = orderSlots[orderSlots.length - 1];
   const nextSlot = orderSlots[totalOrdersDone(stackOrder)];
 
-  const remainingFunds =
-    convertedAmount(stackOrder.amount, stackOrder.sellToken.decimals) -
-    totalFundsUsed(stackOrder);
+  const getConfirmCancel = () => {
+    if (stackIsFinishedWithFunds(stackOrder))
+      return confirmCancelContent.finishedWithFunds;
 
-  const remainingFundsDescription =
-    remainingFunds > 0 &&
-    `remaining funds, ${remainingFunds} ${stackOrder.sellToken.symbol}`;
+    return confirmCancelContent.notComplete;
+  };
 
-  const stackIsComplete =
-    totalOrdersDone(stackOrder) === orderSlots.length && remainingFunds === 0;
+  const remainingFundsText = () =>
+    `The ${stackRemainingFundsWithToken(
+      stackOrder
+    )} will be sent to your wallet.`;
+
+  const confirmCancelContent = {
+    notComplete: {
+      title: "Are you sure you want to cancel stacking?",
+      description: remainingFundsText(),
+      button: {
+        action: "secondary",
+        text: "Cancel Stacking",
+      },
+    },
+    finishedWithFunds: {
+      title: "Proceed with cancelation to withdraw funds",
+      description: remainingFundsText(),
+      button: {
+        action: "primary",
+        text: `Withdraw ${stackRemainingFundsWithToken(stackOrder)}`,
+      },
+    },
+  };
 
   const cancelStack = async () => {
     if (!signer) return;
@@ -155,12 +177,21 @@ export const StackModal = ({
               Every {formatFrequencyHours(Number(stackOrder.interval))}
             </StackDetail>
             <StackDetail title="Next order">
-              {stackIsComplete
+              {stackIsComplete(stackOrder)
                 ? "Complete"
+                : stackIsFinishedWithFunds(stackOrder)
+                ? "Finished with funds"
+                : stackOrder.cancelledAt
+                ? "Cancelled"
                 : formatTimestampToDateWithTime(nextSlot)}
             </StackDetail>
           </div>
           <div className="w-full my-4 border-b border-surface-50"></div>
+          {stackIsFinishedWithFunds(stackOrder) && (
+            <div className="px-4 pb-4">
+              <HasRemainingFundsAlertMessage stackOrder={stackOrder} />
+            </div>
+          )}
           <div className="px-4">
             <TitleText size={2} weight="bold">
               Orders
@@ -173,14 +204,16 @@ export const StackModal = ({
           </div>
         </ModalContent>
         <ModalFooter>
-          {!stackOrder.cancelledAt && !stackIsComplete && (
+          {!stackOrder.cancelledAt && !stackIsComplete(stackOrder) && (
             <Button
               size="sm"
-              action="secondary"
+              action={
+                getConfirmCancel().button.action as "secondary" | "primary"
+              }
               onClick={() => openModal(ModalId.CANCEL_STACK_CONFIRM)}
               width="full"
             >
-              Cancel Stacking
+              {getConfirmCancel().button.text}
             </Button>
           )}
         </ModalFooter>
@@ -190,8 +223,8 @@ export const StackModal = ({
         closeAction={() => closeModal(ModalId.CANCEL_STACK_CONFIRM)}
       >
         <DialogContent
-          title=" Are you sure you want to cancel stacking?"
-          description={`The ${remainingFundsDescription} will be sent to your wallet.`}
+          title={getConfirmCancel().title}
+          description={getConfirmCancel().description}
         />
         <DialogFooterActions
           primaryAction={() => cancelStack()}
@@ -216,7 +249,9 @@ export const StackModal = ({
         <Icon name="check" className="text-primary-400" size={38} />
         <DialogContent
           title="Stack Cancelled"
-          description={`The ${remainingFundsDescription} were sent to your wallet.`}
+          description={`The ${stackRemainingFundsWithToken(
+            stackOrder
+          )}} were sent to your wallet.`}
         />
         {cancellationTx?.hash && (
           <CancelTransactionLink txHash={cancellationTx.hash} />
@@ -259,6 +294,15 @@ const StackInfo = ({ stackOrder }: StackOrderProps) => (
         {formatTokenValue(calculateStackAveragePrice(stackOrder))}
       </span>
       <span className="text-em-med">{getOrderPairSymbols(stackOrder)}</span>
+    </BodyText>
+  </div>
+);
+
+const HasRemainingFundsAlertMessage = ({ stackOrder }: StackOrderProps) => (
+  <div className="p-3 text-center rounded-lg bg-danger-75">
+    <BodyText className="text-em-med">
+      This contract has {stackRemainingFundsWithToken(stackOrder)} remaining
+      funds.
     </BodyText>
   </div>
 );
