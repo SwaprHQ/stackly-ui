@@ -18,7 +18,7 @@ export const SelectNetwork = () => {
 
   return (
     <Listbox value={chain.id.toString()} onChange={onValueChange}>
-      <div className="relative">
+      <div className="relative z-10">
         <Listbox.Button
           as={Button}
           iconRight="caret-down"
