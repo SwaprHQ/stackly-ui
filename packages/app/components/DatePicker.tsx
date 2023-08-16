@@ -146,7 +146,7 @@ export function DatePicker({
                         </div>
                       </div>
                       <Button
-                        action="primary"
+                        variant="primary"
                         onClick={() => {
                           const newDate = new Date(currentDate);
                           newDate.setHours(Number(hours));

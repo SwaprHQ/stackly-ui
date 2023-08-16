@@ -23,7 +23,7 @@ export const SelectNetwork = () => {
           as={Button}
           iconRight="caret-down"
           size="sm"
-          action="tertiary"
+          variant="tertiary"
           className="flex flex-row h-10 border-none shadow-sm rounded-xl focus:bg-white focus:ring-0 active:ring-0"
         >
           <ChainIcon size={20} id={chain.id} unsupported={chain.unsupported} />

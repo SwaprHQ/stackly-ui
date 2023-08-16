@@ -218,7 +218,7 @@ export const Stackbox = () => {
                 {balanceOptions.map(({ name, divider }) => (
                   <Button
                     key={name}
-                    action="secondary"
+                    variant="secondary"
                     width="fit"
                     size="xs"
                     onClick={() => {
@@ -374,7 +374,7 @@ const SelectTokenButton = ({
       <BodyText className="text-em-low">{label}</BodyText>
       {token ? (
         <Button
-          action="secondary"
+          variant="secondary"
           className="leading-6 rounded-xl"
           onClick={handleButtonClick}
           size="sm"
@@ -385,7 +385,7 @@ const SelectTokenButton = ({
         </Button>
       ) : (
         <Button
-          action="secondary"
+          variant="secondary"
           className={cx("leading-6 rounded-xl", className)}
           onClick={handleButtonClick}
           size="sm"

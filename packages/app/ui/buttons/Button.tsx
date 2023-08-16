@@ -13,7 +13,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       children,
       className,
       size = "md",
-      action,
+      variant,
       width,
       disabled,
       onClick,
@@ -32,7 +32,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         className={twMerge(
           buttonStyles({
             size,
-            action,
+            variant,
             width,
             disabled,
             active,

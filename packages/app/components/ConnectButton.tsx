@@ -47,7 +47,7 @@ const CustomConnectButton = ({
         </BodyText>
       )}
       <Button
-        action="tertiary"
+        variant="tertiary"
         iconRight="caret-down"
         onClick={onClick}
         size="sm"

@@ -8,7 +8,7 @@ interface MenuButtonProps {
 export default function MenuButton({ open, toggle }: MenuButtonProps) {
   return open ? (
     <Button
-      action="secondary"
+      variant="secondary"
       iconLeft="close"
       size="icon"
       className="md:invisible"
@@ -16,7 +16,7 @@ export default function MenuButton({ open, toggle }: MenuButtonProps) {
     />
   ) : (
     <Button
-      action="secondary"
+      variant="secondary"
       iconLeft="menu"
       size="icon"
       className="md:invisible"
