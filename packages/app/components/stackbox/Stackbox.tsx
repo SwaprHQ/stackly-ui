@@ -1,9 +1,17 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, AnimationEventHandler } from "react";
 import { cx } from "class-variance-authority";
 
-import { BodyText, Button, Icon, RadioButton, TitleText } from "@/ui";
+import {
+  BodyText,
+  Button,
+  Icon,
+  RadioButton,
+  Severity,
+  TitleText,
+  Toast,
+} from "@/ui";
 import {
   ConfirmStackModal,
   DatePicker,
@@ -12,32 +20,33 @@ import {
 } from "@/components";
 import { TokenFromTokenlist } from "@/models/token";
 import { useAccount, useBalance, useNetwork } from "wagmi";
-import { formatUnits } from "viem";
+import { formatUnits, parseUnits } from "viem";
 import { ModalId, useModalContext } from "@/contexts";
+import { FREQUENCY_OPTIONS } from "@/models/stack";
+import Link from "next/link";
 
 interface SelectTokenButtonProps {
   label: string;
-  onClick: (isTokenFrom?: boolean) => void;
+  onClick: (isFromToken?: boolean) => void;
   token?: TokenFromTokenlist;
+  className?: string;
+  onAnimationEnd: AnimationEventHandler<HTMLElement>;
 }
 
-const HOUR_OPTION = "hour";
-const DAY_OPTION = "day";
-const WEEK_OPTION = "week";
-const MONTH_OPTION = "month";
-
 const frequencyOptions = [
-  { option: HOUR_OPTION, name: "Hour" },
-  { option: DAY_OPTION, name: "Day" },
-  { option: WEEK_OPTION, name: "Week" },
-  { option: MONTH_OPTION, name: "Month" },
+  { option: FREQUENCY_OPTIONS.hour, name: "Hour" },
+  { option: FREQUENCY_OPTIONS.day, name: "Day" },
+  { option: FREQUENCY_OPTIONS.week, name: "Week" },
+  { option: FREQUENCY_OPTIONS.month, name: "Month" },
 ];
 
 const endDateByFrequency: Record<string, number> = {
-  [HOUR_OPTION]: new Date().setDate(new Date().getDate() + 2),
-  [DAY_OPTION]: new Date().setMonth(new Date().getMonth() + 1),
-  [WEEK_OPTION]: new Date().setMonth(new Date().getMonth() + 3),
-  [MONTH_OPTION]: new Date().setFullYear(new Date().getFullYear() + 1),
+  [FREQUENCY_OPTIONS.hour]: new Date().setDate(new Date().getDate() + 2),
+  [FREQUENCY_OPTIONS.day]: new Date().setMonth(new Date().getMonth() + 1),
+  [FREQUENCY_OPTIONS.week]: new Date().setMonth(new Date().getMonth() + 3),
+  [FREQUENCY_OPTIONS.month]: new Date().setFullYear(
+    new Date().getFullYear() + 1
+  ),
 };
 const startDateTimeTimestamp = new Date().setMinutes(
   new Date().getMinutes() + 30
@@ -51,21 +60,23 @@ const balanceOptions = [
 
 export const Stackbox = () => {
   const searchTokenBarRef = useRef<HTMLInputElement>(null);
-  const [isPickingTokenFrom, setIsPickingTokenFrom] = useState<boolean>(false);
-  const [tokenFrom, setTokenFrom] = useState<TokenFromTokenlist>();
-  const [tokenTo, setTokenTo] = useState<TokenFromTokenlist>();
+  const [isPickingFromToken, setIsPickingFromToken] = useState<boolean>(false);
+  const [fromToken, setFromToken] = useState<TokenFromTokenlist>();
+  const [toToken, setToToken] = useState<TokenFromTokenlist>();
   const { closeModal, isModalOpen, openModal } = useModalContext();
 
   const { chain } = useNetwork();
   const { address } = useAccount();
   const { data: balance } = useBalance({
-    address: Boolean(tokenFrom) ? address : undefined,
-    token: tokenFrom?.address as `0x${string}`,
+    address: Boolean(fromToken) ? address : undefined,
+    token: fromToken?.address as `0x${string}`,
     chainId: chain?.id,
   });
   const [tokenAmount, setTokenAmount] = useState("");
 
-  const [frequency, setFrequency] = useState<string>(HOUR_OPTION);
+  const [frequency, setFrequency] = useState<FREQUENCY_OPTIONS>(
+    FREQUENCY_OPTIONS.hour
+  );
   const [startDateTime, setStartDateTime] = useState<Date>(
     new Date(startDateTimeTimestamp)
   );
@@ -73,16 +84,58 @@ export const Stackbox = () => {
     new Date(endDateByFrequency[frequency])
   );
 
-  const openConfirmStack = () => openModal(ModalId.CONFIRM_STACK);
-  const openTokenPicker = (isTokenFrom = true) => {
-    setIsPickingTokenFrom(isTokenFrom);
-    openModal(ModalId.TOKEN_PICKER);
-  };
-  const selectToken = isPickingTokenFrom ? setTokenFrom : setTokenTo;
+  const [showTokenAmountError, setShowTokenAmountError] = useState(false);
+  const [showDateTimeError, setShowDateTimeError] = useState(false);
+  const [showFromTokenError, setShowFromTokenError] = useState(false);
+  const [showToTokenError, setShowToTokenError] = useState(false);
+  const [showInsufficentBalanceError, setShowInsufficentBalanceError] =
+    useState(false);
 
   useEffect(() => {
     setEndDateTime(new Date(endDateByFrequency[frequency]));
   }, [frequency]);
+
+  const openTokenPicker = (isFromToken = true) => {
+    setIsPickingFromToken(isFromToken);
+    openModal(ModalId.TOKEN_PICKER);
+  };
+
+  const openConfirmStack = () => {
+    const endTimeBeforeStartTime =
+      endDateTime.getTime() <= startDateTime.getTime();
+    const tokenAmountIsZero = tokenAmount === "0";
+
+    if (endTimeBeforeStartTime) setShowDateTimeError(true);
+    if (!fromToken || !toToken) {
+      if (!fromToken) setShowFromTokenError(true);
+      if (!toToken) setShowToTokenError(true);
+
+      return;
+    }
+
+    if (!tokenAmount) setShowTokenAmountError(true);
+    if (
+      fromToken &&
+      balance &&
+      tokenAmount &&
+      BigInt(balance.value) < parseUnits(tokenAmount, fromToken.decimals)
+    )
+      setShowInsufficentBalanceError(true);
+
+    if (
+      fromToken &&
+      toToken &&
+      tokenAmount &&
+      !tokenAmountIsZero &&
+      !endTimeBeforeStartTime &&
+      balance &&
+      BigInt(balance.value) >= parseUnits(tokenAmount, fromToken.decimals)
+    ) {
+      setShowDateTimeError(false);
+      openModal(ModalId.CONFIRM_STACK);
+    }
+  };
+  const selectToken = isPickingFromToken ? setFromToken : setToToken;
 
   const formattedBalance = (balanceData: NonNullable<typeof balance>) => {
     const SIGNIFICANT_DIGITS = 5;
@@ -113,7 +166,11 @@ export const Stackbox = () => {
           <SelectTokenButton
             label="Deposit from"
             onClick={openTokenPicker}
-            token={tokenFrom}
+            token={fromToken}
+            className={cx({ "animate-wiggle": showFromTokenError })}
+            onAnimationEnd={() => {
+              setShowFromTokenError(false);
+            }}
           />
           <Icon
             name="arrow-left"
@@ -122,7 +179,11 @@ export const Stackbox = () => {
           <SelectTokenButton
             label="To receive"
             onClick={openTokenPicker}
-            token={tokenTo}
+            token={toToken}
+            className={cx({ "animate-wiggle": showToTokenError })}
+            onAnimationEnd={() => {
+              setShowToTokenError(false);
+            }}
           />
         </div>
         <div className="py-2">
@@ -130,16 +191,28 @@ export const Stackbox = () => {
             type="number"
             pattern="[0-9]*"
             placeholder="0.0"
-            className="w-full py-3 text-4xl font-semibold outline-none text-em-med"
+            className={cx(
+              "w-full py-3 text-4xl font-semibold outline-none text-em-med",
+              {
+                "animate-wiggle-alert bg-transparent placeholder:text-current text-gray-400":
+                  showTokenAmountError,
+              }
+            )}
             value={tokenAmount}
             onKeyDown={(evt) =>
               ["e", "E", "+", "-"].includes(evt.key) && evt.preventDefault()
             }
             onChange={(event) => {
+              setShowTokenAmountError(false);
+              setShowInsufficentBalanceError(false);
               setTokenAmount(event.target.value);
             }}
+            onAnimationEnd={(e) => {
+              if (e.animationName === "red-alert")
+                setShowTokenAmountError(false);
+            }}
           />
-          {tokenFrom && balance && (
+          {fromToken && balance && (
             <div className="flex items-center justify-between">
               <div className="flex space-x-1">
                 {balanceOptions.map(({ name, divider }) => (
@@ -149,10 +222,12 @@ export const Stackbox = () => {
                     width="fit"
                     size="xs"
                     onClick={() => {
+                      setShowTokenAmountError(false);
+                      setShowInsufficentBalanceError(false);
                       setTokenAmount(
                         formatUnits(
                           balance.value / BigInt(divider),
-                          tokenFrom.decimals
+                          fromToken.decimals
                         )
                       );
                     }}
@@ -162,7 +237,7 @@ export const Stackbox = () => {
                 ))}
               </div>
               <div className="flex items-center space-x-1">
-                <TokenIcon token={tokenFrom} size="2xs" />
+                <TokenIcon token={fromToken} size="2xs" />
                 <BodyText className="text-em-high">
                   <span className="text-em-low">Balance:</span>{" "}
                   {formattedBalance(balance)}
@@ -188,7 +263,9 @@ export const Stackbox = () => {
                     id={option}
                     checked={isSelected}
                     value={option}
-                    onChange={(event) => setFrequency(event.target.value)}
+                    onChange={(event) =>
+                      setFrequency(event.target.value as FREQUENCY_OPTIONS)
+                    }
                   >
                     <BodyText
                       size={2}
@@ -200,31 +277,45 @@ export const Stackbox = () => {
                 );
               })}
             </div>
-            <div className="flex flex-col border divide-y md:flex-row rounded-2xl border-surface-50 md:divide-x divide-surface-50">
-              <div className="flex flex-col w-full px-4 py-3 space-y-2">
-                <BodyText size={2}>Starting from</BodyText>
-                <DatePicker
-                  dateTime={startDateTime}
-                  setDateTime={setStartDateTime}
-                  timeCaption="Start time"
-                  className="w-full"
-                />
+            <div className="space-y-1">
+              <div className="flex flex-col border divide-y md:flex-row rounded-2xl border-surface-50 md:divide-x divide-surface-50">
+                <div className="flex flex-col w-full px-4 py-3 space-y-2">
+                  <BodyText size={2}>Starting from</BodyText>
+                  <DatePicker
+                    dateTime={startDateTime}
+                    setDateTime={setStartDateTime}
+                    timeCaption="Start time"
+                    className="w-full"
+                  />
+                </div>
+                <div className="flex flex-col w-full px-4 py-3 space-y-2">
+                  <BodyText size={2}>Until</BodyText>
+                  <DatePicker
+                    dateTime={endDateTime}
+                    setDateTime={setEndDateTime}
+                    timeCaption="End time"
+                    className="w-full"
+                    fromDate={startDateTime}
+                  />
+                </div>
               </div>
-              <div className="flex flex-col w-full px-4 py-3 space-y-2">
-                <BodyText size={2}>Until</BodyText>
-                <DatePicker
-                  dateTime={endDateTime}
-                  setDateTime={setEndDateTime}
-                  timeCaption="End time"
-                  className="w-full"
-                  fromDate={startDateTime}
-                />
-              </div>
+              {showDateTimeError && (
+                <div className="flex space-x-1 items-center text-danger-500">
+                  <Icon name="warning" size={12} />
+                  <BodyText size={1}>
+                    Please select an end time after start time
+                  </BodyText>
+                </div>
+              )}
             </div>
           </div>
         </div>
-        <Button width="full" onClick={openConfirmStack}>
-          Stack Now
+        <Button
+          width="full"
+          onClick={openConfirmStack}
+          className={cx({ "animate-wiggle": showInsufficentBalanceError })}
+        >
+          {showInsufficentBalanceError ? "Insufficent Balance" : "Stack Now"}
         </Button>
       </div>
       <TokenPicker
@@ -233,10 +324,33 @@ export const Stackbox = () => {
         isOpen={isModalOpen(ModalId.TOKEN_PICKER)}
         onTokenSelect={selectToken}
       />
-      <ConfirmStackModal
-        isOpen={isModalOpen(ModalId.CONFIRM_STACK)}
-        closeAction={() => closeModal(ModalId.CONFIRM_STACK)}
-      />
+      {fromToken && toToken && (
+        <ConfirmStackModal
+          toToken={toToken}
+          fromToken={fromToken}
+          amount={tokenAmount}
+          frequency={frequency}
+          startTime={startDateTime}
+          endTime={endDateTime}
+          isOpen={isModalOpen(ModalId.CONFIRM_STACK)}
+          closeAction={() => closeModal(ModalId.CONFIRM_STACK)}
+          key={`${fromToken.address}-$${tokenAmount}`}
+        />
+      )}
+      <Toast
+        closeAction={() => closeModal(ModalId.SUCCESS_STACK_TOAST)}
+        isOpen={isModalOpen(ModalId.SUCCESS_STACK_TOAST)}
+        severity={Severity.SUCCESS}
+        title="Your stack creation was successful"
+      >
+        <Link
+          className="flex items-center space-x-0.5 hover:border-em-low border-b-2 border-em-disabled group"
+          href="/stacks"
+          onClick={() => closeModal(ModalId.SUCCESS_STACK_TOAST)}
+        >
+          <BodyText className="text-em-med">View your stacks</BodyText>
+        </Link>
+      </Toast>
     </div>
   );
 };
@@ -245,14 +359,16 @@ const SelectTokenButton = ({
   label,
   onClick,
   token,
+  className,
+  onAnimationEnd,
 }: SelectTokenButtonProps) => {
-  const isTokenFrom = label.toLowerCase().includes("deposit");
-  const handleButtonClick = () => onClick(isTokenFrom);
+  const isFromToken = label.toLowerCase().includes("deposit");
+  const handleButtonClick = () => onClick(isFromToken);
 
   return (
     <div
       className={cx("flex flex-col space-y-2", {
-        "items-end": !isTokenFrom,
+        "items-end": !isFromToken,
       })}
     >
       <BodyText className="text-em-low">{label}</BodyText>
@@ -270,9 +386,10 @@ const SelectTokenButton = ({
       ) : (
         <Button
           action="secondary"
-          className="leading-6 rounded-xl"
+          className={cx("leading-6 rounded-xl", className)}
           onClick={handleButtonClick}
           size="sm"
+          onAnimationEnd={onAnimationEnd}
         >
           Select token
         </Button>

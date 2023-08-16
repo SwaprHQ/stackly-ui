@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ReactNode, useState } from "react";
 
-import { getOrderPairSymbols, totalOrdersDone } from "@/models/order";
+import { getOrderPairSymbols, totalOrderSlotsDone } from "@/models/order";
 import {
   Modal,
   ModalFooter,
@@ -74,7 +74,7 @@ export const StackModal = ({
   const orderSlots = stackOrder.orderSlots;
   const firstSlot = orderSlots[0];
   const lastSlot = orderSlots[orderSlots.length - 1];
-  const nextSlot = orderSlots[totalOrdersDone(stackOrder)];
+  const nextSlot = orderSlots[totalOrderSlotsDone(stackOrder)];
 
   const getConfirmCancelContent = () => {
     if (stackIsFinishedWithFunds(stackOrder))

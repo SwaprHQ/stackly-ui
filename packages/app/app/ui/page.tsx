@@ -26,6 +26,7 @@ import {
   Toast,
   Severity,
 } from "@/ui";
+import { FREQUENCY_OPTIONS } from "@/models/stack";
 
 export default function Page() {
   //  radioButtons
@@ -285,6 +286,22 @@ export default function Page() {
             />
           ))}
           <ConfirmStackModal
+            fromToken={{
+              address: "0x",
+              decimals: 18,
+              name: "USDC",
+              symbol: "USDC",
+            }}
+            toToken={{
+              address: "0x",
+              decimals: 18,
+              name: "Wrapped ETH",
+              symbol: "WETH",
+            }}
+            amount="1000"
+            frequency={FREQUENCY_OPTIONS.day}
+            startTime={new Date()}
+            endTime={new Date()}
             isOpen={isModalOpen(ModalId.CONFIRM_STACK)}
             closeAction={() => closeModal(ModalId.CONFIRM_STACK)}
           />
