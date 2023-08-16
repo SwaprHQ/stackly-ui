@@ -66,5 +66,5 @@ export const stackIsFinishedWithFunds = (stackOrder: StackOrder) =>
   stackHasRemainingFunds(stackOrder) &&
   !stackOrder.cancelledAt;
 
-export const stackRemainingFundsWithToken = (stackOrder: StackOrder) =>
+export const stackRemainingFundsWithTokenText = (stackOrder: StackOrder) =>
   `${stackRemainingFunds(stackOrder)} ${stackOrder.sellToken.symbol}`;
