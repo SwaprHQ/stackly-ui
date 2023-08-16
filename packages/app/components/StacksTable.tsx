@@ -5,6 +5,7 @@ import {
   BodyText,
   Button,
   CaptionText,
+  Icon,
   OverlineText,
   Table,
   TableBody,
@@ -99,8 +100,15 @@ export const StacksTable = ({
               <TableCell className="text-right">
                 <CellWrapper>
                   {stackIsFinishedWithFunds(order) ? (
-                    <div className="p-1 rounded bg-danger-75">
-                      <OverlineText>Widthdraw funds</OverlineText>
+                    <div className="flex items-center p-1 space-x-1.5 rounded">
+                      <Icon
+                        name="warning"
+                        size={14}
+                        className="text-danger-500"
+                      />
+                      <OverlineText className="text-danger-500">
+                        Widthdraw funds
+                      </OverlineText>
                     </div>
                   ) : (
                     <OrdersProgressText stackOrder={order} />
