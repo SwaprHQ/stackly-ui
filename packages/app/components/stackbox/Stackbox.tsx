@@ -175,7 +175,7 @@ export const Stackbox = () => {
           />
           <Icon
             name="arrow-left"
-            className="flex items-center justify-center w-16 p-2 rotate-180 h-9 bg-surface-50 rounded-2xl"
+            className="flex items-center justify-center w-10 p-2 rotate-180 md:w-16 h-9 bg-surface-50 rounded-2xl"
           />
           <SelectTokenButton
             label="To receive"
@@ -301,7 +301,7 @@ export const Stackbox = () => {
                 </div>
               </div>
               {showDateTimeError && (
-                <div className="flex space-x-1 items-center text-danger-500">
+                <div className="flex items-center space-x-1 text-danger-500">
                   <Icon name="warning" size={12} />
                   <BodyText size={1}>
                     Please select an end time after start time
@@ -380,7 +380,7 @@ const SelectTokenButton = ({
       {token ? (
         <Button
           action="secondary"
-          className="leading-6 rounded-xl"
+          className="px-2 leading-6 md:px-4 rounded-xl"
           onClick={handleButtonClick}
           size="sm"
         >
