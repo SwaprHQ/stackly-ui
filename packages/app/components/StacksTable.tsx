@@ -18,7 +18,10 @@ import {
   getOrderPairSymbols,
   totalOrderSlotsDone,
 } from "@/models/order";
-import { formatTimestampToDateWithSuffix } from "@/utils/datetime";
+import {
+  formatTimestampToDate,
+  formatTimestampToDateWithSuffix,
+} from "@/utils/datetime";
 import {
   StackOrder,
   StackOrderProps,
@@ -131,8 +134,29 @@ const CellWrapper = ({ children }: PropsWithChildren) => (
   </div>
 );
 
-const OrdersProgressText = ({ stackOrder }: StackOrderProps) =>
-  totalOrderSlotsDone(stackOrder) === 0 ? (
+// const OrdersProgressText = ({ stackOrder }: StackOrderProps) =>
+//   totalOrderSlotsDone(stackOrder) === 0 ? (
+//     <BodyText className="text-primary-700">
+//       Starts on {formatTimestampToDateWithSuffix(stackOrder.orderSlots[0])}
+//     </BodyText>
+//   ) : (
+//     <>
+//       <BodyText className="text-em-high">
+//         {totalStackOrdersDone(stackOrder).toString()}
+//       </BodyText>
+//       <BodyText className="text-em-low">{`/ ${stackOrder.orderSlots.length} orders`}</BodyText>
+//     </>
+//   );
+
+const OrdersProgressText = ({ stackOrder }: StackOrderProps) => {
+  if (stackOrder.cancelledAt)
+    return (
+      <BodyText className="text-em-low">
+        Cancelled at {formatTimestampToDate(stackOrder.cancelledAt)}
+      </BodyText>
+    );
+
+  return totalOrderSlotsDone(stackOrder) === 0 ? (
     <BodyText className="text-primary-700">
       Starts on {formatTimestampToDateWithSuffix(stackOrder.orderSlots[0])}
     </BodyText>
@@ -144,3 +168,4 @@ const OrdersProgressText = ({ stackOrder }: StackOrderProps) =>
       <BodyText className="text-em-low">{`/ ${stackOrder.orderSlots.length} orders`}</BodyText>
     </>
   );
+};
