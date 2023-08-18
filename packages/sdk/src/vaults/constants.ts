@@ -6,7 +6,7 @@ import { ChainId } from "../constants";
  */
 export const ORDER_FACTORY_ADDRESS_LIST: Record<ChainId, string> = {
   [ChainId.ETHEREUM]: AddressZero,
-  [ChainId.GNOSIS]: "0x40CF89E715F1fA37799fC3a17681a4C6a7bdfdd0",
+  [ChainId.GNOSIS]: "0x45B91Da2834010751b17F1eadE0a5a7B64233add",
 };
 
 /**
