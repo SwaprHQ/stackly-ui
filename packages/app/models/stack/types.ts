@@ -4,3 +4,7 @@ export enum FREQUENCY_OPTIONS {
   week = "week",
   month = "month",
 }
+
+export interface Transaction {
+  hash: string;
+}
