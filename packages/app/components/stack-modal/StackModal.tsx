@@ -31,7 +31,7 @@ import {
   totalFundsUsed,
   stackIsFinishedWithFunds,
   stackIsComplete,
-  stackRemainingFundsWithTokenText,
+  stackRemainingFunds,
 } from "@/models/stack-order";
 import { formatTokenValue } from "@/utils/token";
 import { getDCAOrderContract } from "@stackly/sdk";
@@ -49,6 +49,15 @@ interface StackModalProps extends ModalBaseProps {
   stackOrder: StackOrder;
   refetchStacks: () => void;
 }
+
+type Content = {
+  title: string;
+  description: string;
+  button: {
+    action: "primary" | "secondary";
+    text: string;
+  };
+};
 
 export const txEplorerLink = (tx: string) => `https://gnosisscan.io/tx/${tx}`;
 
@@ -76,35 +85,31 @@ export const StackModal = ({
   const lastSlot = orderSlots[orderSlots.length - 1];
   const nextSlot = orderSlots[totalOrderSlotsDone(stackOrder)];
 
-  const getConfirmCancelContent = () => {
+  const stackRemainingFundsWithTokenText = `${stackRemainingFunds(
+    stackOrder
+  )} ${stackOrder.sellToken.symbol}`;
+
+  const remainingFundsText = `The ${stackRemainingFundsWithTokenText} will be sent to your wallet.`;
+
+  const getConfirmCancelContent = (): Content => {
     if (stackIsFinishedWithFunds(stackOrder))
-      return confirmCancelContent.finishedWithFunds;
+      return {
+        title: "Proceed with cancelation to withdraw funds",
+        description: remainingFundsText,
+        button: {
+          action: "primary",
+          text: `Withdraw ${stackRemainingFundsWithTokenText}`,
+        },
+      };
 
-    return confirmCancelContent.notComplete;
-  };
-
-  const remainingFundsText = () =>
-    `The ${stackRemainingFundsWithTokenText(
-      stackOrder
-    )} will be sent to your wallet.`;
-
-  const confirmCancelContent = {
-    notComplete: {
+    return {
       title: "Are you sure you want to cancel stacking?",
-      description: remainingFundsText(),
+      description: remainingFundsText,
       button: {
         action: "secondary",
         text: "Cancel Stacking",
       },
-    },
-    finishedWithFunds: {
-      title: "Proceed with cancelation to withdraw funds",
-      description: remainingFundsText(),
-      button: {
-        action: "primary",
-        text: `Withdraw ${stackRemainingFundsWithTokenText(stackOrder)}`,
-      },
-    },
+    };
   };
 
   const cancelStack = async () => {
@@ -189,7 +194,9 @@ export const StackModal = ({
           <div className="w-full my-4 border-b border-surface-50"></div>
           {stackIsFinishedWithFunds(stackOrder) && (
             <div className="px-4 pb-4">
-              <HasRemainingFundsAlertMessage stackOrder={stackOrder} />
+              <HasRemainingFundsAlertMessage
+                remainingFundsWithSymbol={stackRemainingFundsWithTokenText}
+              />
             </div>
           )}
           <div className="px-4">
@@ -207,11 +214,7 @@ export const StackModal = ({
           {!stackOrder.cancelledAt && !stackIsComplete(stackOrder) && (
             <Button
               size="sm"
-              action={
-                getConfirmCancelContent().button.action as
-                  | "primary"
-                  | "secondary"
-              }
+              action={getConfirmCancelContent().button.action}
               onClick={() => openModal(ModalId.CANCEL_STACK_CONFIRM)}
               width="full"
             >
@@ -251,9 +254,7 @@ export const StackModal = ({
         <Icon name="check" className="text-primary-400" size={38} />
         <DialogContent
           title="Stack Cancelled"
-          description={`The ${stackRemainingFundsWithTokenText(
-            stackOrder
-          )}} were sent to your wallet.`}
+          description={`The ${stackRemainingFundsWithTokenText} were sent to your wallet.`}
         />
         {cancellationTx?.hash && (
           <CancelTransactionLink txHash={cancellationTx.hash} />
@@ -300,11 +301,14 @@ const StackInfo = ({ stackOrder }: StackOrderProps) => (
   </div>
 );
 
-const HasRemainingFundsAlertMessage = ({ stackOrder }: StackOrderProps) => (
+const HasRemainingFundsAlertMessage = ({
+  remainingFundsWithSymbol,
+}: {
+  remainingFundsWithSymbol: string;
+}) => (
   <div className="p-3 text-center rounded-lg bg-danger-75">
     <BodyText className="text-em-med">
-      This contract has {stackRemainingFundsWithTokenText(stackOrder)} remaining
-      funds.
+      This contract has {remainingFundsWithSymbol} remaining funds.
     </BodyText>
   </div>
 );
