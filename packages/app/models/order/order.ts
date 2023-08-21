@@ -9,6 +9,9 @@ export const totalOrderSlotsDone = (order: Order) => {
   }, 0);
 };
 
+export const allOrderSlotsDone = (order: Order) =>
+  totalOrderSlotsDone(order) === order.orderSlots.length;
+
 export const fundsAmount = (order: Order) =>
   convertedAmount(order.amount, order.sellToken.decimals).toFixed(2);
 
