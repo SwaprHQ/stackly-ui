@@ -153,6 +153,8 @@ export const StackModal = ({
             <StackDetail title="Next order">
               {stackIsComplete
                 ? "Complete"
+                : stackOrder.cancelledAt
+                ? "Cancelled"
                 : formatTimestampToDateWithTime(nextSlot)}
             </StackDetail>
           </div>
