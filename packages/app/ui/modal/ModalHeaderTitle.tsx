@@ -12,7 +12,7 @@ export const ModalHeaderTitle = ({
   <ModalHeader>
     <TitleText size={2}>{title}</TitleText>
     <Button
-      action="quaternary"
+      variant="quaternary"
       iconLeft="close"
       onClick={closeAction}
       size="icon"

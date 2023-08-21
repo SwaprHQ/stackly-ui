@@ -132,7 +132,7 @@ export const StackModal = ({
               </Link>
             </div>
             <Button
-              action="quaternary"
+              variant="quaternary"
               iconLeft="close"
               size="icon"
               onClick={closeAction}
@@ -172,7 +172,7 @@ export const StackModal = ({
           {!stackOrder.cancelledAt && !stackIsComplete && (
             <Button
               size="sm"
-              action="secondary"
+              variant="secondary"
               onClick={() => openModal(ModalId.CANCEL_STACK_CONFIRM)}
               width="full"
             >

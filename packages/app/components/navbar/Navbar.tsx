@@ -24,7 +24,7 @@ export function Navbar() {
         <Divider />
         <div className="items-center justify-end hidden w-full gap-4 md:flex">
           <ButtonLink
-            action="quaternary"
+            variant="quaternary"
             size="sm"
             iconLeft="blocks"
             href="/stacks"

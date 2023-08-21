@@ -12,7 +12,7 @@ export function ButtonLink({
   children,
   className,
   size,
-  action,
+  variant,
   width,
   disabled,
   href,
@@ -28,7 +28,7 @@ export function ButtonLink({
       tabIndex={0}
       className={buttonStyles({
         size,
-        action,
+        variant,
         width,
         disabled,
         active,

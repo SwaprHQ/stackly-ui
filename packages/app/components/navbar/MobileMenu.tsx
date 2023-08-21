@@ -15,7 +15,7 @@ export default function MobileMenu() {
       <SelectNetwork />
       <ConnectButton />
       <Button
-        action="secondary"
+        variant="secondary"
         iconLeft={isOpen ? "close" : "menu"}
         size="icon"
         className="md:invisible"

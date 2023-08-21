@@ -215,7 +215,7 @@ const TokenList = ({
             <div className="flex items-center justify-center flex-col mt-8 space-y-4">
               <EmptyStateTokenPickerImg />
               <BodyText>{`Nothing found for "${tokenSearchQuery}"`}</BodyText>
-              <Button action="secondary" onClick={handleClearSearch} size="md">
+              <Button variant="secondary" onClick={handleClearSearch} size="md">
                 Clear search
               </Button>
             </div>
