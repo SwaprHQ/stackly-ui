@@ -75,7 +75,7 @@ export const Toast = ({
         )}
 
         <Button
-          action="quaternary"
+          variant="quaternary"
           className="ml-3"
           iconLeft="close"
           onClick={closeAction}

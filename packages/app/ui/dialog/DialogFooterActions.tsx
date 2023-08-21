@@ -19,7 +19,7 @@ export const DialogFooterActions = forwardRef<
         <Button
           size="sm"
           width="full"
-          action="tertiary"
+          variant="tertiary"
           onClick={secondaryAction}
           className="text-white border-none bg-opacity-20 hover:bg-opacity-30 focus:bg-opacity-30 focus:ring-gray-600 active:ring-gray-700"
         >

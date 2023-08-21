@@ -148,7 +148,7 @@ export default function Page() {
         </UISubSection>
         <UISubSection title="Secondary">
           <Button
-            action="secondary"
+            variant="secondary"
             iconLeft="plus"
             onClick={() => console.log("hey")}
             size="lg"
@@ -156,18 +156,18 @@ export default function Page() {
             Try Stackly now
           </Button>
           <Button
-            action="secondary"
+            variant="secondary"
             size="icon"
             iconRight="close"
             onClick={() => console.log("hey")}
           ></Button>
-          <ButtonLink action="secondary" size="sm" href="/">
+          <ButtonLink variant="secondary" size="sm" href="/">
             Soy un ButtonLink
           </ButtonLink>
         </UISubSection>
         <UISubSection title="Tertiary">
           <Button
-            action="tertiary"
+            variant="tertiary"
             iconLeft="plus"
             iconRight="close"
             onClick={() => console.log("hey")}
@@ -176,7 +176,7 @@ export default function Page() {
             Try Stackly now
           </Button>
           <Button
-            action="tertiary"
+            variant="tertiary"
             active={true}
             onClick={() => console.log("hey")}
           >
@@ -185,14 +185,14 @@ export default function Page() {
         </UISubSection>
         <UISubSection title="Quaternary">
           <Button
-            action="quaternary"
+            variant="quaternary"
             iconLeft="blocks"
             onClick={() => console.log("hey")}
           >
             Your stacks
           </Button>
           <Button
-            action="quaternary"
+            variant="quaternary"
             active={true}
             onClick={() => console.log("hey")}
           >
@@ -399,7 +399,7 @@ export default function Page() {
         </Toast>
         <UISubSection title="Examples">
           <Button
-            action="tertiary"
+            variant="tertiary"
             size="sm"
             onClick={() => setShowToast(true)}
           >
@@ -430,7 +430,7 @@ interface DialogModalButtonProps {
 }
 
 const DialogModalButton = ({ label, onClick }: DialogModalButtonProps) => (
-  <Button action="tertiary" size="sm" onClick={onClick}>
+  <Button variant="tertiary" size="sm" onClick={onClick}>
     {label}
   </Button>
 );
