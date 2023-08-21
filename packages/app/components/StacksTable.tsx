@@ -5,6 +5,8 @@ import {
   BodyText,
   Button,
   CaptionText,
+  Icon,
+  OverlineText,
   Table,
   TableBody,
   TableCell,
@@ -26,6 +28,7 @@ import {
   StackOrder,
   StackOrderProps,
   calculateStackAveragePrice,
+  stackIsFinishedWithFunds,
   totalFundsUsed,
   totalStackOrdersDone,
   totalStacked,
@@ -99,7 +102,20 @@ export const StacksTable = ({
               </TableCell>
               <TableCell className="text-right">
                 <CellWrapper>
-                  <OrdersProgressText stackOrder={order} />
+                  {stackIsFinishedWithFunds(order) ? (
+                    <div className="flex items-center p-1 space-x-1.5 rounded">
+                      <Icon
+                        name="warning"
+                        size={14}
+                        className="text-danger-500"
+                      />
+                      <OverlineText className="text-danger-500">
+                        Widthdraw funds
+                      </OverlineText>
+                    </div>
+                  ) : (
+                    <OrdersProgressText stackOrder={order} />
+                  )}
                 </CellWrapper>
               </TableCell>
               <TableCell className="flex justify-end">
