@@ -43,7 +43,7 @@ export function ChipButton({
       className={twMerge(
         buttonStyles({
           size,
-          action: "tertiary",
+          variant: "tertiary",
           width: null,
           disabled,
           active,

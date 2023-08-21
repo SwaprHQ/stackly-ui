@@ -119,7 +119,7 @@ export const StacksTable = ({
                 <Button
                   className="w-max"
                   size="sm"
-                  action="tertiary"
+                  variant="tertiary"
                   onClick={() => setupAndOpenModal(order)}
                 >
                   View details

@@ -19,7 +19,7 @@ export const buttonStyles = cva(
         xs: "px-2 py-1 text-xs space-x-1",
         icon: "p-2",
       },
-      action: {
+      variant: {
         primary: [
           "bg-primary-400 text-em-high hover:bg-primary-500 active:ring-primary-200 shadow-xs",
           "focus:bg-primary-500 focus:ring-primary-200",
@@ -51,29 +51,29 @@ export const buttonStyles = cva(
     },
     compoundVariants: [
       {
-        action: ["primary"],
+        variant: ["primary"],
         active: true,
         class: "bg-primary-500 ring-primary-200",
       },
       {
-        action: ["secondary"],
+        variant: ["secondary"],
         active: true,
         class: "bg-gray-100 ring-gray-200",
       },
       {
-        action: ["tertiary"],
+        variant: ["tertiary"],
         active: true,
         class: "bg-surface-75 ring-gray-100",
       },
       {
-        action: ["quaternary"],
+        variant: ["quaternary"],
         active: true,
         class: "bg-surface-50 ring-surface-75",
       },
     ],
     defaultVariants: {
       active: false,
-      action: "primary",
+      variant: "primary",
       size: "md",
       width: "normal",
       disabled: false,
@@ -86,7 +86,7 @@ export type SizeProps = "xs" | "sm" | "md" | "lg" | "icon";
 export interface ButtonBaseProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
-  action?: "primary" | "secondary" | "tertiary" | "quaternary";
+  variant?: "primary" | "secondary" | "tertiary" | "quaternary";
   className?: string;
   size?: SizeProps;
   width?: "normal" | "fit" | "full";
