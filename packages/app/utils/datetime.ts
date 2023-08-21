@@ -52,7 +52,7 @@ export const formatTimestampToDateWithTime = (timestamp: Timestamp) => {
 //eg.  "1 Jun, 23"
 export const formatTimestampToDate = (timestamp: Timestamp) => {
   const date = getDateFromTimeStamp(timestamp);
-  formatDate(date);
+  return formatDate(date);
 };
 
 //eg.  "1 week" | "2 weeks"
