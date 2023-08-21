@@ -61,9 +61,7 @@ type Content = {
   };
 };
 
-export const txEplorerLink = (tx: string) => `https://gnosisscan.io/tx/${tx}`;
-
-export const addressExplorerLink = (address: string) =>
+const addressExplorerLink = (address: string) =>
   `https://gnosisscan.io/address/${address}#tokentxns`;
 
 export const StackModal = ({
