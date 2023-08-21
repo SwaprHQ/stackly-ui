@@ -1,8 +1,8 @@
 import { createConfig } from "wagmi";
 import { getDefaultConfig } from "connectkit";
-import { gnosis, mainnet } from "wagmi/chains";
+import { gnosis } from "wagmi/chains";
 
-export const chains = [gnosis, mainnet];
+export const chains = [gnosis];
 
 export const config = createConfig(
   getDefaultConfig({

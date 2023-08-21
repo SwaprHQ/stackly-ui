@@ -44,6 +44,8 @@ import {
 import { StackProgress } from "@/components/stack-modal/StackProgress";
 import { StackOrdersTable } from "@/components/stack-modal/StackOrdersTable";
 import { ModalId, useModalContext } from "@/contexts";
+import { TransactionLink } from "./TransactionLink";
+import { Transaction } from "@/models/stack";
 
 interface StackModalProps extends ModalBaseProps {
   stackOrder: StackOrder;
@@ -64,10 +66,6 @@ export const txEplorerLink = (tx: string) => `https://gnosisscan.io/tx/${tx}`;
 export const addressExplorerLink = (address: string) =>
   `https://gnosisscan.io/address/${address}#tokentxns`;
 
-interface CancellationTransaction {
-  hash: string;
-}
-
 export const StackModal = ({
   stackOrder,
   isOpen,
@@ -77,8 +75,7 @@ export const StackModal = ({
   const signer = useEthersSigner();
   const { closeModal, isModalOpen, openModal } = useModalContext();
 
-  const [cancellationTx, setCancellationTx] =
-    useState<CancellationTransaction>();
+  const [cancellationTx, setCancellationTx] = useState<Transaction>();
 
   const orderSlots = stackOrder.orderSlots;
   const firstSlot = orderSlots[0];
@@ -243,9 +240,7 @@ export const StackModal = ({
         title={cancellationTx && "Proceeding cancellation"}
         description={cancellationTx && "Waiting for transaction confirmation."}
       >
-        {cancellationTx?.hash && (
-          <CancelTransactionLink txHash={cancellationTx.hash} />
-        )}
+        {cancellationTx?.hash && <TransactionLink hash={cancellationTx.hash} />}
       </DialogConfirmTransactionLoading>
       <Dialog
         isOpen={isModalOpen(ModalId.CANCEL_STACK_SUCCESS)}
@@ -256,9 +251,7 @@ export const StackModal = ({
           title="Stack Cancelled"
           description={`The ${stackRemainingFundsWithTokenText} were sent to your wallet.`}
         />
-        {cancellationTx?.hash && (
-          <CancelTransactionLink txHash={cancellationTx.hash} />
-        )}
+        {cancellationTx?.hash && <TransactionLink hash={cancellationTx.hash} />}
         <DialogFooterActions
           primaryAction={() => {
             refetchStacks();
@@ -272,16 +265,6 @@ export const StackModal = ({
     </>
   );
 };
-
-const CancelTransactionLink = ({ txHash }: { txHash: string }) => (
-  <a
-    className="flex items-center text-primary-100 hover:underline hover:underline-offset-4"
-    href={txEplorerLink(txHash)}
-    target="blank"
-  >
-    Check Transaction <Icon size={16} name="arrow-external" className="ml-1" />
-  </a>
-);
 
 const StackInfo = ({ stackOrder }: StackOrderProps) => (
   <div className="flex flex-col justify-between gap-2 px-4 py-3 mt-6 mb-4 md:items-center md:flex-row bg-surface-25 rounded-2xl">

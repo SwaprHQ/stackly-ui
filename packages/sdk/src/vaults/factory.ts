@@ -85,7 +85,7 @@ export function getERC20Interface() {
   return ERC20__factory.createInterface();
 }
 
-export function getorderAddressFromTransactionReceipt(
+export function getOrderAddressFromTransactionReceipt(
   receipt: ContractReceipt
 ) {
   const orderFactoryInterface = getOrderFactoryInterface();

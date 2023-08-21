@@ -1,5 +1,3 @@
-export const currentTimestampInSeconds = Math.floor(Date.now() / 1000);
-
 export const formatTimestampToDate = (timestamp: string | number) => {
   const date = new Date(Number(timestamp) * 1000);
 
