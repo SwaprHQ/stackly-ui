@@ -1,6 +1,7 @@
 "use client";
 
 import { ChangeEvent, RefObject, forwardRef, useEffect, useState } from "react";
+import { useAccount, useBalance, useNetwork } from "wagmi";
 
 import {
   BodyText,
@@ -17,6 +18,7 @@ import { TokenFromTokenlist } from "@/models/token/types";
 import { TokenIcon } from "@/components";
 import { TOKEN_PICKER_COMMON_TOKENS } from "./constants";
 import { useTokenListContext } from "@/contexts";
+import { formatTokenValue } from "@/utils/token";
 
 const HALF_SECOND = 500;
 
@@ -154,26 +156,44 @@ const CommonTokens = ({ onTokenSelect }: CommonTokensProps) => (
   </div>
 );
 
-const TokenListRow = ({ onTokenSelect, token }: TokenListRowProps) => (
-  <div
-    className="flex items-center justify-between w-full h-16 px-4 cursor-pointer hover:bg-surface-50"
-    key={token.address}
-    onClick={() => onTokenSelect(token)}
-  >
-    <div className="flex items-center justify-between w-full">
-      <div className="flex items-center space-x-3">
-        <TokenIcon token={token} size="md" />
-        <div className="flex flex-col">
-          <BodyText size={2}>{token.symbol}</BodyText>
-          <BodyText className="text-em-low" size={1}>
-            {token.name}
-          </BodyText>
+const TokenListRow = ({ onTokenSelect, token }: TokenListRowProps) => {
+  const { chain } = useNetwork();
+  const { address } = useAccount();
+  const { data: balance } = useBalance({
+    address,
+    token: token?.address as `0x$string`,
+    chainId: chain?.id,
+  });
+
+  const tokenBalance = balance?.formatted;
+
+  if (!tokenBalance) return null;
+
+  return (
+    <div
+      className="flex justify-between w-full py-2 cursor-pointer hover:bg-surface-50"
+      key={token.address}
+      onClick={() => onTokenSelect(token)}
+    >
+      <div className="flex items-center justify-between w-full">
+        <div className="flex items-center space-x-3">
+          <TokenIcon token={token} size="md" />
+          <div className="flex flex-col">
+            <BodyText size={2}>{token.symbol}</BodyText>
+            <BodyText className="text-em-low" size={1}>
+              {token.name}
+            </BodyText>
+          </div>
         </div>
+        <BodyText>
+          {tokenBalance === "0"
+            ? tokenBalance
+            : formatTokenValue(tokenBalance as string)}
+        </BodyText>
       </div>
-      <BodyText>0</BodyText>
     </div>
-  </div>
-);
+  );
+};
 
 const TokenList = ({
   onClearSearch,
