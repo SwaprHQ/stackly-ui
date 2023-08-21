@@ -95,13 +95,15 @@ const TokenPicker = ({
       initialFocusRef={initialFocusRef}
     >
       <ModalHeaderTitle closeAction={handleModalClose} title="Select a token" />
-      <ModalContent>
-        <SearchBar
-          ref={initialFocusRef}
-          onSearch={handleTokenSearchInput}
-          value={debouncedQuery}
-        />
-        <CommonTokens onTokenSelect={handleTokenSelect} />
+      <ModalContent className="px-0">
+        <div className="px-4">
+          <SearchBar
+            ref={initialFocusRef}
+            onSearch={handleTokenSearchInput}
+            value={debouncedQuery}
+          />
+          <CommonTokens onTokenSelect={handleTokenSelect} />
+        </div>
         <TokenList
           onClearSearch={tokenListSearchCleanup}
           onTokenSelect={handleTokenSelect}
@@ -115,10 +117,10 @@ const TokenPicker = ({
 
 const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(
   ({ onSearch, value }, ref) => (
-    <div className="flex items-center bg-surface-50 border border-surface-75 rounded-xl py-2 px-3 text-em-low">
+    <div className="flex items-center px-3 py-2 border bg-surface-50 border-surface-75 rounded-xl text-em-low">
       <Icon className="text-em-med" name="search" size={18} />
       <input
-        className="outline-none font-semibold flex-grow ml-2 bg-surface-50 text-sm"
+        className="flex-grow ml-2 text-sm font-semibold outline-none bg-surface-50"
         onChange={onSearch}
         value={value}
         placeholder="Search token name or paste address"
@@ -135,7 +137,7 @@ const CommonTokens = ({ onTokenSelect }: CommonTokensProps) => (
     <BodyText className="text-xs font-semibold text-em-low">
       Common tokens
     </BodyText>
-    <div className="flex flex-wrap mt-2 gap-2">
+    <div className="flex flex-wrap gap-2 mt-2">
       {TOKEN_PICKER_COMMON_TOKENS.map((token: TokenFromTokenlist) => (
         <ChipButton
           id={token.address}
@@ -154,7 +156,7 @@ const CommonTokens = ({ onTokenSelect }: CommonTokensProps) => (
 
 const TokenListRow = ({ onTokenSelect, token }: TokenListRowProps) => (
   <div
-    className="flex justify-between w-full py-2 cursor-pointer hover:bg-surface-50"
+    className="flex items-center justify-between w-full h-16 px-4 cursor-pointer hover:bg-surface-50"
     key={token.address}
     onClick={() => onTokenSelect(token)}
   >
@@ -202,7 +204,7 @@ const TokenList = ({
   }, [tokenList, tokenSearchQuery]);
 
   return (
-    <div className="mt-5 overflow-y-auto h-72 border-t border-surface-50 divide-y divide-surface-50">
+    <div className="mt-5 overflow-y-auto border-t divide-y h-72 border-surface-50 divide-surface-50">
       {filteredTokenList.length
         ? filteredTokenList.map((token) => (
             <TokenListRow
@@ -212,7 +214,7 @@ const TokenList = ({
             />
           ))
         : tokenSearchQuery && (
-            <div className="flex items-center justify-center flex-col mt-8 space-y-4">
+            <div className="flex flex-col items-center justify-center mt-8 space-y-4">
               <EmptyStateTokenPickerImg />
               <BodyText>{`Nothing found for "${tokenSearchQuery}"`}</BodyText>
               <Button variant="secondary" onClick={handleClearSearch} size="md">
