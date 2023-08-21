@@ -156,7 +156,7 @@ const CommonTokens = ({ onTokenSelect }: CommonTokensProps) => (
 
 const TokenListRow = ({ onTokenSelect, token }: TokenListRowProps) => (
   <div
-    className="flex justify-between w-full px-4 py-2 cursor-pointer hover:bg-surface-50"
+    className="flex items-center justify-between w-full h-16 px-4 cursor-pointer hover:bg-surface-50"
     key={token.address}
     onClick={() => onTokenSelect(token)}
   >
