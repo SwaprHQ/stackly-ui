@@ -1,9 +1,7 @@
-const getZeroDecimalsCount = (value: number | string) => {
-  if (!value.toString().includes(".")) return 0;
+const getZeroDecimalsCount = (value: string) => {
+  if (!value) return 0;
 
   const firstDecimalZeroIndex = value
-    .toString()
-    .split(".")[1]
     .split("")
     .findIndex((digit: string) => digit >= "1");
 
@@ -19,11 +17,13 @@ export const formatTokenValue = (
 ) => {
   if (value === 0) return value.toFixed(2);
 
-  const nonRelevantZeroes = getZeroDecimalsCount(value);
+  const [wholePart, decimalPart] = value.toString().split(".");
+
+  const relevantZeroDecimalCount = getZeroDecimalsCount(decimalPart);
   const relevantZeroDecimals = new Array(decimals - 1).fill(0).join("");
 
   const formattedValue =
-    nonRelevantZeroes >= decimals
+    relevantZeroDecimalCount >= decimals && wholePart < "1"
       ? `< 0.${relevantZeroDecimals}1`
       : Number(value).toFixed(decimals);
 
