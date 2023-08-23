@@ -171,7 +171,7 @@ const TokenListRow = ({ onTokenSelect, token }: TokenListRowProps) => {
 
   return (
     <div
-      className="flex justify-between w-full py-2 cursor-pointer hover:bg-surface-50"
+      className="flex items-center justify-between w-full h-16 px-4 cursor-pointer hover:bg-surface-50"
       key={token.address}
       onClick={() => onTokenSelect(token)}
     >
