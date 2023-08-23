@@ -280,7 +280,7 @@ export const Stackbox = () => {
             </div>
             <div className="space-y-1">
               <div className="flex flex-col border divide-y md:flex-row rounded-2xl border-surface-50 md:divide-x divide-surface-50">
-                <div className="flex flex-col w-full px-4 py-3 space-y-2">
+                <div className="flex flex-col w-full p-3 space-y-2 hover:bg-surface-25">
                   <BodyText size={2}>Starting from</BodyText>
                   <DatePicker
                     dateTime={startDateTime}
@@ -289,7 +289,7 @@ export const Stackbox = () => {
                     className="w-full"
                   />
                 </div>
-                <div className="flex flex-col w-full px-4 py-3 space-y-2">
+                <div className="flex flex-col w-full p-3 space-y-2 hover:bg-surface-25">
                   <BodyText size={2}>Until</BodyText>
                   <DatePicker
                     dateTime={endDateTime}
