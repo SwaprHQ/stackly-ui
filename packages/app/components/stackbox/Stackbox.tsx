@@ -162,8 +162,8 @@ export const Stackbox = () => {
 
   return (
     <div className="max-w-lg mx-auto my-24 bg-white shadow-2xl rounded-2xl">
-      <div className="px-5 py-4 border shadow-lg border-surface-50 rounded-2xl">
-        <div className="flex items-end justify-between pb-4 border-b border-surface-50">
+      <div className="py-4 border shadow-lg border-surface-50 rounded-2xl">
+        <div className="flex items-end justify-between px-5 pb-4 border-b border-surface-50">
           <SelectTokenButton
             label="Deposit from"
             onClick={openTokenPicker}
@@ -187,7 +187,7 @@ export const Stackbox = () => {
             }}
           />
         </div>
-        <div className="py-2">
+        <div className="px-5 py-2">
           <input
             type="number"
             pattern="[0-9]*"
