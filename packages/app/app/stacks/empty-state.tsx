@@ -3,11 +3,11 @@ import { EmptyStateStacksImg } from "@/public/assets";
 
 export default function EmptyState() {
   return (
-    <div className="max-w-xl mx-auto space-y-8">
+    <div className="max-w-2xl mx-auto space-y-8">
       <div className="flex flex-col items-center space-y-6 md:space-y-8">
         <EmptyStateStacksImg />
         <div className="space-y-3 text-center">
-          <HeadingText size={2}>
+          <HeadingText size={3}>
             {"Looks like you haven't created any stacks yet."}
           </HeadingText>
           <HeadingText size={1} weight="medium" className="text-em-med">
