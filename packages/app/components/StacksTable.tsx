@@ -121,7 +121,7 @@ export const StacksTable = ({
               <TableCell className="flex justify-end">
                 <Button
                   className="w-max"
-                  size="sm"
+                  width="fit"
                   variant="tertiary"
                   onClick={() => setupAndOpenModal(order)}
                 >
