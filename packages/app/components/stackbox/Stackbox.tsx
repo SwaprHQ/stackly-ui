@@ -160,6 +160,16 @@ export const Stackbox = () => {
     return valueString;
   };
 
+  const setTokenAmountBasedOnBalance = (divider: number) => {
+    if (!balance || !fromToken) return;
+
+    setShowTokenAmountError(false);
+    setShowInsufficentBalanceError(false);
+    setTokenAmount(
+      formatUnits(balance.value / BigInt(divider), fromToken.decimals)
+    );
+  };
+
   return (
     <div className="max-w-lg mx-auto my-24 bg-white shadow-2xl rounded-2xl">
       <div className="py-4 border shadow-lg border-surface-50 rounded-2xl">
@@ -222,16 +232,7 @@ export const Stackbox = () => {
                     variant="secondary"
                     width="fit"
                     size="xs"
-                    onClick={() => {
-                      setShowTokenAmountError(false);
-                      setShowInsufficentBalanceError(false);
-                      setTokenAmount(
-                        formatUnits(
-                          balance.value / BigInt(divider),
-                          fromToken.decimals
-                        )
-                      );
-                    }}
+                    onClick={() => setTokenAmountBasedOnBalance(divider)}
                   >
                     {name}
                   </Button>
@@ -239,10 +240,16 @@ export const Stackbox = () => {
               </div>
               <div className="flex items-center space-x-1">
                 <TokenIcon token={fromToken} size="2xs" />
-                <BodyText className="text-em-high">
-                  <span className="text-em-low">Balance:</span>{" "}
-                  {formattedBalance(balance)}
-                </BodyText>
+                <div className="flex items-center space-x-1">
+                  <BodyText className="flex items-center text-em-low">
+                    Balance:
+                  </BodyText>
+                  <div onClick={() => setTokenAmountBasedOnBalance(1)}>
+                    <BodyText className="cursor-pointer hover:underline text-em-high">
+                      {formattedBalance(balance)}
+                    </BodyText>
+                  </div>
+                </div>
               </div>
             </div>
           )}
