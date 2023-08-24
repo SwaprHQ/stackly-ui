@@ -61,13 +61,7 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
     <>
       <div className="flex items-center justify-between">
         <HeadingText size={3}>Your stacks</HeadingText>
-        <ButtonLink
-          iconLeft="plus"
-          href="/"
-          width="fit"
-          size="sm"
-          className="hidden sm:flex"
-        >
+        <ButtonLink iconLeft="plus" href="/" className="hidden sm:flex">
           Create New Stack
         </ButtonLink>
       </div>
@@ -77,21 +71,21 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
             <div className="flex space-x-2">
               <Tab
                 as="button"
-                className="px-3 py-1.5 font-semibold rounded-lg ui-selected:bg-surface-75 ui-not-selected:text-em-low outline-none active:ring-2 active:ring-gray-100"
+                className="px-3 py-2 text-sm font-semibold border border-transparent outline-none rounded-xl ui-selected:bg-surface-75 ui-not-selected:text-em-low active:ring-2 active:ring-gray-100 hover:bg-surface-50 hover:border-surface-75"
               >
-                Active Stacks
+                Active
               </Tab>
               <Tab
                 as="button"
-                className="px-3 py-1.5 font-semibold rounded-lg ui-selected:bg-surface-75 ui-not-selected:text-em-low outline-none active:ring-2 active:ring-gray-100"
+                className="px-3 py-2 text-sm font-semibold border border-transparent outline-none rounded-xl ui-selected:bg-surface-75 ui-not-selected:text-em-low active:ring-2 active:ring-gray-100 hover:bg-surface-50 hover:border-surface-75"
               >
-                Completed stacks
+                Completed
               </Tab>
               <Tab
                 as="button"
-                className="px-3 py-1.5 font-semibold rounded-lg ui-selected:bg-surface-75 ui-not-selected:text-em-low outline-none active:ring-2 active:ring-gray-100"
+                className="px-3 py-2 text-sm font-semibold border border-transparent outline-none rounded-xl ui-selected:bg-surface-75 ui-not-selected:text-em-low active:ring-2 active:ring-gray-100 hover:bg-surface-50 hover:border-surface-75"
               >
-                Cancelled stacks
+                Cancelled
               </Tab>
             </div>
           </Tab.List>
