@@ -25,12 +25,12 @@ export const buttonStyles = cva(
           "focus:bg-primary-500 focus:ring-primary-200",
         ],
         secondary: [
-          "bg-surface-50 text-em-med hover:bg-gray-100 active:ring-gray-200",
-          "focus:bg-gray-100 focus:ring-gray-200",
+          "bg-surface-50 text-em-med hover:bg-gray-100 active:ring-surface-50",
+          "focus:bg-gray-100 focus:ring-surface-50",
         ],
         tertiary: [
-          "bg-white text-em-med hover:bg-surface-75 border active:ring-gray-100 shadow-xs",
-          "focus:bg-surface-75 focus:ring-gray-100",
+          "bg-white text-em-med hover:bg-surface-75 border active:ring-surface-50 shadow-xs",
+          "focus:bg-surface-75 focus:ring-surface-50",
         ],
         quaternary: [
           "text-em-med hover:bg-surface-50 active:ring-surface-75",
@@ -58,12 +58,12 @@ export const buttonStyles = cva(
       {
         variant: ["secondary"],
         active: true,
-        class: "bg-gray-100 ring-gray-200",
+        class: "bg-gray-100 ring-surface-50",
       },
       {
         variant: ["tertiary"],
         active: true,
-        class: "bg-surface-75 ring-gray-100",
+        class: "bg-surface-75 ring-surface-50",
       },
       {
         variant: ["quaternary"],
@@ -85,7 +85,7 @@ export type SizeProps = "xs" | "sm" | "md" | "lg" | "icon";
 
 export interface ButtonBaseProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
-  children?: React.ReactNode;
+  children?: ReactNode;
   variant?: "primary" | "secondary" | "tertiary" | "quaternary";
   className?: string;
   size?: SizeProps;
