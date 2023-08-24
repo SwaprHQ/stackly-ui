@@ -79,6 +79,9 @@ module.exports = {
       transparent: "transparent",
       current: "currentColor",
     },
+    backgroundSize: {
+      "auto-100": "auto 100%",
+    },
     extend: {
       opacity: {
         8: "0.08",
@@ -103,6 +106,9 @@ module.exports = {
         "wiggle-alert":
           "wiggle 0.2s ease-in-out 0s 3, red-alert 2s ease-in-out",
         wiggle: "wiggle 0.2s ease-in-out 0s 3",
+      },
+      backgroundImage: {
+        "matrix-gradient": "url('/assets/images/matrix-gradient-bg.png')",
       },
     },
   },

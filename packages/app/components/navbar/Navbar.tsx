@@ -8,7 +8,7 @@ import { ConnectButton, SelectNetwork } from "@/components";
 
 export function Navbar() {
   return (
-    <header className="top-0 flex flex-col w-full border-b border-solid h-nav-height bg-surface-25 border-b-surface-75">
+    <header className="px-4 top-0 flex flex-col w-full border-b border-solid h-nav-height bg-surface-25 border-b-surface-75">
       <nav className="flex items-center w-full h-full">
         <div>
           <Link
