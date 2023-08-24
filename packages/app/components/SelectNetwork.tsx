@@ -18,7 +18,7 @@ export const SelectNetwork = () => {
 
   return (
     <Listbox value={chain.id.toString()} onChange={onValueChange}>
-      <div className="relative z-10">
+      <div className="relative">
         <Listbox.Button
           as={Button}
           iconRight="caret-down"
@@ -37,7 +37,7 @@ export const SelectNetwork = () => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <Listbox.Options className="absolute w-auto py-1 mt-1 overflow-auto text-base bg-white shadow-md max-h-60 rounded-2xl focus:outline-none sm:text-sm">
+          <Listbox.Options className="absolute z-10 w-auto py-1 mt-1 overflow-auto text-base bg-white shadow-md max-h-60 rounded-2xl focus:outline-none sm:text-sm">
             {chains.map(({ id, name }) => (
               <Listbox.Option
                 key={id}
