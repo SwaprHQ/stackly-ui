@@ -1,9 +1,8 @@
 "use client";
 
-import { StackOrders } from "@/app/stacks/stacks-orders";
+import { StackOrders } from "@/app/stacks/stacksOrders";
 import { useAccount, useNetwork } from "wagmi";
 import NoWalletState from "./no-wallet-state";
-import { ButtonLink, HeadingText } from "@/ui";
 
 export default function Page() {
   const { chain } = useNetwork();
@@ -13,18 +12,6 @@ export default function Page() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-between">
-        <HeadingText size={3}>Your stacks</HeadingText>
-        <ButtonLink
-          iconLeft="plus"
-          href="/"
-          width="fit"
-          size="sm"
-          className="hidden sm:flex"
-        >
-          Create New Stack
-        </ButtonLink>
-      </div>
       {chain && address ? (
         <StackOrders chainId={chain.id} address={address} />
       ) : (
