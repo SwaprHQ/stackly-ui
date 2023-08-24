@@ -9,7 +9,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import { useNetwork } from "wagmi";
+import { useAccount, useNetwork } from "wagmi";
 import defaultGnosisTokenlist from "public/assets/blockchains/gnosis/tokenlist.json";
 import defaultEthereumTokenlist from "public/assets/blockchains/ethereum/tokenlist.json";
 
@@ -41,10 +41,12 @@ const mergeTokenlists = (
   defaultTokenList: TokenFromTokenlist[],
   tokenlist: TokenFromTokenlist[]
 ) => {
-  const addresses = new Set(defaultTokenList.map((token) => token.address));
+  const addresses = new Set(
+    defaultTokenList.map((token) => token.address.toLowerCase())
+  );
   const mergedLists = [
     ...defaultTokenList,
-    ...tokenlist.filter((token) => !addresses.has(token.address)),
+    ...tokenlist.filter((token) => !addresses.has(token.address.toLowerCase())),
   ];
 
   return mergedLists;
@@ -52,6 +54,7 @@ const mergeTokenlists = (
 
 export const TokenListProvider = ({ children }: PropsWithChildren) => {
   const { chain } = useNetwork();
+  const { address } = useAccount();
 
   const defaultTokenList = chain
     ? DEFAULT_TOKEN_LIST_BY_CHAIN[chain.id]
@@ -60,14 +63,6 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
   const [tokenList, setTokenList] = useState<TokenFromTokenlist[]>(
     defaultGnosisTokenlist
   );
-
-  const getTokenFromList = (tokenAddress: string) =>
-    tokenList.find(
-      (token) => token.address.toUpperCase() === tokenAddress?.toUpperCase()
-    );
-
-  const getTokenLogoURL = (tokenAddress: string) =>
-    getTokenFromList(tokenAddress)?.logoURI ?? "#";
 
   const fetchTokenlistURL = chain
     ? TOKEN_LIST_BY_CHAIN_URL[chain.id]
@@ -87,18 +82,20 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
     }
     const data = await getTokenListData();
 
-    const mergedTokenlistTokens = mergeTokenlists(
-      defaultTokenList,
-      data.tokens.filter(
+    const mergedTokenlistTokens = data?.tokens
+      ? mergeTokenlists(defaultTokenList, data.tokens)
+      : defaultTokenList;
+
+    setTokenList(
+      mergedTokenlistTokens.filter(
         (token: TokenFromTokenlist) => token.chainId === chain?.id
       )
     );
-    setTokenList(mergedTokenlistTokens);
-  }, [defaultTokenList, fetchTokenlistURL, chain?.id]);
+  }, [chain?.id, defaultTokenList, fetchTokenlistURL]);
 
   useEffect(() => {
     setupTokenList();
-  }, [setupTokenList]);
+  }, [address, setupTokenList]);
 
   const tokenListContext = useMemo(
     () => ({
