@@ -52,16 +52,16 @@ const startDateTimeTimestamp = new Date().setMinutes(
   new Date().getMinutes() + 30
 );
 
-const BalanceDivider = {
-  max: 1,
-  half: 2,
-  quarter: 4,
-};
+enum BalanceDivider {
+  MAX = 1,
+  HALF = 2,
+  QUARTER = 4,
+}
 
 const balanceOptions = [
-  { name: "25%", divider: BalanceDivider.quarter },
-  { name: "50%", divider: BalanceDivider.half },
-  { name: "Max", divider: BalanceDivider.max },
+  { name: "25%", divider: BalanceDivider.QUARTER },
+  { name: "50%", divider: BalanceDivider.HALF },
+  { name: "Max", divider: BalanceDivider.MAX },
 ];
 
 export const Stackbox = () => {
@@ -252,7 +252,7 @@ export const Stackbox = () => {
                   </BodyText>
                   <div
                     onClick={() =>
-                      setTokenAmountBasedOnBalance(BalanceDivider.max)
+                      setTokenAmountBasedOnBalance(BalanceDivider.MAX)
                     }
                   >
                     <BodyText className="cursor-pointer hover:underline text-em-high">
