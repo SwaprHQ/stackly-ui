@@ -250,15 +250,14 @@ export const Stackbox = () => {
                   <BodyText className="flex items-center text-em-low">
                     Balance:
                   </BodyText>
-                  <div
+                  <button
+                    className="hover:underline"
                     onClick={() =>
                       setTokenAmountBasedOnBalance(BalanceDivider.MAX)
                     }
                   >
-                    <BodyText className="cursor-pointer hover:underline text-em-high">
-                      {formattedBalance(balance)}
-                    </BodyText>
-                  </div>
+                    <BodyText>{formattedBalance(balance)}</BodyText>
+                  </button>
                 </div>
               </div>
             </div>
