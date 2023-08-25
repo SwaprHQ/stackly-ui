@@ -52,10 +52,16 @@ const startDateTimeTimestamp = new Date().setMinutes(
   new Date().getMinutes() + 30
 );
 
+const BalanceDivider = {
+  max: 1,
+  half: 2,
+  quarter: 4,
+};
+
 const balanceOptions = [
-  { name: "25%", divider: 4 },
-  { name: "50%", divider: 2 },
-  { name: "Max", divider: 1 },
+  { name: "25%", divider: BalanceDivider.quarter },
+  { name: "50%", divider: BalanceDivider.half },
+  { name: "Max", divider: BalanceDivider.max },
 ];
 
 export const Stackbox = () => {
@@ -224,7 +230,7 @@ export const Stackbox = () => {
             }}
           />
           {fromToken && balance && (
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="flex space-x-1">
                 {balanceOptions.map(({ name, divider }) => (
                   <Button
@@ -244,7 +250,11 @@ export const Stackbox = () => {
                   <BodyText className="flex items-center text-em-low">
                     Balance:
                   </BodyText>
-                  <div onClick={() => setTokenAmountBasedOnBalance(1)}>
+                  <div
+                    onClick={() =>
+                      setTokenAmountBasedOnBalance(BalanceDivider.max)
+                    }
+                  >
                     <BodyText className="cursor-pointer hover:underline text-em-high">
                       {formattedBalance(balance)}
                     </BodyText>
