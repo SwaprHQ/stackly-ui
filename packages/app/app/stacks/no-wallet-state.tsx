@@ -15,7 +15,11 @@ export default function NoWalletState() {
           </HeadingText>
         </div>
       </div>
-      <ConnectButton className="mx-auto w-fit" text="Connect your wallet" />
+      <ConnectButton
+        size="lg"
+        className="mx-auto w-fit"
+        text="Connect Wallet"
+      />
     </div>
   );
 }
