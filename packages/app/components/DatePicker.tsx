@@ -65,7 +65,7 @@ export function DatePicker({
             )}
           >
             <span>{formattedDate()}</span>
-            <Icon name="caret-down" className="mr-2 h-4 w-4 text-black" />
+            <Icon name="caret-down" className="w-4 h-4 mr-2 text-black" />
           </Popover.Button>
           {open && (
             <>
@@ -77,7 +77,7 @@ export function DatePicker({
                 className="w-fit h-fit m-auto max-md:!fixed max-md:!inset-0 max-md:!flex max-md:!items-center max-md:!justify-center max-md:!transform" /* This styles will make it hover on mobile */
               >
                 {({ close }) => (
-                  <div className="flex flex-col space-y-2 bg-white divide-y divide-surface-50 rounded-2xl border border-surface-50">
+                  <div className="flex flex-col space-y-2 bg-white border divide-y divide-surface-50 rounded-2xl border-surface-50">
                     <Calendar
                       mode="single"
                       selected={currentDate}
@@ -92,13 +92,13 @@ export function DatePicker({
                       className=""
                       fromDate={fromDate || new Date()}
                     />
-                    <div className="flex flex-col space-y-2 p-4">
-                      <div className="flex justify-between items-center">
+                    <div className="flex flex-col p-4 space-y-2">
+                      <div className="flex items-center justify-between">
                         <span>{timeCaption}</span>
-                        <div className="flex space-x-2  items-center">
-                          <div className="flex items-center border border-surface-75 rounded-xl py-2 px-3 text-em-low">
+                        <div className="flex items-center space-x-2">
+                          <div className="flex items-center px-3 py-2 border border-surface-75 rounded-xl text-em-low">
                             <input
-                              className="outline-none font-semibold flex-grow text-sm w-5 text-center"
+                              className="flex-grow w-5 text-sm font-semibold text-center outline-none"
                               type="number"
                               pattern="[0-9]*"
                               value={hours}
@@ -120,9 +120,9 @@ export function DatePicker({
                             />
                           </div>
                           <span>:</span>
-                          <div className="flex items-center border border-surface-75 rounded-xl py-2 px-3 text-em-low">
+                          <div className="flex items-center px-3 py-2 border border-surface-75 rounded-xl text-em-low">
                             <input
-                              className="outline-none font-semibold flex-grow text-sm w-5 text-center"
+                              className="flex-grow w-5 text-sm font-semibold text-center outline-none"
                               type="number"
                               pattern="[0-9]*"
                               value={minutes}
