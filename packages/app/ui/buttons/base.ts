@@ -13,10 +13,10 @@ export const buttonStyles = cva(
   {
     variants: {
       size: {
-        lg: "px-4 py-3 space-x-[10px] rounded-xl",
-        md: "px-3 py-2 space-x-2 text-sm rounded-xl",
-        sm: "px-3 py-2 space-x-[6px] text-sm rounded-lg",
-        xs: "px-2 py-1 space-x-1 text-xs rounded-[6px]",
+        lg: "px-4 py-3 space-x-[10px] rounded-xl leading-6",
+        md: "px-3 py-2 space-x-2 text-sm rounded-xl leading-6",
+        sm: "px-3 py-2 space-x-[6px] text-sm rounded-lg leading-4",
+        xs: "px-2 py-1 space-x-1 text-xs rounded-[6px] leading-4",
         icon: "p-2 rounded-xl",
       },
       variant: {
