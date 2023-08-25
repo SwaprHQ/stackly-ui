@@ -11,7 +11,7 @@ export default function MobileMenu() {
   const toggle = () => setIsOpen(!isOpen);
 
   return (
-    <div className="flex items-center justify-end w-full gap-4 md:hidden">
+    <div className="z-10 flex items-center justify-end w-full gap-4 md:hidden">
       <SelectNetwork />
       <ConnectButton />
       <Button
