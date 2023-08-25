@@ -50,7 +50,6 @@ const CustomConnectButton = ({
         variant="tertiary"
         iconRight="caret-down"
         onClick={onClick}
-        size="sm"
         width="full"
         className="flex border-none shadow-sm rounded-xl hover:bg-surface-25 focus:bg-white focus:ring-0 active:ring-0"
       >
@@ -86,7 +85,7 @@ export const ConnectButton = ({
 
         if (!isConnected || !address)
           return (
-            <Button size="sm" width="fit" onClick={show} className={className}>
+            <Button onClick={show} className={className}>
               {text ? text : "Connect"}
             </Button>
           );
