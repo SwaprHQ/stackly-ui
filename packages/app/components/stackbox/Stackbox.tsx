@@ -52,10 +52,16 @@ const startDateTimeTimestamp = new Date().setMinutes(
   new Date().getMinutes() + 30
 );
 
+enum BalanceDivider {
+  MAX = 1,
+  HALF = 2,
+  QUARTER = 4,
+}
+
 const balanceOptions = [
-  { name: "25%", divider: 4 },
-  { name: "50%", divider: 2 },
-  { name: "Max", divider: 1 },
+  { name: "25%", divider: BalanceDivider.QUARTER },
+  { name: "50%", divider: BalanceDivider.HALF },
+  { name: "Max", divider: BalanceDivider.MAX },
 ];
 
 export const Stackbox = () => {
@@ -160,6 +166,16 @@ export const Stackbox = () => {
     return valueString;
   };
 
+  const setTokenAmountBasedOnBalance = (divider: number) => {
+    if (!balance || !fromToken) return;
+
+    setShowTokenAmountError(false);
+    setShowInsufficentBalanceError(false);
+    setTokenAmount(
+      formatUnits(balance.value / BigInt(divider), fromToken.decimals)
+    );
+  };
+
   return (
     <div className="max-w-lg mx-auto my-24 bg-white shadow-2xl rounded-2xl">
       <div className="py-4 border shadow-lg border-surface-50 rounded-2xl">
@@ -214,7 +230,7 @@ export const Stackbox = () => {
             }}
           />
           {fromToken && balance && (
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="flex space-x-1">
                 {balanceOptions.map(({ name, divider }) => (
                   <Button
@@ -222,16 +238,7 @@ export const Stackbox = () => {
                     variant="secondary"
                     width="fit"
                     size="xs"
-                    onClick={() => {
-                      setShowTokenAmountError(false);
-                      setShowInsufficentBalanceError(false);
-                      setTokenAmount(
-                        formatUnits(
-                          balance.value / BigInt(divider),
-                          fromToken.decimals
-                        )
-                      );
-                    }}
+                    onClick={() => setTokenAmountBasedOnBalance(divider)}
                   >
                     {name}
                   </Button>
@@ -239,10 +246,19 @@ export const Stackbox = () => {
               </div>
               <div className="flex items-center space-x-1">
                 <TokenIcon token={fromToken} size="2xs" />
-                <BodyText className="text-em-high">
-                  <span className="text-em-low">Balance:</span>{" "}
-                  {formattedBalance(balance)}
-                </BodyText>
+                <div className="flex items-center space-x-1">
+                  <BodyText className="flex items-center text-em-low">
+                    Balance:
+                  </BodyText>
+                  <button
+                    className="hover:underline"
+                    onClick={() =>
+                      setTokenAmountBasedOnBalance(BalanceDivider.MAX)
+                    }
+                  >
+                    <BodyText>{formattedBalance(balance)}</BodyText>
+                  </button>
+                </div>
               </div>
             </div>
           )}
