@@ -18,7 +18,7 @@ export const Dialog = ({
     maxWidth="sm"
     initialFocusRef={initialFocusRef}
   >
-    <div className="flex flex-col items-center px-6 py-8 space-y-3 bg-gray-900 shadow-xl">
+    <div className="flex flex-col items-center p-6 space-y-3 bg-gray-900 shadow-xl">
       {children}
     </div>
   </Modal>
