@@ -14,6 +14,7 @@ import {
 } from "@/ui";
 import {
   ConfirmStackModal,
+  ConnectButton,
   DatePicker,
   TokenIcon,
   TokenPicker,
@@ -327,13 +328,21 @@ export const Stackbox = () => {
             </div>
           </div>
         </div>
-        <Button
-          width="full"
-          onClick={openConfirmStack}
-          className={cx({ "animate-wiggle": showInsufficentBalanceError })}
-        >
-          {showInsufficentBalanceError ? "Insufficent Balance" : "Stack Now"}
-        </Button>
+        {address ? (
+          <Button
+            width="full"
+            onClick={openConfirmStack}
+            className={cx({ "animate-wiggle": showInsufficentBalanceError })}
+          >
+            {showInsufficentBalanceError ? "Insufficent Balance" : "Stack Now"}
+          </Button>
+        ) : (
+          <ConnectButton
+            // size="lg"
+            className="w-full"
+            text="Connect Wallet to Stack"
+          />
+        )}
       </div>
       <TokenPicker
         closeAction={() => closeModal(ModalId.TOKEN_PICKER)}
