@@ -118,7 +118,7 @@ export const StacksTable = ({
                   )}
                 </CellWrapper>
               </TableCell>
-              <TableCell className="flex justify-end">
+              <TableCell>
                 <Button
                   className="w-max"
                   size="sm"
