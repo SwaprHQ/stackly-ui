@@ -23,10 +23,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
-      <body className="mx-auto font-sans bg-surface-25 bg-auto-100 bg-fixed bg-matrix-gradient">
+      <body className="font-sans bg-fixed bg-surface-25 bg-auto-100 bg-matrix-gradient">
         <Providers>
           <Navbar />
-          {children}
+          <div className="px-4 mx-auto md:px-0">{children}</div>
         </Providers>
       </body>
     </html>

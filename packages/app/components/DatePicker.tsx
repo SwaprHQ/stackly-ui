@@ -69,12 +69,15 @@ export function DatePicker({
           </Popover.Button>
           {open && (
             <>
-              <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+              <div
+                className="fixed inset-0 z-20 bg-black/30"
+                aria-hidden="true"
+              />
               <Popover.Panel
                 ref={setPopperElement as Ref<HTMLDivElement>}
                 style={styles.popper}
                 {...attributes.popper}
-                className="w-fit h-fit m-auto max-md:!fixed max-md:!inset-0 max-md:!flex max-md:!items-center max-md:!justify-center max-md:!transform" /* This styles will make it hover on mobile */
+                className="w-fit h-fit m-auto max-md:!fixed max-md:!inset-0 max-md:!flex max-md:!items-center max-md:!justify-center max-md:!transform z-30" /* This styles will make it hover on mobile */
               >
                 {({ close }) => (
                   <div className="flex flex-col space-y-2 bg-white border divide-y divide-surface-50 rounded-2xl border-surface-50">
