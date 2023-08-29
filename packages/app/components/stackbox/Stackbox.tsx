@@ -378,7 +378,6 @@ export const Stackbox = () => {
         <Link
           passHref
           className="flex items-center space-x-0.5 hover:border-em-low border-b-2 border-em-disabled group"
-          passHref
           href="/stacks"
           onClick={() => closeModal(ModalId.SUCCESS_STACK_TOAST)}
         >
