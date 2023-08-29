@@ -11,14 +11,15 @@ export default function EmptyState() {
             {"Looks like you haven't created any stacks yet."}
           </HeadingText>
           <HeadingText size={1} weight="medium" className="text-em-med">
-            Simply click the button below to create your first stack. Once you
-            have created a stack, you can view its progress here.
+            Once you have created a stack, you can view its progress here.
           </HeadingText>
         </div>
       </div>
-      <ButtonLink href="/" iconLeft="plus" width="fit" className="mx-auto">
-        Create stack
-      </ButtonLink>
+      <div className="mx-auto w-fit">
+        <ButtonLink size="lg" href="/" iconLeft="plus">
+          Create new stack
+        </ButtonLink>
+      </div>
     </div>
   );
 }

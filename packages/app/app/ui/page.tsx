@@ -25,6 +25,7 @@ import {
   DialogContent,
   Toast,
   Severity,
+  SizeProps,
 } from "@/ui";
 import { FREQUENCY_OPTIONS } from "@/models/stack";
 
@@ -116,7 +117,7 @@ export default function Page() {
   ];
 
   return (
-    <div className="my-10">
+    <div className="px-5 mx-auto my-10 max-w-screen-2xl">
       <HeadingText as="h1" size={6}>
         Stackly UI
       </HeadingText>
@@ -124,6 +125,16 @@ export default function Page() {
         title="Buttons"
         description="This is a collection of all our current buttons divided by actions."
       >
+        <UISubSection title="sizes">
+          {["xs", "sm", "md", "lg"].map((size) => (
+            <Button iconLeft="plus" key={size} size={size as SizeProps}>
+              size {size}
+            </Button>
+          ))}
+          <div className="flex space-x-3">
+            <p>icon:</p> <Button size="icon" iconLeft="plus"></Button>
+          </div>
+        </UISubSection>
         <UISubSection title="Primary">
           <Button size="lg" onClick={() => console.log("hey")}>
             Try Stackly now

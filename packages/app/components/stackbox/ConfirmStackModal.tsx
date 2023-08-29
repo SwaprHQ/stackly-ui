@@ -231,12 +231,18 @@ export const ConfirmStackModal = ({
       </ModalContent>
       <ModalFooter>
         {step === CREATE_STACK_STEPS.create && (
-          <Button variant="tertiary" onClick={closeAction} width="full">
+          <Button
+            size="lg"
+            variant="tertiary"
+            onClick={closeAction}
+            width="full"
+          >
             Cancel
           </Button>
         )}
         {step === CREATE_STACK_STEPS.approve && (
           <Button
+            size="lg"
             variant="primary"
             onClick={approveFromToken}
             width="full"
@@ -247,6 +253,7 @@ export const ConfirmStackModal = ({
           </Button>
         )}
         <Button
+          size="lg"
           variant="primary"
           onClick={createStack}
           width="full"
