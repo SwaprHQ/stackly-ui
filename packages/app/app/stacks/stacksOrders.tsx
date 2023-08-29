@@ -11,15 +11,21 @@ import {
   getStackOrders,
 } from "@/models/stack-order";
 import { ChainId } from "@stackly/sdk";
-import { BodyText, ButtonLink, HeadingText } from "@/ui";
+import { BodyText, ButtonLink, HeadingText, buttonStyles } from "@/ui";
 import { StacksTable } from "@/components";
 import EmptyState from "./empty-state";
 import { getOrders } from "@/models/order";
+import { twMerge } from "tailwind-merge";
 
 export interface StackOrdersProps {
   address: string;
   chainId: ChainId;
 }
+
+const tabButtonStyles = twMerge(
+  buttonStyles({ variant: "secondary" }),
+  "bg-transperant border border-transparent text-em-high font-semibold ui-selected:bg-surface-75 ui-not-selected:text-em-low  hover:bg-surface-50 hover:border-surface-75 focus:ring-0"
+);
 
 export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
   const [loading, setLoading] = useState(true);
@@ -61,13 +67,7 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
     <>
       <div className="flex items-center justify-between">
         <HeadingText size={3}>Your stacks</HeadingText>
-        <ButtonLink
-          iconLeft="plus"
-          href="/"
-          width="fit"
-          size="sm"
-          className="hidden sm:flex"
-        >
+        <ButtonLink iconLeft="plus" href="/" className="hidden sm:flex">
           Create New Stack
         </ButtonLink>
       </div>
@@ -75,23 +75,14 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
         <Tab.Group>
           <Tab.List>
             <div className="flex space-x-2">
-              <Tab
-                as="button"
-                className="px-3 py-1.5 font-semibold rounded-lg ui-selected:bg-surface-75 ui-not-selected:text-em-low outline-none active:ring-2 active:ring-gray-100"
-              >
-                Active Stacks
+              <Tab as="button" className={tabButtonStyles}>
+                Active
               </Tab>
-              <Tab
-                as="button"
-                className="px-3 py-1.5 font-semibold rounded-lg ui-selected:bg-surface-75 ui-not-selected:text-em-low outline-none active:ring-2 active:ring-gray-100"
-              >
-                Completed stacks
+              <Tab as="button" className={tabButtonStyles}>
+                Completed
               </Tab>
-              <Tab
-                as="button"
-                className="px-3 py-1.5 font-semibold rounded-lg ui-selected:bg-surface-75 ui-not-selected:text-em-low outline-none active:ring-2 active:ring-gray-100"
-              >
-                Cancelled stacks
+              <Tab as="button" className={tabButtonStyles}>
+                Cancelled
               </Tab>
             </div>
           </Tab.List>

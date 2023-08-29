@@ -329,6 +329,7 @@ export const Stackbox = () => {
         </div>
         <Button
           width="full"
+          size="lg"
           onClick={openConfirmStack}
           className={cx({ "animate-wiggle": showInsufficentBalanceError })}
         >
@@ -366,6 +367,7 @@ export const Stackbox = () => {
       >
         <Link
           className="flex items-center space-x-0.5 hover:border-em-low border-b-2 border-em-disabled group"
+          passHref
           href="/stacks"
           onClick={() => closeModal(ModalId.SUCCESS_STACK_TOAST)}
         >
@@ -394,22 +396,18 @@ const SelectTokenButton = ({
     >
       <BodyText className="text-em-low">{label}</BodyText>
       {token ? (
-        <Button
-          variant="secondary"
-          className="px-2 leading-6 md:px-4 rounded-xl"
-          onClick={handleButtonClick}
-          size="sm"
-        >
-          <TokenIcon token={token} />
-          <BodyText className="font-semibold ml-1.5">{token.symbol}</BodyText>
-          <Icon name="caret-down" size={18} />
+        <Button variant="secondary" onClick={handleButtonClick}>
+          <div className="flex items-center space-x-2">
+            <TokenIcon size="xs" token={token} />
+            <BodyText>{token.symbol}</BodyText>
+            <Icon name="caret-down" size={18} />
+          </div>
         </Button>
       ) : (
         <Button
           variant="secondary"
-          className={cx("leading-6 rounded-xl", className)}
+          className={className}
           onClick={handleButtonClick}
-          size="sm"
           onAnimationEnd={onAnimationEnd}
         >
           Select token

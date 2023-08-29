@@ -14,10 +14,9 @@ export const DialogFooterActions = forwardRef<
   DialogFooterActionsProps
 >(({ primaryAction, primaryText, secondaryAction, secondaryText }, ref) => {
   return (
-    <div className="flex w-full pt-4 space-x-2">
+    <div className="flex w-full pt-4 space-x-3">
       {secondaryAction && (
         <Button
-          size="sm"
           width="full"
           variant="tertiary"
           onClick={secondaryAction}
@@ -27,7 +26,7 @@ export const DialogFooterActions = forwardRef<
         </Button>
       )}
 
-      <Button ref={ref} size="sm" width="full" onClick={primaryAction}>
+      <Button ref={ref} width="full" onClick={primaryAction}>
         {primaryText}
       </Button>
     </div>
