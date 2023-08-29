@@ -205,6 +205,7 @@ export const Stackbox = () => {
         </div>
         <div className="px-5 py-2">
           <input
+            min={0}
             type="number"
             pattern="[0-9]*"
             placeholder="0.0"
