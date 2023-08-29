@@ -55,7 +55,7 @@ export const StacksTable = ({
   };
 
   return (
-    <div className="w-full bg-white border rounded-3xl border-surface-50">
+    <div className="w-full bg-white border shadow-xs rounded-3xl border-surface-50">
       <Table>
         <TableHeader>
           <TableRow className="h-10 md:h-12">
@@ -118,10 +118,10 @@ export const StacksTable = ({
                   )}
                 </CellWrapper>
               </TableCell>
-              <TableCell className="flex justify-end">
+              <TableCell>
                 <Button
                   className="w-max"
-                  size="sm"
+                  width="fit"
                   variant="tertiary"
                   onClick={() => setupAndOpenModal(order)}
                 >

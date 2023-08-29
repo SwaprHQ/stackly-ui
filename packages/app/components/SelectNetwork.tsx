@@ -24,12 +24,18 @@ export const SelectNetwork = () => {
           iconRight="caret-down"
           size="sm"
           variant="tertiary"
-          className="flex flex-row h-10 border-none shadow-sm rounded-xl focus:bg-white focus:ring-0 active:ring-0"
+          className="flex h-10 border-none shadow-sm rounded-xl focus:bg-white focus:ring-0 active:ring-0"
         >
-          <ChainIcon size={20} id={chain.id} unsupported={chain.unsupported} />
-          <span className="hidden md:inline-block">
-            {chain.unsupported ? "Unsupported Network" : chain.name}
-          </span>
+          <div className="flex items-center space-x-2">
+            <ChainIcon
+              size={20}
+              id={chain.id}
+              unsupported={chain.unsupported}
+            />
+            <span className="hidden md:inline-block">
+              {chain.unsupported ? "Unsupported Network" : chain.name}
+            </span>
+          </div>
         </Listbox.Button>
         <Transition
           as={Fragment}
@@ -47,17 +53,17 @@ export const SelectNetwork = () => {
                 {({ selected }) => {
                   return (
                     <>
-                      <span className="flex items-center space-x-2">
+                      <div className="flex items-center space-x-2">
                         <ChainIcon size={20} id={id} />
-                        <span>{name}</span>
-                      </span>
+                        <p>{name}</p>
+                      </div>
                       {selected ? (
-                        <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-amber-600">
+                        <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-amber-600">
                           <Icon
                             name="check"
                             className="w-4 h-4 text-primary-600"
                           />
-                        </span>
+                        </div>
                       ) : null}
                     </>
                   );

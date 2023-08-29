@@ -1,7 +1,7 @@
 "use client";
 
 import { ConnectKitButton } from "connectkit";
-import { BodyText, Button } from "@/ui";
+import { BodyText, Button, SizeProps } from "@/ui";
 import { useEnsAvatar, useBalance } from "wagmi";
 import Image from "next/image";
 
@@ -9,10 +9,12 @@ const CustomConnectButton = ({
   address,
   ensName,
   onClick,
+  size,
 }: {
   address: `0x${string}`;
   onClick: () => void;
   ensName?: string;
+  size: SizeProps;
 }) => {
   const { data: avatar } = useEnsAvatar({
     name: ensName,
@@ -47,10 +49,10 @@ const CustomConnectButton = ({
         </BodyText>
       )}
       <Button
+        size={size}
         variant="tertiary"
         iconRight="caret-down"
         onClick={onClick}
-        size="sm"
         width="full"
         className="flex border-none shadow-sm rounded-xl hover:bg-surface-25 focus:bg-white focus:ring-0 active:ring-0"
       >
@@ -75,7 +77,9 @@ const CustomConnectButton = ({
 export const ConnectButton = ({
   className,
   text,
+  size = "md",
 }: {
+  size?: SizeProps;
   text?: string;
   className?: string;
 }) => {
@@ -86,13 +90,14 @@ export const ConnectButton = ({
 
         if (!isConnected || !address)
           return (
-            <Button size="sm" width="fit" onClick={show} className={className}>
+            <Button size={size} onClick={show} className={className}>
               {text ? text : "Connect"}
             </Button>
           );
 
         return (
           <CustomConnectButton
+            size={size}
             address={address}
             ensName={ensName}
             onClick={show}

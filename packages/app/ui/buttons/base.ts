@@ -5,19 +5,19 @@ import { IconName } from "@/ui";
 export const buttonStyles = cva(
   [
     "flex items-center justify-center",
-    "rounded-lg cursor-pointer select-none font-medium",
-    "active:ring-4",
+    "cursor-pointer select-none font-medium",
     "disabled:bg-surface-75 disabled:text-em-disabled disabled:cursor-not-allowed disabled:ring-0",
     "focus:outline-none focus:ring-4",
+    "active:ring-4",
   ],
   {
     variants: {
       size: {
-        lg: "px-14 py-3 md:py-4 text-lg md:px-24 space-x-4",
-        md: "px-8 md:px-12 py-2 space-x-2",
-        sm: "px-4 py-2 text-sm space-x-2",
-        xs: "px-2 py-1 text-xs space-x-1",
-        icon: "p-2",
+        lg: "px-4 py-3 space-x-[10px] rounded-xl leading-6",
+        md: "px-3 py-2 space-x-2 text-sm rounded-xl leading-6",
+        sm: "px-3 py-2 space-x-[6px] text-sm rounded-lg leading-4",
+        xs: "px-2 py-1 space-x-1 text-xs rounded-[6px] leading-4",
+        icon: "p-2 rounded-xl",
       },
       variant: {
         primary: [
@@ -99,11 +99,11 @@ export interface ButtonBaseProps
 }
 
 export const iconSizeMap: Record<SizeProps, any> = {
-  xs: 16,
-  sm: 18,
+  xs: 13,
+  sm: 16,
   icon: 20,
-  md: 22,
-  lg: 26,
+  md: 18,
+  lg: 20,
 };
 
 export const getIconSize = (size?: SizeProps) =>
