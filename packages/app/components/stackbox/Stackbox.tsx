@@ -17,6 +17,7 @@ import {
   DatePicker,
   TokenIcon,
   TokenPicker,
+  BetaNFTModal,
 } from "@/components";
 import { TokenFromTokenlist } from "@/models/token";
 import { useAccount, useBalance, useNetwork } from "wagmi";
@@ -72,7 +73,7 @@ export const Stackbox = () => {
   const { closeModal, isModalOpen, openModal } = useModalContext();
 
   const { chain } = useNetwork();
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const { data: balance } = useBalance({
     address: Boolean(fromToken) ? address : undefined,
     token: fromToken?.address as `0x${string}`,
@@ -175,6 +176,11 @@ export const Stackbox = () => {
       formatUnits(balance.value / BigInt(divider), fromToken.decimals)
     );
   };
+
+  useEffect(() => {
+    if (isConnected) openModal(ModalId.BETA_NFT_GATEKEEPING);
+    else closeModal(ModalId.BETA_NFT_GATEKEEPING);
+  }, [closeModal, isConnected, openModal]);
 
   return (
     <div className="max-w-lg mx-auto my-24 bg-white shadow-2xl rounded-2xl">
@@ -372,6 +378,7 @@ export const Stackbox = () => {
           <BodyText className="text-em-med">View your stacks</BodyText>
         </Link>
       </Toast>
+      <BetaNFTModal />
     </div>
   );
 };
