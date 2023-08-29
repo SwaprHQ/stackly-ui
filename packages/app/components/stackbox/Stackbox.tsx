@@ -297,7 +297,7 @@ export const Stackbox = () => {
               })}
             </div>
             <div className="space-y-1">
-              <div className="flex flex-col border divide-y md:flex-row rounded-2xl border-surface-50 md:divide-x divide-surface-50">
+              <div className="flex flex-col border divide-y md:divide-y-0 md:flex-row rounded-2xl border-surface-50 md:divide-x divide-surface-50">
                 <div className="flex flex-col w-full p-3 space-y-2 hover:bg-surface-25">
                   <BodyText size={2}>Starting from</BodyText>
                   <DatePicker
@@ -376,8 +376,8 @@ export const Stackbox = () => {
         title="Your stack creation was successful"
       >
         <Link
-          className="flex items-center space-x-0.5 hover:border-em-low border-b-2 border-em-disabled group"
           passHref
+          className="flex items-center space-x-0.5 hover:border-em-low border-b-2 border-em-disabled group"
           href="/stacks"
           onClick={() => closeModal(ModalId.SUCCESS_STACK_TOAST)}
         >

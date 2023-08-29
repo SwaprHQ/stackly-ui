@@ -60,7 +60,7 @@ export function DatePicker({
           <Popover.Button
             ref={setReferenceElement as Ref<HTMLButtonElement>}
             className={twMerge(
-              "flex justify-between items-center focus:border-0",
+              "flex justify-between items-center focus:border-0 outline-0",
               className
             )}
           >
