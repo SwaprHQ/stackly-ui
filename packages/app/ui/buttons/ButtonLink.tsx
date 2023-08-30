@@ -6,6 +6,8 @@ import { Icon } from "@/ui/icon/Icon";
 
 interface ButtonLinkProps extends ButtonBaseProps {
   href: string;
+  passHref?: boolean;
+  target?: string;
 }
 
 export function ButtonLink({
@@ -20,6 +22,8 @@ export function ButtonLink({
   iconLeft,
   iconRight,
   id,
+  passHref,
+  target,
 }: ButtonLinkProps) {
   return (
     <Link
@@ -34,6 +38,8 @@ export function ButtonLink({
         active,
         className,
       })}
+      passHref={passHref}
+      target={target}
     >
       {iconLeft && <Icon size={getIconSize(size)} name={iconLeft} />}
       {children && <div>{children}</div>}
