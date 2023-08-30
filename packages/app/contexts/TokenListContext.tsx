@@ -9,15 +9,13 @@ import {
   useMemo,
   useState,
 } from "react";
-import { ethers } from "ethers";
-import { formatUnits, hexToBigInt } from "viem";
-import { useAccount, useNetwork } from "wagmi";
+import { erc20ABI, useAccount, useNetwork } from "wagmi";
+import { formatUnits } from "viem";
+import { multicall } from "@wagmi/core";
 
 import defaultGnosisTokenlist from "public/assets/blockchains/gnosis/tokenlist.json";
 import defaultEthereumTokenlist from "public/assets/blockchains/ethereum/tokenlist.json";
 import { TokenFromTokenlist } from "@/models/token/types";
-import { Erc20Abi, MulticallAbi } from "../../sdk/abis";
-import { MULTICALL_ADDRESS } from "@stackly/sdk";
 
 export interface TokenWithBalance extends TokenFromTokenlist {
   balance?: string;
@@ -36,12 +34,6 @@ const TOKEN_LIST_BY_CHAIN_URL: { [chainId: number]: string } = {
   1: "https://tokens.1inch.eth.link/",
   100: "https://tokens.honeyswap.org/",
 };
-
-const provider = new ethers.providers.JsonRpcProvider(
-  "https://rpc.gnosischain.com"
-);
-const multicallInterface = new ethers.utils.Interface(MulticallAbi);
-const erc20Interface = new ethers.utils.Interface(Erc20Abi);
 
 const TokenListContext = createContext<{
   tokenList: TokenFromTokenlist[];
@@ -84,15 +76,6 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
     ? TOKEN_LIST_BY_CHAIN_URL[chain.id]
     : TOKEN_LIST_BY_CHAIN_URL[GNOSIS_CHAIN_ID];
 
-  const callArray = useMemo(() => {
-    if (address && tokenList) {
-      return tokenList.map((token) => [
-        token.address,
-        erc20Interface.encodeFunctionData("balanceOf", [address]),
-      ]);
-    }
-  }, [address, tokenList]);
-
   const setupTokenList = useCallback(async () => {
     async function getTokenListData() {
       try {
@@ -124,30 +107,30 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
 
   /**
    * Once the tokenList is defined and we have an address
-   * connected, we read data from the blockchain using
-   * the Provider through the Multicall SC to batch fetch
-   * all the ERC-20 token balances for the connected wallet
-   * and the supported token list, then we desc. sort them
+   * connected, we batch fetch all the ERC-20 token balances
+   * for the connected wallet and the supported token list,
+   * then we desc. sort them
    */
   useEffect(() => {
     if (address) {
-      provider
-        .call({
-          to: MULTICALL_ADDRESS,
-          data: multicallInterface.encodeFunctionData("aggregate", [callArray]),
-        })
-        .then((response: any) => {
-          const callResult = multicallInterface.decodeFunctionResult(
-            "aggregate",
-            response
-          );
-          const resultados = callResult.returnData;
+      const fetchErc20Balances = async () => {
+        try {
+          const batchFetchdata = await multicall({
+            contracts: tokenList.map((token) => ({
+              address: token.address as `0x${string}`,
+              abi: erc20ABI,
+              functionName: "balanceOf",
+              args: [address as `0x${string}`],
+              chainId: token.chainId,
+            })),
+            allowFailure: true,
+          });
 
           const listWithBalances = tokenList
             .map((token, index) => ({
               ...token,
               balance: formatUnits(
-                hexToBigInt(resultados[index]),
+                batchFetchdata[index]?.result as bigint,
                 token.decimals
               ),
             }))
@@ -157,9 +140,14 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
             );
 
           setTokenListWithBalances(listWithBalances);
-        });
+        } catch (error) {
+          console.error("Error fetching tokenlist balances:", error);
+        }
+      };
+
+      fetchErc20Balances();
     }
-  }, [address, callArray, tokenList]);
+  }, [address, chain?.id, tokenList]);
 
   const tokenListContext = useMemo(
     () => ({
