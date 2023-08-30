@@ -22,6 +22,7 @@ import {
   DatePicker,
   TokenIcon,
   TokenPicker,
+  BetaNFTModal,
 } from "@/components";
 import { ModalId, useModalContext, TokenWithBalance } from "@/contexts";
 import {
@@ -77,7 +78,7 @@ export const Stackbox = () => {
   const { closeModal, isModalOpen, openModal } = useModalContext();
 
   const { chain } = useNetwork();
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const { data: balance } = useBalance({
     address: Boolean(fromToken) ? address : undefined,
     token: fromToken?.address as `0x${string}`,
@@ -105,6 +106,11 @@ export const Stackbox = () => {
   useEffect(() => {
     setEndDateTime(new Date(endDateByFrequency[frequency]));
   }, [frequency]);
+
+  useEffect(() => {
+    if (isConnected) openModal(ModalId.BETA_NFT_GATEKEEPING);
+    else closeModal(ModalId.BETA_NFT_GATEKEEPING);
+  }, [closeModal, isConnected, openModal]);
 
   const openTokenPicker = (isFromToken = true) => {
     setIsPickingFromToken(isFromToken);
@@ -429,6 +435,7 @@ export const Stackbox = () => {
           <BodyText className="text-em-med">View your stacks</BodyText>
         </Link>
       </Toast>
+      <BetaNFTModal />
     </div>
   );
 };
