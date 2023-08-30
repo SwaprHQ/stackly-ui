@@ -14,7 +14,8 @@ export type IconName =
   | "search"
   | "stackly"
   | "swap"
-  | "warning";
+  | "warning"
+  | "discord";
 
 interface IconProps {
   alt?: string;
@@ -38,6 +39,7 @@ export const iconMap: Record<IconName, any> = {
   stackly: IconList.StacklyLogoIcon,
   swap: IconList.SwapIcon,
   warning: IconList.WarningIcon,
+  discord: IconList.DiscordIcon,
 };
 
 export const Icon = ({ alt, className, name, size = 20 }: IconProps) => {
