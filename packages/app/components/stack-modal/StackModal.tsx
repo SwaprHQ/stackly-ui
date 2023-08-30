@@ -234,6 +234,7 @@ export const StackModal = ({
         />
       </Dialog>
       <DialogConfirmTransactionLoading
+        closeAction={() => closeModal(ModalId.CANCEL_STACK_PROCESSING)}
         isOpen={isModalOpen(ModalId.CANCEL_STACK_PROCESSING)}
         title={cancellationTx && "Proceeding cancellation"}
         description={cancellationTx && "Waiting for transaction confirmation."}
