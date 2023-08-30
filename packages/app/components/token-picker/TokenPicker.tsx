@@ -1,7 +1,6 @@
 "use client";
 
 import { ChangeEvent, RefObject, forwardRef, useEffect, useState } from "react";
-import { useAccount, useBalance, useNetwork } from "wagmi";
 
 import {
   BodyText,
@@ -14,21 +13,20 @@ import {
   ModalHeaderTitle,
 } from "@/ui";
 import { EmptyStateTokenPickerImg } from "@/public/assets";
-import { TokenFromTokenlist } from "@/models/token/types";
 import { TokenIcon } from "@/components";
 import { TOKEN_PICKER_COMMON_TOKENS } from "./constants";
-import { useTokenListContext } from "@/contexts";
+import { TokenWithBalance, useTokenListContext } from "@/contexts";
 import { formatTokenValue } from "@/utils/token";
 
 const HALF_SECOND = 500;
 
 interface TokenPickerProps extends ModalBaseProps {
   initialFocusRef?: RefObject<HTMLInputElement>;
-  onTokenSelect: (token: TokenFromTokenlist) => void;
+  onTokenSelect: (token: TokenWithBalance) => void;
 }
 
 interface CommonTokensProps {
-  onTokenSelect: (token: TokenFromTokenlist) => void;
+  onTokenSelect: (token: TokenWithBalance) => void;
 }
 
 interface SearchBarProps {
@@ -36,14 +34,14 @@ interface SearchBarProps {
   value: string;
 }
 interface TokenListRowProps {
-  token: TokenFromTokenlist;
-  onTokenSelect: (token: TokenFromTokenlist) => void;
+  token: TokenWithBalance;
+  onTokenSelect: (token: TokenWithBalance) => void;
 }
 
 interface TokenListProps {
   onClearSearch: () => void;
-  onTokenSelect: (token: TokenFromTokenlist) => void;
-  tokenList: TokenFromTokenlist[];
+  onTokenSelect: (token: TokenWithBalance) => void;
+  tokenList?: TokenWithBalance[];
   tokenSearchQuery?: string;
 }
 
@@ -56,7 +54,7 @@ const TokenPicker = ({
   const [tokenSearchQuery, setTokenSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState(tokenSearchQuery);
 
-  const { tokenList } = useTokenListContext();
+  const { tokenListWithBalances } = useTokenListContext();
 
   const tokenListSearchCleanup = () => {
     setDebouncedQuery("");
@@ -72,7 +70,7 @@ const TokenPicker = ({
     closeAction();
   };
 
-  const handleTokenSelect = (token: TokenFromTokenlist) => {
+  const handleTokenSelect = (token: TokenWithBalance) => {
     onTokenSelect(token);
     handleModalClose();
   };
@@ -109,7 +107,7 @@ const TokenPicker = ({
         <TokenList
           onClearSearch={tokenListSearchCleanup}
           onTokenSelect={handleTokenSelect}
-          tokenList={tokenList}
+          tokenList={tokenListWithBalances}
           tokenSearchQuery={tokenSearchQuery}
         />
       </ModalContent>
@@ -140,7 +138,7 @@ const CommonTokens = ({ onTokenSelect }: CommonTokensProps) => (
       Common tokens
     </BodyText>
     <div className="flex flex-wrap gap-2 mt-2">
-      {TOKEN_PICKER_COMMON_TOKENS.map((token: TokenFromTokenlist) => (
+      {TOKEN_PICKER_COMMON_TOKENS.map((token: TokenWithBalance) => (
         <ChipButton
           id={token.address}
           key={token.address}
@@ -156,53 +154,14 @@ const CommonTokens = ({ onTokenSelect }: CommonTokensProps) => (
   </div>
 );
 
-const TokenListRow = ({ onTokenSelect, token }: TokenListRowProps) => {
-  const { chain } = useNetwork();
-  const { address } = useAccount();
-  const { data: balance } = useBalance({
-    address,
-    token: token?.address as `0x$string`,
-    chainId: chain?.id,
-  });
-
-  const tokenBalance = balance?.formatted;
-
-  if (!tokenBalance) return null;
-
-  return (
-    <div
-      className="flex items-center justify-between w-full h-16 px-4 cursor-pointer md:px-6 hover:bg-surface-50"
-      key={token.address}
-      onClick={() => onTokenSelect(token)}
-    >
-      <div className="flex items-center justify-between w-full">
-        <div className="flex items-center space-x-3">
-          <TokenIcon token={token} size="md" />
-          <div>
-            <BodyText size={2}>{token.symbol}</BodyText>
-            <BodyText className="text-em-low" size={1}>
-              {token.name}
-            </BodyText>
-          </div>
-        </div>
-        <BodyText>
-          {tokenBalance === "0"
-            ? tokenBalance
-            : formatTokenValue(tokenBalance as string)}
-        </BodyText>
-      </div>
-    </div>
-  );
-};
-
 const TokenList = ({
   onClearSearch,
   onTokenSelect,
-  tokenList,
+  tokenList = [],
   tokenSearchQuery,
 }: TokenListProps) => {
   const [filteredTokenList, setFilteredTokenList] =
-    useState<TokenFromTokenlist[]>(tokenList);
+    useState<TokenWithBalance[]>(tokenList);
 
   const handleClearSearch = () => {
     onClearSearch();
@@ -245,5 +204,30 @@ const TokenList = ({
     </div>
   );
 };
+
+const TokenListRow = ({ onTokenSelect, token }: TokenListRowProps) => (
+  <div
+    className="flex items-center justify-between w-full h-16 px-4 cursor-pointer hover:bg-surface-50"
+    key={token.address}
+    onClick={() => onTokenSelect(token)}
+  >
+    <div className="flex items-center justify-between w-full">
+      <div className="flex items-center space-x-3">
+        <TokenIcon token={token} size="md" />
+        <div>
+          <BodyText size={2}>{token.symbol}</BodyText>
+          <BodyText className="text-em-low" size={1}>
+            {token.name}
+          </BodyText>
+        </div>
+      </div>
+      <BodyText>
+        {token.balance === "0"
+          ? token.balance
+          : formatTokenValue(token.balance as string)}
+      </BodyText>
+    </div>
+  </div>
+);
 
 export default TokenPicker;
