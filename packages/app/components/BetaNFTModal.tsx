@@ -23,7 +23,7 @@ export const BetaNFTModal = () => {
 
   return (
     <Modal
-      className="bg-green-gradient"
+      className="bg-green-gradient text-center"
       maxWidth="xl"
       isOpen={isOpen}
       closeAction={closeAction}
@@ -38,7 +38,7 @@ export const BetaNFTModal = () => {
           iconLeft="close"
           size="icon"
           onClick={closeAction}
-          className="absolute top-5 right-5"
+          className="absolute top-1 right-2 md:top-5 md:right-5"
         />
       </ModalHeader>
       <ModalContent className="border-b border-surface-50 py-10 mt-0">
