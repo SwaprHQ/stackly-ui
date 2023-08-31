@@ -165,7 +165,7 @@ export const StackModal = ({
             />
           </div>
         </ModalHeader>
-        <ModalContent className="px-0 md:px-0">
+        <ModalContent className="px-0 space-y-4 md:px-0">
           <div className="grid grid-cols-2 gap-5 px-4 md:px-6 gap-x-8 md:grid-cols-4">
             <StackDetail title="Starts on">
               {formatTimestampToDateWithTime(firstSlot)}
@@ -188,13 +188,13 @@ export const StackModal = ({
           </div>
           <div className="w-full my-4 border-b border-surface-50"></div>
           {stackIsFinishedWithFunds(stackOrder) && (
-            <div className="px-4 pb-4 md:px-6">
+            <div className="px-4 md:px-6">
               <HasRemainingFundsAlertMessage
                 remainingFundsWithSymbol={stackRemainingFundsWithTokenText}
               />
             </div>
           )}
-          <div className="px-4 md:px-6">
+          <div className="px-4 space-y-4 md:px-6">
             <TitleText size={2} weight="bold">
               Orders
             </TitleText>
@@ -205,18 +205,19 @@ export const StackModal = ({
             )}
           </div>
         </ModalContent>
-        <ModalFooter>
-          {!stackOrder.cancelledAt && !stackIsComplete(stackOrder) && (
+        {!stackOrder.cancelledAt && !stackIsComplete(stackOrder) ? (
+          <ModalFooter>
             <Button
-              size="sm"
               variant={getConfirmCancelContent().button.action}
               onClick={() => openModal(ModalId.CANCEL_STACK_CONFIRM)}
               width="full"
             >
               {getConfirmCancelContent().button.text}
             </Button>
-          )}
-        </ModalFooter>
+          </ModalFooter>
+        ) : (
+          <div className="pb-6"></div>
+        )}
       </Modal>
       <Dialog
         isOpen={isModalOpen(ModalId.CANCEL_STACK_CONFIRM)}
@@ -266,7 +267,7 @@ export const StackModal = ({
 };
 
 const StackInfo = ({ stackOrder }: StackOrderProps) => (
-  <div className="flex flex-col justify-between gap-2 px-4 py-3 mt-6 mb-4 md:px-6 md:items-center md:flex-row bg-surface-25 rounded-2xl">
+  <div className="flex flex-col justify-between gap-2 px-4 py-3 md:px-6 md:items-center md:flex-row bg-surface-25 rounded-2xl">
     <FromToStackTokenPair
       fromToken={stackOrder.sellToken}
       fromText={formatTokenValue(totalFundsUsed(stackOrder))}
