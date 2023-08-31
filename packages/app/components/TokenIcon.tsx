@@ -18,15 +18,9 @@ export const TokenIcon = ({ className, size, token }: TokenIconProps) => {
   const { getTokenFromList, getTokenLogoURL } = useTokenListContext();
   const [isImgBroken, setIsImgBroken] = useState<Boolean>(false);
 
-  const getTokenMethodsUndefined = !getTokenFromList || !getTokenLogoURL;
-  const invalidAddress = !isAddress(token.address);
-  const noTokenOnTheList =
-    !getTokenMethodsUndefined && !getTokenFromList(token.address);
-
   if (
-    getTokenMethodsUndefined ||
-    invalidAddress ||
-    noTokenOnTheList ||
+    !isAddress(token.address) ||
+    !getTokenFromList(token.address) ||
     isImgBroken
   )
     return <DefaultTokenIcon token={token} className={className} size={size} />;

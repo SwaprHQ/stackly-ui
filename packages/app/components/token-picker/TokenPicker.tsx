@@ -17,6 +17,7 @@ import { TokenIcon } from "@/components";
 import { TOKEN_PICKER_COMMON_TOKENS } from "./constants";
 import { TokenWithBalance, useTokenListContext } from "@/contexts";
 import { formatTokenValue } from "@/utils/token";
+import { TokenFromTokenlist } from "@/models/token";
 
 const HALF_SECOND = 500;
 
@@ -41,7 +42,7 @@ interface TokenListRowProps {
 interface TokenListProps {
   onClearSearch: () => void;
   onTokenSelect: (token: TokenWithBalance) => void;
-  tokenList?: TokenWithBalance[];
+  tokenList?: TokenFromTokenlist[] | TokenWithBalance[];
   tokenSearchQuery?: string;
 }
 
@@ -54,7 +55,7 @@ const TokenPicker = ({
   const [tokenSearchQuery, setTokenSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState(tokenSearchQuery);
 
-  const { tokenListWithBalances } = useTokenListContext();
+  const { tokenList, tokenListWithBalances } = useTokenListContext();
 
   const tokenListSearchCleanup = () => {
     setDebouncedQuery("");
@@ -107,7 +108,9 @@ const TokenPicker = ({
         <TokenList
           onClearSearch={tokenListSearchCleanup}
           onTokenSelect={handleTokenSelect}
-          tokenList={tokenListWithBalances}
+          tokenList={
+            tokenListWithBalances?.length ? tokenListWithBalances : tokenList
+          }
           tokenSearchQuery={tokenSearchQuery}
         />
       </ModalContent>
@@ -221,11 +224,13 @@ const TokenListRow = ({ onTokenSelect, token }: TokenListRowProps) => (
           </BodyText>
         </div>
       </div>
-      <BodyText>
-        {token.balance === "0"
-          ? token.balance
-          : formatTokenValue(token.balance as string)}
-      </BodyText>
+      {token.balance && (
+        <BodyText>
+          {token.balance === "0"
+            ? token.balance
+            : formatTokenValue(token.balance as string)}
+        </BodyText>
+      )}
     </div>
   </div>
 );

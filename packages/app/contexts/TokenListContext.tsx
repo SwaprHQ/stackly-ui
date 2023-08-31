@@ -38,10 +38,12 @@ const TOKEN_LIST_BY_CHAIN_URL: { [chainId: number]: string } = {
 const TokenListContext = createContext<{
   tokenList: TokenFromTokenlist[];
   tokenListWithBalances?: TokenWithBalance[];
-  getTokenLogoURL?: (tokenAddress: string) => string;
-  getTokenFromList?: (tokenAddress: string) => TokenFromTokenlist | undefined;
+  getTokenLogoURL: (tokenAddress: string) => string;
+  getTokenFromList: (tokenAddress: string) => TokenFromTokenlist | false;
 }>({
   tokenList: DEFAULT_TOKEN_LIST_BY_CHAIN[GNOSIS_CHAIN_ID],
+  getTokenLogoURL: (tokenAddress: string) => "#",
+  getTokenFromList: (tokenAddress: string) => false,
 });
 
 const mergeTokenlists = (
@@ -67,6 +69,8 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
     useState<TokenWithBalance[]>();
   const { chain } = useNetwork();
   const { address } = useAccount();
+
+  const chainId = chain?.id ?? GNOSIS_CHAIN_ID;
 
   const defaultTokenList = chain
     ? DEFAULT_TOKEN_LIST_BY_CHAIN[chain.id]
@@ -96,10 +100,10 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
 
     setTokenList(
       mergedTokenlistTokens.filter(
-        (token: TokenFromTokenlist) => token.chainId === chain?.id
+        (token: TokenFromTokenlist) => token.chainId === chainId
       )
     );
-  }, [chain?.id, defaultTokenList, fetchTokenlistURL]);
+  }, [chainId, defaultTokenList, fetchTokenlistURL]);
 
   useEffect(() => {
     setupTokenList();
@@ -146,6 +150,8 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
       };
 
       fetchErc20Balances();
+    } else {
+      setTokenListWithBalances([]);
     }
   }, [address, chain?.id, tokenList]);
 
@@ -156,7 +162,7 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
       getTokenFromList: (tokenAddress: string) =>
         tokenList.find(
           (token) => token.address.toUpperCase() === tokenAddress?.toUpperCase()
-        ),
+        ) ?? false,
       getTokenLogoURL: (tokenAddress: string) =>
         tokenList.find(
           (token) => token.address.toUpperCase() === tokenAddress?.toUpperCase()
