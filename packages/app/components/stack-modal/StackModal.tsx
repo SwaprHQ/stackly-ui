@@ -124,6 +124,9 @@ export const StackModal = ({
     }
   };
 
+  const stackNotCancelledAndNotComplete =
+    !stackOrder.cancelledAt && !stackIsComplete(stackOrder);
+
   return (
     <>
       <Modal
@@ -208,12 +211,10 @@ export const StackModal = ({
         </ModalContent>
         <ModalFooter
           className={cx({
-            "pt-0 pb-6": !(
-              !stackOrder.cancelledAt && !stackIsComplete(stackOrder)
-            ),
+            "pt-0 pb-6": !stackNotCancelledAndNotComplete,
           })}
         >
-          {!stackOrder.cancelledAt && !stackIsComplete(stackOrder) && (
+          {stackNotCancelledAndNotComplete && (
             <Button
               variant={getConfirmCancelContent().button.action}
               onClick={() => openModal(ModalId.CANCEL_STACK_CONFIRM)}
