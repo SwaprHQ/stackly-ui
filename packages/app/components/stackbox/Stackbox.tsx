@@ -143,7 +143,17 @@ export const Stackbox = () => {
       openModal(ModalId.CONFIRM_STACK);
     }
   };
-  const selectToken = isPickingFromToken ? setFromToken : setToToken;
+
+  const selectToken = (selectedToken: TokenFromTokenlist) => {
+    const setSelectedToken = isPickingFromToken ? setFromToken : setToToken;
+    const setOppositeToken = isPickingFromToken ? setToToken : setFromToken;
+    const oppositeToken = isPickingFromToken ? toToken : fromToken;
+    const previousToken = isPickingFromToken ? fromToken : toToken;
+
+    setSelectedToken(selectedToken);
+
+    if (oppositeToken === selectedToken) setOppositeToken(previousToken);
+  };
 
   const formattedBalance = (balanceData: NonNullable<typeof balance>) => {
     const SIGNIFICANT_DIGITS = 5;
