@@ -1,10 +1,20 @@
 "use client";
 
 import { PropsWithChildren } from "react";
+import { twMerge } from "tailwind-merge";
 
-export const ModalFooter = ({ children }: PropsWithChildren) => {
+interface ModalFooterProps extends PropsWithChildren {
+  className?: string;
+}
+
+export const ModalFooter = ({ children, className }: ModalFooterProps) => {
   return (
-    <div className="flex items-center px-4 py-6 space-x-2 md:px-6">
+    <div
+      className={twMerge(
+        "flex items-center px-4 pb-6 pt-6 space-x-2 md:px-6",
+        className
+      )}
+    >
       {children}
     </div>
   );

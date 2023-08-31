@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ReactNode, useState } from "react";
+import { cx } from "class-variance-authority";
 
 import { getOrderPairSymbols, totalOrderSlotsDone } from "@/models/order";
 import {
@@ -205,8 +206,14 @@ export const StackModal = ({
             )}
           </div>
         </ModalContent>
-        {!stackOrder.cancelledAt && !stackIsComplete(stackOrder) ? (
-          <ModalFooter>
+        <ModalFooter
+          className={cx({
+            "pt-0 pb-6": !(
+              !stackOrder.cancelledAt && !stackIsComplete(stackOrder)
+            ),
+          })}
+        >
+          {!stackOrder.cancelledAt && !stackIsComplete(stackOrder) && (
             <Button
               variant={getConfirmCancelContent().button.action}
               onClick={() => openModal(ModalId.CANCEL_STACK_CONFIRM)}
@@ -214,10 +221,8 @@ export const StackModal = ({
             >
               {getConfirmCancelContent().button.text}
             </Button>
-          </ModalFooter>
-        ) : (
-          <div className="pb-6"></div>
-        )}
+          )}
+        </ModalFooter>
       </Modal>
       <Dialog
         isOpen={isModalOpen(ModalId.CANCEL_STACK_CONFIRM)}
