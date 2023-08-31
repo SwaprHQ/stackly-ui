@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAccount, useNetwork } from "wagmi";
 import Image from "next/image";
+import ReactCanvasConfetti from "react-canvas-confetti";
+import confetti from "canvas-confetti";
 import { StacklyBetaNFTImg } from "@/public/assets";
 import {
   ChainId,
@@ -95,6 +97,7 @@ export default function Page() {
 
       closeModal(ModalId.NFT_MINT_PROCESSING);
       setIsNFTHolder(true);
+      fireFireworks();
     } catch (e: any) {
       console.error("Error while minting NFT: ", e);
       if (e.code === "ACTION_REJECTED") setError("Minting rejected.");
@@ -104,6 +107,75 @@ export default function Page() {
   };
 
   const nextNFTNumber = Number(mintedAmount) + 1;
+
+  const refAnimationInstance = useRef<confetti.CreateTypes | null>(null);
+
+  const getInstance = useCallback((instance: confetti.CreateTypes | null) => {
+    refAnimationInstance.current = instance;
+  }, []);
+
+  const makeShot = useCallback(
+    (particleRatio: number, options: confetti.Options) => {
+      refAnimationInstance.current &&
+        refAnimationInstance.current({
+          ticks: 500,
+          angle: 270,
+          origin: { y: -0.3 },
+          particleCount: Math.floor(200 * particleRatio),
+          ...options,
+        });
+    },
+    []
+  );
+
+  const defaultShots = useCallback(
+    (options = {}) => {
+      makeShot(0.25, {
+        spread: 26,
+        startVelocity: 55,
+        ...options,
+      });
+
+      makeShot(0.2, {
+        spread: 60,
+        ...options,
+      });
+
+      makeShot(0.35, {
+        spread: 100,
+        decay: 0.91,
+        scalar: 0.8,
+        ...options,
+      });
+
+      makeShot(0.1, {
+        spread: 120,
+        startVelocity: 25,
+        decay: 0.92,
+        scalar: 1.2,
+        ...options,
+      });
+
+      makeShot(0.1, {
+        spread: 120,
+        startVelocity: 45,
+        ...options,
+      });
+
+      makeShot(0.25, {
+        spread: 26,
+        startVelocity: 55,
+        ...options,
+      });
+    },
+    [makeShot]
+  );
+
+  const fireFireworks = useCallback(() => {
+    defaultShots();
+    defaultShots({ origin: { x: 0.2, y: -0.3 } });
+    defaultShots({ origin: { x: 0.8, y: -0.3 } });
+  }, [defaultShots]);
 
   return (
     <>
@@ -160,6 +232,10 @@ export default function Page() {
       </div>
       <DialogConfirmTransactionLoading
         isOpen={isModalOpen(ModalId.NFT_MINT_PROCESSING)}
+      />
+      <ReactCanvasConfetti
+        className="fixed top-0 left-0 pointer-events-none w-full h-full"
+        refConfetti={getInstance}
       />
     </>
   );
