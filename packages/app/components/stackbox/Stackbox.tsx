@@ -143,7 +143,7 @@ export const Stackbox = () => {
     }
   };
 
-  const selectToken = (selectedToken: TokenFromTokenlist) => {
+  const selectToken = (selectedToken: TokenWithBalance) => {
     const setSelectedToken = isPickingFromToken ? setFromToken : setToToken;
     const setOppositeToken = isPickingFromToken ? setToToken : setFromToken;
     const oppositeToken = isPickingFromToken ? toToken : fromToken;
