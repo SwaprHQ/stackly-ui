@@ -29,7 +29,7 @@ export const buttonStyles = cva(
           "focus:bg-gray-100 focus:ring-surface-50",
         ],
         tertiary: [
-          "bg-white text-em-med hover:bg-surface-75 border active:ring-surface-50 shadow-xs",
+          "bg-white text-em-med hover:bg-surface-75 border border-surface-50  active:ring-surface-50 shadow-xs",
           "focus:bg-surface-75 focus:ring-surface-50",
         ],
         quaternary: [
