@@ -9,13 +9,18 @@ import {
   useMemo,
   useState,
 } from "react";
-import { useAccount, useNetwork } from "wagmi";
+import { erc20ABI, useAccount, useNetwork } from "wagmi";
+import { formatUnits } from "viem";
+import { multicall } from "@wagmi/core";
+
+import { ChainId } from "@stackly/sdk";
 import defaultGnosisTokenlist from "public/assets/blockchains/gnosis/tokenlist.json";
 import defaultEthereumTokenlist from "public/assets/blockchains/ethereum/tokenlist.json";
-
 import { TokenFromTokenlist } from "@/models/token/types";
 
-const GNOSIS_CHAIN_ID = 100;
+export interface TokenWithBalance extends TokenFromTokenlist {
+  balance?: string;
+}
 
 const DEFAULT_TOKEN_LIST_BY_CHAIN: {
   [chainId: number]: TokenFromTokenlist[];
@@ -31,10 +36,13 @@ const TOKEN_LIST_BY_CHAIN_URL: { [chainId: number]: string } = {
 
 const TokenListContext = createContext<{
   tokenList: TokenFromTokenlist[];
-  getTokenLogoURL?: (tokenAddress: string) => string;
-  getTokenFromList?: (tokenAddress: string) => TokenFromTokenlist | undefined;
+  tokenListWithBalances?: TokenWithBalance[];
+  getTokenLogoURL: (tokenAddress: string) => string;
+  getTokenFromList: (tokenAddress: string) => TokenFromTokenlist | false;
 }>({
-  tokenList: DEFAULT_TOKEN_LIST_BY_CHAIN[GNOSIS_CHAIN_ID],
+  tokenList: DEFAULT_TOKEN_LIST_BY_CHAIN[ChainId.GNOSIS],
+  getTokenLogoURL: (tokenAddress: string) => "#",
+  getTokenFromList: (tokenAddress: string) => false,
 });
 
 const mergeTokenlists = (
@@ -53,20 +61,23 @@ const mergeTokenlists = (
 };
 
 export const TokenListProvider = ({ children }: PropsWithChildren) => {
-  const { chain } = useNetwork();
-  const { address } = useAccount();
-
-  const defaultTokenList = chain
-    ? DEFAULT_TOKEN_LIST_BY_CHAIN[chain.id]
-    : DEFAULT_TOKEN_LIST_BY_CHAIN[GNOSIS_CHAIN_ID];
-
   const [tokenList, setTokenList] = useState<TokenFromTokenlist[]>(
     defaultGnosisTokenlist
   );
+  const [tokenListWithBalances, setTokenListWithBalances] =
+    useState<TokenWithBalance[]>();
+  const { chain } = useNetwork();
+  const { address } = useAccount();
+
+  const chainId = chain?.id ?? ChainId.GNOSIS;
+
+  const defaultTokenList = chain
+    ? DEFAULT_TOKEN_LIST_BY_CHAIN[chain.id]
+    : DEFAULT_TOKEN_LIST_BY_CHAIN[ChainId.GNOSIS];
 
   const fetchTokenlistURL = chain
     ? TOKEN_LIST_BY_CHAIN_URL[chain.id]
-    : TOKEN_LIST_BY_CHAIN_URL[GNOSIS_CHAIN_ID];
+    : TOKEN_LIST_BY_CHAIN_URL[ChainId.GNOSIS];
 
   const setupTokenList = useCallback(async () => {
     async function getTokenListData() {
@@ -88,28 +99,75 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
 
     setTokenList(
       mergedTokenlistTokens.filter(
-        (token: TokenFromTokenlist) => token.chainId === chain?.id
+        (token: TokenFromTokenlist) => token.chainId === chainId
       )
     );
-  }, [chain?.id, defaultTokenList, fetchTokenlistURL]);
+  }, [chainId, defaultTokenList, fetchTokenlistURL]);
 
   useEffect(() => {
     setupTokenList();
   }, [address, setupTokenList]);
 
+  /**
+   * Once the tokenList is defined and we have an address
+   * connected, we batch fetch all the ERC-20 token balances
+   * for the connected wallet and the supported token list,
+   * then we desc. sort them
+   */
+  useEffect(() => {
+    if (address) {
+      const fetchErc20Balances = async () => {
+        try {
+          const batchFetchdata = await multicall({
+            contracts: tokenList.map((token) => ({
+              address: token.address as `0x${string}`,
+              abi: erc20ABI,
+              functionName: "balanceOf",
+              args: [address as `0x${string}`],
+              chainId: token.chainId,
+            })),
+            allowFailure: true,
+          });
+
+          const listWithBalances = tokenList
+            .map((token, index) => ({
+              ...token,
+              balance: formatUnits(
+                batchFetchdata[index]?.result as bigint,
+                token.decimals
+              ),
+            }))
+            .sort(
+              (tokenA, tokenB) =>
+                Number(tokenB.balance) - Number(tokenA.balance)
+            );
+
+          setTokenListWithBalances(listWithBalances);
+        } catch (error) {
+          console.error("Error fetching tokenlist balances:", error);
+        }
+      };
+
+      fetchErc20Balances();
+    } else {
+      setTokenListWithBalances([]);
+    }
+  }, [address, chain?.id, tokenList]);
+
   const tokenListContext = useMemo(
     () => ({
       tokenList,
+      tokenListWithBalances,
       getTokenFromList: (tokenAddress: string) =>
         tokenList.find(
           (token) => token.address.toUpperCase() === tokenAddress?.toUpperCase()
-        ),
+        ) ?? false,
       getTokenLogoURL: (tokenAddress: string) =>
         tokenList.find(
           (token) => token.address.toUpperCase() === tokenAddress?.toUpperCase()
         )?.logoURI ?? "#",
     }),
-    [tokenList]
+    [tokenList, tokenListWithBalances]
   );
 
   return (

@@ -19,17 +19,16 @@ import {
   TokenIcon,
   TokenPicker,
 } from "@/components";
-import { TokenFromTokenlist } from "@/models/token";
 import { useAccount, useBalance, useNetwork } from "wagmi";
 import { formatUnits, parseUnits } from "viem";
-import { ModalId, useModalContext } from "@/contexts";
+import { ModalId, TokenWithBalance, useModalContext } from "@/contexts";
 import { FREQUENCY_OPTIONS } from "@/models/stack";
 import Link from "next/link";
 
 interface SelectTokenButtonProps {
   label: string;
   onClick: (isFromToken?: boolean) => void;
-  token?: TokenFromTokenlist;
+  token?: TokenWithBalance;
   className?: string;
   onAnimationEnd: AnimationEventHandler<HTMLElement>;
 }
@@ -68,8 +67,8 @@ const balanceOptions = [
 export const Stackbox = () => {
   const searchTokenBarRef = useRef<HTMLInputElement>(null);
   const [isPickingFromToken, setIsPickingFromToken] = useState<boolean>(false);
-  const [fromToken, setFromToken] = useState<TokenFromTokenlist>();
-  const [toToken, setToToken] = useState<TokenFromTokenlist>();
+  const [fromToken, setFromToken] = useState<TokenWithBalance>();
+  const [toToken, setToToken] = useState<TokenWithBalance>();
   const { closeModal, isModalOpen, openModal } = useModalContext();
 
   const { chain } = useNetwork();
@@ -144,7 +143,7 @@ export const Stackbox = () => {
     }
   };
 
-  const selectToken = (selectedToken: TokenFromTokenlist) => {
+  const selectToken = (selectedToken: TokenWithBalance) => {
     const setSelectedToken = isPickingFromToken ? setFromToken : setToToken;
     const setOppositeToken = isPickingFromToken ? setToToken : setFromToken;
     const oppositeToken = isPickingFromToken ? toToken : fromToken;
