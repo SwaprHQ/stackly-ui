@@ -30,6 +30,12 @@ import {
   INITAL_ORDER,
   frequencySeconds,
 } from "@/models/stack";
+import {
+  getNftWhitelistAddress,
+  getWhitelist,
+  nftWhitelistBalanceOf,
+} from "@stackly/sdk";
+import { useEthersSigner } from "@/utils/ethers";
 
 interface SelectTokenButtonProps {
   label: string;
@@ -76,6 +82,7 @@ export const Stackbox = () => {
   const [fromToken, setFromToken] = useState<TokenWithBalance>();
   const [toToken, setToToken] = useState<TokenWithBalance>();
   const { closeModal, isModalOpen, openModal } = useModalContext();
+  const signer = useEthersSigner();
 
   const { chain } = useNetwork();
   const { address, isConnected } = useAccount();
@@ -106,11 +113,6 @@ export const Stackbox = () => {
   useEffect(() => {
     setEndDateTime(new Date(endDateByFrequency[frequency]));
   }, [frequency]);
-
-  useEffect(() => {
-    if (isConnected) openModal(ModalId.BETA_NFT_GATEKEEPING);
-    else closeModal(ModalId.BETA_NFT_GATEKEEPING);
-  }, [closeModal, isConnected, openModal]);
 
   const openTokenPicker = (isFromToken = true) => {
     setIsPickingFromToken(isFromToken);
@@ -206,6 +208,28 @@ export const Stackbox = () => {
   const amountPerOrder = (
     parseFloat(tokenAmount) / estimatedNumberOfOrders
   ).toFixed(2);
+
+  useEffect(() => {
+    if (!isConnected && isModalOpen(ModalId.BETA_NFT_GATEKEEPING))
+      closeModal(ModalId.BETA_NFT_GATEKEEPING);
+  }, [closeModal, isConnected, isModalOpen]);
+
+  useEffect(() => {
+    const getNFTHolder = async () => {
+      if (address && chain && signer) {
+        const nftWhitelist = getWhitelist(
+          getNftWhitelistAddress(chain.id),
+          signer
+        );
+        const nftAmount = await nftWhitelistBalanceOf(nftWhitelist, address);
+        if (nftAmount.eq(0)) {
+          openModal(ModalId.BETA_NFT_GATEKEEPING);
+        }
+      }
+    };
+
+    getNFTHolder();
+  }, [address, chain, openModal, signer]);
 
   return (
     <div className="max-w-lg mx-auto my-24 bg-white shadow-2xl rounded-2xl">
