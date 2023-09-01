@@ -3367,6 +3367,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/canvas-confetti@npm:1.6.0":
+  version: 1.6.0
+  resolution: "@types/canvas-confetti@npm:1.6.0"
+  checksum: e1bd2bc81e4d6ec6241982a4087ed90a3c21f858390dda7cb68e8aeb1df5573fc7c263ea4272397d2b39f0e78dcd192e8ba4a93c182ff29f80ea74073aaee496
+  languageName: node
+  linkType: hard
+
 "@types/cli-progress@npm:^3.11.0":
   version: 3.11.0
   resolution: "@types/cli-progress@npm:3.11.0"
@@ -4576,6 +4583,7 @@ __metadata:
     next: ^13.4.10
     postcss: ^8.4.23
     react: ^18.2.0
+    react-canvas-confetti: ^1.4.0
     react-day-picker: ^8.8.0
     react-dom: ^18.2.0
     react-popper: ^2.3.0
@@ -5383,6 +5391,13 @@ __metadata:
   version: 1.0.30001514
   resolution: "caniuse-lite@npm:1.0.30001514"
   checksum: ee2e90fe63cb59fb4a1515eb6b157f1c26d3ccba496b994b0f03088c39c282ee2fb8c160ad7b677ee196b5bb078b23f2f9474c32e4e47724f4d782de92bb8bbe
+  languageName: node
+  linkType: hard
+
+"canvas-confetti@npm:1.6.0":
+  version: 1.6.0
+  resolution: "canvas-confetti@npm:1.6.0"
+  checksum: be19e3be736ab28aa8af7b53cba9f4146f5714edadbf4d5a7d7b1899914dc59a8ac5574260fe6b7d9995c51df5787b0b707adfbb72dbacbc61fc03f9f2b25291
   languageName: node
   linkType: hard
 
@@ -11146,6 +11161,18 @@ __metadata:
   bin:
     rc: ./cli.js
   checksum: 2e26e052f8be2abd64e6d1dabfbd7be03f80ec18ccbc49562d31f617d0015fbdbcf0f9eed30346ea6ab789e0fdfe4337f033f8016efdbee0df5354751842080e
+  languageName: node
+  linkType: hard
+
+"react-canvas-confetti@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "react-canvas-confetti@npm:1.4.0"
+  dependencies:
+    "@types/canvas-confetti": 1.6.0
+    canvas-confetti: 1.6.0
+  peerDependencies:
+    react: "*"
+  checksum: 3501cdb8c1c7c2ea80578a35622a442142b504df9f9d48ce21724a22577e0aa92a5552aed8896729b95692c1dfac86d55e8628af7682d0de52e93788e331ccc8
   languageName: node
   linkType: hard
 
