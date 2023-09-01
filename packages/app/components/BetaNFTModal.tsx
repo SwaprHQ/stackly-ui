@@ -14,19 +14,17 @@ import { StacklyBetaNFTImg } from "@/public/assets";
 import Image from "next/image";
 
 export const BetaNFTModal = () => {
-  const { closeModal, isModalOpen } = useModalContext();
+  const { isModalOpen } = useModalContext();
   const { disconnect } = useDisconnect();
 
   const isOpen = isModalOpen(ModalId.BETA_NFT_GATEKEEPING);
-
-  const closeAction = () => closeModal(ModalId.BETA_NFT_GATEKEEPING);
 
   return (
     <Modal
       className="bg-green-gradient text-center"
       maxWidth="xl"
       isOpen={isOpen}
-      closeAction={closeAction}
+      closeAction={disconnect}
     >
       <ModalHeader className="flex-col pt-8 pb-4 space-y-2">
         <HeadingText size={3}>Stackly beta is here</HeadingText>
@@ -37,7 +35,7 @@ export const BetaNFTModal = () => {
           variant="quaternary"
           iconLeft="close"
           size="icon"
-          onClick={closeAction}
+          onClick={disconnect}
           className="absolute top-1 right-2 md:top-5 md:right-5"
         />
       </ModalHeader>
