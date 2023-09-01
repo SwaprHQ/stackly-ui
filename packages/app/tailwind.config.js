@@ -108,7 +108,7 @@ module.exports = {
         wiggle: "wiggle 0.2s ease-in-out 0s 3",
       },
       backgroundImage: {
-        "matrix-gradient": "url('/assets/images/matrix-gradient-bg.png')",
+        "matrix-gradient": "url('/assets/images/matrix-gradient-bg.svg')",
       },
     },
   },
