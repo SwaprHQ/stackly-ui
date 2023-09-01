@@ -1,8 +1,12 @@
-import { createConfig } from "wagmi";
+import { configureChains, createConfig } from "wagmi";
 import { getDefaultConfig } from "connectkit";
 import { gnosis } from "wagmi/chains";
+import { publicProvider } from "wagmi/providers/public";
 
-export const chains = [gnosis];
+const { chains, publicClient, webSocketPublicClient } = configureChains(
+  [gnosis],
+  [publicProvider()]
+);
 
 export const config = createConfig(
   getDefaultConfig({
@@ -14,5 +18,7 @@ export const config = createConfig(
     appUrl: "https://stackly.eth.limo",
     appIcon: "https://stackly.eth.limo/favicon.ico",
     chains,
+    publicClient,
+    webSocketPublicClient,
   })
 );
