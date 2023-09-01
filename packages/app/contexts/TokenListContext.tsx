@@ -13,6 +13,7 @@ import { erc20ABI, useAccount, useNetwork } from "wagmi";
 import { formatUnits } from "viem";
 import { multicall } from "@wagmi/core";
 
+import { ChainId } from "@stackly/sdk";
 import defaultGnosisTokenlist from "public/assets/blockchains/gnosis/tokenlist.json";
 import defaultEthereumTokenlist from "public/assets/blockchains/ethereum/tokenlist.json";
 import { TokenFromTokenlist } from "@/models/token/types";
@@ -20,8 +21,6 @@ import { TokenFromTokenlist } from "@/models/token/types";
 export interface TokenWithBalance extends TokenFromTokenlist {
   balance?: string;
 }
-
-const GNOSIS_CHAIN_ID = 100;
 
 const DEFAULT_TOKEN_LIST_BY_CHAIN: {
   [chainId: number]: TokenFromTokenlist[];
@@ -41,7 +40,7 @@ const TokenListContext = createContext<{
   getTokenLogoURL: (tokenAddress: string) => string;
   getTokenFromList: (tokenAddress: string) => TokenFromTokenlist | false;
 }>({
-  tokenList: DEFAULT_TOKEN_LIST_BY_CHAIN[GNOSIS_CHAIN_ID],
+  tokenList: DEFAULT_TOKEN_LIST_BY_CHAIN[ChainId.GNOSIS],
   getTokenLogoURL: (tokenAddress: string) => "#",
   getTokenFromList: (tokenAddress: string) => false,
 });
@@ -70,15 +69,15 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
   const { chain } = useNetwork();
   const { address } = useAccount();
 
-  const chainId = chain?.id ?? GNOSIS_CHAIN_ID;
+  const chainId = chain?.id ?? ChainId.GNOSIS;
 
   const defaultTokenList = chain
     ? DEFAULT_TOKEN_LIST_BY_CHAIN[chain.id]
-    : DEFAULT_TOKEN_LIST_BY_CHAIN[GNOSIS_CHAIN_ID];
+    : DEFAULT_TOKEN_LIST_BY_CHAIN[ChainId.GNOSIS];
 
   const fetchTokenlistURL = chain
     ? TOKEN_LIST_BY_CHAIN_URL[chain.id]
-    : TOKEN_LIST_BY_CHAIN_URL[GNOSIS_CHAIN_ID];
+    : TOKEN_LIST_BY_CHAIN_URL[ChainId.GNOSIS];
 
   const setupTokenList = useCallback(async () => {
     async function getTokenListData() {
