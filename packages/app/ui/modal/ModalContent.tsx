@@ -9,5 +9,7 @@ interface ModalContentProps extends PropsWithChildren {
 }
 
 export function ModalContent({ children, className }: ModalContentProps) {
-  return <div className={twMerge("px-4 mt-5", className)}>{children}</div>;
+  return (
+    <div className={twMerge("px-4 mt-5 md:px-6", className)}>{children}</div>
+  );
 }

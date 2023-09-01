@@ -97,8 +97,8 @@ const TokenPicker = ({
       initialFocusRef={initialFocusRef}
     >
       <ModalHeaderTitle closeAction={handleModalClose} title="Select a token" />
-      <ModalContent className="px-0">
-        <div className="px-4">
+      <ModalContent className="px-0 md:px-0">
+        <div className="px-4 md:px-6">
           <SearchBar
             ref={initialFocusRef}
             onSearch={handleTokenSearchInput}
@@ -171,7 +171,7 @@ const TokenListRow = ({ onTokenSelect, token }: TokenListRowProps) => {
 
   return (
     <div
-      className="flex items-center justify-between w-full h-16 px-4 cursor-pointer hover:bg-surface-50"
+      className="flex items-center justify-between w-full h-16 px-4 cursor-pointer md:px-6 hover:bg-surface-50"
       key={token.address}
       onClick={() => onTokenSelect(token)}
     >

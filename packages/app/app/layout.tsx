@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
-      <body className="font-sans bg-fixed bg-surface-25 bg-auto-100 bg-matrix-gradient">
+      <body className="font-sans bg-fixed bg-surface-25 bg-auto-100 bg-matrix-gradient text-em-high">
         <Providers>
           <Navbar />
           <div className="px-4 mx-auto md:px-0">{children}</div>

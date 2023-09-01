@@ -10,7 +10,7 @@ import {
 import { formatTokenValue } from "@/utils/token";
 
 export const StackProgress = ({ stackOrder }: StackOrderProps) => (
-  <div className="mt-3 space-y-3">
+  <div className="space-y-2">
     <div className="flex flex-col justify-between space-y-1 md:space-y-0 md:items-center md:flex-row">
       <OrdersExecuted stackOrder={stackOrder} />
       <div className="flex items-center space-x-1">
