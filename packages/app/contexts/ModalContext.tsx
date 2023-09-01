@@ -9,6 +9,7 @@ import {
 } from "react";
 
 export enum ModalId {
+  WAITING_TRANSACTION = "waiting_transaction",
   CONFIRM_STACK = "confirm_stack",
   STACK = "stack",
   TOKEN_PICKER = "token_picker",
