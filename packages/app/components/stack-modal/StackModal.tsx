@@ -102,7 +102,7 @@ export const StackModal = ({
       description: remainingFundsText,
       button: {
         action: "secondary",
-        text: "Cancel Stacking",
+        text: "Cancel Stack",
       },
     };
   };

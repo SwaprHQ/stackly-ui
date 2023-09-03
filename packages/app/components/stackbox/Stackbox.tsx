@@ -346,7 +346,9 @@ export const Stackbox = () => {
             onClick={openConfirmStack}
             className={cx({ "animate-wiggle": showInsufficentBalanceError })}
           >
-            {showInsufficentBalanceError ? "Insufficent Balance" : "Stack Now"}
+            {showInsufficentBalanceError
+              ? "Insufficent Balance"
+              : "Confirm Stack"}
           </Button>
         ) : (
           <ConnectButton
