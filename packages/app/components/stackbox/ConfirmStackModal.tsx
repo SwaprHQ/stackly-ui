@@ -27,7 +27,12 @@ import {
   TransactionLink,
 } from "@/components";
 import { Token } from "@/models/token";
-import { FREQUENCY_OPTIONS, Transaction } from "@/models/stack";
+import {
+  FREQUENCY_OPTIONS,
+  INITAL_ORDER,
+  Transaction,
+  frequencySeconds,
+} from "@/models/stack";
 import { useEthersSigner } from "@/utils/ethers";
 import { ModalId, useModalContext } from "@/contexts";
 import { dateToUnixTimestamp } from "@/utils/datetime";
@@ -42,16 +47,6 @@ interface ConfirmStackModalProps extends ModalBaseProps {
   onSuccess: () => void;
 }
 
-const HOUR_IN_MILISECONDS = 60 * 60 * 1000;
-const DAY_IN_MILISECONDS = 24 * HOUR_IN_MILISECONDS;
-
-const frequencySeconds = {
-  [FREQUENCY_OPTIONS.hour]: HOUR_IN_MILISECONDS,
-  [FREQUENCY_OPTIONS.day]: DAY_IN_MILISECONDS,
-  [FREQUENCY_OPTIONS.week]: 7 * DAY_IN_MILISECONDS,
-  [FREQUENCY_OPTIONS.month]: 30 * DAY_IN_MILISECONDS,
-};
-
 const frequencyIntervalInHours = {
   [FREQUENCY_OPTIONS.hour]: 1,
   [FREQUENCY_OPTIONS.day]: 24,
@@ -63,8 +58,6 @@ enum CREATE_STACK_STEPS {
   approve = "approve",
   create = "create",
 }
-
-const INITAL_ORDER = 1;
 
 export const ConfirmStackModal = ({
   fromToken,
@@ -197,12 +190,12 @@ export const ConfirmStackModal = ({
           </div>
           <div>
             <TitleText size={2} className="text-center text-em-low">
-              Stacks{" "}
+              Stacks <span className="text-em-high">{toToken.symbol}</span>,
+              worth{" "}
               <span className="text-em-high">
                 {amountPerOrder} {fromToken.symbol}
-              </span>{" "}
-              worth of <span className="text-em-high">{toToken.symbol}</span>{" "}
-              every {FREQUENCY_OPTIONS[frequency]}
+              </span>
+              , every {FREQUENCY_OPTIONS[frequency]}
             </TitleText>
           </div>
           <div className="w-full p-5 space-y-2 bg-surface-25 rounded-xl">

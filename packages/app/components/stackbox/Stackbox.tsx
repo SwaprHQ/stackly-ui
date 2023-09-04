@@ -2,6 +2,10 @@
 
 import { useRef, useState, useEffect, AnimationEventHandler } from "react";
 import { cx } from "class-variance-authority";
+import { useAccount, useBalance, useNetwork } from "wagmi";
+import { formatUnits, parseUnits } from "viem";
+import Link from "next/link";
+import { formatDistance } from "date-fns";
 
 import {
   BodyText,
@@ -19,11 +23,12 @@ import {
   TokenIcon,
   TokenPicker,
 } from "@/components";
-import { useAccount, useBalance, useNetwork } from "wagmi";
-import { formatUnits, parseUnits } from "viem";
-import { ModalId, TokenWithBalance, useModalContext } from "@/contexts";
-import { FREQUENCY_OPTIONS } from "@/models/stack";
-import Link from "next/link";
+import { ModalId, useModalContext, TokenWithBalance } from "@/contexts";
+import {
+  FREQUENCY_OPTIONS,
+  INITAL_ORDER,
+  frequencySeconds,
+} from "@/models/stack";
 
 interface SelectTokenButtonProps {
   label: string;
@@ -186,6 +191,16 @@ export const Stackbox = () => {
     );
   };
 
+  const estimatedNumberOfOrders =
+    Math.floor(
+      (endDateTime.getTime() - startDateTime.getTime()) /
+        frequencySeconds[frequency]
+    ) + INITAL_ORDER;
+
+  const amountPerOrder = (
+    parseFloat(tokenAmount) / estimatedNumberOfOrders
+  ).toFixed(2);
+
   return (
     <div className="max-w-lg mx-auto my-24 bg-white shadow-2xl rounded-2xl">
       <div className="py-4 border shadow-lg border-surface-50 rounded-2xl">
@@ -338,6 +353,25 @@ export const Stackbox = () => {
             </div>
           </div>
         </div>
+        {fromToken && toToken && tokenAmount && tokenAmount > "0" && (
+          <div className="p-2 bg-surface-25 text-center text-em-low rounded-xl">
+            <BodyText size={1}>
+              Stacks <span className="text-em-med">{toToken.symbol}</span>,
+              worth{" "}
+              <span className="text-em-med">
+                {amountPerOrder} {fromToken.symbol}
+              </span>
+              ,{" "}
+              <span className="text-em-med">
+                every {FREQUENCY_OPTIONS[frequency]}
+              </span>{" "}
+              for{" "}
+              <span className="text-em-med">
+                {formatDistance(endDateTime, startDateTime)}
+              </span>
+            </BodyText>
+          </div>
+        )}
         {address ? (
           <Button
             width="full"
