@@ -45,6 +45,8 @@ interface SelectTokenButtonProps {
   onAnimationEnd: AnimationEventHandler<HTMLElement>;
 }
 
+const START_TIME_MINUTES_OFFSET = 10;
+
 const frequencyOptions = [
   { option: FREQUENCY_OPTIONS.hour, name: "Hour" },
   { option: FREQUENCY_OPTIONS.day, name: "Day" },
@@ -60,9 +62,6 @@ const endDateByFrequency: Record<string, number> = {
     new Date().getFullYear() + 1
   ),
 };
-const startDateTimeTimestamp = new Date().setMinutes(
-  new Date().getMinutes() + 30
-);
 
 enum BalanceDivider {
   MAX = 1,
@@ -97,14 +96,15 @@ export const Stackbox = () => {
     FREQUENCY_OPTIONS.hour
   );
   const [startDateTime, setStartDateTime] = useState<Date>(
-    new Date(startDateTimeTimestamp)
+    new Date(Date.now())
   );
   const [endDateTime, setEndDateTime] = useState<Date>(
     new Date(endDateByFrequency[frequency])
   );
 
   const [showTokenAmountError, setShowTokenAmountError] = useState(false);
-  const [showDateTimeError, setShowDateTimeError] = useState(false);
+  const [showPastEndDateError, setShowPastEndDateError] = useState(false);
+  const [showPastStartDateError, setShowPastStartDateError] = useState(false);
   const [showFromTokenError, setShowFromTokenError] = useState(false);
   const [showToTokenError, setShowToTokenError] = useState(false);
   const [showInsufficentBalanceError, setShowInsufficentBalanceError] =
@@ -120,11 +120,18 @@ export const Stackbox = () => {
   };
 
   const openConfirmStack = () => {
-    const endTimeBeforeStartTime =
-      endDateTime.getTime() <= startDateTime.getTime();
+    const startDate = startDateTime.getTime();
+    const endTimeBeforeStartTime = endDateTime.getTime() <= startDate;
+    const startTimeBefore10minsFromNow =
+      startDate <=
+      new Date().setMinutes(
+        new Date().getMinutes() + START_TIME_MINUTES_OFFSET
+      );
     const tokenAmountIsZero = tokenAmount === "0";
 
-    if (endTimeBeforeStartTime) setShowDateTimeError(true);
+    setShowPastEndDateError(endTimeBeforeStartTime);
+    setShowPastStartDateError(startTimeBefore10minsFromNow);
+
     if (!fromToken || !toToken) {
       if (!fromToken) setShowFromTokenError(true);
       if (!toToken) setShowToTokenError(true);
@@ -147,10 +154,10 @@ export const Stackbox = () => {
       tokenAmount &&
       !tokenAmountIsZero &&
       !endTimeBeforeStartTime &&
+      !startTimeBefore10minsFromNow &&
       balance &&
       BigInt(balance.value) >= parseUnits(tokenAmount, fromToken.decimals)
     ) {
-      setShowDateTimeError(false);
       setShowInsufficentBalanceError(false);
       openModal(ModalId.CONFIRM_STACK);
     }
@@ -353,7 +360,15 @@ export const Stackbox = () => {
             </div>
             <div className="space-y-1">
               <div className="flex flex-col border divide-y md:divide-y-0 md:flex-row rounded-2xl border-surface-50 md:divide-x divide-surface-50">
-                <div className="flex flex-col w-full p-3 space-y-2 hover:bg-surface-25">
+                <div
+                  className={cx(
+                    "flex flex-col w-full p-3 space-y-2 hover:bg-surface-25",
+                    {
+                      "border border-danger-500 rounded-l-2xl":
+                        showPastStartDateError,
+                    }
+                  )}
+                >
                   <BodyText size={2}>Starting from</BodyText>
                   <DatePicker
                     dateTime={startDateTime}
@@ -362,7 +377,15 @@ export const Stackbox = () => {
                     className="w-full"
                   />
                 </div>
-                <div className="flex flex-col w-full p-3 space-y-2 hover:bg-surface-25">
+                <div
+                  className={cx(
+                    "flex flex-col w-full p-3 space-y-2 hover:bg-surface-25",
+                    {
+                      "!border !border-danger-500 !rounded-r-2xl":
+                        showPastEndDateError && !showPastStartDateError,
+                    }
+                  )}
+                >
                   <BodyText size={2}>Until</BodyText>
                   <DatePicker
                     dateTime={endDateTime}
@@ -373,11 +396,19 @@ export const Stackbox = () => {
                   />
                 </div>
               </div>
-              {showDateTimeError && (
+              {showPastStartDateError && (
                 <div className="flex items-center space-x-1 text-danger-500">
                   <Icon name="warning" size={12} />
                   <BodyText size={1}>
-                    Please select an end time after start time
+                    Please select a start time after the current time.
+                  </BodyText>
+                </div>
+              )}
+              {showPastEndDateError && !showPastStartDateError && (
+                <div className="flex items-center space-x-1 text-danger-500">
+                  <Icon name="warning" size={12} />
+                  <BodyText size={1}>
+                    Please select an end time after start time.
                   </BodyText>
                 </div>
               )}
