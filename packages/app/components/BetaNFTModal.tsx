@@ -19,6 +19,8 @@ export const BetaNFTModal = () => {
 
   const isOpen = isModalOpen(ModalId.BETA_NFT_GATEKEEPING);
 
+  const discordLink = process.env.NEXT_PUBLIC_DISCORD_WAITLIST_LINK as string;
+
   return (
     <Modal
       className="bg-green-gradient text-center"
@@ -58,7 +60,7 @@ export const BetaNFTModal = () => {
           <HeadingText>Mint your free NFT via our Discord.</HeadingText>
           <div className="flex flex-col items-center w-full px-6 space-y-2">
             <ButtonLink
-              href="https://www.discord.com"
+              href={discordLink}
               passHref={true}
               width="full"
               target="_blank"
