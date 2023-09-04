@@ -228,7 +228,8 @@ export const Stackbox = () => {
       }
     };
 
-    getNFTHolder();
+    if (process.env.NEXT_PUBLIC_ACTIVE_NFT_GATEKEEPING !== "false")
+      getNFTHolder();
   }, [address, chain, openModal, signer]);
 
   return (

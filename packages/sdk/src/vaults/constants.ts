@@ -96,8 +96,8 @@ export function getSubgraphEndpoint(chainId: ChainId) {
 
 /**
  * Gets the address of the NFT whitelist for a given chain id
- * @param chainId The chain id
- * @returns
+ * @param {ChainId} chainId The chain id we want to get the deployed address from
+ * @returns {string} NFT Whitelist deployed address in a supported chain
  */
 export function getNftWhitelistAddress(chainId: ChainId): string {
   const address = NFT_WHITELIST_ADDRESS_LIST[chainId];
