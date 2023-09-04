@@ -4,9 +4,9 @@ import { cva, cx } from "class-variance-authority";
 const displayTextStyles = cva([], {
   variants: {
     size: {
-      3: ["text-[104px] leading-[120px]"],
-      2: ["text-[88px] leading-[96px]"],
-      1: ["text-[74px] leading-[88px]"],
+      3: ["text-8xl md:text-[104px] md:leading-[120px]"],
+      2: ["text-7xl md:text-[88px] md:leading-[96px]"],
+      1: ["text-6xl md:text-[74px] md:leading-[88px]"],
     },
   },
   defaultVariants: {

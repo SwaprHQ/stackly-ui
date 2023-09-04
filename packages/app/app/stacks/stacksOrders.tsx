@@ -67,7 +67,7 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
     <>
       <div className="flex items-center justify-between">
         <HeadingText size={3}>Your stacks</HeadingText>
-        <ButtonLink iconLeft="plus" href="/" className="hidden sm:flex">
+        <ButtonLink iconLeft="plus" href="/create" className="hidden sm:flex">
           Create New Stack
         </ButtonLink>
       </div>

@@ -5,5 +5,5 @@ export const metadata = {
 };
 
 export default function YourStacksLayout({ children }: PropsWithChildren) {
-  return <div className="max-w-5xl pt-12 mx-auto md:pt-24">{children}</div>;
+  return <div className="max-w-5xl pt-12 mx-auto md:py-24">{children}</div>;
 }
