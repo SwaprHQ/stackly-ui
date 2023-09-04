@@ -25,7 +25,7 @@ export const DisplayText = ({
   weight,
   as,
 }: DisplayTextProps) => {
-  const TextComponent = as || "h2";
+  const TextComponent = as ?? "h1";
   return (
     <TextComponent
       className={cx(
