@@ -1,11 +1,10 @@
-import { Navbar } from "@/ui/navbar";
-import "./globals.css";
+import "@/styles/globals.css";
 import type { Metadata } from "next";
-
-const DEFAULT_STACKLY_URL = "https://stackly.eth.limo";
+import { STACKLY_LANDING_URL } from "@/constants";
+import { Navbar } from "@/components/navbar/Navbar";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.STACKLY_URL ?? DEFAULT_STACKLY_URL),
+  metadataBase: new URL(STACKLY_LANDING_URL),
   title: "Stackly | Stack crypto over time.",
   description:
     "Stackly is a simple, non-custodial tool that uses the CoW protocol to place recurring swaps based on DCA",

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import MobileMenu from "./MobileMenu";
 import { ButtonLink } from "@/ui";
-import Logo from "@/ui/navbar/Logo";
+import Logo from "@/components/navbar/Logo";
 import { STACKLY_APP_URL } from "@/constants";
 
 export function Navbar() {

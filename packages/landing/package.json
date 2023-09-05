@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@svgr/webpack": "^8.1.0"
+    "@svgr/webpack": "^8.1.0",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
   }
 }
