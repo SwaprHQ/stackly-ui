@@ -30,6 +30,7 @@ export function Navbar() {
             FAQs
           </ButtonLink>
           <ButtonLink
+            target="_blank"
             variant="quaternary"
             size="sm"
             iconLeft="blocks"

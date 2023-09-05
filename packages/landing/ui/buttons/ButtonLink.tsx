@@ -6,9 +6,11 @@ import { Icon } from "@/ui/icon/Icon";
 
 interface ButtonLinkProps extends ButtonBaseProps {
   href: string;
+  target?: string;
 }
 
 export function ButtonLink({
+  target,
   children,
   className,
   size,
@@ -23,6 +25,7 @@ export function ButtonLink({
 }: ButtonLinkProps) {
   return (
     <Link
+      target={target}
       id={id}
       href={href}
       tabIndex={0}

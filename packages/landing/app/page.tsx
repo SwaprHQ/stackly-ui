@@ -14,6 +14,7 @@ export default function Home() {
         </HeadingText>
       </div>
       <ButtonLink
+        target="_blank"
         href={STACKLY_APP_URL}
         size="lg"
         width="fit"
