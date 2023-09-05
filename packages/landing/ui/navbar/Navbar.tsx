@@ -4,6 +4,7 @@ import Link from "next/link";
 import MobileMenu from "./MobileMenu";
 import { ButtonLink } from "@/ui";
 import Logo from "@/ui/navbar/Logo";
+import { STACKLY_APP_URL } from "@/constants";
 
 export function Navbar() {
   return (
@@ -22,11 +23,17 @@ export function Navbar() {
         </div>
         <Divider />
         <div className="items-center justify-end hidden w-full gap-4 md:flex">
+          <ButtonLink variant="quaternary" size="sm" href="/stacks">
+            How it works
+          </ButtonLink>
+          <ButtonLink variant="quaternary" size="sm" href="/stacks">
+            FAQs
+          </ButtonLink>
           <ButtonLink
             variant="quaternary"
             size="sm"
             iconLeft="blocks"
-            href="/stacks"
+            href={STACKLY_APP_URL}
           >
             Launch app
           </ButtonLink>

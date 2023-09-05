@@ -108,6 +108,8 @@ module.exports = {
         wiggle: "wiggle 0.2s ease-in-out 0s 3",
       },
       backgroundImage: {
+        "radial-gradient":
+          "radial-gradient(50% 50% at 50% 50%, #A2E771 0%, rgba(193, 239, 160, 0.57) 33.33%, rgba(209, 243, 185, 0.41) 50.52%, rgba(255, 255, 255, 0.00) 81.25%)",
         "matrix-gradient": "url('/assets/images/matrix-gradient-bg.svg')",
       },
     },

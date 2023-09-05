@@ -1,8 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { BodyText, ButtonLink, DisplayText, HeadingText } from "@/ui";
-
-const STACKLY_APP_URL = "https://stackly.eth.limo/";
+import { STACKLY_APP_URL } from "@/constants";
 
 export default function Home() {
   return (
@@ -22,7 +21,7 @@ export default function Home() {
       >
         Launch app
       </ButtonLink>
-      <div className="mt-20 ">
+      <div className="relative max-w-4xl mx-auto mt-16">
         <Link passHref href={STACKLY_APP_URL}>
           <Image
             className="mx-auto border shadow-xl hover:shadow-2xl rounded-2xl border-surface-50"
@@ -32,8 +31,9 @@ export default function Home() {
             width={512}
           />
         </Link>
+        <div className="absolute w-full -top-36 -z-10 h-[460px] bg-radial-gradient"></div>
       </div>
-      <div className="mx-auto flex items-center px-5 py-2 bg-black/5 rounded-[20px] w-fit space-x-6 mt-12">
+      <div className="mx-auto flex items-center px-5 py-2 bg-black/5 rounded-[20px] w-fit space-x-6 mt-20">
         <div className="flex items-center space-x-2">
           <BodyText size={3} weight="medium" className="text-em-med">
             Total Stacks created:

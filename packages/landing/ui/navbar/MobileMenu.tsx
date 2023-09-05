@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Button, Icon } from "@/ui";
+import { STACKLY_APP_URL } from "@/constants";
 
 export default function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,7 +12,6 @@ export default function MobileMenu() {
 
   return (
     <div className="z-10 flex items-center justify-end w-full gap-4 md:hidden">
-      <div>oi</div>
       <Button
         variant="secondary"
         iconLeft={isOpen ? "close" : "menu"}
@@ -28,12 +28,12 @@ export default function MobileMenu() {
           <div className="absolute left-0 w-full gap-2 px-6 py-2 border-b border-solid rounded-lg bg-surface-25 top-nav-height border-surface-75">
             <Link
               passHref
-              href="/stacks"
+              href={STACKLY_APP_URL}
               className="flex items-center py-3 text-em-med"
               onClick={toggle}
             >
               <Icon name="blocks" alt="your stacks" size={18} />
-              <span className="ml-4">Your Stacks</span>
+              <span className="ml-4">Launch app</span>
             </Link>
             <hr className="h-0 -mx-6 border-b border-solid border-surface-75" />
             <Link href="#" className="block py-3 text-em-med">
