@@ -128,7 +128,7 @@ export const Stackbox = () => {
       new Date().setMinutes(
         new Date().getMinutes() + START_TIME_MINUTES_OFFSET
       );
-    const tokenAmountIsZero = tokenAmount === "0";
+    const isTokenAmountZero = tokenAmount === "0";
 
     setShowPastEndDateError(isEndTimeBeforeStartTime);
     setShowPastStartDateError(isStartTimeBefore10minsFromNow);
@@ -153,9 +153,9 @@ export const Stackbox = () => {
       fromToken &&
       toToken &&
       tokenAmount &&
-      !tokenAmountIsZero &&
       !isEndTimeBeforeStartTime &&
       !isStartTimeBefore10minsFromNow &&
+      !isTokenAmountZero &&
       balance &&
       BigInt(balance.value) >= parseUnits(tokenAmount, fromToken.decimals)
     ) {
