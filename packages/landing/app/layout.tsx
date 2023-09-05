@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 import type { Metadata } from "next";
 import { STACKLY_LANDING_URL } from "@/constants";
-import { Navbar } from "@/components/navbar/Navbar";
+import { Navbar } from "@/components";
 
 export const metadata: Metadata = {
   metadataBase: new URL(STACKLY_LANDING_URL),
