@@ -1,4 +1,4 @@
-import * as IconList from "public/assets/icons";
+import * as IconList from "@/public/assets/icons";
 
 export type IconName =
   | "arrow-external"
@@ -12,7 +12,6 @@ export type IconName =
   | "menu"
   | "plus"
   | "search"
-  | "stackly"
   | "swap"
   | "warning";
 
@@ -35,7 +34,6 @@ export const iconMap: Record<IconName, any> = {
   menu: IconList.HamburgerIcon,
   plus: IconList.PlusIcon,
   search: IconList.SearchIcon,
-  stackly: IconList.StacklyLogoIcon,
   swap: IconList.SwapIcon,
   warning: IconList.WarningIcon,
 };

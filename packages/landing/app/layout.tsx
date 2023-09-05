@@ -1,3 +1,4 @@
+import { Navbar } from "@/ui/navbar";
 import "./globals.css";
 import type { Metadata } from "next";
 
@@ -18,6 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-sans bg-surface-25 text-em-high">
+        <Navbar />
         <div className="px-4 mx-auto md:px-0">{children}</div>
       </body>
     </html>

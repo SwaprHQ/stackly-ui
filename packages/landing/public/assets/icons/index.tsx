@@ -11,7 +11,6 @@ import CloseIcon from "./close.svg";
 import HamburgerIcon from "./hamburger.svg";
 import PlusIcon from "./plus.svg";
 import SearchIcon from "./search.svg";
-import StacklyLogoIcon from "./stackly-logo.svg";
 import SwapIcon from "./swap.svg";
 import WarningIcon from "./warning.svg";
 
@@ -27,7 +26,6 @@ export {
   HamburgerIcon,
   PlusIcon,
   SearchIcon,
-  StacklyLogoIcon,
   SwapIcon,
   WarningIcon,
 };
