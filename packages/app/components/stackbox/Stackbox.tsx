@@ -121,16 +121,17 @@ export const Stackbox = () => {
 
   const openConfirmStack = () => {
     const startDate = startDateTime.getTime();
-    const endTimeBeforeStartTime = endDateTime.getTime() <= startDate;
-    const startTimeBefore10minsFromNow =
+    const endDate = endDateTime.getTime();
+    const isEndTimeBeforeStartTime = endDate <= startDate;
+    const isStartTimeBefore10minsFromNow =
       startDate <=
       new Date().setMinutes(
         new Date().getMinutes() + START_TIME_MINUTES_OFFSET
       );
     const tokenAmountIsZero = tokenAmount === "0";
 
-    setShowPastEndDateError(endTimeBeforeStartTime);
-    setShowPastStartDateError(startTimeBefore10minsFromNow);
+    setShowPastEndDateError(isEndTimeBeforeStartTime);
+    setShowPastStartDateError(isStartTimeBefore10minsFromNow);
 
     if (!fromToken || !toToken) {
       if (!fromToken) setShowFromTokenError(true);
@@ -153,8 +154,8 @@ export const Stackbox = () => {
       toToken &&
       tokenAmount &&
       !tokenAmountIsZero &&
-      !endTimeBeforeStartTime &&
-      !startTimeBefore10minsFromNow &&
+      !isEndTimeBeforeStartTime &&
+      !isStartTimeBefore10minsFromNow &&
       balance &&
       BigInt(balance.value) >= parseUnits(tokenAmount, fromToken.decimals)
     ) {
@@ -364,7 +365,7 @@ export const Stackbox = () => {
                   className={cx(
                     "flex flex-col w-full p-3 space-y-2 hover:bg-surface-25",
                     {
-                      "border border-danger-500 rounded-l-2xl":
+                      "border border-danger-200 rounded-l-2xl":
                         showPastStartDateError,
                     }
                   )}
@@ -381,7 +382,7 @@ export const Stackbox = () => {
                   className={cx(
                     "flex flex-col w-full p-3 space-y-2 hover:bg-surface-25",
                     {
-                      "!border !border-danger-500 !rounded-r-2xl":
+                      "!border !border-danger-200 !rounded-r-2xl":
                         showPastEndDateError && !showPastStartDateError,
                     }
                   )}
