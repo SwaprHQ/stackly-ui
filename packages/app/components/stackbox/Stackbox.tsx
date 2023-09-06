@@ -46,6 +46,8 @@ interface SelectTokenButtonProps {
 }
 
 const START_TIME_MINUTES_OFFSET = 10;
+const getDateNowPlus10Mins = () =>
+  new Date().setMinutes(new Date().getMinutes() + START_TIME_MINUTES_OFFSET);
 
 const frequencyOptions = [
   { option: FREQUENCY_OPTIONS.hour, name: "Hour" },
@@ -104,7 +106,7 @@ export const Stackbox = () => {
 
   const [showTokenAmountError, setShowTokenAmountError] = useState(false);
   const [showPastEndDateError, setShowPastEndDateError] = useState(false);
-  const [showPastStartDateError, setShowPastStartDateError] = useState(false);
+  const [isPastStartDate, setIsPastStartDate] = useState(false);
   const [showFromTokenError, setShowFromTokenError] = useState(false);
   const [showToTokenError, setShowToTokenError] = useState(false);
   const [showInsufficentBalanceError, setShowInsufficentBalanceError] =
@@ -123,15 +125,11 @@ export const Stackbox = () => {
     const startDate = startDateTime.getTime();
     const endDate = endDateTime.getTime();
     const isEndTimeBeforeStartTime = endDate <= startDate;
-    const isStartTimeBefore10minsFromNow =
-      startDate <=
-      new Date().setMinutes(
-        new Date().getMinutes() + START_TIME_MINUTES_OFFSET
-      );
+    const isStartTimeInThePast = startDate <= Date.now();
     const isTokenAmountZero = tokenAmount === "0";
 
     setShowPastEndDateError(isEndTimeBeforeStartTime);
-    setShowPastStartDateError(isStartTimeBefore10minsFromNow);
+    setIsPastStartDate(isStartTimeInThePast);
 
     if (!fromToken || !toToken) {
       if (!fromToken) setShowFromTokenError(true);
@@ -154,7 +152,6 @@ export const Stackbox = () => {
       toToken &&
       tokenAmount &&
       !isEndTimeBeforeStartTime &&
-      !isStartTimeBefore10minsFromNow &&
       !isTokenAmountZero &&
       balance &&
       BigInt(balance.value) >= parseUnits(tokenAmount, fromToken.decimals)
@@ -361,15 +358,7 @@ export const Stackbox = () => {
             </div>
             <div className="space-y-1">
               <div className="flex flex-col border divide-y md:divide-y-0 md:flex-row rounded-2xl border-surface-50 md:divide-x divide-surface-50">
-                <div
-                  className={cx(
-                    "flex flex-col w-full p-3 space-y-2 hover:bg-surface-25",
-                    {
-                      "border border-danger-200 rounded-l-2xl":
-                        showPastStartDateError,
-                    }
-                  )}
-                >
+                <div className="flex flex-col w-full p-3 space-y-2 hover:bg-surface-25">
                   <BodyText size={2}>Starting from</BodyText>
                   <DatePicker
                     dateTime={startDateTime}
@@ -383,7 +372,7 @@ export const Stackbox = () => {
                     "flex flex-col w-full p-3 space-y-2 hover:bg-surface-25",
                     {
                       "!border !border-danger-200 !rounded-r-2xl":
-                        showPastEndDateError && !showPastStartDateError,
+                        showPastEndDateError,
                     }
                   )}
                 >
@@ -397,15 +386,7 @@ export const Stackbox = () => {
                   />
                 </div>
               </div>
-              {showPastStartDateError && (
-                <div className="flex items-center space-x-1 text-danger-500">
-                  <Icon name="warning" size={12} />
-                  <BodyText size={1}>
-                    Please select a start time after the current time.
-                  </BodyText>
-                </div>
-              )}
-              {showPastEndDateError && !showPastStartDateError && (
+              {showPastEndDateError && (
                 <div className="flex items-center space-x-1 text-danger-500">
                   <Icon name="warning" size={12} />
                   <BodyText size={1}>
@@ -466,7 +447,9 @@ export const Stackbox = () => {
           fromToken={fromToken}
           amount={tokenAmount}
           frequency={frequency}
-          startTime={startDateTime}
+          startTime={
+            isPastStartDate ? new Date(getDateNowPlus10Mins()) : startDateTime
+          }
           endTime={endDateTime}
           isOpen={isModalOpen(ModalId.CONFIRM_STACK)}
           closeAction={() => closeModal(ModalId.CONFIRM_STACK)}
