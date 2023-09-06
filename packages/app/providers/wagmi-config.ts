@@ -21,13 +21,14 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
 
 export const config = createConfig(
   getDefaultConfig({
-    alchemyId: process.env.ALCHEMY_KEY,
-    walletConnectProjectId: process.env.WALLETCONNECT_PROJECT_ID || "",
+    alchemyId: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
+    walletConnectProjectId:
+      process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || "",
 
     appName: "Stackly",
     appDescription: "Stack crypto over time.",
-    appUrl: "https://stackly.eth.limo",
-    appIcon: "https://stackly.eth.limo/favicon.ico",
+    appUrl: "https://stackly.app",
+    appIcon: "https://stackly.app/favicon.ico",
     chains,
     publicClient,
     webSocketPublicClient,
