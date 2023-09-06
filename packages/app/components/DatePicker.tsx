@@ -17,8 +17,6 @@ interface DatePickerProps {
   fromDate?: Date;
 }
 
-const getDateInMins = (dateInMs: number) => Math.floor(dateInMs / (1000 * 60));
-
 export function DatePicker({
   dateTime,
   setDateTime,
