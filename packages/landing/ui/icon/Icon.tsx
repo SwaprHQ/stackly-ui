@@ -9,10 +9,13 @@ export type IconName =
   | "caret-right"
   | "check"
   | "close"
+  | "discord"
   | "menu"
   | "plus"
+  | "twitter"
   | "search"
   | "swap"
+  | "swapr"
   | "warning";
 
 interface IconProps {
@@ -31,10 +34,13 @@ export const iconMap: Record<IconName, any> = {
   "caret-right": IconList.CaretRightIcon,
   check: IconList.CheckmarkIcon,
   close: IconList.CloseIcon,
+  discord: IconList.DiscordIcon,
   menu: IconList.HamburgerIcon,
   plus: IconList.PlusIcon,
   search: IconList.SearchIcon,
   swap: IconList.SwapIcon,
+  swapr: IconList.SwaprIcon,
+  twitter: IconList.TwitterIcon,
   warning: IconList.WarningIcon,
 };
 
