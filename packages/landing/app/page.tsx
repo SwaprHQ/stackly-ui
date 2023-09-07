@@ -64,7 +64,7 @@ export default function Home() {
               Create a stack in 3 steps. Create and cancel anytime.
             </HeadingText>
           </div>
-          <div className="flex px-6 space-x-16 overflow-x-auto md:flex-col md:space-x-0 md:space-y-32">
+          <div className="px-6 space-y-12 md:space-y-32">
             <StepSection
               step={1}
               description="Choose the token you want to swap from and then choose the token you want to stack."
@@ -90,7 +90,7 @@ interface StepProps {
 }
 
 const StepSection = ({ step, description }: StepProps) => (
-  <div className="flex flex-col justify-between md:flex-row min-w-max">
+  <div className="flex flex-col justify-between md:flex-row">
     <div className="max-w-md mb-10 space-y-10 md:space-y-14 md:mb-0">
       <div className="w-fit px-5 py-2 bg-primary-100 rounded-[56px] text-em-med  text-xl font-semibold mt-10">
         <span className="text-black/30">Step</span> {step}/3
