@@ -9,6 +9,7 @@ import CaretRightIcon from "./caret-right.svg";
 import CheckmarkIcon from "./check.svg";
 import CloseIcon from "./close.svg";
 import HamburgerIcon from "./hamburger.svg";
+import InfoIcon from "./info.svg";
 import PlusIcon from "./plus.svg";
 import SearchIcon from "./search.svg";
 import StacklyLogoIcon from "./stackly-logo.svg";
@@ -26,6 +27,7 @@ export {
   CheckmarkIcon,
   CloseIcon,
   HamburgerIcon,
+  InfoIcon,
   PlusIcon,
   SearchIcon,
   StacklyLogoIcon,
