@@ -14,6 +14,7 @@ import SearchIcon from "./search.svg";
 import StacklyLogoIcon from "./stackly-logo.svg";
 import SwapIcon from "./swap.svg";
 import WarningIcon from "./warning.svg";
+import DiscordIcon from "./discord.svg";
 
 export {
   ArrowExternalIcon,
@@ -30,4 +31,5 @@ export {
   StacklyLogoIcon,
   SwapIcon,
   WarningIcon,
+  DiscordIcon,
 };

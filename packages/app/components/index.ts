@@ -11,6 +11,7 @@ export * from "./StacksTable";
 export * from "./TokenIcon";
 export * from "./DatePicker";
 export * from "./stack-modal";
+export * from "./BetaNFTModal";
 
 export {
   ConnectButton,

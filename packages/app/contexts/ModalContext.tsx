@@ -9,6 +9,7 @@ import {
 } from "react";
 
 export enum ModalId {
+  WAITING_TRANSACTION = "waiting_transaction",
   CONFIRM_STACK = "confirm_stack",
   STACK = "stack",
   TOKEN_PICKER = "token_picker",
@@ -18,6 +19,8 @@ export enum ModalId {
   SUCCESS_STACK_TOAST = "success_stack_toast",
   STACK_APPROVE_PROCESSING = "stack_approve_processing",
   STACK_CREATION_PROCESSING = "stack_creation_processing",
+  BETA_NFT_GATEKEEPING = "beta_nft_gatekeeping",
+  NFT_MINT_PROCESSING = "nft_mint_processing",
 }
 
 enum ActionType {
