@@ -29,9 +29,16 @@ const DEFAULT_TOKEN_LIST_BY_CHAIN: {
   100: defaultGnosisTokenlist,
 };
 
-const TOKEN_LIST_BY_CHAIN_URL: { [chainId: number]: string } = {
-  1: "https://tokens.1inch.eth.link/",
-  100: "https://tokens.honeyswap.org/",
+const TOKEN_LISTS_BY_CHAIN_URL: { [chainId: number]: string[] } = {
+  1: [
+    "https://tokens.1inch.eth.link/",
+    "https://files.cow.fi/tokens/CoinGecko.json",
+    "https://files.cow.fi/tokens/CowSwap.json",
+  ],
+  100: [
+    "https://tokens.honeyswap.org/",
+    "https://files.cow.fi/tokens/CowSwap.json",
+  ],
 };
 
 const TokenListContext = createContext<{
@@ -46,15 +53,17 @@ const TokenListContext = createContext<{
 });
 
 const mergeTokenlists = (
-  defaultTokenList: TokenFromTokenlist[],
-  tokenlist: TokenFromTokenlist[]
+  tokenList: TokenFromTokenlist[],
+  newTokenlist: TokenFromTokenlist[]
 ) => {
   const addresses = new Set(
-    defaultTokenList.map((token) => token.address.toLowerCase())
+    tokenList.map((token) => token.address.toLowerCase())
   );
   const mergedLists = [
-    ...defaultTokenList,
-    ...tokenlist.filter((token) => !addresses.has(token.address.toLowerCase())),
+    ...tokenList,
+    ...newTokenlist.filter(
+      (token) => !addresses.has(token.address.toLowerCase())
+    ),
   ];
 
   return mergedLists;
@@ -75,34 +84,42 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
     ? DEFAULT_TOKEN_LIST_BY_CHAIN[chain.id]
     : DEFAULT_TOKEN_LIST_BY_CHAIN[ChainId.GNOSIS];
 
-  const fetchTokenlistURL = chain
-    ? TOKEN_LIST_BY_CHAIN_URL[chain.id]
-    : TOKEN_LIST_BY_CHAIN_URL[ChainId.GNOSIS];
+  const fetchTokenlistURLS = chain
+    ? TOKEN_LISTS_BY_CHAIN_URL[chain.id]
+    : TOKEN_LISTS_BY_CHAIN_URL[ChainId.GNOSIS];
 
   const setupTokenList = useCallback(async () => {
-    async function getTokenListData() {
-      try {
-        const res = await fetch(fetchTokenlistURL);
-        if (!res.ok) {
-          throw new Error("Failed to fetch tokenlist data");
-        }
-        return res.json();
-      } catch (error) {
-        console.error("Error fetching tokenlist data:", error);
+    let mergedTokenlistTokens = defaultTokenList;
+
+    async function getTokenListData(tokenlistURL: string) {
+      const res = await fetch(tokenlistURL);
+      if (!res.ok) {
+        throw new Error("Failed to fetch tokenlist data");
       }
+      return res.json();
     }
-    const data = await getTokenListData();
 
-    const mergedTokenlistTokens = data?.tokens
-      ? mergeTokenlists(defaultTokenList, data.tokens)
-      : defaultTokenList;
+    Promise.allSettled(
+      fetchTokenlistURLS.map((list) => getTokenListData(list))
+    ).then((results) => {
+      results.forEach((result) => {
+        if (result.status === "fulfilled") {
+          mergedTokenlistTokens = mergeTokenlists(
+            mergedTokenlistTokens,
+            result.value.tokens
+          );
+        } else {
+          console.error("Error fetching tokenlist data:", result.reason);
+        }
+      });
 
-    setTokenList(
-      mergedTokenlistTokens.filter(
-        (token: TokenFromTokenlist) => token.chainId === chainId
-      )
-    );
-  }, [chainId, defaultTokenList, fetchTokenlistURL]);
+      setTokenList(
+        mergedTokenlistTokens.filter(
+          (token: TokenFromTokenlist) => token.chainId === chainId
+        )
+      );
+    });
+  }, [chainId, defaultTokenList, fetchTokenlistURLS]);
 
   useEffect(() => {
     setupTokenList();
