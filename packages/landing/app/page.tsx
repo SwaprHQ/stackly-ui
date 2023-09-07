@@ -1,7 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
-import { BodyText, ButtonLink, DisplayText, HeadingText } from "@/ui";
-import { STACKLY_APP_URL } from "@/constants";
+import { BodyText, ButtonLink, DisplayText, HeadingText, Icon } from "@/ui";
+import {
+  STACKLY_APP_URL,
+  STACKLY_DISCORD_URL,
+  STACKLY_TWITTER_URL,
+  SWAPR_URL,
+} from "@/constants";
+import { StacklyLogoIcon } from "@/public/assets";
 
 export default function Home() {
   return (
@@ -56,7 +62,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="py-20 bg-white md:py-32">
+      <section className="py-20 bg-white border-b border-gray-100 md:py-32">
         <div className="mx-auto md:max-w-6xl">
           <div className="px-6 md:pb-28">
             <HeadingText size={4}>Using Stackly is super easy.</HeadingText>
@@ -80,6 +86,10 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <section className="max-w-6xl px-6 mx-auto my-8">
+        <SocialBanner />
+      </section>
+      <Footer />
     </main>
   );
 }
@@ -106,4 +116,64 @@ const StepSection = ({ step, description }: StepProps) => (
       width={512}
     />
   </div>
+);
+
+const SocialBanner = () => (
+  <div className="flex flex-col items-center justify-between py-6 bg-white border md:flex-row px-7 rounded-3xl">
+    <div className="flex flex-col items-center md:space-y-0 md:space-x-5 md:flex-row">
+      <StacklyLogoIcon title="Stackly logo icon" />
+      <HeadingText
+        weight="medium"
+        size={3}
+        className="text-center md:text-left"
+      >
+        Join our awesome community
+      </HeadingText>
+    </div>
+    <div className="flex flex-col items-center w-full mt-5 space-y-4 md:mt-0 md:w-auto md:space-x-4 md:space-y-0 md:flex-row">
+      <ButtonLink
+        className="w-full md:w-fit"
+        size="lg"
+        variant="secondary"
+        iconLeft="discord"
+        href={STACKLY_DISCORD_URL}
+        target="_blank"
+      >
+        Join our Discord
+      </ButtonLink>
+      <ButtonLink
+        className="w-full md:w-fit"
+        size="lg"
+        variant="secondary"
+        iconLeft="twitter"
+        href={STACKLY_TWITTER_URL}
+        target="_blank"
+      >
+        Follow us on Twitter
+      </ButtonLink>
+    </div>
+  </div>
+);
+const Footer = () => (
+  <footer>
+    <div className="flex flex-col items-center px-3 py-2 mx-auto my-4 space-x-4 sm:flex-row sm:bg-surface-75 w-fit rounded-xl">
+      <BodyText weight="medium" className="text-em-low">
+        ©{new Date().getFullYear()} Stackly All Rights Reserved
+      </BodyText>
+      <div className="my-1 sm:my-0 sm:h-4 sm:w-[1.5px] bg-em-low"></div>
+      <div className="flex items-center space-x-1.5">
+        <BodyText weight="medium" className="text-em-low">
+          A product from{" "}
+          <Link
+            className="hover:text-[#2e17f2]"
+            target="_blank"
+            href={SWAPR_URL}
+          >
+            Swapr
+          </Link>
+        </BodyText>
+        <Icon size={16} name="swapr" />
+      </div>
+    </div>
+  </footer>
 );
