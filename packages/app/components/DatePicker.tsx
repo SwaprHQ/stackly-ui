@@ -65,7 +65,7 @@ export function DatePicker({
               className
             )}
           >
-            <span>{formattedDate()}</span>
+            <span className="text-em-med">{formattedDate()}</span>
             <Icon name="caret-down" className="w-4 h-4 mr-2 text-black" />
           </Popover.Button>
           {open && (

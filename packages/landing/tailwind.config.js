@@ -7,7 +7,7 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      sans: ["system-ui", "sans-serif"], // will be Stabil Grotesk
+      sans: "var(--sans-font)",
     },
     boxShadow: {
       xs: " 0px 1px 2px -1px rgba(17, 12, 34, 0.08)",
