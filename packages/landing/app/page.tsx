@@ -115,9 +115,13 @@ const StepSection = ({ step, description }: StepProps) => (
 
 const SocialBanner = () => (
   <div className="flex flex-col items-center justify-between py-6 bg-white border md:flex-row px-7 rounded-3xl">
-    <div className="flex flex-col space-y-4 md:space-y-0 md:space-x-5 md:items-center md:flex-row">
+    <div className="flex flex-col items-center md:space-y-0 md:space-x-5 md:flex-row">
       <StacklyLogoIcon title="Stackly logo icon" />
-      <HeadingText weight="medium" size={3}>
+      <HeadingText
+        weight="medium"
+        size={3}
+        className="text-center md:text-left"
+      >
         Join our awesome community
       </HeadingText>
     </div>
@@ -147,7 +151,7 @@ const SocialBanner = () => (
 );
 const Footer = () => (
   <footer>
-    <div className="flex flex-col items-center px-3 py-2 mx-auto my-4 space-x-4 sm:flex-row bg-surface-75 w-fit rounded-xl">
+    <div className="flex flex-col items-center px-3 py-2 mx-auto my-4 space-x-4 sm:flex-row sm:bg-surface-75 w-fit rounded-xl">
       <BodyText weight="medium" className="text-em-low">
         ©{new Date().getFullYear()} Stackly All Rights Reserved
       </BodyText>
