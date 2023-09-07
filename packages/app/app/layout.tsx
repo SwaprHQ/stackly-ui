@@ -1,9 +1,32 @@
 import { PropsWithChildren } from "react";
+import { Metadata } from "next";
+import localFont from "next/font/local";
 
 import { Navbar } from "@/components";
-import { Metadata } from "next";
 import { Providers } from "@/providers";
 import "@/styles/global.css";
+
+const stabilGrotesk = localFont({
+  src: [
+    {
+      path: "./fonts/StabilGrotesk-Regular.woff2",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "./fonts/StabilGrotesk-Medium.woff2",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "./fonts/StabilGrotesk-Bold.woff2",
+      weight: "700",
+      style: "normal",
+    },
+  ],
+  display: "swap",
+  variable: "--sans-font",
+});
 
 const defaultStacklyUrl = "https://stackly.eth.limo";
 
@@ -22,7 +45,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="en">
+    <html lang="en" className={stabilGrotesk.variable}>
       <body className="font-sans bg-fixed bg-surface-25 bg-auto-100 bg-matrix-and-green-gradient text-em-high">
         <Providers>
           <Navbar />
