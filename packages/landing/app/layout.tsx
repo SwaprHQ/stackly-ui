@@ -43,7 +43,7 @@ export default function RootLayout({
     <html lang="en" className={stabilGrotesk.variable}>
       <body className="font-sans bg-surface-25 text-em-high">
         <Navbar />
-        <div className="px-4 mx-auto md:px-0">{children}</div>
+        {children}
       </body>
     </html>
   );
