@@ -4,7 +4,7 @@ import { cva } from "class-variance-authority";
 export interface TextProps {
   className?: string;
   children: ReactNode;
-  weight?: "medium" | "semibold" | "bold";
+  weight?: "regular" | "medium" | "semibold" | "bold";
   as?: ElementType;
 }
 
@@ -14,6 +14,7 @@ export const boldStyles = cva([], {
       bold: ["font-bold"],
       semibold: ["font-semibold"],
       medium: ["font-medium"],
+      regular: ["font-regular"],
     },
   },
   defaultVariants: {
