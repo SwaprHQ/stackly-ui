@@ -9,6 +9,7 @@ export type IconName =
   | "caret-right"
   | "check"
   | "close"
+  | "info"
   | "menu"
   | "plus"
   | "search"
@@ -33,6 +34,7 @@ export const iconMap: Record<IconName, any> = {
   "caret-right": IconList.CaretRightIcon,
   check: IconList.CheckmarkIcon,
   close: IconList.CloseIcon,
+  info: IconList.InfoIcon,
   menu: IconList.HamburgerIcon,
   plus: IconList.PlusIcon,
   search: IconList.SearchIcon,

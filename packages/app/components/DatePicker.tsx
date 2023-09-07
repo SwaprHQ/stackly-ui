@@ -1,6 +1,6 @@
 "use client";
 
-import { format, isToday, isTomorrow } from "date-fns";
+import { format, isSameMinute, isToday, isTomorrow } from "date-fns";
 
 import { Button, Calendar, Icon } from "@/ui";
 import { Popover } from "@headlessui/react";
@@ -40,6 +40,7 @@ export function DatePicker({
   });
 
   const formattedDate = () => {
+    if (isSameMinute(dateTime, Date.now())) return "Now";
     if (isToday(dateTime)) return format(dateTime, "'Today at' HH:mm");
     if (isTomorrow(dateTime)) return format(dateTime, "'Tomorrow at' HH:mm");
 
@@ -64,7 +65,7 @@ export function DatePicker({
               className
             )}
           >
-            <span>{formattedDate()}</span>
+            <span className="text-em-med">{formattedDate()}</span>
             <Icon name="caret-down" className="w-4 h-4 mr-2 text-black" />
           </Popover.Button>
           {open && (

@@ -45,6 +45,10 @@ interface SelectTokenButtonProps {
   onAnimationEnd: AnimationEventHandler<HTMLElement>;
 }
 
+const START_TIME_MINUTES_OFFSET = 10;
+const getDateNowPlus10Mins = () =>
+  new Date().setMinutes(new Date().getMinutes() + START_TIME_MINUTES_OFFSET);
+
 const frequencyOptions = [
   { option: FREQUENCY_OPTIONS.hour, name: "Hour" },
   { option: FREQUENCY_OPTIONS.day, name: "Day" },
@@ -60,9 +64,6 @@ const endDateByFrequency: Record<string, number> = {
     new Date().getFullYear() + 1
   ),
 };
-const startDateTimeTimestamp = new Date().setMinutes(
-  new Date().getMinutes() + 30
-);
 
 enum BalanceDivider {
   MAX = 1,
@@ -97,14 +98,15 @@ export const Stackbox = () => {
     FREQUENCY_OPTIONS.hour
   );
   const [startDateTime, setStartDateTime] = useState<Date>(
-    new Date(startDateTimeTimestamp)
+    new Date(Date.now())
   );
   const [endDateTime, setEndDateTime] = useState<Date>(
     new Date(endDateByFrequency[frequency])
   );
 
   const [showTokenAmountError, setShowTokenAmountError] = useState(false);
-  const [showDateTimeError, setShowDateTimeError] = useState(false);
+  const [showPastEndDateError, setShowPastEndDateError] = useState(false);
+  const [isPastStartDate, setIsPastStartDate] = useState(false);
   const [showFromTokenError, setShowFromTokenError] = useState(false);
   const [showToTokenError, setShowToTokenError] = useState(false);
   const [showInsufficentBalanceError, setShowInsufficentBalanceError] =
@@ -120,11 +122,15 @@ export const Stackbox = () => {
   };
 
   const openConfirmStack = () => {
-    const endTimeBeforeStartTime =
-      endDateTime.getTime() <= startDateTime.getTime();
-    const tokenAmountIsZero = tokenAmount === "0";
+    const startDate = startDateTime.getTime();
+    const endDate = endDateTime.getTime();
+    const isEndTimeBeforeStartTime = endDate <= startDate;
+    const isStartTimeInThePast = startDate <= Date.now();
+    const isTokenAmountZero = tokenAmount === "0";
 
-    if (endTimeBeforeStartTime) setShowDateTimeError(true);
+    setShowPastEndDateError(isEndTimeBeforeStartTime);
+    setIsPastStartDate(isStartTimeInThePast);
+
     if (!fromToken || !toToken) {
       if (!fromToken) setShowFromTokenError(true);
       if (!toToken) setShowToTokenError(true);
@@ -145,12 +151,11 @@ export const Stackbox = () => {
       fromToken &&
       toToken &&
       tokenAmount &&
-      !tokenAmountIsZero &&
-      !endTimeBeforeStartTime &&
+      !isEndTimeBeforeStartTime &&
+      !isTokenAmountZero &&
       balance &&
       BigInt(balance.value) >= parseUnits(tokenAmount, fromToken.decimals)
     ) {
-      setShowDateTimeError(false);
       setShowInsufficentBalanceError(false);
       openModal(ModalId.CONFIRM_STACK);
     }
@@ -362,7 +367,15 @@ export const Stackbox = () => {
                     className="w-full"
                   />
                 </div>
-                <div className="flex flex-col w-full p-3 space-y-2 hover:bg-surface-25">
+                <div
+                  className={cx(
+                    "flex flex-col w-full p-3 space-y-2 hover:bg-surface-25",
+                    {
+                      "!border !border-danger-200 !rounded-r-2xl":
+                        showPastEndDateError,
+                    }
+                  )}
+                >
                   <BodyText size={2}>Until</BodyText>
                   <DatePicker
                     dateTime={endDateTime}
@@ -373,11 +386,11 @@ export const Stackbox = () => {
                   />
                 </div>
               </div>
-              {showDateTimeError && (
+              {showPastEndDateError && (
                 <div className="flex items-center space-x-1 text-danger-500">
                   <Icon name="warning" size={12} />
                   <BodyText size={1}>
-                    Please select an end time after start time
+                    Please select an end time after start time.
                   </BodyText>
                 </div>
               )}
@@ -434,7 +447,9 @@ export const Stackbox = () => {
           fromToken={fromToken}
           amount={tokenAmount}
           frequency={frequency}
-          startTime={startDateTime}
+          startTime={
+            isPastStartDate ? new Date(getDateNowPlus10Mins()) : startDateTime
+          }
           endTime={endDateTime}
           isOpen={isModalOpen(ModalId.CONFIRM_STACK)}
           closeAction={() => closeModal(ModalId.CONFIRM_STACK)}
