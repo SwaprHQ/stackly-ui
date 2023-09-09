@@ -8,6 +8,7 @@ import {
   SWAPR_URL,
 } from "@/constants";
 import { StacklyLogoIcon } from "@/public/assets";
+import { PropsWithChildren } from "react";
 
 export default function Home() {
   return (
@@ -71,18 +72,35 @@ export default function Home() {
             </HeadingText>
           </div>
           <div className="px-6 space-y-12 md:space-y-32">
-            <StepSection
+            <Step
               step={1}
               description="Choose the token you want to swap from and then choose the token you want to stack."
             />
-            <StepSection
+            <Step
               step={2}
               description="Choose how often you want to stack - Hourly, daily, weekly or monthly."
             />
-            <StepSection
-              step={3}
-              description="Confirm your order and get stacking!"
-            />
+            <Step step={3} description="Confirm your order and get stacking!" />
+          </div>
+        </div>
+      </section>
+      <section className="px-6 pt-12 pb-20 bg-white border-b border-gray-100 md:py-32">
+        <div className="max-w-6xl mx-auto">
+          <HeadingText size={4}>
+            A new way to stack your crypto over time with DCA.
+          </HeadingText>
+          <div className="space-y-16">
+            <DCAfeature title="Neutralizing Short-Term Volatility">
+              Stackly dollar-cost averaging strategy neutralizes short-term
+              volatility and reduces the need for market timing, making it an
+              ideal tool for investors who want to minimize risk while building
+              wealth.
+            </DCAfeature>
+            <DCAfeature title="Greater Control Over Investments">
+              With Stackly, you can choose the token you want to stack, the
+              frequency of the stacks, and when to start and end them, giving
+              you greater control over your investments.
+            </DCAfeature>
           </div>
         </div>
       </section>
@@ -99,7 +117,7 @@ interface StepProps {
   description: string;
 }
 
-const StepSection = ({ step, description }: StepProps) => (
+const Step = ({ step, description }: StepProps) => (
   <div className="flex flex-col justify-between md:flex-row">
     <div className="max-w-md mb-10 space-y-10 md:space-y-14 md:mb-0">
       <div className="w-fit px-5 py-2 bg-primary-100 rounded-[56px] text-em-med  text-xl font-semibold mt-10">
@@ -154,6 +172,22 @@ const SocialBanner = () => (
     </div>
   </div>
 );
+
+interface DCAfeatureProps extends PropsWithChildren {
+  title: string;
+}
+
+const DCAfeature = ({ title, children }: DCAfeatureProps) => (
+  <div className="flex flex-col pt-4 mt-12 border-t border-gray-100 md:mt-32 md:pt-8 md:flex-row md:justify-between">
+    <HeadingText size={2} className="mb-6 mr-3 md:mb-0 lg:mr-0">
+      {title}
+    </HeadingText>
+    <HeadingText size={1} weight="medium" className="max-w-xl text-em-med">
+      {children}
+    </HeadingText>
+  </div>
+);
+
 const Footer = () => (
   <footer>
     <div className="flex flex-col items-center px-3 py-2 mx-auto my-4 space-x-4 sm:flex-row sm:bg-surface-75 w-fit rounded-xl">
