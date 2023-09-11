@@ -44,24 +44,26 @@ export default function Home() {
             </Link>
             <div className="absolute w-full -top-36 -z-10 h-[460px] bg-radial-gradient"></div>
           </div>
-          <div className="mx-auto flex items-center px-5 py-2 bg-black/5 rounded-[20px] w-fit space-x-6 mt-20">
-            <div className="flex items-center space-x-2">
-              <BodyText size={3} weight="medium" className="text-em-med">
-                Total Stacks created:
-              </BodyText>
-              <BodyText size={3} weight="bold">
-                732
-              </BodyText>
+          {false && (
+            <div className="mx-auto flex items-center px-5 py-2 bg-black/5 rounded-[20px] w-fit space-x-6 mt-20">
+              <div className="flex items-center space-x-2">
+                <BodyText size={3} weight="medium" className="text-em-med">
+                  Total Stacks created:
+                </BodyText>
+                <BodyText size={3} weight="bold">
+                  732
+                </BodyText>
+              </div>
+              <div className="flex items-center space-x-2">
+                <BodyText size={3} weight="medium" className="text-em-med">
+                  Total transactions:
+                </BodyText>
+                <BodyText size={3} weight="bold">
+                  1232
+                </BodyText>
+              </div>
             </div>
-            <div className="flex items-center space-x-2">
-              <BodyText size={3} weight="medium" className="text-em-med">
-                Total transactions:
-              </BodyText>
-              <BodyText size={3} weight="bold">
-                1232
-              </BodyText>
-            </div>
-          </div>
+          )}
         </div>
       </section>
       <section className="py-20 bg-white border-b border-gray-100 md:py-32">
