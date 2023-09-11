@@ -6,6 +6,7 @@ import FourBlocksIcon from "./blocks.svg";
 import CaretDownIcon from "./caret-down.svg";
 import CaretLeftIcon from "./caret-left.svg";
 import CaretRightIcon from "./caret-right.svg";
+import CaretUpIcon from "./caret-up.svg";
 import CheckmarkIcon from "./check.svg";
 import CloseIcon from "./close.svg";
 import DiscordIcon from "./discord.svg";
@@ -24,6 +25,7 @@ export {
   CaretDownIcon,
   CaretLeftIcon,
   CaretRightIcon,
+  CaretUpIcon,
   CheckmarkIcon,
   CloseIcon,
   DiscordIcon,

@@ -9,6 +9,7 @@ import {
 } from "@/constants";
 import { StacklyLogoIcon } from "@/public/assets";
 import { PropsWithChildren } from "react";
+import { QAndAAccordion } from "@/components";
 
 export default function Home() {
   return (
@@ -104,6 +105,70 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <section className="px-6 py-12 md:py-32">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col md:flex-row md:justify-between">
+            <HeadingText size={4} className="pb-10 md:pb-0">
+              Frequently asked questions
+            </HeadingText>
+            <div className="w-full max-w-lg space-y-4">
+              <QAndAAccordion question="What is Stackly?">
+                Stackly is a simple non-custodial DCA app that makes it easy to
+                do recurring buys of any token.
+              </QAndAAccordion>
+              <QAndAAccordion question="How does Stackly work?">
+                When you stack a token, stackly creates a contract for you with
+                the funds and uses CoW protocol to place recurring orders
+                (stacks) at the frequency you choose.
+              </QAndAAccordion>
+              <QAndAAccordion question="What is DCA?">
+                DCA stands for Dollar-Cost Averaging, which is an investment
+                strategy used in the financial markets. DCA involves regularly
+                investing a fixed amount of money at predetermined intervals,
+                regardless of the {"asset's"} price.
+              </QAndAAccordion>
+              <QAndAAccordion question="Why one should do DCA?">
+                <ul className="px-4 pb-4 list-decimal">
+                  <li>Regular Investing.</li>
+                  <li>Reduced Market Timing Risk.</li>
+                  <li>Risk Mitigation.</li>
+                  <li> Psychological Benefits.</li>
+                  <li> Long-Term Investment.</li>
+                  <li> Automatic Investing.</li>
+                </ul>
+                <p className="text-lg font-medium text-em-med">
+                  {`While DCA has its advantages, it's
+                  important to note that it may not always yield the highest
+                  returns compared to lump-sum investing if the market
+                  experiences significant gains over a short period.`}
+                </p>
+                <p className="text-lg font-medium text-em-med">
+                  {`The choice between DCA and lump-sum investing depends on an individual's
+                  financial goals, risk tolerance, and market outlook.
+                  Ultimately, DCA is a strategy that can help individuals build
+                  wealth steadily over time while reducing the risks associated
+                  with market timing and volatility. However, like all
+                  investment strategies, it should be carefully considered in
+                  the context of one's financial situation and objectives.`}
+                </p>
+                <p className="text-lg font-medium text-em-med">
+                  {`Ultimately, DCA is a strategy that can help individuals build
+                  wealth steadily over time while reducing the risks associated
+                  with market timing and volatility. However, like all
+                  investment strategies, it should be carefully considered in
+                  the context of one's financial situation and objectives.`}
+                </p>
+              </QAndAAccordion>
+              <QAndAAccordion question="Can I cancel my stacks?">
+                Yes. You can cancel your stacks anytime. Your funds will be
+                widrawn immidiatly to your wallet. To do it, you have to connect
+                your wallet, go to your stacks, choose a stack, click cancel and
+                confirm transaction with your wallet.
+              </QAndAAccordion>
+            </div>
+          </div>
+        </div>
+      </section>
       <section className="max-w-6xl px-6 mx-auto my-8">
         <SocialBanner />
       </section>
@@ -173,11 +238,11 @@ const SocialBanner = () => (
   </div>
 );
 
-interface DCAfeatureProps extends PropsWithChildren {
+interface DCAFeatureProps extends PropsWithChildren {
   title: string;
 }
 
-const DCAfeature = ({ title, children }: DCAfeatureProps) => (
+const DCAfeature = ({ title, children }: DCAFeatureProps) => (
   <div className="flex flex-col pt-4 mt-12 border-t border-gray-100 md:mt-32 md:pt-8 md:flex-row md:justify-between">
     <HeadingText size={2} className="mb-6 mr-3 md:mb-0 lg:mr-0">
       {title}
