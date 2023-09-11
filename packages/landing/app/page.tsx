@@ -9,7 +9,7 @@ import {
 } from "@/constants";
 import { StacklyLogoIcon } from "@/public/assets";
 import { PropsWithChildren } from "react";
-import { QAndAAccordion } from "@/components";
+import { QAndAAccordion, TryStacklyBanner } from "@/components";
 
 export default function Home() {
   return (
@@ -168,6 +168,9 @@ export default function Home() {
             </div>
           </div>
         </div>
+      </section>
+      <section className="px-6 mb-20 md:mb-32">
+        <TryStacklyBanner />
       </section>
       <section className="max-w-6xl px-6 mx-auto my-8">
         <SocialBanner />
