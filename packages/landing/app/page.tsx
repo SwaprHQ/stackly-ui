@@ -14,9 +14,9 @@ import { QAndAAccordion, TryStacklyBanner } from "@/components";
 export default function Home() {
   return (
     <main>
-      <section className="px-6 pt-20 pb-12 border-b border-gray-100">
+      <section className="px-6 pt-16 border-b border-gray-100 md:pt-20">
         <div className="max-w-6xl mx-auto">
-          <div className="space-y-6 text-center ">
+          <div className="space-y-4 text-center md:space-y-6 ">
             <DisplayText>Stack crypto over time</DisplayText>
             <HeadingText className="!font-medium text-em-med max-w-2xl mx-auto">
               Stackly is a simple, non-custodial tool that does recurring buys
@@ -28,11 +28,11 @@ export default function Home() {
             href={STACKLY_APP_URL}
             size="lg"
             width="fit"
-            className="!py-4 mx-auto text-lg !px-28 mt-7"
+            className="!py-4 mx-auto text-lg !px-16 md:!px-28 mt-8"
           >
-            Launch app
+            Try Stackly now
           </ButtonLink>
-          <div className="relative max-w-4xl mx-auto mt-16">
+          <div className="relative max-w-4xl mx-auto mt-12 mb-24 md:my-20">
             <Link passHref href={STACKLY_APP_URL}>
               <Image
                 className="mx-auto border shadow-xl hover:shadow-2xl rounded-2xl border-surface-50"
@@ -42,7 +42,7 @@ export default function Home() {
                 width={512}
               />
             </Link>
-            <div className="absolute w-full -top-36 -z-10 h-[460px] bg-radial-gradient"></div>
+            <div className="absolute w-full -top-36 -z-10 h-[460px] md:bg-radial-gradient"></div>
           </div>
           {false && (
             <div className="mx-auto flex items-center px-5 py-2 bg-black/5 rounded-[20px] w-fit space-x-6 mt-20">
@@ -68,7 +68,7 @@ export default function Home() {
       </section>
       <section className="py-20 bg-white border-b border-gray-100 md:py-32">
         <div className="mx-auto md:max-w-6xl">
-          <div className="px-6 md:pb-28">
+          <div className="px-6 space-y-2 md:pb-28">
             <HeadingText size={4}>Using Stackly is super easy.</HeadingText>
             <HeadingText weight="regular" className="text-em-med">
               Create a stack in 3 steps. Create and cancel anytime.
