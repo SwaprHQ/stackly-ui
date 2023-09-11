@@ -36,6 +36,7 @@ import {
   nftWhitelistBalanceOf,
 } from "@stackly/sdk";
 import { useEthersSigner } from "@/utils/ethers";
+import { SocialConnectButton } from "../SocialConnectButton";
 
 interface SelectTokenButtonProps {
   label: string;
@@ -434,6 +435,7 @@ export const Stackbox = () => {
             text="Connect Wallet to Stack"
           />
         )}
+        <SocialConnectButton />
       </div>
       <TokenPicker
         closeAction={() => closeModal(ModalId.TOKEN_PICKER)}
