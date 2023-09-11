@@ -37,10 +37,18 @@ export default function MobileMenu() {
               <span className="ml-4">Launch app</span>
             </Link>
             <hr className="h-0 -mx-6 border-b border-solid border-surface-75" />
-            <Link href="#" className="block py-3 text-em-med">
+            <Link
+              href="#how-it-works"
+              className="block py-3 text-em-med"
+              onClick={toggle}
+            >
               How it works
             </Link>
-            <Link href="#" className="block py-3 text-em-med">
+            <Link
+              href="#faqs"
+              className="block py-3 text-em-med"
+              onClick={toggle}
+            >
               FAQ&apos;s
             </Link>
           </div>

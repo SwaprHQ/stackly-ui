@@ -16,17 +16,16 @@ export function Navbar() {
             tabIndex={0}
             href="/"
             title="Stackly Home"
-            className="flex items-center outline-none w-14 md:w-40"
+            className="flex items-center outline-none"
           >
             <Logo />
           </Link>
         </div>
-        <Divider />
         <div className="items-center justify-end hidden w-full gap-4 md:flex">
-          <ButtonLink variant="quaternary" size="sm" href="/stacks">
+          <ButtonLink variant="quaternary" size="sm" href="#how-it-works">
             How it works
           </ButtonLink>
-          <ButtonLink variant="quaternary" size="sm" href="/stacks">
+          <ButtonLink variant="quaternary" size="sm" href="#faqs">
             FAQs
           </ButtonLink>
           <ButtonLink
@@ -44,7 +43,3 @@ export function Navbar() {
     </header>
   );
 }
-
-const Divider = () => (
-  <div className="h-8 border-r border-solid border-b-gray-100"></div>
-);
