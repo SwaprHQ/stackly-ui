@@ -133,29 +133,9 @@ export default function Home() {
                 regardless of the {"asset's"} price.
               </QAndAAccordion>
               <QAndAAccordion question="Why one should do DCA?">
-                <ul className="px-4 pb-4 list-disc">
-                  <li>Regular Investing.</li>
-                  <li>Reduced Market Timing Risk.</li>
-                  <li>Risk Mitigation.</li>
-                  <li> Psychological Benefits.</li>
-                  <li> Long-Term Investment.</li>
-                  <li> Automatic Investing.</li>
-                </ul>
-                <p className="text-lg font-medium text-em-med">
-                  {`While DCA has its advantages, it's
-                  important to note that it may not always yield the highest
-                  returns compared to lump-sum investing if the market
-                  experiences significant gains over a short period.`}
-                </p>
-                <p className="text-lg font-medium text-em-med">
-                  {`The choice between DCA and lump-sum investing depends on an individual's
-                  financial goals, risk tolerance, and market outlook.
-                  Ultimately, DCA is a strategy that can help individuals build
-                  wealth steadily over time while reducing the risks associated
-                  with market timing and volatility. However, like all
-                  investment strategies, it should be carefully considered in
-                  the context of one's financial situation and objectives.`}
-                </p>
+                Recurring buys (aka DCA) removes the need to time the market,
+                neutralising the short term market volatility, and helps you
+                build a portfolio, distributed over a period of time.
               </QAndAAccordion>
               <QAndAAccordion question="Can I cancel my stacks?">
                 Yes. You can cancel your stacks anytime. Your funds will be
