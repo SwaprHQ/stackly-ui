@@ -8,8 +8,8 @@ import { STACKLY_APP_URL } from "@/constants";
 
 export function Navbar() {
   return (
-    <header className="top-0 flex flex-col w-full px-4 border-b border-solid h-nav-height bg-surface-25 border-b-surface-75">
-      <nav className="flex items-center w-full h-full">
+    <header className="sticky top-0 z-20 flex flex-col w-full px-4 border-b border-solid h-nav-height bg-surface-25/60 backdrop-blur-md border-b-surface-75">
+      <nav className="flex items-center w-full h-full mx-auto max-w-7xl">
         <div>
           <Link
             passHref
