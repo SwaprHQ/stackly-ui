@@ -12,6 +12,7 @@ cryptocurrencies.`}
         Try Stackly today and start building your wealth with confidence.
       </HeadingText>
       <ButtonLink
+        size="lg"
         href={STACKLY_APP_URL}
         width="fit"
         className="px-6 mt-8 md:px-8 md:mt-20"
