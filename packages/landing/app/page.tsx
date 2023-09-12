@@ -15,63 +15,61 @@ export default function Home() {
   return (
     <main>
       <section className="px-6 pt-16 border-b border-gray-100 md:pt-20">
-        <div className="max-w-6xl mx-auto">
-          <div className="space-y-4 text-center md:space-y-6 ">
-            <DisplayText>Recurring buys made easy</DisplayText>
-            <HeadingText className="!font-medium text-em-med max-w-2xl mx-auto">
-              We make it easy to do recurring buys of a token at a choosen
-              frequency. Build a portfolio, distributed over a period of time
-              with DCA.
-            </HeadingText>
-          </div>
-          <ButtonLink
-            target="_blank"
-            href={STACKLY_APP_URL}
-            size="lg"
-            width="fit"
-            className="!py-4 mx-auto text-lg !px-16 md:!px-28 mt-8"
-          >
-            Try Stackly now
-          </ButtonLink>
-          <div className="relative max-w-4xl mx-auto mt-12 mb-24 md:my-20">
-            <Link passHref href={STACKLY_APP_URL}>
-              <Image
-                className="mx-auto border shadow-xl hover:shadow-2xl rounded-2xl border-surface-50"
-                alt="amount widget"
-                src="/assets/images/landing-amount-widget.png"
-                height={200}
-                width={512}
-              />
-            </Link>
-            <div className="absolute w-full -top-36 -z-10 h-[460px] md:bg-radial-gradient"></div>
-          </div>
-          {false && (
-            <div className="mx-auto flex items-center px-5 py-2 bg-black/5 rounded-[20px] w-fit space-x-6 mt-20">
-              <div className="flex items-center space-x-2">
-                <BodyText size={3} weight="medium" className="text-em-med">
-                  Total Stacks created:
-                </BodyText>
-                <BodyText size={3} weight="bold">
-                  732
-                </BodyText>
-              </div>
-              <div className="flex items-center space-x-2">
-                <BodyText size={3} weight="medium" className="text-em-med">
-                  Total transactions:
-                </BodyText>
-                <BodyText size={3} weight="bold">
-                  1232
-                </BodyText>
-              </div>
-            </div>
-          )}
+        <div className="space-y-4 text-center md:space-y-6 ">
+          <DisplayText>Recurring buys made easy</DisplayText>
+          <HeadingText className="!font-medium text-em-med max-w-2xl mx-auto">
+            We make it easy to do recurring buys of a token at a choosen
+            frequency. Build a portfolio, distributed over a period of time with
+            DCA.
+          </HeadingText>
         </div>
+        <ButtonLink
+          target="_blank"
+          href={STACKLY_APP_URL}
+          size="lg"
+          width="fit"
+          className="!py-4 mx-auto text-lg !px-16 md:!px-28 mt-8"
+        >
+          Try Stackly now
+        </ButtonLink>
+        <div className="relative max-w-4xl mx-auto mt-12 mb-24 md:my-20">
+          <Link passHref href={STACKLY_APP_URL}>
+            <Image
+              className="mx-auto border shadow-xl hover:shadow-2xl rounded-2xl border-surface-50"
+              alt="amount widget"
+              src="/assets/images/landing-amount-widget.png"
+              height={200}
+              width={512}
+            />
+          </Link>
+          <div className="absolute w-full -top-36 -z-10 h-[460px] md:bg-radial-gradient"></div>
+        </div>
+        {false && (
+          <div className="mx-auto flex items-center px-5 py-2 bg-black/5 rounded-[20px] w-fit space-x-6 mt-20">
+            <div className="flex items-center space-x-2">
+              <BodyText size={3} weight="medium" className="text-em-med">
+                Total Stacks created:
+              </BodyText>
+              <BodyText size={3} weight="bold">
+                732
+              </BodyText>
+            </div>
+            <div className="flex items-center space-x-2">
+              <BodyText size={3} weight="medium" className="text-em-med">
+                Total transactions:
+              </BodyText>
+              <BodyText size={3} weight="bold">
+                1232
+              </BodyText>
+            </div>
+          </div>
+        )}
       </section>
       <section
         className="py-20 bg-white border-b border-gray-100 md:py-32"
         id="how-it-works"
       >
-        <div className="mx-auto md:max-w-6xl">
+        <div className="mx-auto md:max-w-7xl">
           <div className="px-6 space-y-2 md:pb-28">
             <HeadingText size={4}>Using Stackly is super easy.</HeadingText>
             <HeadingText weight="regular" className="text-em-med">
@@ -92,7 +90,7 @@ export default function Home() {
         </div>
       </section>
       <section className="px-6 pt-12 pb-20 bg-white border-b border-gray-100 md:py-32">
-        <div className="max-w-6xl mx-auto">
+        <div className="mx-auto max-w-7xl">
           <HeadingText size={4}>
             A new way to stack your crypto with DCA strategy.
           </HeadingText>
@@ -112,7 +110,7 @@ export default function Home() {
         </div>
       </section>
       <section className="px-6 py-12 md:py-32" id="faqs">
-        <div className="max-w-6xl mx-auto">
+        <div className="mx-auto max-w-7xl">
           <div className="flex flex-col md:flex-row md:justify-between">
             <HeadingText size={4} className="pb-10 md:pb-0">
               Frequently asked questions
@@ -148,10 +146,10 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="px-6 mb-20 md:mb-32">
+      <section className="px-6 mx-auto mb-20 max-w-7xl md:px-0 md:mb-32">
         <TryStacklyBanner />
       </section>
-      <section className="max-w-6xl px-6 mx-auto my-8">
+      <section className="px-6 mx-auto my-8 max-w-7xl md:px-0">
         <SocialBanner />
       </section>
       <Footer />
@@ -184,7 +182,7 @@ const Step = ({ step, description }: StepProps) => (
 );
 
 const SocialBanner = () => (
-  <div className="flex flex-col items-center justify-between py-6 bg-white border md:flex-row px-7 rounded-3xl">
+  <div className="flex flex-col items-center justify-between py-6 bg-white border md:flex-row px-7 rounded-[20px]">
     <div className="flex flex-col items-center md:space-y-0 md:space-x-5 md:flex-row">
       <StacklyLogoIcon title="Stackly logo icon" />
       <HeadingText
