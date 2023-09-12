@@ -3,13 +3,16 @@
 import Link from "next/link";
 import { ButtonBaseProps, buttonStyles, getIconSize } from "./base";
 import { Icon } from "@/ui/icon/Icon";
+import { Ref } from "react";
 
 interface ButtonLinkProps extends ButtonBaseProps {
   href: string;
   target?: string;
+  ref?: Ref<HTMLAnchorElement>;
 }
 
 export function ButtonLink({
+  ref,
   target,
   children,
   className,
@@ -25,6 +28,7 @@ export function ButtonLink({
 }: ButtonLinkProps) {
   return (
     <Link
+      ref={ref}
       target={target}
       id={id}
       href={href}
