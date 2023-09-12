@@ -6,7 +6,7 @@ const displayTextStyles = cva([], {
     size: {
       3: ["text-8xl md:text-[104px] md:leading-[120px]"],
       2: ["text-7xl md:text-[88px] md:leading-[96px]"],
-      1: ["text-[31px] md:text-5xl lg:text-[74px] lg:leading-[88px]"],
+      1: ["text-[31px] md:text-4xl lg:text-6xl"],
     },
   },
   defaultVariants: {

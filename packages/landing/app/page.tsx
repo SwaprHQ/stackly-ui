@@ -17,10 +17,11 @@ export default function Home() {
       <section className="px-6 pt-16 border-b border-gray-100 md:pt-20">
         <div className="max-w-6xl mx-auto">
           <div className="space-y-4 text-center md:space-y-6 ">
-            <DisplayText>Stack crypto over time</DisplayText>
+            <DisplayText>Recurring buys made easy</DisplayText>
             <HeadingText className="!font-medium text-em-med max-w-2xl mx-auto">
               We make it easy to do recurring buys of a token at a choosen
-              frequency. Making it easy to DCA.
+              frequency. Build a portfolio, distributed over a period of time
+              with DCA.
             </HeadingText>
           </div>
           <ButtonLink
