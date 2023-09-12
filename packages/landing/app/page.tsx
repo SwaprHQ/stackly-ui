@@ -19,8 +19,8 @@ export default function Home() {
           <div className="space-y-4 text-center md:space-y-6 ">
             <DisplayText>Stack crypto over time</DisplayText>
             <HeadingText className="!font-medium text-em-med max-w-2xl mx-auto">
-              Stackly is a simple, non-custodial tool that does recurring buys
-              of a token at a choosen frequency. Making it easy to DCA.
+              We make it easy to do recurring buys of a token at a choosen
+              frequency. Making it easy to DCA.
             </HeadingText>
           </div>
           <ButtonLink
@@ -74,7 +74,7 @@ export default function Home() {
           <div className="px-6 space-y-2 md:pb-28">
             <HeadingText size={4}>Using Stackly is super easy.</HeadingText>
             <HeadingText weight="regular" className="text-em-med">
-              Create a stack in 3 steps. Create and cancel anytime.
+              Create a stack in 3 steps. You can cancel anytime.
             </HeadingText>
           </div>
           <div className="px-6 space-y-12 md:space-y-32">
@@ -93,7 +93,7 @@ export default function Home() {
       <section className="px-6 pt-12 pb-20 bg-white border-b border-gray-100 md:py-32">
         <div className="max-w-6xl mx-auto">
           <HeadingText size={4}>
-            A new way to stack your crypto over time with DCA.
+            A new way to stack your crypto with DCA strategy.
           </HeadingText>
           <div className="space-y-16">
             <DCAfeature title="Neutralizing Short-Term Volatility">
@@ -133,7 +133,7 @@ export default function Home() {
                 regardless of the {"asset's"} price.
               </QAndAAccordion>
               <QAndAAccordion question="Why one should do DCA?">
-                <ul className="px-4 pb-4 list-decimal">
+                <ul className="px-4 pb-4 list-disc">
                   <li>Regular Investing.</li>
                   <li>Reduced Market Timing Risk.</li>
                   <li>Risk Mitigation.</li>
@@ -151,13 +151,6 @@ export default function Home() {
                   {`The choice between DCA and lump-sum investing depends on an individual's
                   financial goals, risk tolerance, and market outlook.
                   Ultimately, DCA is a strategy that can help individuals build
-                  wealth steadily over time while reducing the risks associated
-                  with market timing and volatility. However, like all
-                  investment strategies, it should be carefully considered in
-                  the context of one's financial situation and objectives.`}
-                </p>
-                <p className="text-lg font-medium text-em-med">
-                  {`Ultimately, DCA is a strategy that can help individuals build
                   wealth steadily over time while reducing the risks associated
                   with market timing and volatility. However, like all
                   investment strategies, it should be carefully considered in
