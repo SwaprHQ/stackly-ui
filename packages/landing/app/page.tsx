@@ -69,7 +69,7 @@ export default function Home() {
         className="py-20 bg-white border-b border-gray-100 md:py-32"
         id="how-it-works"
       >
-        <div className="mx-auto md:max-w-7xl">
+        <div className="max-w-6xl mx-auto">
           <div className="px-6 space-y-2 md:pb-28">
             <HeadingText size={4}>Using Stackly is super easy.</HeadingText>
             <HeadingText weight="regular" className="text-em-med">
@@ -90,7 +90,7 @@ export default function Home() {
         </div>
       </section>
       <section className="px-6 pt-12 pb-20 bg-white border-b border-gray-100 md:py-32">
-        <div className="mx-auto max-w-7xl">
+        <div className="max-w-6xl mx-auto">
           <HeadingText size={4}>
             A new way to stack your crypto with DCA strategy.
           </HeadingText>
@@ -110,7 +110,7 @@ export default function Home() {
         </div>
       </section>
       <section className="px-6 py-12 md:py-32" id="faqs">
-        <div className="mx-auto max-w-7xl">
+        <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row md:justify-between">
             <HeadingText size={4} className="pb-10 md:pb-0">
               Frequently asked questions
