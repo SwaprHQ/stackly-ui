@@ -16,11 +16,10 @@ export default function Home() {
     <main>
       <section className="px-6 pt-16 border-b border-gray-100 md:pt-20">
         <div className="space-y-4 text-center md:space-y-6 ">
-          <DisplayText>Recurring buys made easy</DisplayText>
+          <DisplayText>DCA simplified</DisplayText>
           <HeadingText className="!font-medium text-em-med max-w-2xl mx-auto">
-            We make it easy to do recurring buys of a token at a choosen
-            frequency. Build a portfolio, distributed over a period of time with
-            DCA.
+            Stackly is your non-custodial app for DCA. Say goodbye to market
+            timing and hello to a diversified portfolio over time.
           </HeadingText>
         </div>
         <ButtonLink
@@ -30,12 +29,12 @@ export default function Home() {
           width="fit"
           className="!py-4 mx-auto text-lg !px-16 md:!px-28 mt-8"
         >
-          Try Stackly now
+          Stack now
         </ButtonLink>
         <div className="relative max-w-4xl mx-auto mt-12 mb-24 md:my-20">
           <Link passHref href={STACKLY_APP_URL}>
             <Image
-              className="mx-auto border shadow-xl hover:shadow-2xl rounded-2xl border-surface-50"
+              className="mx-auto border shadow-xl  hover:shadow-2xl rounded-2xl border-surface-50"
               alt="amount widget"
               src="/assets/images/landing-amount-widget.png"
               height={200}
