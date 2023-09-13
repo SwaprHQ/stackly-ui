@@ -10,7 +10,6 @@ import { useEffect, useRef, useState } from "react";
 const THRESHOLD_HEIGHT = 320;
 
 export function Navbar() {
-  const buttonRef = useRef(null);
   const [scrollYPos, setScrollYPos] = useState(0);
 
   useEffect(() => {
@@ -49,7 +48,6 @@ export function Navbar() {
             FAQs
           </ButtonLink>
           <ButtonLink
-            ref={buttonRef}
             target="_blank"
             variant={passedThresholdHeight ? "primary" : "quaternary"}
             href={STACKLY_APP_URL}
