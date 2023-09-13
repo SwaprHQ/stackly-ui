@@ -14,36 +14,40 @@ import { QAndAAccordion, TryStacklyBanner } from "@/components";
 export default function Home() {
   return (
     <main>
-      <section className="px-6 pt-20 pb-12 border-b border-gray-100">
-        <div className="max-w-6xl mx-auto">
-          <div className="space-y-6 text-center ">
-            <DisplayText>Stack crypto over time</DisplayText>
-            <HeadingText className="!font-medium text-em-med max-w-2xl mx-auto">
-              Stackly is a simple, non-custodial tool that does recurring buys
-              of a token at a choosen frequency. Making it easy to DCA.
-            </HeadingText>
-          </div>
-          <ButtonLink
-            target="_blank"
+      <section className="px-6 pt-16 border-b border-gray-100 md:pt-20">
+        <div className="space-y-4 text-center md:space-y-6 ">
+          <DisplayText>DCA simplified</DisplayText>
+          <HeadingText className="!font-medium text-em-med max-w-2xl mx-auto">
+            Say goodbye to market timing and hello to effortless recurrent swaps
+          </HeadingText>
+        </div>
+        <ButtonLink
+          target="_blank"
+          href={STACKLY_APP_URL}
+          size="lg"
+          width="fit"
+          className="!py-4 mx-auto text-lg !px-16 md:!px-28 mt-8"
+        >
+          Stack now
+        </ButtonLink>
+        <div className="relative max-w-4xl mx-auto mt-12 mb-24 md:my-20">
+          <Link
+            passHref
             href={STACKLY_APP_URL}
-            size="lg"
-            width="fit"
-            className="!py-4 mx-auto text-lg !px-28 mt-7"
+            className="relative block mx-auto w-fit"
           >
-            Launch app
-          </ButtonLink>
-          <div className="relative max-w-4xl mx-auto mt-16">
-            <Link passHref href={STACKLY_APP_URL}>
-              <Image
-                className="mx-auto border shadow-xl hover:shadow-2xl rounded-2xl border-surface-50"
-                alt="amount widget"
-                src="/assets/images/landing-amount-widget.png"
-                height={200}
-                width={512}
-              />
-            </Link>
-            <div className="absolute w-full -top-36 -z-10 h-[460px] bg-radial-gradient"></div>
-          </div>
+            <div className="invisible sm:visible absolute w-[3px] h-[26px] bg-em-med bottom-[52px] left-4 animate-cursor-blink"></div>
+            <Image
+              className="mx-auto border shadow-xl hover:shadow-2xl rounded-2xl border-surface-50"
+              alt="amount widget"
+              src="/assets/images/landing-amount-widget.png"
+              height={200}
+              width={512}
+            />
+          </Link>
+          <div className="absolute w-full -top-36 -z-10 h-[460px] md:bg-radial-gradient"></div>
+        </div>
+        {false && (
           <div className="mx-auto flex items-center px-5 py-2 bg-black/5 rounded-[20px] w-fit space-x-6 mt-20">
             <div className="flex items-center space-x-2">
               <BodyText size={3} weight="medium" className="text-em-med">
@@ -62,14 +66,17 @@ export default function Home() {
               </BodyText>
             </div>
           </div>
-        </div>
+        )}
       </section>
-      <section className="py-20 bg-white border-b border-gray-100 md:py-32">
-        <div className="mx-auto md:max-w-6xl">
-          <div className="px-6 md:pb-28">
-            <HeadingText size={4}>Using Stackly is super easy.</HeadingText>
+      <section
+        className="py-20 bg-white border-b border-gray-100 md:py-32"
+        id="how-it-works"
+      >
+        <div className="max-w-6xl mx-auto">
+          <div className="max-w-xl px-6 space-y-2 md:pb-28">
+            <HeadingText size={4}>Using Stackly is super easy</HeadingText>
             <HeadingText weight="regular" className="text-em-med">
-              Create a stack in 3 steps. Create and cancel anytime.
+              Create a stack (aka. recurring buy) in 3 steps.
             </HeadingText>
           </div>
           <div className="px-6 space-y-12 md:space-y-32">
@@ -88,7 +95,7 @@ export default function Home() {
       <section className="px-6 pt-12 pb-20 bg-white border-b border-gray-100 md:py-32">
         <div className="max-w-6xl mx-auto">
           <HeadingText size={4}>
-            A new way to stack your crypto over time with DCA.
+            A new way to stack your crypto with DCA strategy.
           </HeadingText>
           <div className="space-y-16">
             <DCAfeature title="Neutralizing Short-Term Volatility">
@@ -105,16 +112,27 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="px-6 py-12 md:py-32">
+      <section className="px-6 py-12 md:py-32" id="faqs">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row md:justify-between">
             <HeadingText size={4} className="pb-10 md:pb-0">
               Frequently asked questions
             </HeadingText>
             <div className="w-full max-w-lg space-y-4">
-              <QAndAAccordion question="What is Stackly?">
+              <QAndAAccordion question="What is Stackly?" startOpen>
                 Stackly is a simple non-custodial DCA app that makes it easy to
                 do recurring buys of any token.
+              </QAndAAccordion>
+              <QAndAAccordion question="What is a stack?">
+                <p>
+                  We call it stack the creation of the recurrent order with the
+                  total amount that will be used to swap the choosen tokens on
+                  the choosen frequency (hourly, daily, etc).
+                </p>
+                <p>
+                  Example: A stack of WETH using 500WXDAI that will do recurrent
+                  swaps every day till the end of the week.
+                </p>
               </QAndAAccordion>
               <QAndAAccordion question="How does Stackly work?">
                 When you stack a token, stackly creates a contract for you with
@@ -128,51 +146,24 @@ export default function Home() {
                 regardless of the {"asset's"} price.
               </QAndAAccordion>
               <QAndAAccordion question="Why one should do DCA?">
-                <ul className="px-4 pb-4 list-decimal">
-                  <li>Regular Investing.</li>
-                  <li>Reduced Market Timing Risk.</li>
-                  <li>Risk Mitigation.</li>
-                  <li> Psychological Benefits.</li>
-                  <li> Long-Term Investment.</li>
-                  <li> Automatic Investing.</li>
-                </ul>
-                <p className="text-lg font-medium text-em-med">
-                  {`While DCA has its advantages, it's
-                  important to note that it may not always yield the highest
-                  returns compared to lump-sum investing if the market
-                  experiences significant gains over a short period.`}
-                </p>
-                <p className="text-lg font-medium text-em-med">
-                  {`The choice between DCA and lump-sum investing depends on an individual's
-                  financial goals, risk tolerance, and market outlook.
-                  Ultimately, DCA is a strategy that can help individuals build
-                  wealth steadily over time while reducing the risks associated
-                  with market timing and volatility. However, like all
-                  investment strategies, it should be carefully considered in
-                  the context of one's financial situation and objectives.`}
-                </p>
-                <p className="text-lg font-medium text-em-med">
-                  {`Ultimately, DCA is a strategy that can help individuals build
-                  wealth steadily over time while reducing the risks associated
-                  with market timing and volatility. However, like all
-                  investment strategies, it should be carefully considered in
-                  the context of one's financial situation and objectives.`}
-                </p>
+                Recurring buys (aka DCA) removes the need to time the market,
+                neutralising the short term market volatility, and helps you
+                build a portfolio, distributed over a period of time.
               </QAndAAccordion>
               <QAndAAccordion question="Can I cancel my stacks?">
                 Yes. You can cancel your stacks anytime. Your funds will be
-                widrawn immidiatly to your wallet. To do it, you have to connect
-                your wallet, go to your stacks, choose a stack, click cancel and
-                confirm transaction with your wallet.
+                withdrawn immediately to your wallet. To do it, you have to
+                connect your wallet, go to your stacks, choose a stack, click
+                cancel and confirm transaction with your wallet.
               </QAndAAccordion>
             </div>
           </div>
         </div>
       </section>
-      <section className="px-6 mb-20 md:mb-32">
+      <section className="px-6 mx-auto mb-20 max-w-7xl md:px-0 md:mb-32">
         <TryStacklyBanner />
       </section>
-      <section className="max-w-6xl px-6 mx-auto my-8">
+      <section className="px-6 mx-auto my-8 max-w-7xl md:px-0">
         <SocialBanner />
       </section>
       <Footer />
@@ -205,7 +196,7 @@ const Step = ({ step, description }: StepProps) => (
 );
 
 const SocialBanner = () => (
-  <div className="flex flex-col items-center justify-between py-6 bg-white border md:flex-row px-7 rounded-3xl">
+  <div className="flex flex-col items-center justify-between py-6 bg-white border md:flex-row px-7 rounded-[20px]">
     <div className="flex flex-col items-center md:space-y-0 md:space-x-5 md:flex-row">
       <StacklyLogoIcon title="Stackly logo icon" />
       <HeadingText
