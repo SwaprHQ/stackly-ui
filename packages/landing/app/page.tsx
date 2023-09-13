@@ -127,7 +127,7 @@ export default function Home() {
                 <p>
                   We call it stack the creation of the recurrent order with the
                   total amount that will be used to swap the choosen tokens on
-                  the choosen frequency (hourly, daily,..).
+                  the choosen frequency (hourly, daily, etc).
                 </p>
                 <p>
                   Example: A stack of WETH using 500WXDAI that will do recurrent
