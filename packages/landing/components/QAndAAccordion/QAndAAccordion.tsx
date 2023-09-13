@@ -6,10 +6,15 @@ import { PropsWithChildren, useState } from "react";
 
 interface QAndAAccordionProps extends PropsWithChildren {
   question: string;
+  startOpen?: boolean;
 }
 
-export const QAndAAccordion = ({ question, children }: QAndAAccordionProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+export const QAndAAccordion = ({
+  question,
+  children,
+  startOpen,
+}: QAndAAccordionProps) => {
+  const [isOpen, setIsOpen] = useState(startOpen ?? false);
   const toggle = () => setIsOpen(!isOpen);
 
   return (

@@ -116,7 +116,7 @@ export default function Home() {
               Frequently asked questions
             </HeadingText>
             <div className="w-full max-w-lg space-y-4">
-              <QAndAAccordion question="What is Stackly?">
+              <QAndAAccordion question="What is Stackly?" startOpen>
                 Stackly is a simple non-custodial DCA app that makes it easy to
                 do recurring buys of any token.
               </QAndAAccordion>
