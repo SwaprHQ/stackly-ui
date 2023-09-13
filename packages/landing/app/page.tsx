@@ -18,8 +18,7 @@ export default function Home() {
         <div className="space-y-4 text-center md:space-y-6 ">
           <DisplayText>DCA simplified</DisplayText>
           <HeadingText className="!font-medium text-em-med max-w-2xl mx-auto">
-            Say goodbye to market timing and hello to a diversified portfolio
-            over time.
+            Say goodbye to market timing and hello to effortless recurrent swaps
           </HeadingText>
         </div>
         <ButtonLink
