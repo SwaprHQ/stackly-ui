@@ -6,10 +6,15 @@ import { PropsWithChildren, useState } from "react";
 
 interface QAndAAccordionProps extends PropsWithChildren {
   question: string;
+  startOpen?: boolean;
 }
 
-export const QAndAAccordion = ({ question, children }: QAndAAccordionProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+export const QAndAAccordion = ({
+  question,
+  children,
+  startOpen,
+}: QAndAAccordionProps) => {
+  const [isOpen, setIsOpen] = useState(startOpen ?? false);
   const toggle = () => setIsOpen(!isOpen);
 
   return (
@@ -24,7 +29,7 @@ export const QAndAAccordion = ({ question, children }: QAndAAccordionProps) => {
       onClick={toggle}
     >
       <div className="flex items-center justify-between">
-        <p className="text-xl font-semibold">{question}</p>
+        <p className="text-lg font-semibold md:text-xl">{question}</p>
         <Icon name={isOpen ? "caret-up" : "caret-down"} />
       </div>
       {isOpen && (

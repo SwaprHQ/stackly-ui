@@ -93,6 +93,9 @@ module.exports = {
         "nav-height": "72px",
       },
       keyframes: {
+        "cursor-blink": {
+          "0%": { opacity: 0 },
+        },
         wiggle: {
           "0%, 100%": { transform: "translateX(-3px)" },
           "50%": { transform: "translateX(3px)" },
@@ -103,6 +106,7 @@ module.exports = {
         },
       },
       animation: {
+        "cursor-blink": "cursor-blink 1.3s steps(2) infinite",
         "wiggle-alert":
           "wiggle 0.2s ease-in-out 0s 3, red-alert 2s ease-in-out",
         wiggle: "wiggle 0.2s ease-in-out 0s 3",

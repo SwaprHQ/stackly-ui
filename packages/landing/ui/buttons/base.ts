@@ -1,11 +1,11 @@
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import type { ButtonHTMLAttributes, ReactNode, Ref } from "react";
 import { cva } from "class-variance-authority";
 import { IconName } from "@/ui";
 
 export const buttonStyles = cva(
   [
     "flex items-center justify-center",
-    "cursor-pointer select-none font-medium",
+    "cursor-pointer select-none font-semibold",
     "disabled:bg-surface-75 disabled:text-em-disabled disabled:cursor-not-allowed disabled:ring-0",
     "focus:outline-none focus:ring-4",
     "active:ring-4",
