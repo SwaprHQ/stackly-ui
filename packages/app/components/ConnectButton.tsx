@@ -1,9 +1,10 @@
 "use client";
 
 import { ConnectKitButton } from "connectkit";
-import { BodyText, Button, SizeProps } from "@/ui";
 import { useEnsAvatar, useBalance } from "wagmi";
 import Image from "next/image";
+import { BodyText, Button, SizeProps } from "@/ui";
+import { useAutoConnect } from "@/hooks";
 
 const CustomConnectButton = ({
   address,
@@ -83,6 +84,8 @@ export const ConnectButton = ({
   text?: string;
   className?: string;
 }) => {
+  useAutoConnect();
+
   return (
     <ConnectKitButton.Custom>
       {({ isConnected, show, address, ensName }) => {
