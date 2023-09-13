@@ -33,8 +33,9 @@ export default function Home() {
         </ButtonLink>
         <div className="relative max-w-4xl mx-auto mt-12 mb-24 md:my-20">
           <Link passHref href={STACKLY_APP_URL}>
+            {/* <div className="absolute w-0.5 h-4 bg-gray-600 bottom-[32px] left-2.5 animate-pulse"></div> */}
             <Image
-              className="mx-auto border shadow-xl  hover:shadow-2xl rounded-2xl border-surface-50"
+              className="relative mx-auto border shadow-xl hover:shadow-2xl rounded-2xl border-surface-50"
               alt="amount widget"
               src="/assets/images/landing-amount-widget.png"
               height={200}

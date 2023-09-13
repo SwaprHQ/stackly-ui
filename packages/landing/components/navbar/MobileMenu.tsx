@@ -6,9 +6,9 @@ import { Button, ButtonLink } from "@/ui";
 import { STACKLY_APP_URL } from "@/constants";
 
 export default function MobileMenu({
-  passedViewportHeight,
+  passedThresholdHeight,
 }: {
-  passedViewportHeight: boolean;
+  passedThresholdHeight: boolean;
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -18,7 +18,7 @@ export default function MobileMenu({
     <div className="z-10 flex items-center justify-end w-full gap-4 md:hidden">
       <ButtonLink
         target="_blank"
-        variant={passedViewportHeight ? "primary" : "secondary"}
+        variant={passedThresholdHeight ? "primary" : "secondary"}
         href={STACKLY_APP_URL}
         onClick={toggle}
       >

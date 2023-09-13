@@ -7,18 +7,15 @@ import Logo from "./Logo";
 import { STACKLY_APP_URL } from "@/constants";
 import { useEffect, useRef, useState } from "react";
 
+const THRESHOLD_HEIGHT = 320;
+
 export function Navbar() {
   const buttonRef = useRef(null);
-  const [scrollY, setScrollY] = useState(0);
-  const [viewportHeight, setViewportHeight] = useState(600);
-
-  useEffect(() => {
-    if (window.innerHeight) setViewportHeight(window.innerHeight);
-  }, []);
+  const [scrollYPos, setScrollYPos] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrollY(window.scrollY);
+      setScrollYPos(window.scrollY);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -28,7 +25,7 @@ export function Navbar() {
     };
   }, []);
 
-  const passedViewportHeight = scrollY > viewportHeight;
+  const passedThresholdHeight = scrollYPos > THRESHOLD_HEIGHT;
 
   return (
     <header className="sticky top-0 z-20 flex flex-col w-full px-4 border-b border-solid h-nav-height bg-surface-25/80 md:bg-surface-25/60 backdrop-blur-md border-b-surface-75">
@@ -54,13 +51,13 @@ export function Navbar() {
           <ButtonLink
             ref={buttonRef}
             target="_blank"
-            variant={passedViewportHeight ? "primary" : "quaternary"}
+            variant={passedThresholdHeight ? "primary" : "quaternary"}
             href={STACKLY_APP_URL}
           >
             Launch app
           </ButtonLink>
         </div>
-        <MobileMenu passedViewportHeight={passedViewportHeight} />
+        <MobileMenu passedThresholdHeight={passedThresholdHeight} />
       </nav>
     </header>
   );
