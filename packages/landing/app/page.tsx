@@ -18,8 +18,8 @@ export default function Home() {
         <div className="space-y-4 text-center md:space-y-6 ">
           <DisplayText>DCA simplified</DisplayText>
           <HeadingText className="!font-medium text-em-med max-w-2xl mx-auto">
-            Stackly is your non-custodial app for DCA. Say goodbye to market
-            timing and hello to a diversified portfolio over time.
+            Say goodbye to market timing and hello to a diversified portfolio
+            over time.
           </HeadingText>
         </div>
         <ButtonLink
@@ -70,10 +70,10 @@ export default function Home() {
         id="how-it-works"
       >
         <div className="max-w-6xl mx-auto">
-          <div className="px-6 space-y-2 md:pb-28">
-            <HeadingText size={4}>Using Stackly is super easy.</HeadingText>
+          <div className="max-w-xl px-6 space-y-2 md:pb-28">
+            <HeadingText size={4}>Using Stackly is super easy</HeadingText>
             <HeadingText weight="regular" className="text-em-med">
-              Create a stack in 3 steps. You can cancel anytime.
+              Create a stack in 3 steps.
             </HeadingText>
           </div>
           <div className="px-6 space-y-12 md:space-y-32">
@@ -138,9 +138,9 @@ export default function Home() {
               </QAndAAccordion>
               <QAndAAccordion question="Can I cancel my stacks?">
                 Yes. You can cancel your stacks anytime. Your funds will be
-                widrawn immidiatly to your wallet. To do it, you have to connect
-                your wallet, go to your stacks, choose a stack, click cancel and
-                confirm transaction with your wallet.
+                withdrawn immediately to your wallet. To do it, you have to
+                connect your wallet, go to your stacks, choose a stack, click
+                cancel and confirm transaction with your wallet.
               </QAndAAccordion>
             </div>
           </div>
