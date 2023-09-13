@@ -31,10 +31,14 @@ export default function Home() {
           Stack now
         </ButtonLink>
         <div className="relative max-w-4xl mx-auto mt-12 mb-24 md:my-20">
-          <Link passHref href={STACKLY_APP_URL}>
-            {/* <div className="absolute w-0.5 h-4 bg-gray-600 bottom-[32px] left-2.5 animate-pulse"></div> */}
+          <Link
+            passHref
+            href={STACKLY_APP_URL}
+            className="relative block mx-auto w-fit"
+          >
+            <div className="invisible sm:visible absolute w-[3px] h-[26px] bg-em-med bottom-[52px] left-4 animate-cursor-blink"></div>
             <Image
-              className="relative mx-auto border shadow-xl hover:shadow-2xl rounded-2xl border-surface-50"
+              className="mx-auto border shadow-xl hover:shadow-2xl rounded-2xl border-surface-50"
               alt="amount widget"
               src="/assets/images/landing-amount-widget.png"
               height={200}
@@ -72,7 +76,7 @@ export default function Home() {
           <div className="max-w-xl px-6 space-y-2 md:pb-28">
             <HeadingText size={4}>Using Stackly is super easy</HeadingText>
             <HeadingText weight="regular" className="text-em-med">
-              Create a stack in 3 steps.
+              Create a stack (aka. recurring buy) in 3 steps.
             </HeadingText>
           </div>
           <div className="px-6 space-y-12 md:space-y-32">
@@ -118,6 +122,9 @@ export default function Home() {
               <QAndAAccordion question="What is Stackly?" startOpen>
                 Stackly is a simple non-custodial DCA app that makes it easy to
                 do recurring buys of any token.
+              </QAndAAccordion>
+              <QAndAAccordion question="What is a stack?">
+                We call it stack the
               </QAndAAccordion>
               <QAndAAccordion question="How does Stackly work?">
                 When you stack a token, stackly creates a contract for you with
