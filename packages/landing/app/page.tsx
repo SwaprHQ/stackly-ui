@@ -124,7 +124,15 @@ export default function Home() {
                 do recurring buys of any token.
               </QAndAAccordion>
               <QAndAAccordion question="What is a stack?">
-                We call it stack the
+                <p>
+                  We call it stack the creation of the recurrent order with the
+                  total amount that will be used to swap the choosen tokens on
+                  the choosen frequency (hourly, daily,..).
+                </p>
+                <p>
+                  Example: A stack of WETH using 500WXDAI that will do recurrent
+                  swaps every day till the end of the week.
+                </p>
               </QAndAAccordion>
               <QAndAAccordion question="How does Stackly work?">
                 When you stack a token, stackly creates a contract for you with
