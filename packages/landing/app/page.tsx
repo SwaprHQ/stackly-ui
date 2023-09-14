@@ -36,11 +36,11 @@ export default function Home() {
             href={STACKLY_APP_URL}
             className="relative block mx-auto w-fit"
           >
-            <div className="invisible sm:visible absolute w-[3px] h-[26px] bg-em-med bottom-[52px] left-4 animate-cursor-blink"></div>
+            <div className="invisible sm:visible absolute w-[3px] h-[26px] bg-em-med bottom-[60px] left-[17px] animate-cursor-blink"></div>
             <Image
               className="mx-auto border shadow-xl hover:shadow-2xl rounded-2xl border-surface-50"
               alt="amount widget"
-              src="/assets/images/landing-amount-widget.png"
+              src="/assets/images/landing-widget.png"
               height={200}
               width={512}
             />
