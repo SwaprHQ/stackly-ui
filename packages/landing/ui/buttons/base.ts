@@ -4,7 +4,7 @@ import { IconName } from "@/ui";
 
 export const buttonStyles = cva(
   [
-    "flex items-center justify-center",
+    "flex items-center justify-center flex-wrap",
     "cursor-pointer select-none font-semibold",
     "disabled:bg-surface-75 disabled:text-em-disabled disabled:cursor-not-allowed disabled:ring-0",
     "focus:outline-none focus:ring-4",
