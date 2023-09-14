@@ -435,7 +435,17 @@ export const Stackbox = () => {
             text="Connect Wallet to Stack"
           />
         )}
-        <SocialConnectButton />
+        <SocialConnectButton
+          toToken={toToken}
+          fromToken={fromToken}
+          amount={tokenAmount}
+          frequency={frequency}
+          startTime={
+            isPastStartDate ? new Date(getDateNowPlus10Mins()) : startDateTime
+          }
+          endTime={endDateTime}
+          key={`${fromToken?.address}-$${tokenAmount}`}
+        />
       </div>
       <TokenPicker
         closeAction={() => closeModal(ModalId.TOKEN_PICKER)}

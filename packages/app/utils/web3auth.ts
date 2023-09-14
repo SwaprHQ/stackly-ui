@@ -2,6 +2,7 @@ import { Web3AuthModalPack, Web3AuthConfig } from "@safe-global/auth-kit";
 import { CHAIN_NAMESPACES, IAdapter, WALLET_ADAPTERS } from "@web3auth/base";
 import { Web3AuthOptions } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { GelatoRelayPack } from "@safe-global/relay-kit";
 
 // https://web3auth.io/docs/sdk/pnp/web/modal/initialize#arguments
 export const options: Web3AuthOptions = {
@@ -9,9 +10,9 @@ export const options: Web3AuthOptions = {
   web3AuthNetwork: "testnet",
   chainConfig: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x5",
+    chainId: "0x64",
     // https://chainlist.org/
-    rpcTarget: "https://rpc.ankr.com/eth_goerli",
+    rpcTarget: "https://rpc.gnosis.gateway.fm",
   },
   uiConfig: {
     theme: "dark",
@@ -46,5 +47,9 @@ export const openloginAdapter = new OpenloginAdapter({
 });
 
 export const web3AuthConfig: Web3AuthConfig = {
-  txServiceUrl: "https://safe-transaction-goerli.safe.global",
+  txServiceUrl: "https://safe-transaction-gnosis-chain.safe.global",
 };
+
+export const relayKit = new GelatoRelayPack(
+  process.env.NEXT_PUBLIC_GELATO_APP_KEY
+);
