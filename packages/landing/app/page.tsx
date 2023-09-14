@@ -147,7 +147,7 @@ export default function Home() {
                 regardless of the {"asset's"} price.
               </QAndAAccordion>
               <QAndAAccordion question="Why one should do DCA?">
-                Recurring swaps (aka DCA) removes the need to time the market,
+                Recurring swaps (aka DCA) remove the need to time the market,
                 neutralising the short term market volatility, and helps you
                 build a portfolio, distributed over a period of time.
               </QAndAAccordion>
