@@ -18,7 +18,8 @@ export default function Home() {
         <div className="space-y-4 text-center md:space-y-6 ">
           <DisplayText>DCA simplified</DisplayText>
           <HeadingText className="!font-medium text-em-med max-w-2xl mx-auto">
-            Say goodbye to market timing and hello to effortless recurrent swaps
+            Say goodbye to market timing and hello to effortless recurrent
+            swaps.
           </HeadingText>
         </div>
         <ButtonLink
@@ -76,7 +77,7 @@ export default function Home() {
           <div className="max-w-xl px-6 space-y-2 md:pb-28">
             <HeadingText size={4}>Using Stackly is super easy</HeadingText>
             <HeadingText weight="regular" className="text-em-med">
-              Create a stack (aka. recurring buy) in 3 steps.
+              Create a stack (aka recurring swaps) in 3 steps.
             </HeadingText>
           </div>
           <div className="px-6 space-y-12 md:space-y-32">
@@ -121,7 +122,7 @@ export default function Home() {
             <div className="w-full max-w-lg space-y-4">
               <QAndAAccordion question="What is Stackly?" startOpen>
                 Stackly is a simple non-custodial DCA app that makes it easy to
-                do recurring buys of any token.
+                do recurring swaps of any token.
               </QAndAAccordion>
               <QAndAAccordion question="What is a stack?">
                 <p>
@@ -146,7 +147,7 @@ export default function Home() {
                 regardless of the {"asset's"} price.
               </QAndAAccordion>
               <QAndAAccordion question="Why one should do DCA?">
-                Recurring buys (aka DCA) removes the need to time the market,
+                Recurring swaps (aka DCA) removes the need to time the market,
                 neutralising the short term market volatility, and helps you
                 build a portfolio, distributed over a period of time.
               </QAndAAccordion>
@@ -160,10 +161,10 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="px-6 mx-auto mb-20 max-w-7xl md:px-0 md:mb-32">
+      <section className="px-6 mx-auto mb-20 max-w-7xl lg:px-0 md:mb-32">
         <TryStacklyBanner />
       </section>
-      <section className="px-6 mx-auto my-8 max-w-7xl md:px-0">
+      <section className="px-6 mx-auto my-8 max-w-7xl lg:px-0">
         <SocialBanner />
       </section>
       <Footer />
