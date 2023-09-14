@@ -1,6 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
-import { BodyText, ButtonLink, DisplayText, HeadingText, Icon } from "@/ui";
+import {
+  BodyText,
+  ButtonLink,
+  DisplayText,
+  HeadingText,
+  Icon,
+  TitleText,
+} from "@/ui";
 import {
   STACKLY_APP_URL,
   STACKLY_DISCORD_URL,
@@ -48,6 +55,22 @@ export default function Home() {
           </Link>
           <div className="absolute w-full -top-36 -z-10 h-[460px] md:bg-radial-gradient"></div>
         </div>
+        <Link
+          href="https://ipfs.io/ipfs/QmUmmFkKvktZ14iA3237WuDrzNuhi4BMb4MoYMJHeFFbey"
+          target="_blank"
+        >
+          <div className="mx-auto flex items-center px-5 py-3 bg-primary-50 rounded-[20px] w-fit space-x-3 my-20 shadow-sm hover:shadow-md hover:bg-primary-75">
+            <Icon name="check" className="text-primary-600" />
+            <TitleText>Stackly has undergone an audit by Omega.</TitleText>
+            <Image
+              alt="omega team logo"
+              src="/assets/images/omega-team-logo.svg"
+              height={30}
+              width={30}
+            />
+          </div>
+        </Link>
+
         {false && (
           <div className="mx-auto flex items-center px-5 py-2 bg-black/5 rounded-[20px] w-fit space-x-6 mt-20">
             <div className="flex items-center space-x-2">
