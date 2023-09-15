@@ -16,7 +16,7 @@ import {
 } from "@/ui";
 import { StackedTokenLogoPair, StackModal } from "@/components";
 import {
-  fundsAmountWithToken,
+  totalFundsAmountWithToken,
   getOrderPairSymbols,
   totalOrderSlotsDone,
 } from "@/models/order";
@@ -86,7 +86,7 @@ export const StacksTable = ({
                     {formatTokenValue(totalFundsUsed(order), 2)}
                   </BodyText>
                   <BodyText className="text-em-low">
-                    / {fundsAmountWithToken(order)}
+                    / {totalFundsAmountWithToken(order)}
                   </BodyText>
                 </CellWrapper>
               </TableCell>

@@ -1,4 +1,4 @@
-import { fundsAmountWithToken, totalOrderSlotsDone } from "@/models/order";
+import { totalFundsAmountWithToken, totalOrderSlotsDone } from "@/models/order";
 import { OrdersProgressBar } from "@/components/OrdersProgressBar";
 import { BodyText } from "@/ui";
 import { TokenIcon } from "@/components/TokenIcon";
@@ -19,7 +19,7 @@ export const StackProgress = ({ stackOrder }: StackOrderProps) => (
           <span className="text-em-high">
             {formatTokenValue(totalFundsUsed(stackOrder), 2)}{" "}
             <span className="text-xs">of</span>{" "}
-            {fundsAmountWithToken(stackOrder)}
+            {totalFundsAmountWithToken(stackOrder)}
           </span>
         </BodyText>
         <TokenIcon size="xs" token={stackOrder.sellToken} />
