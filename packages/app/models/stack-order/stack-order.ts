@@ -49,11 +49,9 @@ export const totalStacked = (order: StackOrder) =>
     );
   }, 0) ?? 0;
 
-const SMALL_FRACTION = 0.00000001;
-
 const stackHasRemainingFunds = (stackOrder: StackOrder) =>
-  totalFundsUsed(stackOrder) > 0 &&
-  stackRemainingFunds(stackOrder) > SMALL_FRACTION;
+  totalFundsUsed(stackOrder) > stacklyFee(stackOrder) &&
+  stackRemainingFunds(stackOrder) > stacklyFee(stackOrder);
 
 export const stackRemainingFunds = (stackOrder: StackOrder) => {
   if (totalFundsUsed(stackOrder) === 0 && totalStackOrdersDone(stackOrder) > 0)
