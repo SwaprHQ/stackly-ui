@@ -11,7 +11,7 @@ import { twMerge } from "tailwind-merge";
 
 interface DatePickerProps {
   dateTime: Date;
-  setDateTime: Dispatch<SetStateAction<Date>>;
+  setDateTime: Dispatch<SetStateAction<Date>> | ((date: Date) => void);
   className?: string;
   timeCaption: string;
   fromDate?: Date;

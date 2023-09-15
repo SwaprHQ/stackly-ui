@@ -204,6 +204,16 @@ export const Stackbox = () => {
     );
   };
 
+  const handleStartDateTimeChange = (newDateTime: Date) => {
+    const dateNowInMs = Date.now();
+    const newStartDate =
+      newDateTime.getTime() <= dateNowInMs
+        ? new Date(dateNowInMs)
+        : newDateTime;
+
+    setStartDateTime(newStartDate);
+  };
+
   const estimatedNumberOfOrders =
     Math.floor(
       (endDateTime.getTime() - startDateTime.getTime()) /
@@ -362,7 +372,7 @@ export const Stackbox = () => {
                   <BodyText size={2}>Starting from</BodyText>
                   <DatePicker
                     dateTime={startDateTime}
-                    setDateTime={setStartDateTime}
+                    setDateTime={handleStartDateTimeChange}
                     timeCaption="Start time"
                     className="w-full"
                   />
@@ -398,7 +408,7 @@ export const Stackbox = () => {
           </div>
         </div>
         {fromToken && toToken && tokenAmount && tokenAmount > "0" && (
-          <div className="p-2 bg-surface-25 text-center text-em-low rounded-xl">
+          <div className="p-2 text-center bg-surface-25 text-em-low rounded-xl">
             <BodyText size={1}>
               Stacks <span className="text-em-med">{toToken.symbol}</span>,
               worth{" "}
