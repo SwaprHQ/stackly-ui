@@ -36,6 +36,7 @@ import {
   nftWhitelistBalanceOf,
 } from "@stackly/sdk";
 import { useEthersSigner } from "@/utils/ethers";
+import { WETHToken, WXDAIToken } from "@/utils/constants";
 
 interface SelectTokenButtonProps {
   label: string;
@@ -115,6 +116,12 @@ export const Stackbox = () => {
   useEffect(() => {
     setEndDateTime(new Date(endDateByFrequency[frequency]));
   }, [frequency]);
+
+  // set default tokens
+  useEffect(() => {
+    setToToken(WXDAIToken);
+    setFromToken(WETHToken);
+  }, []);
 
   const openTokenPicker = (isFromToken = true) => {
     setIsPickingFromToken(isFromToken);
@@ -398,7 +405,7 @@ export const Stackbox = () => {
           </div>
         </div>
         {fromToken && toToken && tokenAmount && tokenAmount > "0" && (
-          <div className="p-2 bg-surface-25 text-center text-em-low rounded-xl">
+          <div className="p-2 text-center bg-surface-25 text-em-low rounded-xl">
             <BodyText size={1}>
               Stacks <span className="text-em-med">{toToken.symbol}</span>,
               worth{" "}
