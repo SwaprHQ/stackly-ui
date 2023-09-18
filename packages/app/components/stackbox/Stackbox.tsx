@@ -205,11 +205,8 @@ export const Stackbox = () => {
   };
 
   const handleStartDateTimeChange = (newDateTime: Date) => {
-    const dateNowInMs = Date.now();
     const newStartDate =
-      newDateTime.getTime() <= dateNowInMs
-        ? new Date(dateNowInMs)
-        : newDateTime;
+      newDateTime.getTime() <= Date.now() ? new Date(Date.now()) : newDateTime;
 
     setStartDateTime(newStartDate);
   };
