@@ -3,13 +3,7 @@
 import { useAccount, useConnect } from "wagmi";
 import { useEffect } from "react";
 
-const AUTOCONNECTED_CONNECTOR_IDS = [
-  "safe",
-  "injected",
-  "metaMask",
-  "coinbaseWallet",
-  "walletConnect",
-];
+const AUTOCONNECTED_CONNECTOR_IDS = ["safe"];
 
 function useAutoConnect() {
   const { connect, connectors } = useConnect();
