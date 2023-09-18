@@ -19,10 +19,10 @@ export const totalFundsAmount = (order: Order) => {
   return total.toFixed(2);
 };
 
-export const totalFundsAmountWithToken = (order: Order) =>
+export const totalFundsAmountWithTokenText = (order: Order) =>
   `${totalFundsAmount(order)} ${order.sellToken.symbol}`;
 
-export const getOrderPairSymbols = (order: Order) =>
+export const orderPairSymbolsText = (order: Order) =>
   `${order.buyToken.symbol}/${order.sellToken.symbol}`;
 
 export const stacklyFee = (order: Order) =>

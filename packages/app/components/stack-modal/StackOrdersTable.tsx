@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { cowExplorerUrl } from "@/models/cow-order";
-import { getOrderPairSymbols } from "@/models/order";
+import { orderPairSymbolsText } from "@/models/order";
 import { StackOrder, StackOrderProps } from "@/models/stack-order";
 import {
   BodyText,
@@ -53,7 +53,7 @@ export const StackOrdersTable = ({ stackOrder }: StackOrderProps) => {
               <BodyText size={1}>{stackOrder.buyToken.symbol} bought</BodyText>
             </TableHead>
             <TableHead className="hidden py-1 text-right md:table-cell">
-              <BodyText size={1}>{getOrderPairSymbols(stackOrder)}</BodyText>
+              <BodyText size={1}>{orderPairSymbolsText(stackOrder)}</BodyText>
             </TableHead>
           </TableRow>
         </TableHeader>

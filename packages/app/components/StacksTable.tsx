@@ -16,8 +16,8 @@ import {
 } from "@/ui";
 import { StackedTokenLogoPair, StackModal } from "@/components";
 import {
-  totalFundsAmountWithToken,
-  getOrderPairSymbols,
+  totalFundsAmountWithTokenText,
+  orderPairSymbolsText,
   totalOrderSlotsDone,
 } from "@/models/order";
 import {
@@ -76,7 +76,7 @@ export const StacksTable = ({
                     {formatTokenValue(totalStacked(order))}
                   </BodyText>
                   <CaptionText className="text-em-low">
-                    {getOrderPairSymbols(order)}
+                    {orderPairSymbolsText(order)}
                   </CaptionText>
                 </div>
               </TableCell>
@@ -86,7 +86,7 @@ export const StacksTable = ({
                     {formatTokenValue(totalFundsUsed(order), 2)}
                   </BodyText>
                   <BodyText className="text-em-low">
-                    / {totalFundsAmountWithToken(order)}
+                    / {totalFundsAmountWithTokenText(order)}
                   </BodyText>
                 </CellWrapper>
               </TableCell>
@@ -96,7 +96,7 @@ export const StacksTable = ({
                     {formatTokenValue(calculateStackAveragePrice(order))}
                   </BodyText>
                   <BodyText className="text-em-low">
-                    {getOrderPairSymbols(order)}
+                    {orderPairSymbolsText(order)}
                   </BodyText>
                 </CellWrapper>
               </TableCell>
