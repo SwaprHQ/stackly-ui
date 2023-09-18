@@ -21,7 +21,7 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
 );
 
 const defaultConfig = getDefaultConfig({
-  autoConnect: false,
+  autoConnect: true,
   alchemyId: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
   walletConnectProjectId:
     process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || "",
