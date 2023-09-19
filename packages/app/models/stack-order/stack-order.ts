@@ -1,4 +1,4 @@
-import { allOrderSlotsDone } from "@/models/order";
+import { allOrderSlotsDone, stacklyFee } from "@/models/order";
 import { StackOrder } from "@/models/stack-order";
 import { convertedAmount } from "@/utils/numbers";
 
@@ -30,13 +30,17 @@ export const calculateStackAveragePrice = (order: StackOrder) => {
   return averagePrice;
 };
 
-export const totalFundsUsed = (order: StackOrder) =>
-  order.cowOrders?.reduce((acc, cowOrder) => {
-    return (
-      acc +
-      convertedAmount(cowOrder.executedSellAmount, order.sellToken.decimals)
-    );
-  }, 0) ?? 0;
+export const totalFundsUsed = (order: StackOrder) => {
+  const total =
+    order.cowOrders?.reduce((acc, cowOrder) => {
+      return (
+        acc +
+        convertedAmount(cowOrder.executedSellAmount, order.sellToken.decimals)
+      );
+    }, 0) ?? 0;
+
+  return total + stacklyFee(order);
+};
 
 export const totalStacked = (order: StackOrder) =>
   order.cowOrders?.reduce((acc, cowOrder) => {
@@ -45,11 +49,9 @@ export const totalStacked = (order: StackOrder) =>
     );
   }, 0) ?? 0;
 
-const SMALL_FRACTION = 0.00000001;
-
 const stackHasRemainingFunds = (stackOrder: StackOrder) =>
-  totalFundsUsed(stackOrder) > 0 &&
-  stackRemainingFunds(stackOrder) > SMALL_FRACTION;
+  totalFundsUsed(stackOrder) > stacklyFee(stackOrder) &&
+  stackRemainingFunds(stackOrder) > stacklyFee(stackOrder);
 
 export const stackRemainingFunds = (stackOrder: StackOrder) => {
   if (totalFundsUsed(stackOrder) === 0 && totalStackOrdersDone(stackOrder) > 0)

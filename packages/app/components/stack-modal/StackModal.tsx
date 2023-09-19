@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ReactNode, useState } from "react";
 import { cx } from "class-variance-authority";
 
-import { getOrderPairSymbols, totalOrderSlotsDone } from "@/models/order";
+import { orderPairSymbolsText, totalOrderSlotsDone } from "@/models/order";
 import {
   Modal,
   ModalFooter,
@@ -285,7 +285,7 @@ const StackInfo = ({ stackOrder }: StackOrderProps) => (
       <span className="text-em-med">
         {formatTokenValue(calculateStackAveragePrice(stackOrder))}
       </span>
-      <span className="text-em-med">{getOrderPairSymbols(stackOrder)}</span>
+      <span className="text-em-med">{orderPairSymbolsText(stackOrder)}</span>
     </BodyText>
   </div>
 );

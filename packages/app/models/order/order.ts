@@ -12,11 +12,18 @@ export const totalOrderSlotsDone = (order: Order) => {
 export const allOrderSlotsDone = (order: Order) =>
   totalOrderSlotsDone(order) === order.orderSlots.length;
 
-export const fundsAmount = (order: Order) =>
-  convertedAmount(order.amount, order.sellToken.decimals).toFixed(2);
+export const totalFundsAmount = (order: Order) => {
+  const total =
+    convertedAmount(order.amount, order.sellToken.decimals) + stacklyFee(order);
 
-export const fundsAmountWithToken = (order: Order) =>
-  `${fundsAmount(order)} ${order.sellToken.symbol}`;
+  return total.toFixed(2);
+};
 
-export const getOrderPairSymbols = (order: Order) =>
+export const totalFundsAmountWithTokenText = (order: Order) =>
+  `${totalFundsAmount(order)} ${order.sellToken.symbol}`;
+
+export const orderPairSymbolsText = (order: Order) =>
   `${order.buyToken.symbol}/${order.sellToken.symbol}`;
+
+export const stacklyFee = (order: Order) =>
+  convertedAmount(order.feeAmount, order.sellToken.decimals);
