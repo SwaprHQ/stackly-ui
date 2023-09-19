@@ -31,12 +31,14 @@ import {
   frequencySeconds,
 } from "@/models/stack";
 import {
+  ChainId,
   getNftWhitelistAddress,
   getWhitelist,
   nftWhitelistBalanceOf,
 } from "@stackly/sdk";
 import { useEthersSigner } from "@/utils/ethers";
 import { DEFAULT_TOKENS_BY_CHAIN } from "@/utils/constants";
+import Chain from "connectkit/build/components/Common/Chain";
 
 interface SelectTokenButtonProps {
   label: string;
@@ -119,10 +121,13 @@ export const Stackbox = () => {
 
   // set default tokens
   useEffect(() => {
-    if (chain?.id) {
-      setFromToken(DEFAULT_TOKENS_BY_CHAIN[chain.id].from);
-      setToToken(DEFAULT_TOKENS_BY_CHAIN[chain.id].to);
-    }
+    const chainId = chain?.unsupported
+      ? ChainId.GNOSIS
+      : chain?.id ?? ChainId.GNOSIS;
+
+    const { from, to } = DEFAULT_TOKENS_BY_CHAIN[chainId];
+    setFromToken(from);
+    setToToken(to);
   }, [chain]);
 
   const openTokenPicker = (isFromToken = true) => {
