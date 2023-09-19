@@ -43,6 +43,9 @@ export type Order = {
   buyToken: Token;
   /**  Amount of the vault  */
   amount: Scalars["Float"];
+  /**  stackly fees  */
+  feeAmount: Scalars["Float"];
+  fee: Scalars["Float"];
   /**  Start time of the vault  */
   startTime: Scalars["Int"];
   /**  End time of the vault  */
@@ -60,6 +63,8 @@ const OrderFragment = gql`
     owner
     receiver
     amount
+    fee
+    feeAmount
     sellToken {
       id
       address
