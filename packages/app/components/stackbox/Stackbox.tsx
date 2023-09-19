@@ -36,7 +36,7 @@ import {
   nftWhitelistBalanceOf,
 } from "@stackly/sdk";
 import { useEthersSigner } from "@/utils/ethers";
-import { WETHToken, WXDAIToken } from "@/utils/constants";
+import { DEFAULT_TOKENS_BY_CHAIN } from "@/utils/constants";
 
 interface SelectTokenButtonProps {
   label: string;
@@ -119,9 +119,11 @@ export const Stackbox = () => {
 
   // set default tokens
   useEffect(() => {
-    setToToken(WXDAIToken);
-    setFromToken(WETHToken);
-  }, []);
+    if (chain?.id) {
+      setFromToken(DEFAULT_TOKENS_BY_CHAIN[chain.id].from);
+      setToToken(DEFAULT_TOKENS_BY_CHAIN[chain.id].to);
+    }
+  }, [chain]);
 
   const openTokenPicker = (isFromToken = true) => {
     setIsPickingFromToken(isFromToken);
