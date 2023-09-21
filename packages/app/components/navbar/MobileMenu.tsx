@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ConnectButton, SelectNetwork } from "@/components";
 import Link from "next/link";
 import { Button, Icon } from "@/ui";
+import { STACKLY_LANDING_URL } from "@/constants";
 
 export default function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,10 +39,16 @@ export default function MobileMenu() {
               <span className="ml-4">Your Stacks</span>
             </Link>
             <hr className="h-0 -mx-6 border-b border-solid border-surface-75" />
-            <Link href="#" className="block py-3 text-em-med">
+            <Link
+              href={`${STACKLY_LANDING_URL}#how-it-works`}
+              className="block py-3 text-em-med"
+            >
               How it works
             </Link>
-            <Link href="#" className="block py-3 text-em-med">
+            <Link
+              href={`${STACKLY_LANDING_URL}#faqs`}
+              className="block py-3 text-em-med"
+            >
               FAQ&apos;s
             </Link>
           </div>
