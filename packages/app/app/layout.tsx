@@ -5,6 +5,7 @@ import localFont from "next/font/local";
 import { Navbar } from "@/components";
 import { Providers } from "@/providers";
 import "@/styles/global.css";
+import { STACKLY_APP_URL } from "@/constants";
 
 const stabilGrotesk = localFont({
   src: [
@@ -28,10 +29,8 @@ const stabilGrotesk = localFont({
   variable: "--sans-font",
 });
 
-const defaultStacklyUrl = "https://stackly.eth.limo";
-
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.STACKLY_URL ?? defaultStacklyUrl),
+  metadataBase: new URL(STACKLY_APP_URL),
   title: "Stackly | Stack crypto over time.",
   description:
     "Stackly is a simple, non-custodial tool that uses the CoW protocol to place recurring swaps based on DCA.",
