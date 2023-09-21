@@ -38,8 +38,6 @@ import {
 } from "@stackly/sdk";
 import { useEthersSigner } from "@/utils/ethers";
 import { DEFAULT_TOKENS_BY_CHAIN } from "@/utils/constants";
-import Chain from "connectkit/build/components/Common/Chain";
-
 interface SelectTokenButtonProps {
   label: string;
   onClick: (isFromToken?: boolean) => void;
