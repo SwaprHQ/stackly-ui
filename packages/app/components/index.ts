@@ -1,23 +1,23 @@
 import { ConnectButton } from "./ConnectButton";
+import { DialogConfirmTransactionLoading } from "./DialogConfirmTransactionLoading";
 import { Navbar } from "./navbar/Navbar";
 import { SelectNetwork } from "./SelectNetwork";
-import { DialogConfirmTransactionLoading } from "./DialogConfirmTransactionLoading";
-import { StackedTokenLogoPair } from "./StackedTokenLogoPair";
+import { TokenLogoPair } from "./TokenLogoPair";
 import TokenPicker from "./token-picker/TokenPicker";
 
+export * from "./stack-modal";
 export * from "./stackbox";
+export * from "./BetaNFTModal";
+export * from "./DatePicker";
 export * from "./FromToStackTokenPair";
 export * from "./StacksTable";
 export * from "./TokenIcon";
-export * from "./DatePicker";
-export * from "./stack-modal";
-export * from "./BetaNFTModal";
 
 export {
   ConnectButton,
+  DialogConfirmTransactionLoading,
   Navbar,
   SelectNetwork,
+  TokenLogoPair,
   TokenPicker,
-  StackedTokenLogoPair,
-  DialogConfirmTransactionLoading,
 };
