@@ -14,6 +14,7 @@ const captionTextStyles = cva([], {
 });
 
 interface CaptionTextProps extends TextProps {
+  onClick?: (args?: any) => void;
   size?: 1 | 2;
 }
 
@@ -21,6 +22,7 @@ export const CaptionText = ({
   children,
   size,
   className,
+  onClick,
   weight,
   as,
 }: CaptionTextProps) => {
@@ -31,6 +33,7 @@ export const CaptionText = ({
         boldStyles({ weight }),
         captionTextStyles({ size, className })
       )}
+      onClick={onClick}
     >
       {children}
     </TextComponent>
