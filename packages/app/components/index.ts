@@ -7,6 +7,7 @@ import TokenPicker from "./token-picker/TokenPicker";
 
 export * from "./stack-modal";
 export * from "./stackbox";
+export * from "./strategies";
 export * from "./BetaNFTModal";
 export * from "./DatePicker";
 export * from "./FromToStackTokenPair";
