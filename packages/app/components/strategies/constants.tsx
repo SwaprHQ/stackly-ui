@@ -9,24 +9,6 @@ export const FREQUENCY_LABEL = {
 };
 
 export const STRATEGY_CATEGORIES = {
-  /** 
-   * TBD in STK-190
-   * @see https://linear.app/swaprhq/issue/STK-190/add-strategies-for-you-strategies-tab
-   * @TODO uncomment the following lines when
-   * creating the "Strategies for you" section
-   * and simply fill the `strategies` array
-   * following the same data structure than `popular`
-  suggested: {
-    label: () => (
-      <>
-        <Icon className="mr-1.5" name="sparkles" size={14} /> Strategies for you
-      </>
-    ),
-    strategies: [
-      
-    ],
-  },
-  */
   popular: {
     label: "Popular Strategies",
     strategies: [
