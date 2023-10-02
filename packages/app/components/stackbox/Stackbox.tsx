@@ -308,7 +308,7 @@ export const Stackbox = () => {
 
   return (
     <div
-      className={cx("max-w-lg mx-auto mt-10 bg-white shadow-2xl rounded-2xl", {
+      className={cx("max-w-lg mx-auto bg-white shadow-2xl rounded-2xl", {
         "outline outline-2 outline-primary-200": isStrategySelected,
       })}
     >

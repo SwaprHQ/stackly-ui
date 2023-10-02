@@ -3,7 +3,7 @@
 import { Tab } from "@headlessui/react";
 
 import { Strategy, useStrategyContext } from "@/contexts";
-import { tabButtonStyles } from "@/app/stacks/stacksOrders";
+import { tabButtonStyles } from "@/components";
 
 import { StrategyCard } from "./StrategyCard";
 import { STRATEGY_CATEGORIES } from "./constants";
@@ -14,7 +14,7 @@ export const Strategies = () => {
   const strategyCategories = Object.values(STRATEGY_CATEGORIES);
 
   return (
-    <div className="max-w-lg mx-auto mt-8">
+    <div className="max-w-lg mx-auto">
       <Tab.Group>
         <Tab.List className="mb-2">
           <div className="flex space-x-2">

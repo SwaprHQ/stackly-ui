@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { cx } from "class-variance-authority";
 import { Tab } from "@headlessui/react";
+
 import {
   StackOrder,
   filterActiveOrders,
@@ -10,22 +11,17 @@ import {
   filterCompletedOrders,
   getStackOrders,
 } from "@/models/stack-order";
-import { ChainId } from "@stackly/sdk";
-import { BodyText, ButtonLink, HeadingText, buttonStyles } from "@/ui";
-import { StacksTable } from "@/components";
-import EmptyState from "./empty-state";
 import { getOrders } from "@/models/order";
-import { twMerge } from "tailwind-merge";
+import { ChainId } from "@stackly/sdk";
+import { BodyText, ButtonLink, HeadingText } from "@/ui";
+import { StacksTable, tabButtonStyles } from "@/components";
+
+import EmptyState from "./empty-state";
 
 export interface StackOrdersProps {
   address: string;
   chainId: ChainId;
 }
-
-export const tabButtonStyles = twMerge(
-  buttonStyles({ variant: "secondary" }),
-  "bg-transperant border border-transparent text-em-high font-semibold ui-selected:bg-surface-75 ui-not-selected:text-em-low  hover:bg-surface-50 hover:border-surface-75 focus:ring-0"
-);
 
 export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
   const [loading, setLoading] = useState(true);
