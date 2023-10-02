@@ -173,6 +173,15 @@ export const Stackbox = () => {
     if (selectedStrategy) setSelectedStrategy(null);
   };
 
+  const resetDefaultFormValues = () => {
+    setFromToken(null);
+    setToToken(null);
+    setTokenAmount("");
+    setFrequency(FREQUENCY_OPTIONS.hour);
+    setStartDateTime(new Date(Date.now()));
+    setEndDateTime(new Date(endDateByFrequency[frequency]));
+  };
+
   const openTokenPicker = (isFromToken = true) => {
     setIsPickingFromToken(isFromToken);
     openModal(ModalId.TOKEN_PICKER);
@@ -501,14 +510,17 @@ export const Stackbox = () => {
                     timeLength={formatDistance(endDateTime, startDateTime)}
                   />
                 </div>
-                <CaptionText
-                  className="cursor-pointer text-primary-800"
+                <Button
+                  className="text-primary-800"
                   onClick={() => {
-                    setSelectedStrategy(null);
+                    deselectStrategy();
+                    resetDefaultFormValues();
                   }}
+                  size="xs"
+                  variant="caption"
                 >
-                  Reset stack
-                </CaptionText>
+                  <CaptionText>Reset stack</CaptionText>
+                </Button>
               </>
             ) : (
               <StackDetailsTileText

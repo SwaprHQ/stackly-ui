@@ -19,11 +19,7 @@ export const Strategies = () => {
         <Tab.List className="mb-2">
           <div className="flex space-x-2">
             {strategyCategories.map((category, catIndex) => (
-              <Tab
-                className={tabButtonStyles}
-                key={catIndex}
-                onClick={() => setSelectedStrategy(null)}
-              >
+              <Tab className={tabButtonStyles} key={catIndex}>
                 {category.label}
               </Tab>
             ))}
