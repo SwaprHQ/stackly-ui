@@ -31,9 +31,13 @@ export const StrategyCard = ({
 
   return (
     <div
-      className={cx("p-3 bg-white shadow-md min-w-60 rounded-2xl", {
-        "!bg-primary-900": selected,
-      })}
+      className={cx(
+        "p-3 bg-white shadow-md min-w-60 rounded-2xl cursor-pointer",
+        {
+          "!bg-primary-900": selected,
+        }
+      )}
+      onClick={() => onClick(strategy.id)}
     >
       <div className="flex">
         <TokenLogoPair
@@ -78,7 +82,6 @@ export const StrategyCard = ({
         </div>
         <Button
           className={cx({ "p-[5px] rounded-md": selected })}
-          onClick={onClick}
           size={selected ? "icon" : "xs"}
           variant={selected ? "primary" : "secondary"}
         >
