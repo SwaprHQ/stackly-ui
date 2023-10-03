@@ -7,6 +7,7 @@ import { Strategy } from "@/contexts";
 import { TokenLogoPair } from "@/components/TokenLogoPair";
 
 import { FREQUENCY_LABEL } from "./constants";
+import { useState } from "react";
 
 interface StrategyCardProps {
   onClick: (id: number) => void;
@@ -20,6 +21,7 @@ export const StrategyCard = ({
   strategy,
 }: StrategyCardProps) => {
   const { buyToken, sellToken } = strategy;
+  const [isHovered, setIsHovered] = useState(false);
 
   const strategyTotalDetails = [
     {
@@ -35,9 +37,12 @@ export const StrategyCard = ({
         "p-3 bg-white shadow-md min-w-60 rounded-2xl cursor-pointer",
         {
           "!bg-primary-900": selected,
+          "shadow-lg": isHovered,
         }
       )}
       onClick={() => onClick(strategy.id)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <div className="flex">
         <TokenLogoPair
@@ -83,7 +88,7 @@ export const StrategyCard = ({
         <Button
           className={cx({ "p-[5px] rounded-md": selected })}
           size={selected ? "icon" : "xs"}
-          variant={selected ? "primary" : "secondary"}
+          variant={selected || isHovered ? "primary" : "secondary"}
         >
           {selected ? <Icon name="close" size={15} /> : "Select"}
         </Button>
