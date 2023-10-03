@@ -20,7 +20,7 @@ export const buttonStyles = cva(
         icon: "p-2 rounded-xl",
       },
       variant: {
-        caption: ["bg-transparent active:ring-0 focus:ring-0"],
+        caption: ["bg-transparent active:ring-0 focus:ring-0 p-0"],
         primary: [
           "bg-primary-400 text-em-high hover:bg-primary-500 active:ring-primary-200 shadow-xs",
           "focus:bg-primary-500 focus:ring-primary-200",

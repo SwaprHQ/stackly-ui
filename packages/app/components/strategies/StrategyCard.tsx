@@ -1,27 +1,24 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { cx } from "class-variance-authority";
 
 import { Button, CaptionText, Icon } from "@/ui";
-import { Strategy } from "@/contexts";
+import { Strategy, useStrategyContext } from "@/contexts";
 import { TokenLogoPair } from "@/components/TokenLogoPair";
 
 import { FREQUENCY_LABEL } from "./constants";
-import { useState } from "react";
 
 interface StrategyCardProps {
-  onClick: (id: number) => void;
-  selected?: boolean;
   strategy: Strategy;
 }
 
-export const StrategyCard = ({
-  onClick,
-  selected,
-  strategy,
-}: StrategyCardProps) => {
-  const { buyToken, sellToken } = strategy;
+export const StrategyCard = ({ strategy }: StrategyCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isSelected, setIsSelected] = useState(false);
+  const { selectedStrategy, setSelectedStrategy } = useStrategyContext();
+
+  const { buyToken, sellToken } = strategy;
 
   const strategyTotalDetails = [
     {
@@ -31,16 +28,20 @@ export const StrategyCard = ({
     { label: "No. of days", totalAmount: strategy.daysAmount },
   ];
 
+  useEffect(() => {
+    setIsSelected(selectedStrategy?.id === strategy.id);
+  }, [selectedStrategy, strategy.id]);
+
   return (
     <div
       className={cx(
         "p-3 bg-white shadow-md min-w-60 rounded-2xl cursor-pointer",
         {
-          "!bg-primary-900": selected,
+          "!bg-primary-900": isSelected,
           "shadow-lg": isHovered,
         }
       )}
-      onClick={() => onClick(strategy.id)}
+      onClick={() => setSelectedStrategy(isSelected ? null : strategy)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -53,7 +54,7 @@ export const StrategyCard = ({
         />
         <div
           className={cx("flex items-center ml-2", {
-            "text-white": selected,
+            "text-white": isSelected,
           })}
         >
           <CaptionText>{`${strategy.sellAmountPerTimeframe} ${sellToken.symbol}`}</CaptionText>
@@ -69,7 +70,7 @@ export const StrategyCard = ({
             <div key={index}>
               <CaptionText
                 className={cx("text-em-low", {
-                  "text-white opacity-[.48]": selected,
+                  "text-white opacity-[.48]": isSelected,
                 })}
                 size={1}
               >
@@ -77,7 +78,7 @@ export const StrategyCard = ({
               </CaptionText>
               <CaptionText
                 className={cx("text-em-med", {
-                  "text-white opacity-[.76]": selected,
+                  "text-white opacity-[.76]": isSelected,
                 })}
               >
                 {strategyDetails.totalAmount}
@@ -86,11 +87,11 @@ export const StrategyCard = ({
           ))}
         </div>
         <Button
-          className={cx({ "p-[5px] rounded-md": selected })}
-          size={selected ? "icon" : "xs"}
-          variant={selected || isHovered ? "primary" : "secondary"}
+          className={cx({ "p-[5px] rounded-md": isSelected })}
+          size={isSelected ? "icon" : "xs"}
+          variant={isSelected || isHovered ? "primary" : "secondary"}
         >
-          {selected ? <Icon name="close" size={15} /> : "Select"}
+          {isSelected ? <Icon name="close" size={15} /> : "Select"}
         </Button>
       </div>
     </div>
