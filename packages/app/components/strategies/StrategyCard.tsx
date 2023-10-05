@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { cx } from "class-variance-authority";
 
 import { Button, CaptionText, Icon } from "@/ui";
@@ -15,7 +15,6 @@ interface StrategyCardProps {
 
 export const StrategyCard = ({ strategy }: StrategyCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [isSelected, setIsSelected] = useState(false);
   const { selectedStrategy, setSelectedStrategy } = useStrategyContext();
 
   const { buyToken, sellToken } = strategy;
@@ -28,9 +27,7 @@ export const StrategyCard = ({ strategy }: StrategyCardProps) => {
     { label: "No. of days", totalAmount: strategy.daysAmount },
   ];
 
-  useEffect(() => {
-    setIsSelected(selectedStrategy?.id === strategy.id);
-  }, [selectedStrategy, strategy.id]);
+  const isSelected = selectedStrategy?.id === strategy.id;
 
   return (
     <div
