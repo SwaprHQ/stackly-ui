@@ -59,6 +59,29 @@ yarn build
 
 This command will create a production build of the project in the `dist` directory. You can then deploy the contents of this directory to your server or hosting provider.
 
+## Supporting new chains
+
+1. Update the SDK.
+   - You'll need the following smart contract addresses in the target chain:
+     - Stackly OrderFactory
+     - Stackly DCAOrder singleton
+     - Stackly TheGraph subgraph endpoint
+     - CoW Protcol GPv2VaultRelayer (CoW settlement)
+   - Add that information in `packages\sdk\src\vaults\constants.ts`
+   - `cd packages/sdk`
+   - `yarn typechain`
+   - `yarn build`
+2. Update the Subraph.
+   - Go to `packages\subgraph\bin\config.ts` and update the config object with the Factory contract `address` and `startBlock`
+   - Go to `packages\subgraph\bin\build-subgraph.ts` and update the `SUPPORTED_NETWORKS` variable
+   - In `packages\subgraph\package.json` create the relevant `build` and `prepare` commands for the new chain
+3. Update the UI app
+   - Create some tokens for the integrated chain in `packages/app/models/token/tokens.ts`
+   - Add a default token pair for the chain in `packages/app/utils/constants.ts`
+   - Update the WAGMI chains config in `packages/app/providers/wagmi-config.ts` with the chain info and a RPC
+   - Add some common tokens for the new chain in `packages/app/components/token-picker/constants.ts`
+4. Try to create a new stack in the UI
+
 ## Code Guidelines
 
 ### React Contexts
