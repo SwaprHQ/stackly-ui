@@ -12303,6 +12303,7 @@ __metadata:
   dependencies:
     "@graphprotocol/graph-cli": 0.51.2
     "@graphprotocol/graph-ts": 0.31.0
+    "@stackly/sdk": "workspace:^"
     "@types/node": ^18.11.18
     ts-node: ^10.8.2
     yaml: ^2.2.1
