@@ -1,18 +1,21 @@
 import { configureChains, createConfig } from "wagmi";
 import { getDefaultConfig } from "connectkit";
-import { gnosis } from "wagmi/chains";
+import { gnosis, mainnet } from "wagmi/chains";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { ChainId } from "@stackly/sdk";
 import { SafeConnector } from "wagmi/connectors/safe";
 
 const chainJsonRpc: Record<number, { http: string }> = {
   [ChainId.GNOSIS]: {
-    http: `https://rpc.gnosis.gateway.fm`,
+    http: "https://rpc.gnosis.gateway.fm",
+  },
+  [ChainId.ETHEREUM]: {
+    http: "https://rpc.eth.gateway.fm",
   },
 };
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [gnosis],
+  [gnosis, mainnet],
   [
     jsonRpcProvider({
       rpc: (chain) => chainJsonRpc[chain.id],

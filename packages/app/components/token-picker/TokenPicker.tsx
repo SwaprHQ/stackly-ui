@@ -18,6 +18,8 @@ import { TOKEN_PICKER_COMMON_TOKENS } from "./constants";
 import { TokenWithBalance, useTokenListContext } from "@/contexts";
 import { formatTokenValue } from "@/utils/token";
 import { TokenFromTokenlist } from "@/models/token";
+import { useNetwork } from "wagmi";
+import { ChainId } from "@stackly/sdk";
 
 const HALF_SECOND = 500;
 
@@ -26,24 +28,9 @@ interface TokenPickerProps extends ModalBaseProps {
   onTokenSelect: (token: TokenWithBalance) => void;
 }
 
-interface CommonTokensProps {
-  onTokenSelect: (token: TokenWithBalance) => void;
-}
-
 interface SearchBarProps {
   onSearch: (event: ChangeEvent<HTMLInputElement>) => void;
   value: string;
-}
-interface TokenListRowProps {
-  token: TokenWithBalance;
-  onTokenSelect: (token: TokenWithBalance) => void;
-}
-
-interface TokenListProps {
-  onClearSearch: () => void;
-  onTokenSelect: (token: TokenWithBalance) => void;
-  tokenList?: TokenFromTokenlist[] | TokenWithBalance[];
-  tokenSearchQuery?: string;
 }
 
 const TokenPicker = ({
@@ -53,9 +40,13 @@ const TokenPicker = ({
   onTokenSelect,
 }: TokenPickerProps) => {
   const [tokenSearchQuery, setTokenSearchQuery] = useState("");
+  const [commonTokens, setCommonTokens] = useState<TokenFromTokenlist[]>(
+    TOKEN_PICKER_COMMON_TOKENS[ChainId.GNOSIS]
+  );
   const [debouncedQuery, setDebouncedQuery] = useState(tokenSearchQuery);
 
   const { tokenList, tokenListWithBalances } = useTokenListContext();
+  const { chain } = useNetwork();
 
   const tokenListSearchCleanup = () => {
     setDebouncedQuery("");
@@ -89,6 +80,14 @@ const TokenPicker = ({
     return () => clearTimeout(timer);
   }, [debouncedQuery]);
 
+  /**
+   * Updates the token query value after 0.5s from the last
+   * keystroke of 'debouncedTerm'
+   */
+  useEffect(() => {
+    if (chain?.id) setCommonTokens(TOKEN_PICKER_COMMON_TOKENS[chain.id]);
+  }, [chain]);
+
   return (
     <Modal
       closeAction={handleModalClose}
@@ -103,7 +102,10 @@ const TokenPicker = ({
             onSearch={handleTokenSearchInput}
             value={debouncedQuery}
           />
-          <CommonTokens onTokenSelect={handleTokenSelect} />
+          <CommonTokens
+            commonTokens={commonTokens}
+            onTokenSelect={handleTokenSelect}
+          />
         </div>
         <TokenList
           onClearSearch={tokenListSearchCleanup}
@@ -135,13 +137,17 @@ const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(
 );
 SearchBar.displayName = "Token Picker Search";
 
-const CommonTokens = ({ onTokenSelect }: CommonTokensProps) => (
+interface CommonTokensProps {
+  commonTokens: TokenFromTokenlist[];
+  onTokenSelect: (token: TokenWithBalance) => void;
+}
+const CommonTokens = ({ commonTokens, onTokenSelect }: CommonTokensProps) => (
   <div className="mt-5">
     <BodyText className="text-xs font-semibold text-em-low">
       Common tokens
     </BodyText>
     <div className="flex flex-wrap gap-2 mt-2">
-      {TOKEN_PICKER_COMMON_TOKENS.map((token: TokenWithBalance) => (
+      {commonTokens.map((token: TokenWithBalance) => (
         <ChipButton
           id={token.address}
           key={token.address}
@@ -157,6 +163,12 @@ const CommonTokens = ({ onTokenSelect }: CommonTokensProps) => (
   </div>
 );
 
+interface TokenListProps {
+  onClearSearch: () => void;
+  onTokenSelect: (token: TokenWithBalance) => void;
+  tokenList?: TokenFromTokenlist[] | TokenWithBalance[];
+  tokenSearchQuery?: string;
+}
 const TokenList = ({
   onClearSearch,
   onTokenSelect,
@@ -208,6 +220,10 @@ const TokenList = ({
   );
 };
 
+interface TokenListRowProps {
+  token: TokenWithBalance;
+  onTokenSelect: (token: TokenWithBalance) => void;
+}
 const TokenListRow = ({ onTokenSelect, token }: TokenListRowProps) => (
   <div
     className="flex items-center justify-between w-full h-16 px-4 cursor-pointer hover:bg-surface-50"
