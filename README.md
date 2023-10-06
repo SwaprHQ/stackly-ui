@@ -66,7 +66,7 @@ This command will create a production build of the project in the `dist` directo
      - Stackly OrderFactory
      - Stackly DCAOrder singleton
      - Stackly TheGraph subgraph endpoint
-     - CoW Protcol GPv2VaultRelayer (CoW settlement)
+     - CoW Protcol's settlement address
    - Add that information in `packages\sdk\src\vaults\constants.ts`
    - `cd packages/sdk`
    - `yarn typechain`
