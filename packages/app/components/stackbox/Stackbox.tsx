@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect, AnimationEventHandler } from "react";
 import { cx } from "class-variance-authority";
-import { useAccount, useBalance, useNetwork } from "wagmi";
+import { useAccount, useBalance, useNetwork, useSwitchNetwork } from "wagmi";
 import { formatUnits, parseUnits } from "viem";
 import Link from "next/link";
 import { formatDistance } from "date-fns";
@@ -24,7 +24,12 @@ import {
   TokenPicker,
   BetaNFTModal,
 } from "@/components";
-import { ModalId, useModalContext, TokenWithBalance } from "@/contexts";
+import {
+  ModalId,
+  useModalContext,
+  TokenWithBalance,
+  useTokenListContext,
+} from "@/contexts";
 import {
   FREQUENCY_OPTIONS,
   INITAL_ORDER,
@@ -85,6 +90,8 @@ export const Stackbox = () => {
   const [toToken, setToToken] = useState<TokenWithBalance>();
   const { closeModal, isModalOpen, openModal } = useModalContext();
   const signer = useEthersSigner();
+  const { getTokenFromList } = useTokenListContext();
+  const { switchNetwork } = useSwitchNetwork();
 
   const { chain } = useNetwork();
   const { address, isConnected } = useAccount();
@@ -256,6 +263,57 @@ export const Stackbox = () => {
       getNFTHolder();
   }, [address, chain, openModal, signer]);
 
+  const queryParams = {
+    sellToken: fromToken?.address || "",
+    buyToken: toToken?.address || "",
+    amount: tokenAmount.toString(),
+    startTime: startDateTime.getTime().toString(),
+    endTime: startDateTime.getTime().toString(),
+    interval: frequency.toString(),
+    chainId: chain?.id.toString() || "",
+  };
+  const [copySuccess, setCopySuccess] = useState(false);
+  const shareLink = () => {
+    const url = new URL(
+      window.location.origin + "?" + new URLSearchParams(queryParams).toString()
+    );
+    navigator.clipboard.writeText(url.toString()).then(
+      () => {
+        setCopySuccess(true);
+        setTimeout(() => setCopySuccess(false), 5000);
+      },
+      () => console.error("Error copying text.")
+    );
+  };
+
+  useEffect(() => {
+    const params = new Proxy(new URLSearchParams(window.location.search), {
+      get: (searchParams, prop) => searchParams.get(prop.toString()),
+    }) as any;
+
+    const {
+      sellToken,
+      buyToken,
+      amount,
+      startTime,
+      endTime,
+      interval,
+      chainId,
+    } = params;
+
+    if (chainId) switchNetwork && switchNetwork(chainId);
+    if (sellToken) setFromToken(getTokenFromList(sellToken) || undefined);
+    if (buyToken) setToToken(getTokenFromList(buyToken) || undefined);
+    if (amount) setTokenAmount(amount);
+    if (startTime) setStartDateTime(new Date(parseInt(startTime, 10)));
+    if (endTime) setEndDateTime(new Date(parseInt(endTime, 10)));
+    if (interval)
+      setFrequency(
+        FREQUENCY_OPTIONS[interval as keyof typeof FREQUENCY_OPTIONS] ||
+          FREQUENCY_OPTIONS.hour
+      );
+  }, [getTokenFromList, switchNetwork]);
+
   return (
     <div className="max-w-lg mx-auto my-24 bg-white shadow-2xl rounded-2xl">
       <div className="py-4 border shadow-lg border-surface-50 rounded-2xl">
@@ -347,9 +405,18 @@ export const Stackbox = () => {
       </div>
       <div className="px-5 py-6 space-y-6">
         <div className="space-y-2">
-          <TitleText weight="bold" className="text-em-med">
-            Stack WETH every
-          </TitleText>
+          <div className="flex justify-between">
+            <TitleText weight="bold" className="text-em-med">
+              Stack WETH every
+            </TitleText>
+            <Button
+              size="sm"
+              variant="secondary"
+              iconLeft={copySuccess ? "check" : "share"}
+              className="p-0.5 rounded-md text-em-low"
+              onClick={shareLink}
+            />
+          </div>
           <div className="space-y-6">
             <div className="flex space-x-2">
               {frequencyOptions.map(({ option, name }) => {

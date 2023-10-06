@@ -16,6 +16,7 @@ import StacklyLogoIcon from "./stackly-logo.svg";
 import SwapIcon from "./swap.svg";
 import WarningIcon from "./warning.svg";
 import DiscordIcon from "./discord.svg";
+import ShareIcon from "./share.svg";
 
 export {
   ArrowExternalIcon,
@@ -34,4 +35,5 @@ export {
   SwapIcon,
   WarningIcon,
   DiscordIcon,
+  ShareIcon,
 };

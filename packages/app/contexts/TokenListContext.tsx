@@ -45,11 +45,11 @@ const TokenListContext = createContext<{
   tokenList: TokenFromTokenlist[];
   tokenListWithBalances?: TokenWithBalance[];
   getTokenLogoURL: (tokenAddress: string) => string;
-  getTokenFromList: (tokenAddress: string) => TokenFromTokenlist | false;
+  getTokenFromList: (tokenAddress: string) => TokenFromTokenlist | null;
 }>({
   tokenList: DEFAULT_TOKEN_LIST_BY_CHAIN[ChainId.GNOSIS],
   getTokenLogoURL: (tokenAddress: string) => "#",
-  getTokenFromList: (tokenAddress: string) => false,
+  getTokenFromList: (tokenAddress: string) => null,
 });
 
 const mergeTokenlists = (
@@ -178,7 +178,7 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
       getTokenFromList: (tokenAddress: string) =>
         tokenList.find(
           (token) => token.address.toUpperCase() === tokenAddress?.toUpperCase()
-        ) ?? false,
+        ) ?? null,
       getTokenLogoURL: (tokenAddress: string) =>
         tokenList.find(
           (token) => token.address.toUpperCase() === tokenAddress?.toUpperCase()
