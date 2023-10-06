@@ -21,7 +21,7 @@ const validateVaultInfo = (
 };
 
 /**
- * Order factory address list
+ * Stackly's Order factory address list
  */
 export const ORDER_FACTORY_ADDRESS_LIST: Record<ChainId, string> = {
   [ChainId.ETHEREUM]: MAINNET_ORDER_FACTORY_ADDRESS,
@@ -29,7 +29,7 @@ export const ORDER_FACTORY_ADDRESS_LIST: Record<ChainId, string> = {
 };
 
 /**
- * DCA Order singleton/mastercopy address list
+ * Stackly's DCA Order singleton/mastercopy address list
  */
 export const DCAORDER_SINGLETON_ADDRESS_LIST: Record<ChainId, string> = {
   [ChainId.ETHEREUM]: "0xc97ecbdba20c672c61e27bd657d4dfbd2328f6fa",
@@ -37,10 +37,12 @@ export const DCAORDER_SINGLETON_ADDRESS_LIST: Record<ChainId, string> = {
 };
 
 /**
- * COW's settlement address list, CoW Protcol GPv2VaultRelayer
+ * CoW's settlement address list
+ * @see https://docs.cow.fi/smart-contracts/introduction
+ * to check CoW contracts addresses
  */
 export const COW_SETTLEMENT_ADDRESS_LIST: Record<ChainId, string> = {
-  [ChainId.ETHEREUM]: "0xC92E8bdf79f0507f65a392b0ab4667716BFE0110",
+  [ChainId.ETHEREUM]: "0x9008D19f58AAbD9eD0D60971565AA8510560ab41",
   [ChainId.GNOSIS]: "0x9008D19f58AAbD9eD0D60971565AA8510560ab41",
 };
 
@@ -51,7 +53,7 @@ export const SUBGRAPH_ENDPOINT_LIST: Readonly<Record<string, string>> = {
 };
 
 /**
- * NFT Whitelist address list
+ * Stackly's NFT Whitelist address list
  */
 export const NFT_WHITELIST_ADDRESS_LIST: Record<ChainId, string> = {
   [ChainId.ETHEREUM]: AddressZero,
