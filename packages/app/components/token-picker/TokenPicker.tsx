@@ -81,8 +81,7 @@ const TokenPicker = ({
   }, [debouncedQuery]);
 
   /**
-   * Updates the token query value after 0.5s from the last
-   * keystroke of 'debouncedTerm'
+   * Updates the token common tokens on chain switch
    */
   useEffect(() => {
     if (chain?.id) setCommonTokens(TOKEN_PICKER_COMMON_TOKENS[chain.id]);

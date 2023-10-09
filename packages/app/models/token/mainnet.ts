@@ -15,6 +15,14 @@ export const mainnetTokens = {
     logoURI: "/assets/images/tokens/eth.png",
     chainId: 1,
   },
+  RETH: {
+    address: "0xae78736cd615f374d3085123a210448e74fc6393",
+    name: "Rocket Pool ETH",
+    symbol: "rETH",
+    decimals: 18,
+    logoURI: "/assets/images/tokens/reth.png",
+    chainId: 1,
+  },
   SWPR: {
     address: "0x6cAcDB97e3fC8136805a9E7c342d866ab77D0957",
     name: "Swapr Token",
