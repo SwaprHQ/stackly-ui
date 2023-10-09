@@ -5,12 +5,15 @@ import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { ChainId } from "@stackly/sdk";
 import { SafeConnector } from "wagmi/connectors/safe";
 
+const RPC_GNOSIS = "https://rpc.gnosis.gateway.fm";
+const RPC_MAINNET = "https://rpc.eth.gateway.fm";
+
 const chainJsonRpc: Record<number, { http: string }> = {
   [ChainId.GNOSIS]: {
-    http: "https://rpc.gnosis.gateway.fm",
+    http: RPC_GNOSIS,
   },
   [ChainId.ETHEREUM]: {
-    http: "https://rpc.eth.gateway.fm",
+    http: RPC_MAINNET,
   },
 };
 
