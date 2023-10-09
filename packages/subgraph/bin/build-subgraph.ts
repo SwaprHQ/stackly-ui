@@ -3,7 +3,11 @@ import { stringify as yamlStringify } from "yaml";
 
 import { config } from "./config";
 
-const SUPPORTED_NETWORKS = ["mainnet", "xdai"];
+/**
+ * @see https://thegraph.com/docs/en/developing/supported-networks/
+ * for supported chain names
+ */
+const SUPPORTED_NETWORKS = ["mainnet", "gnosis"];
 
 async function main() {
   // get network from command line
