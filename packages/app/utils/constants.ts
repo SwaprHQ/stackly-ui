@@ -1,8 +1,6 @@
 import {
-  GNOSIS_WETH,
-  GNOSIS_WXDAI,
-  MAINNET_USDC,
-  MAINNET_WETH,
+  gnosisTokens,
+  mainnetTokens,
   TokenFromTokenlist,
 } from "@/models/token";
 
@@ -13,11 +11,11 @@ interface DefaultTokens {
 
 export const DEFAULT_TOKENS_BY_CHAIN: { [chainId: number]: DefaultTokens } = {
   1: {
-    from: MAINNET_USDC,
-    to: MAINNET_WETH,
+    from: mainnetTokens.USDC,
+    to: mainnetTokens.WETH,
   },
   100: {
-    from: GNOSIS_WXDAI,
-    to: GNOSIS_WETH,
+    from: gnosisTokens.WXDAI,
+    to: gnosisTokens.WETH,
   },
 };
