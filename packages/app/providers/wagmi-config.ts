@@ -6,7 +6,7 @@ import { ChainId } from "@stackly/sdk";
 import { SafeConnector } from "wagmi/connectors/safe";
 
 const RPC_GNOSIS = "https://rpc.gnosis.gateway.fm";
-const RPC_MAINNET = "https://rpc.eth.gateway.fm";
+const RPC_MAINNET = "https://eth.llamarpc.com";
 
 const chainJsonRpc: Record<number, { http: string }> = {
   [ChainId.GNOSIS]: {
