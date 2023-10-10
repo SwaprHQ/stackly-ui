@@ -11,7 +11,7 @@ export default function Page() {
   if (isDisconnected) return <NoWalletState />;
 
   return (
-    <div className="py-10 space-y-8">
+    <div className="space-y-8">
       {chain && address ? (
         <StackOrders chainId={chain.id} address={address} />
       ) : (
