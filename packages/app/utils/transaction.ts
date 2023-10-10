@@ -5,8 +5,13 @@ const EXPLORER_URL_BY_CHAIN = {
   100: "https://gnosisscan.io",
 };
 
-export const txEplorerLink = (chainId: ChainId, txHash: string) => {
+export const getExplorerLink = (
+  chainId: ChainId,
+  subPath: string,
+  path: "tx" | "address",
+  fragment?: string
+) => {
   const baseUrl = EXPLORER_URL_BY_CHAIN[chainId];
 
-  return `${baseUrl}/tx/${txHash}`;
+  return `${baseUrl}/${path}/${subPath}${fragment ?? ""}`;
 };

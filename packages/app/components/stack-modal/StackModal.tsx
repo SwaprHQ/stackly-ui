@@ -36,6 +36,7 @@ import {
 } from "@/models/stack-order";
 import { formatTokenValue } from "@/utils/token";
 import { getDCAOrderContract } from "@stackly/sdk";
+import { getExplorerLink } from "@/utils/transaction";
 import { useEthersSigner } from "@/utils/ethers";
 import {
   StackedTokenLogoPair,
@@ -62,9 +63,6 @@ type Content = {
     text: string;
   };
 };
-
-const addressExplorerLink = (address: string) =>
-  `https://gnosisscan.io/address/${address}#tokentxns`;
 
 export const StackModal = ({
   stackOrder,
@@ -147,21 +145,28 @@ export const StackModal = ({
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center space-x-2">
               <StackedTokenLogoPair order={stackOrder} />
-              <Link
-                passHref
-                target="_blank"
-                href={addressExplorerLink(stackOrder.id)}
-                className="flex items-center space-x-0.5 hover:border-em-low border-b-2 border-em-disabled group"
-              >
-                <BodyText className="text-em-med">
-                  {stackOrder.id.substring(0, 7)}
-                </BodyText>
-                <Icon
-                  className="text-em-med group-hover:animate-bounce"
-                  name="arrow-external"
-                  size={16}
-                />
-              </Link>
+              {chain?.id && (
+                <Link
+                  passHref
+                  target="_blank"
+                  href={getExplorerLink(
+                    chain?.id,
+                    stackOrder.id,
+                    "address",
+                    "#tokentxns"
+                  )}
+                  className="flex items-center space-x-0.5 hover:border-em-low border-b-2 border-em-disabled group"
+                >
+                  <BodyText className="text-em-med">
+                    {stackOrder.id.substring(0, 7)}
+                  </BodyText>
+                  <Icon
+                    className="text-em-med group-hover:animate-bounce"
+                    name="arrow-external"
+                    size={16}
+                  />
+                </Link>
+              )}
             </div>
             <Button
               variant="quaternary"
