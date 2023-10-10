@@ -14,16 +14,22 @@ export type Strategy = {
   totalSellAmount: string;
 };
 
+const throwStrategyContextError = () => {
+  throw new Error("No StrategyContext available");
+};
+
 interface StrategyContextProps {
   selectedStrategy: Strategy | null;
   setSelectedStrategy: React.Dispatch<React.SetStateAction<Strategy | null>>;
+  setShouldResetStackbox: React.Dispatch<React.SetStateAction<Boolean>>;
+  shouldResetStackbox: Boolean;
 }
 
 const StrategyContext = createContext<StrategyContextProps>({
   selectedStrategy: null,
-  setSelectedStrategy: () => {
-    throw new Error("No StrategyContext available");
-  },
+  setSelectedStrategy: throwStrategyContextError,
+  setShouldResetStackbox: throwStrategyContextError,
+  shouldResetStackbox: false,
 });
 
 interface StrategyContextProviderProps {
@@ -36,13 +42,17 @@ export const StrategyContextProvider = ({
   const [selectedStrategy, setSelectedStrategy] = useState<Strategy | null>(
     null
   );
+  const [shouldResetStackbox, setShouldResetStackbox] =
+    useState<Boolean>(false);
 
   const strategyContext = useMemo(
     () => ({
       selectedStrategy,
       setSelectedStrategy,
+      setShouldResetStackbox,
+      shouldResetStackbox,
     }),
-    [selectedStrategy]
+    [selectedStrategy, shouldResetStackbox]
   );
 
   return (

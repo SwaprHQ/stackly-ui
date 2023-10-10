@@ -15,7 +15,8 @@ interface StrategyCardProps {
 
 export const StrategyCard = ({ strategy }: StrategyCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
-  const { selectedStrategy, setSelectedStrategy } = useStrategyContext();
+  const { selectedStrategy, setSelectedStrategy, setShouldResetStackbox } =
+    useStrategyContext();
 
   const { buyToken, sellToken } = strategy;
 
@@ -38,7 +39,10 @@ export const StrategyCard = ({ strategy }: StrategyCardProps) => {
           "shadow-lg": isHovered,
         }
       )}
-      onClick={() => setSelectedStrategy(isSelected ? null : strategy)}
+      onClick={() => {
+        setSelectedStrategy(isSelected ? null : strategy);
+        setShouldResetStackbox(isSelected);
+      }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

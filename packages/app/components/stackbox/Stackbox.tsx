@@ -92,7 +92,12 @@ export const Stackbox = () => {
   const [fromToken, setFromToken] = useState<TokenWithBalance | null>();
   const [toToken, setToToken] = useState<TokenWithBalance | null>();
   const { closeModal, isModalOpen, openModal } = useModalContext();
-  const { selectedStrategy, setSelectedStrategy } = useStrategyContext();
+  const {
+    selectedStrategy,
+    setSelectedStrategy,
+    setShouldResetStackbox,
+    shouldResetStackbox,
+  } = useStrategyContext();
   const { tokenListWithBalances } = useTokenListContext();
   const signer = useEthersSigner();
 
@@ -147,6 +152,15 @@ export const Stackbox = () => {
    * strategy
    */
   useEffect(() => {
+    const resetDefaultFormValues = () => {
+      setFromToken(null);
+      setToToken(null);
+      setTokenAmount("");
+      setFrequency(FREQUENCY_OPTIONS.hour);
+      setStartDateTime(new Date(Date.now()));
+      setEndDateTime(new Date(endDateByFrequency[frequency]));
+    };
+
     if (selectedStrategy) {
       const getStrategyToken = (strategyToken: Token) =>
         tokenListWithBalances?.find(
@@ -166,20 +180,13 @@ export const Stackbox = () => {
       setFrequency(selectedStrategy.frequency);
       setStartDateTime(new Date(Date.now()));
       setEndDateTime(new Date(strategyEndDate));
+    } else if (shouldResetStackbox) {
+      resetDefaultFormValues();
     }
-  }, [selectedStrategy, tokenListWithBalances]);
+  }, [frequency, selectedStrategy, shouldResetStackbox, tokenListWithBalances]);
 
   const deselectStrategy = () => {
     if (selectedStrategy) setSelectedStrategy(null);
-  };
-
-  const resetDefaultFormValues = () => {
-    setFromToken(null);
-    setToToken(null);
-    setTokenAmount("");
-    setFrequency(FREQUENCY_OPTIONS.hour);
-    setStartDateTime(new Date(Date.now()));
-    setEndDateTime(new Date(endDateByFrequency[frequency]));
   };
 
   const openTokenPicker = (isFromToken = true) => {
@@ -514,7 +521,7 @@ export const Stackbox = () => {
                   className="text-primary-800"
                   onClick={() => {
                     deselectStrategy();
-                    resetDefaultFormValues();
+                    setShouldResetStackbox(true);
                   }}
                   size="xs"
                   variant="caption"
