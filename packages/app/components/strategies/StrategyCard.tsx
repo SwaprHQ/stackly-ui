@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { cx } from "class-variance-authority";
 
 import { Button, CaptionText, Icon } from "@/ui";
@@ -14,7 +13,6 @@ interface StrategyCardProps {
 }
 
 export const StrategyCard = ({ strategy }: StrategyCardProps) => {
-  const [isHovered, setIsHovered] = useState(false);
   const { selectedStrategy, setSelectedStrategy, setShouldResetStackbox } =
     useStrategyContext();
 
@@ -33,18 +31,15 @@ export const StrategyCard = ({ strategy }: StrategyCardProps) => {
   return (
     <div
       className={cx(
-        "p-3 bg-white shadow-md min-w-60 rounded-2xl cursor-pointer",
+        "p-3 bg-white group hover:outline-primary-200 hover:outline hover:outline-1 hover:shadow-lg shadow-md min-w-60 rounded-2xl cursor-pointer",
         {
           "!bg-primary-900": isSelected,
-          "shadow-lg": isHovered,
         }
       )}
       onClick={() => {
         setSelectedStrategy(isSelected ? null : strategy);
         setShouldResetStackbox(isSelected);
       }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       <div className="flex">
         <TokenLogoPair
@@ -88,9 +83,11 @@ export const StrategyCard = ({ strategy }: StrategyCardProps) => {
           ))}
         </div>
         <Button
-          className={cx({ "p-[5px] rounded-md": isSelected })}
+          className={cx("group-hover:bg-primary-400 group-hover:text-em-high", {
+            "p-[5px] rounded-md": isSelected,
+          })}
           size={isSelected ? "icon" : "xs"}
-          variant={isSelected || isHovered ? "primary" : "secondary"}
+          variant={isSelected ? "primary" : "secondary"}
         >
           {isSelected ? <Icon name="close" size={15} /> : "Select"}
         </Button>
