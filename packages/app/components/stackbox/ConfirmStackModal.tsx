@@ -261,7 +261,9 @@ export const ConfirmStackModal = ({
         title={approveTx && "Proceeding approval"}
         description={approveTx && "Waiting for transaction confirmation."}
       >
-        {approveTx?.hash && <TransactionLink hash={approveTx.hash} />}
+        {approveTx?.hash && chain && (
+          <TransactionLink chainId={chain.id} hash={approveTx.hash} />
+        )}
       </DialogConfirmTransactionLoading>
       <DialogConfirmTransactionLoading
         closeAction={() => closeModal(ModalId.STACK_CREATION_PROCESSING)}
@@ -269,8 +271,8 @@ export const ConfirmStackModal = ({
         title={stackCreationTx && "Proceeding stack creation"}
         description={stackCreationTx && "Waiting for transaction confirmation."}
       >
-        {stackCreationTx?.hash && (
-          <TransactionLink hash={stackCreationTx.hash} />
+        {stackCreationTx?.hash && chain && (
+          <TransactionLink chainId={chain.id} hash={stackCreationTx.hash} />
         )}
       </DialogConfirmTransactionLoading>
     </Modal>

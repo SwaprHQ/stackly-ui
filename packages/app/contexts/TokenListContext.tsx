@@ -123,7 +123,7 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     setupTokenList();
-  }, [address, setupTokenList]);
+  }, [address, chainId, setupTokenList]);
 
   /**
    * Once the tokenList is defined and we have an address
@@ -136,13 +136,15 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
       const fetchErc20Balances = async () => {
         try {
           const batchFetchdata = await multicall({
-            contracts: tokenList.map((token) => ({
-              address: token.address as `0x${string}`,
-              abi: erc20ABI,
-              functionName: "balanceOf",
-              args: [address as `0x${string}`],
-              chainId: token.chainId,
-            })),
+            contracts: tokenList
+              .filter((token) => token.chainId === chainId)
+              .map((token) => ({
+                address: token.address as `0x${string}`,
+                abi: erc20ABI,
+                functionName: "balanceOf",
+                args: [address as `0x${string}`],
+                chainId: token.chainId,
+              })),
             allowFailure: true,
           });
 
@@ -169,7 +171,7 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
     } else {
       setTokenListWithBalances([]);
     }
-  }, [address, chain?.id, tokenList]);
+  }, [address, chainId, tokenList]);
 
   const tokenListContext = useMemo(
     () => ({
