@@ -36,6 +36,7 @@ import {
 } from "@/models/stack-order";
 import { formatTokenValue } from "@/utils/token";
 import { getDCAOrderContract } from "@stackly/sdk";
+import { getExplorerLink } from "@/utils/transaction";
 import { useEthersSigner } from "@/utils/ethers";
 import {
   StackedTokenLogoPair,
@@ -47,6 +48,7 @@ import { StackOrdersTable } from "@/components/stack-modal/StackOrdersTable";
 import { ModalId, useModalContext } from "@/contexts";
 import { TransactionLink } from "./TransactionLink";
 import { Transaction } from "@/models/stack";
+import { useNetwork } from "wagmi";
 
 interface StackModalProps extends ModalBaseProps {
   stackOrder: StackOrder;
@@ -62,9 +64,6 @@ type Content = {
   };
 };
 
-const addressExplorerLink = (address: string) =>
-  `https://gnosisscan.io/address/${address}#tokentxns`;
-
 export const StackModal = ({
   stackOrder,
   isOpen,
@@ -72,6 +71,7 @@ export const StackModal = ({
   closeAction,
 }: StackModalProps) => {
   const signer = useEthersSigner();
+  const { chain } = useNetwork();
   const { closeModal, isModalOpen, openModal } = useModalContext();
 
   const [cancellationTx, setCancellationTx] = useState<Transaction>();
@@ -145,21 +145,28 @@ export const StackModal = ({
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center space-x-2">
               <StackedTokenLogoPair order={stackOrder} />
-              <Link
-                passHref
-                target="_blank"
-                href={addressExplorerLink(stackOrder.id)}
-                className="flex items-center space-x-0.5 hover:border-em-low border-b-2 border-em-disabled group"
-              >
-                <BodyText className="text-em-med">
-                  {stackOrder.id.substring(0, 7)}
-                </BodyText>
-                <Icon
-                  className="text-em-med group-hover:animate-bounce"
-                  name="arrow-external"
-                  size={16}
-                />
-              </Link>
+              {chain?.id && (
+                <Link
+                  passHref
+                  target="_blank"
+                  href={getExplorerLink(
+                    chain?.id,
+                    stackOrder.id,
+                    "address",
+                    "#tokentxns"
+                  )}
+                  className="flex items-center space-x-0.5 hover:border-em-low border-b-2 border-em-disabled group"
+                >
+                  <BodyText className="text-em-med">
+                    {stackOrder.id.substring(0, 7)}
+                  </BodyText>
+                  <Icon
+                    className="text-em-med group-hover:animate-bounce"
+                    name="arrow-external"
+                    size={16}
+                  />
+                </Link>
+              )}
             </div>
             <Button
               variant="quaternary"
@@ -246,7 +253,9 @@ export const StackModal = ({
         title={cancellationTx && "Proceeding cancellation"}
         description={cancellationTx && "Waiting for transaction confirmation."}
       >
-        {cancellationTx?.hash && <TransactionLink hash={cancellationTx.hash} />}
+        {cancellationTx?.hash && chain?.id && (
+          <TransactionLink chainId={chain.id} hash={cancellationTx.hash} />
+        )}
       </DialogConfirmTransactionLoading>
       <Dialog
         isOpen={isModalOpen(ModalId.CANCEL_STACK_SUCCESS)}
@@ -257,7 +266,9 @@ export const StackModal = ({
           title="Stack Cancelled"
           description={`The ${stackRemainingFundsWithTokenText} were sent to your wallet.`}
         />
-        {cancellationTx?.hash && <TransactionLink hash={cancellationTx.hash} />}
+        {cancellationTx?.hash && chain?.id && (
+          <TransactionLink chainId={chain.id} hash={cancellationTx.hash} />
+        )}
         <DialogFooterActions
           primaryAction={() => {
             refetchStacks();

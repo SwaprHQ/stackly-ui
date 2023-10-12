@@ -1,37 +1,59 @@
 import { AddressZero } from "@ethersproject/constants";
 import { ChainId } from "../constants";
 
-/**
- * Order factory address list
- */
-export const ORDER_FACTORY_ADDRESS_LIST: Record<ChainId, string> = {
-  [ChainId.ETHEREUM]: AddressZero,
-  [ChainId.GNOSIS]: "0x45B91Da2834010751b17F1eadE0a5a7B64233add",
+export const GNOSIS_ORDER_FACTORY_ADDRESS =
+  "0x45B91Da2834010751b17F1eadE0a5a7B64233add";
+
+export const MAINNET_ORDER_FACTORY_ADDRESS =
+  "0x8b1a70feccc6c2ae6017ddd8d0bebdd1bd6eb261";
+
+const validateVaultInfo = (
+  chainId: ChainId,
+  map: Record<ChainId, string> | Readonly<Record<string, string>>,
+  mapName: string
+) => {
+  const address = map[chainId];
+  if (!address || address === AddressZero) {
+    throw new Error(`${mapName} is not deployed on chain ${chainId}`);
+  }
+
+  return address;
 };
 
 /**
- * DCA Order singleton/mastercopy address list
+ * Stackly's Order factory address list
+ */
+export const ORDER_FACTORY_ADDRESS_LIST: Record<ChainId, string> = {
+  [ChainId.ETHEREUM]: MAINNET_ORDER_FACTORY_ADDRESS,
+  [ChainId.GNOSIS]: GNOSIS_ORDER_FACTORY_ADDRESS,
+};
+
+/**
+ * Stackly's DCA Order singleton/mastercopy address list
  */
 export const DCAORDER_SINGLETON_ADDRESS_LIST: Record<ChainId, string> = {
-  [ChainId.ETHEREUM]: AddressZero,
+  [ChainId.ETHEREUM]: "0xc97ecbdba20c672c61e27bd657d4dfbd2328f6fa",
   [ChainId.GNOSIS]: "0xb8B01eAD81DCF4E95C700DEA4D4fB90fc8099696",
 };
 
 /**
- * COW's settlement address list
+ * CoW's settlement address list
+ * @see https://docs.cow.fi/smart-contracts/introduction
+ * to check CoW contracts addresses
  */
 export const COW_SETTLEMENT_ADDRESS_LIST: Record<ChainId, string> = {
-  [ChainId.ETHEREUM]: "0xC92E8bdf79f0507f65a392b0ab4667716BFE0110",
+  [ChainId.ETHEREUM]: "0x9008D19f58AAbD9eD0D60971565AA8510560ab41",
   [ChainId.GNOSIS]: "0x9008D19f58AAbD9eD0D60971565AA8510560ab41",
 };
 
 export const SUBGRAPH_ENDPOINT_LIST: Readonly<Record<string, string>> = {
-  [ChainId.ETHEREUM]: "",
+  [ChainId.ETHEREUM]:
+    "https://api.thegraph.com/subgraphs/name/swaprhq/stackly-ethereum",
   [ChainId.GNOSIS]: "https://api.thegraph.com/subgraphs/name/swaprhq/stackly",
 };
 
 /**
- * NFT Whitelist address list
+ * Stackly's NFT Whitelist address list
  */
 export const NFT_WHITELIST_ADDRESS_LIST: Record<ChainId, string> = {
   [ChainId.ETHEREUM]: AddressZero,
@@ -44,12 +66,11 @@ export const NFT_WHITELIST_ADDRESS_LIST: Record<ChainId, string> = {
  * @returns
  */
 export function getOrderFactoryAddress(chainId: ChainId): string {
-  const address = ORDER_FACTORY_ADDRESS_LIST[chainId];
-  if (address === AddressZero) {
-    throw new Error(`Order factory is not deployed on chain ${chainId}`);
-  }
-
-  return address;
+  return validateVaultInfo(
+    chainId,
+    ORDER_FACTORY_ADDRESS_LIST,
+    "Order factory"
+  );
 }
 
 /**
@@ -58,12 +79,11 @@ export function getOrderFactoryAddress(chainId: ChainId): string {
  * @returns
  */
 export function getDCAOrderSingletonAddress(chainId: ChainId): string {
-  const address = DCAORDER_SINGLETON_ADDRESS_LIST[chainId];
-  if (address === AddressZero) {
-    throw new Error(`DCAOrder singleton is not deployed on chain ${chainId}`);
-  }
-
-  return address;
+  return validateVaultInfo(
+    chainId,
+    DCAORDER_SINGLETON_ADDRESS_LIST,
+    "DCAOrder singleton"
+  );
 }
 
 /**
@@ -72,10 +92,11 @@ export function getDCAOrderSingletonAddress(chainId: ChainId): string {
  * @returns The address of the settlement contract
  */
 export function getCOWProtocolSettlementAddress(chainId: ChainId): string {
-  return {
-    [ChainId.ETHEREUM]: "0x9008D19f58AAbD9eD0D60971565AA8510560ab41",
-    [ChainId.GNOSIS]: "0x9008d19f58aabd9ed0d60971565aa8510560ab41",
-  }[chainId];
+  return validateVaultInfo(
+    chainId,
+    COW_SETTLEMENT_ADDRESS_LIST,
+    "CoW Settlement"
+  );
 }
 
 /**
@@ -85,13 +106,7 @@ export function getCOWProtocolSettlementAddress(chainId: ChainId): string {
  * @throws Error if no subgraph endpoint is found for the chainId
  */
 export function getSubgraphEndpoint(chainId: ChainId) {
-  const endpoint = SUBGRAPH_ENDPOINT_LIST[chainId];
-
-  if (!endpoint || endpoint === "") {
-    throw new Error(`No subgraph endpoint for chainId ${chainId}`);
-  }
-
-  return endpoint;
+  return validateVaultInfo(chainId, SUBGRAPH_ENDPOINT_LIST, "Subraph Endpoint");
 }
 
 /**
