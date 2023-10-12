@@ -5,7 +5,8 @@
   "scripts": {
     "auth": "graph auth https://api.thegraph.com/deploy/",
     "codegen": "graph codegen",
-    "build": "yarn run prepare:gnosis && graph build",
+    "build:gnosis": "yarn run prepare:gnosis && graph build",
+    "build:mainnet": "yarn run prepare:mainnet && graph build",
     "prepare:gnosis": "ts-node bin/build-subgraph.ts xdai && yarn run codegen",
     "prepare:mainnet": "ts-node bin/build-subgraph.ts mainnet && yarn run codegen",
     "deploy": "graph deploy --node https://api.thegraph.com/deploy/ swaprhq/stackly",
@@ -13,6 +14,9 @@
     "remove-local": "graph remove --node http://localhost:8020/ swaprhq/stackly",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 swaprhq/stackly",
     "test": "echo 'No tests yet, implement them'"
+  },
+  "dependencies": {
+    "@stackly/sdk": "workspace:^"
   },
   "devDependencies": {
     "@graphprotocol/graph-cli": "0.51.2",

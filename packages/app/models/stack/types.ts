@@ -1,3 +1,5 @@
+import { ChainId } from "@stackly/sdk";
+
 export enum FREQUENCY_OPTIONS {
   hour = "hour",
   day = "day",
@@ -6,5 +8,6 @@ export enum FREQUENCY_OPTIONS {
 }
 
 export interface Transaction {
+  chainId: ChainId;
   hash: string;
 }

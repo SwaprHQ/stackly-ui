@@ -3,12 +3,20 @@ import { stringify as yamlStringify } from "yaml";
 
 import { config } from "./config";
 
+/**
+ * @see https://thegraph.com/docs/en/developing/supported-networks/
+ * for supported chain names
+ */
+const SUPPORTED_NETWORKS = ["mainnet", "gnosis"];
+
 async function main() {
   // get network from command line
   const network = process.argv[2] as string | undefined;
   // validate network
-  if (!network || !["mainnet", "xdai"].includes(network)) {
-    throw new Error("Invalid network. Must be one of: mainnet, xdai");
+  if (!network || !SUPPORTED_NETWORKS.includes(network)) {
+    throw new Error(
+      `Invalid network. Must be one of: ${SUPPORTED_NETWORKS.join(", ")}`
+    );
   }
 
   const subgraph = {

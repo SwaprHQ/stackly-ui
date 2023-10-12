@@ -66,15 +66,13 @@ const OrderFragment = gql`
     fee
     feeAmount
     sellToken {
-      id
-      address
+      address: id
       decimals
       name
       symbol
     }
     buyToken {
-      id
-      address
+      address: id
       decimals
       name
       symbol
