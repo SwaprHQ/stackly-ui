@@ -3,7 +3,7 @@
   "repository": "https://github.com/SwaprHQ/stackly-ui",
   "license": "MIT",
   "private": true,
-  "packageManager": "yarn@3.5.1",
+  "packageManager": "bun@1.0.6",
   "engines": {
     "node": ">=18.0.0"
   },
