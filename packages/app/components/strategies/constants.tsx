@@ -25,7 +25,7 @@ export const STRATEGY_CATEGORIES: { [chainId: number]: ChainStrategies } = {
       strategies: [
         {
           id: 1,
-          buyToken: mainnetTokens.ETH,
+          buyToken: mainnetTokens.WETH,
           daysAmount: 60,
           frequency: FREQUENCY_OPTIONS.day,
           sellAmountPerTimeframe: 0.0075,
@@ -44,11 +44,11 @@ export const STRATEGY_CATEGORIES: { [chainId: number]: ChainStrategies } = {
         {
           id: 3,
           buyToken: mainnetTokens.WETH,
-          daysAmount: 15,
-          frequency: FREQUENCY_OPTIONS.hour,
-          sellAmountPerTimeframe: 2,
+          daysAmount: 120,
+          frequency: FREQUENCY_OPTIONS.month,
+          sellAmountPerTimeframe: 2000,
           sellToken: mainnetTokens.USDC,
-          totalSellAmount: "720",
+          totalSellAmount: "8000",
         },
         {
           id: 4,
@@ -56,7 +56,7 @@ export const STRATEGY_CATEGORIES: { [chainId: number]: ChainStrategies } = {
           daysAmount: 50,
           frequency: FREQUENCY_OPTIONS.day,
           sellAmountPerTimeframe: 0.02,
-          sellToken: mainnetTokens.ETH,
+          sellToken: mainnetTokens.WETH,
           totalSellAmount: "1",
         },
       ],
