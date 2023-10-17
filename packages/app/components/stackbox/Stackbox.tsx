@@ -475,7 +475,7 @@ export const Stackbox = () => {
           key={`${fromToken.address}-$${tokenAmount}`}
           onSuccess={() => {
             closeModal(ModalId.CONFIRM_STACK);
-            openModal(ModalId.SUCCESS_STACK_TOAST);
+            setTimeout(() => openModal(ModalId.SUCCESS_STACK_TOAST), 9000); // wait 9s to show toast in order for the subgraph update stacks
           }}
         />
       )}
