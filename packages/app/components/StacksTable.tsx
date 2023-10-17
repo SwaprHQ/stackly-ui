@@ -151,23 +151,61 @@ const CellWrapper = ({ children }: PropsWithChildren) => (
 );
 
 const OrdersProgressText = ({ stackOrder }: StackOrderProps) => {
-  if (stackOrder.cancelledAt)
+  if (stackOrder.cancelledAt) {
     return (
       <BodyText className="text-em-low">
         Cancelled at {formatTimestampToDate(stackOrder.cancelledAt)}
       </BodyText>
     );
+  }
 
-  return totalOrderSlotsDone(stackOrder) === 0 ? (
+  if (totalOrderSlotsDone(stackOrder) !== 0) {
+    return (
+      <>
+        <BodyText className="text-em-high">
+          {totalStackOrdersDone(stackOrder).toString()}
+        </BodyText>
+        <BodyText className="text-em-low">{`/ ${stackOrder.orderSlots.length} orders`}</BodyText>
+      </>
+    );
+  }
+
+  return (
     <BodyText className="text-primary-700">
-      Starts on {formatTimestampToDateWithSuffix(stackOrder.orderSlots[0])}
+      {getDateMessage(stackOrder)}
     </BodyText>
-  ) : (
-    <>
-      <BodyText className="text-em-high">
-        {totalStackOrdersDone(stackOrder).toString()}
-      </BodyText>
-      <BodyText className="text-em-low">{`/ ${stackOrder.orderSlots.length} orders`}</BodyText>
-    </>
   );
+};
+
+function pluralize(value: number, unit: string) {
+  return value === 1 ? unit : `${unit}s`;
+}
+
+const getDateMessage = (stackOrder: StackOrder) => {
+  const firtTimeSlot = Number(stackOrder.orderSlots[0]);
+  const timeUntilStart = firtTimeSlot - Math.round(new Date().getTime() / 1000);
+  const minutesUntilStart = Math.floor(timeUntilStart / 60);
+  const hoursUntilStart = Math.floor(timeUntilStart / (60 * 60));
+
+  let dateMessage;
+
+  if (minutesUntilStart === 0) {
+    dateMessage = "Starting...";
+  } else if (minutesUntilStart < 60) {
+    dateMessage = `Starts in ${minutesUntilStart} ${pluralize(
+      minutesUntilStart,
+      "minute"
+    )}`;
+  } else if (hoursUntilStart < 24) {
+    dateMessage = `Starts in about ${hoursUntilStart} ${pluralize(
+      hoursUntilStart,
+      "hour"
+    )}`;
+  } else {
+    dateMessage = `Starts on ${formatTimestampToDateWithSuffix(
+      stackOrder.orderSlots[0]
+    )}`;
+  }
+
+  return dateMessage;
 };
