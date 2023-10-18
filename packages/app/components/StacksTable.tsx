@@ -177,9 +177,8 @@ const OrdersProgressText = ({ stackOrder }: StackOrderProps) => {
   );
 };
 
-function pluralize(value: number, unit: string) {
-  return value === 1 ? unit : `${unit}s`;
-}
+const pluralize = (value: number, unit: string) =>
+  value === 1 ? unit : `${unit}s`;
 
 const getDateMessage = (stackOrder: StackOrder) => {
   const firtTimeSlot = Number(stackOrder.orderSlots[0]);
