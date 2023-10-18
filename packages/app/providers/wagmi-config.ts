@@ -21,7 +21,8 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
     jsonRpcProvider({
       rpc: (chain) => chainJsonRpc[chain.id],
     }),
-  ]
+  ],
+  { batch: { multicall: true } }
 );
 
 const defaultConfig = getDefaultConfig({
