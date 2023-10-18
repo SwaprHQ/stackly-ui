@@ -29,16 +29,15 @@ jobs:
         with:
           node-version: lts/hydrogen
           check-latest: true
-          cache: "yarn"
 
       - name: 🎪 Install dependencies
-        run: yarn install --immutable
+        run: bun install --immutable
 
       - name: 🛠️ Build
-        run: yarn build:app
+        run: bun run build:app
 
       - name: 🚑 Typecheck
-        run: yarn typecheck
+        run: bun typecheck
 
       - name: 🔬 Lint
-        run: yarn lint
+        run: bun lint
