@@ -88,39 +88,6 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
     ? TOKEN_LISTS_BY_CHAIN_URL[chain.id]
     : TOKEN_LISTS_BY_CHAIN_URL[ChainId.GNOSIS];
 
-  const fetchErc20Balances = useCallback(async () => {
-    try {
-      const batchFetchdata = await multicall({
-        contracts: tokenList
-          .filter((token) => token.chainId === chainId)
-          .map((token) => ({
-            address: token.address as `0x${string}`,
-            abi: erc20ABI,
-            functionName: "balanceOf",
-            args: [address as `0x${string}`],
-            chainId: token.chainId,
-          })),
-        allowFailure: true,
-      });
-
-      const listWithBalances = tokenList
-        .map((token, index) => ({
-          ...token,
-          balance: formatUnits(
-            batchFetchdata[index]?.result as bigint,
-            token.decimals
-          ),
-        }))
-        .sort(
-          (tokenA, tokenB) => Number(tokenB.balance) - Number(tokenA.balance)
-        );
-
-      setTokenListWithBalances(listWithBalances);
-    } catch (error) {
-      console.error("Error fetching tokenlist balances:", error);
-    }
-  }, [address, chainId, tokenList]);
-
   const setupTokenList = useCallback(async () => {
     let mergedTokenlistTokens = defaultTokenList;
 
@@ -166,11 +133,45 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
    */
   useEffect(() => {
     if (address) {
+      const fetchErc20Balances = async () => {
+        try {
+          const batchFetchdata = await multicall({
+            contracts: tokenList
+              .filter((token) => token.chainId === chainId)
+              .map((token) => ({
+                address: token.address as `0x${string}`,
+                abi: erc20ABI,
+                functionName: "balanceOf",
+                args: [address as `0x${string}`],
+                chainId: token.chainId,
+              })),
+            allowFailure: true,
+          });
+
+          const listWithBalances = tokenList
+            .map((token, index) => ({
+              ...token,
+              balance: formatUnits(
+                batchFetchdata[index]?.result as bigint,
+                token.decimals
+              ),
+            }))
+            .sort(
+              (tokenA, tokenB) =>
+                Number(tokenB.balance) - Number(tokenA.balance)
+            );
+
+          setTokenListWithBalances(listWithBalances);
+        } catch (error) {
+          console.error("Error fetching tokenlist balances:", error);
+        }
+      };
+
       fetchErc20Balances();
     } else {
       setTokenListWithBalances([]);
     }
-  }, [address, fetchErc20Balances]);
+  }, [address, chainId, tokenList]);
 
   const tokenListContext = useMemo(
     () => ({
