@@ -24,8 +24,9 @@ jobs:
       - name: 🧑🏻‍💻 Checkout code
         uses: actions/checkout@v3
 
-      - name: 🥷 Setup node
+      - name: 🥷 Setup node and bun
         uses: actions/setup-node@v3
+      - uses: oven-sh/setup-bun@v1
         with:
           node-version: lts/hydrogen
           check-latest: true
