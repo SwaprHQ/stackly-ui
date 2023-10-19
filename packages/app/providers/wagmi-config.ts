@@ -4,9 +4,7 @@ import { gnosis, mainnet } from "wagmi/chains";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { ChainId } from "@stackly/sdk";
 import { SafeConnector } from "wagmi/connectors/safe";
-
-const RPC_GNOSIS = "https://rpc.gnosis.gateway.fm";
-const RPC_MAINNET = "https://eth.llamarpc.com";
+import { RPC_GNOSIS, RPC_MAINNET } from "@/constants";
 
 const chainJsonRpc: Record<number, { http: string }> = {
   [ChainId.GNOSIS]: {
