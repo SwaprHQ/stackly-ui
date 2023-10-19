@@ -1,10 +1,9 @@
 // RPC endpoints
 
-export const RPC_GNOSIS =
-  process.env.RPC_GNOSIS ?? "https://rpc.gnosis.gateway.fm";
-
-export const RPC_MAINNET =
-  process.env.RPC_MAINNET ?? "https://eth.meowrpc.com/";
+export const RPC_LIST: { [chainId: number]: string } = {
+  1: process.env.RPC_MAINNET ?? "https://eth.meowrpc.com/",
+  100: process.env.RPC_GNOSIS ?? "https://rpc.gnosis.gateway.fm",
+};
 
 // App URLs
 
