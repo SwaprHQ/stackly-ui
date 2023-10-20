@@ -50,6 +50,6 @@ const safeConnector = new SafeConnector({
 export const config = createConfig({
   ...defaultConfig,
   connectors: defaultConfig.connectors
-    ? [...defaultConfig.connectors, safeConnector]
+    ? [...defaultConfig.connectors]
     : [safeConnector],
 });
