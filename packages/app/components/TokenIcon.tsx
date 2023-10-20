@@ -8,9 +8,11 @@ import { twMerge } from "tailwind-merge";
 import { useTokenListContext } from "@/contexts";
 import { Token } from "@/models/token";
 
+export type TokenLogoSize = "3xs" | "2xs" | "xs" | "sm" | "md" | "lg";
+
 interface TokenIconProps {
   className?: string;
-  size?: "lg" | "md" | "sm" | "xs" | "2xs";
+  size?: TokenLogoSize;
   token: Token;
 }
 
@@ -61,6 +63,7 @@ export const tokenIconStyles = cva(
         sm: ["w-6 h-6 text-[5px]"],
         xs: ["w-5 h-5 text-[4px]"],
         "2xs": ["w-4 h-4 text-[4px]"],
+        "3xs": ["w-3 h-3 text-[3px]"],
       },
     },
     defaultVariants: {

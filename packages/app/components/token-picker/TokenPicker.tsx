@@ -33,7 +33,7 @@ interface SearchBarProps {
   value: string;
 }
 
-const TokenPicker = ({
+export const TokenPicker = ({
   closeAction,
   initialFocusRef,
   isOpen,
@@ -249,5 +249,3 @@ const TokenListRow = ({ onTokenSelect, token }: TokenListRowProps) => (
     </div>
   </div>
 );
-
-export default TokenPicker;

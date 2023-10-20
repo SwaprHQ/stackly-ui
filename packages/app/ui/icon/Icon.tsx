@@ -9,14 +9,15 @@ export type IconName =
   | "caret-right"
   | "check"
   | "close"
+  | "discord"
   | "info"
   | "menu"
   | "plus"
   | "search"
+  | "sparkles"
   | "stackly"
   | "swap"
-  | "warning"
-  | "discord";
+  | "warning";
 
 interface IconProps {
   alt?: string;
@@ -34,14 +35,15 @@ export const iconMap: Record<IconName, any> = {
   "caret-right": IconList.CaretRightIcon,
   check: IconList.CheckmarkIcon,
   close: IconList.CloseIcon,
+  discord: IconList.DiscordIcon,
   info: IconList.InfoIcon,
   menu: IconList.HamburgerIcon,
   plus: IconList.PlusIcon,
   search: IconList.SearchIcon,
+  sparkles: IconList.SparklesIcon,
   stackly: IconList.StacklyLogoIcon,
   swap: IconList.SwapIcon,
   warning: IconList.WarningIcon,
-  discord: IconList.DiscordIcon,
 };
 
 export const Icon = ({ alt, className, name, size = 20 }: IconProps) => {

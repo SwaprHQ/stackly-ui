@@ -6,7 +6,11 @@ import { ConnectKitProvider } from "connectkit";
 import { WagmiConfig } from "wagmi";
 
 import { config } from "./wagmi-config";
-import { ModalContextProvider, TokenListProvider } from "@/contexts";
+import {
+  ModalContextProvider,
+  StrategyContextProvider,
+  TokenListProvider,
+} from "@/contexts";
 import { AnalyticsProvider } from "./analytics";
 
 export const Providers = ({ children }: PropsWithChildren) => {
@@ -15,7 +19,9 @@ export const Providers = ({ children }: PropsWithChildren) => {
       <WagmiConfig config={config}>
         <ConnectKitProvider mode="light">
           <TokenListProvider>
-            <ModalContextProvider>{children}</ModalContextProvider>
+            <ModalContextProvider>
+              <StrategyContextProvider>{children}</StrategyContextProvider>
+            </ModalContextProvider>
           </TokenListProvider>
         </ConnectKitProvider>
       </WagmiConfig>

@@ -48,7 +48,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
       <body className="font-sans bg-fixed bg-surface-25 bg-auto-100 bg-matrix-and-green-gradient text-em-high">
         <Providers>
           <Navbar />
-          <div className="px-4 mx-auto md:px-0">{children}</div>
+          <div className="px-4 py-12 md:py-16 mx-auto md:px-0">{children}</div>
         </Providers>
       </body>
     </html>
