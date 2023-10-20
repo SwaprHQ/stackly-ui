@@ -14,7 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/ui";
-import { StackedTokenLogoPair, StackModal } from "@/components";
+import { StackModal, TokenLogoPair } from "@/components";
 import {
   totalFundsAmountWithTokenText,
   orderPairSymbolsText,
@@ -70,7 +70,10 @@ export const StacksTable = ({
           {stackOrders.map((order) => (
             <TableRow key={order.id}>
               <TableCell className="flex items-center font-medium w-max">
-                <StackedTokenLogoPair order={order} />
+                <TokenLogoPair
+                  buyToken={order.buyToken}
+                  sellToken={order.sellToken}
+                />
                 <div className="ml-3 space-y-0.5">
                   <BodyText weight="bold">
                     {formatTokenValue(totalStacked(order))}

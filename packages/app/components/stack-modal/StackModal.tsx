@@ -39,9 +39,9 @@ import { getDCAOrderContract } from "@stackly/sdk";
 import { getExplorerLink } from "@/utils/transaction";
 import { useEthersSigner } from "@/utils/ethers";
 import {
-  StackedTokenLogoPair,
   DialogConfirmTransactionLoading,
   FromToStackTokenPair,
+  TokenLogoPair,
 } from "@/components";
 import { StackProgress } from "@/components/stack-modal/StackProgress";
 import { StackOrdersTable } from "@/components/stack-modal/StackOrdersTable";
@@ -144,7 +144,10 @@ export const StackModal = ({
         <ModalHeader>
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center space-x-2">
-              <StackedTokenLogoPair order={stackOrder} />
+              <TokenLogoPair
+                buyToken={stackOrder.buyToken}
+                sellToken={stackOrder.sellToken}
+              />
               {chain?.id && (
                 <Link
                   passHref

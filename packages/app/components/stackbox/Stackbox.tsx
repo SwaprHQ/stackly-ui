@@ -5,11 +5,12 @@ import { cx } from "class-variance-authority";
 import { useAccount, useBalance, useNetwork } from "wagmi";
 import { formatUnits, parseUnits } from "viem";
 import Link from "next/link";
-import { formatDistance } from "date-fns";
+import { add, formatDistance } from "date-fns";
 
 import {
   BodyText,
   Button,
+  CaptionText,
   Icon,
   RadioButton,
   Severity,
@@ -24,7 +25,13 @@ import {
   TokenPicker,
   BetaNFTModal,
 } from "@/components";
-import { ModalId, useModalContext, TokenWithBalance } from "@/contexts";
+import {
+  ModalId,
+  useModalContext,
+  TokenWithBalance,
+  useStrategyContext,
+  useTokenListContext,
+} from "@/contexts";
 import {
   FREQUENCY_OPTIONS,
   INITAL_ORDER,
@@ -38,10 +45,11 @@ import {
 } from "@stackly/sdk";
 import { useEthersSigner } from "@/utils/ethers";
 import { DEFAULT_TOKENS_BY_CHAIN } from "@/utils/constants";
+import { Token } from "@/models/token";
 interface SelectTokenButtonProps {
   label: string;
   onClick: (isFromToken?: boolean) => void;
-  token?: TokenWithBalance;
+  token?: TokenWithBalance | null;
   className?: string;
   onAnimationEnd: AnimationEventHandler<HTMLElement>;
 }
@@ -81,9 +89,16 @@ const balanceOptions = [
 export const Stackbox = () => {
   const searchTokenBarRef = useRef<HTMLInputElement>(null);
   const [isPickingFromToken, setIsPickingFromToken] = useState<boolean>(false);
-  const [fromToken, setFromToken] = useState<TokenWithBalance>();
-  const [toToken, setToToken] = useState<TokenWithBalance>();
+  const [fromToken, setFromToken] = useState<TokenWithBalance | null>();
+  const [toToken, setToToken] = useState<TokenWithBalance | null>();
   const { closeModal, isModalOpen, openModal } = useModalContext();
+  const {
+    selectedStrategy,
+    setSelectedStrategy,
+    setShouldResetStackbox,
+    shouldResetStackbox,
+  } = useStrategyContext();
+  const { tokenListWithBalances } = useTokenListContext();
   const signer = useEthersSigner();
 
   const { chain } = useNetwork();
@@ -113,8 +128,12 @@ export const Stackbox = () => {
   const [showInsufficentBalanceError, setShowInsufficentBalanceError] =
     useState(false);
 
+  const isStrategySelected = Boolean(selectedStrategy);
+
   useEffect(() => {
-    setEndDateTime(new Date(endDateByFrequency[frequency]));
+    if (!selectedStrategy)
+      setEndDateTime(new Date(endDateByFrequency[frequency]));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [frequency]);
 
   // set default tokens
@@ -127,6 +146,48 @@ export const Stackbox = () => {
     setFromToken(from);
     setToToken(to);
   }, [chain]);
+
+  /**
+   * Form state handler when we select a
+   * strategy
+   */
+  useEffect(() => {
+    const resetDefaultFormValues = () => {
+      setFromToken(null);
+      setToToken(null);
+      setTokenAmount("");
+      setFrequency(FREQUENCY_OPTIONS.hour);
+      setStartDateTime(new Date(Date.now()));
+      setEndDateTime(new Date(endDateByFrequency[frequency]));
+    };
+
+    if (selectedStrategy) {
+      const getStrategyToken = (strategyToken: Token) =>
+        tokenListWithBalances?.find(
+          (token) =>
+            token.address.toUpperCase() === strategyToken.address.toUpperCase()
+        );
+
+      const strategyEndDate = add(Date.now(), {
+        days: selectedStrategy.daysAmount,
+      });
+      const strategyFromToken = getStrategyToken(selectedStrategy.sellToken);
+      const strategyToToken = getStrategyToken(selectedStrategy.buyToken);
+
+      setFromToken(strategyFromToken);
+      setToToken(strategyToToken);
+      setTokenAmount(selectedStrategy.totalSellAmount);
+      setFrequency(selectedStrategy.frequency);
+      setStartDateTime(new Date(Date.now()));
+      setEndDateTime(new Date(strategyEndDate));
+    } else if (shouldResetStackbox) {
+      resetDefaultFormValues();
+    }
+  }, [frequency, selectedStrategy, shouldResetStackbox, tokenListWithBalances]);
+
+  const deselectStrategy = () => {
+    if (selectedStrategy) setSelectedStrategy(null);
+  };
 
   const openTokenPicker = (isFromToken = true) => {
     setIsPickingFromToken(isFromToken);
@@ -174,6 +235,8 @@ export const Stackbox = () => {
   };
 
   const selectToken = (selectedToken: TokenWithBalance) => {
+    deselectStrategy();
+
     const setSelectedToken = isPickingFromToken ? setFromToken : setToToken;
     const setOppositeToken = isPickingFromToken ? setToToken : setFromToken;
     const oppositeToken = isPickingFromToken ? toToken : fromToken;
@@ -207,6 +270,7 @@ export const Stackbox = () => {
   };
 
   const setTokenAmountBasedOnBalance = (divider: number) => {
+    deselectStrategy();
     if (!balance || !fromToken) return;
 
     setShowTokenAmountError(false);
@@ -217,6 +281,8 @@ export const Stackbox = () => {
   };
 
   const handleStartDateTimeChange = (newDateTime: Date) => {
+    deselectStrategy();
+
     const newStartDate =
       newDateTime.getTime() <= Date.now() ? new Date(Date.now()) : newDateTime;
 
@@ -257,14 +323,20 @@ export const Stackbox = () => {
   }, [address, chain, openModal, signer]);
 
   return (
-    <div className="max-w-lg mx-auto my-24 bg-white shadow-2xl rounded-2xl">
+    <div
+      className={cx("max-w-lg mx-auto bg-white shadow-2xl rounded-2xl", {
+        "outline outline-2 outline-primary-200": isStrategySelected,
+      })}
+    >
       <div className="py-4 border shadow-lg border-surface-50 rounded-2xl">
         <div className="flex items-end justify-between px-5 pb-4 border-b border-surface-50">
           <SelectTokenButton
             label="Deposit from"
             onClick={openTokenPicker}
             token={fromToken}
-            className={cx({ "animate-wiggle": showFromTokenError })}
+            className={cx("min-w-[32px]", {
+              "animate-wiggle": showFromTokenError,
+            })}
             onAnimationEnd={() => {
               setShowFromTokenError(false);
             }}
@@ -277,7 +349,9 @@ export const Stackbox = () => {
             label="To receive"
             onClick={openTokenPicker}
             token={toToken}
-            className={cx({ "animate-wiggle": showToTokenError })}
+            className={cx("min-w-[32px]", {
+              "animate-wiggle": showToTokenError,
+            })}
             onAnimationEnd={() => {
               setShowToTokenError(false);
             }}
@@ -301,6 +375,7 @@ export const Stackbox = () => {
               ["e", "E", "+", "-"].includes(evt.key) && evt.preventDefault()
             }
             onChange={(event) => {
+              deselectStrategy();
               setShowTokenAmountError(false);
               setShowInsufficentBalanceError(false);
               setTokenAmount(event.target.value);
@@ -361,9 +436,10 @@ export const Stackbox = () => {
                     id={option}
                     checked={isSelected}
                     value={option}
-                    onChange={(event) =>
-                      setFrequency(event.target.value as FREQUENCY_OPTIONS)
-                    }
+                    onChange={(event) => {
+                      deselectStrategy();
+                      setFrequency(event.target.value as FREQUENCY_OPTIONS);
+                    }}
                   >
                     <BodyText
                       size={2}
@@ -398,7 +474,10 @@ export const Stackbox = () => {
                   <BodyText size={2}>Until</BodyText>
                   <DatePicker
                     dateTime={endDateTime}
-                    setDateTime={setEndDateTime}
+                    setDateTime={(date: Date) => {
+                      deselectStrategy();
+                      setEndDateTime(date);
+                    }}
                     timeCaption="End time"
                     className="w-full"
                     fromDate={startDateTime}
@@ -417,22 +496,48 @@ export const Stackbox = () => {
           </div>
         </div>
         {fromToken && toToken && tokenAmount && tokenAmount > "0" && (
-          <div className="p-2 text-center bg-surface-25 text-em-low rounded-xl">
-            <BodyText size={1}>
-              Stacks <span className="text-em-med">{toToken.symbol}</span>,
-              worth{" "}
-              <span className="text-em-med">
-                {amountPerOrder} {fromToken.symbol}
-              </span>
-              ,{" "}
-              <span className="text-em-med">
-                every {FREQUENCY_OPTIONS[frequency]}
-              </span>{" "}
-              for{" "}
-              <span className="text-em-med">
-                {formatDistance(endDateTime, startDateTime)}
-              </span>
-            </BodyText>
+          <div
+            className={cx(
+              "p-2 text-center bg-surface-25 text-em-low rounded-xl",
+              {
+                "!bg-primary-50 flex items-center justify-between pr-3":
+                  isStrategySelected,
+              }
+            )}
+          >
+            {isStrategySelected ? (
+              <>
+                <div className="flex">
+                  <Icon className="mr-2" name="sparkles" size={14} />
+                  <StackDetailsTileText
+                    amountPerOrder={amountPerOrder}
+                    frequency={FREQUENCY_OPTIONS[frequency]}
+                    toTokenSymbol={toToken.symbol}
+                    fromTokenSymbol={fromToken.symbol}
+                    timeLength={formatDistance(endDateTime, startDateTime)}
+                  />
+                </div>
+                <Button
+                  className="text-primary-800"
+                  onClick={() => {
+                    deselectStrategy();
+                    setShouldResetStackbox(true);
+                  }}
+                  size="xs"
+                  variant="caption"
+                >
+                  <CaptionText>Reset stack</CaptionText>
+                </Button>
+              </>
+            ) : (
+              <StackDetailsTileText
+                amountPerOrder={amountPerOrder}
+                frequency={FREQUENCY_OPTIONS[frequency]}
+                toTokenSymbol={toToken.symbol}
+                fromTokenSymbol={fromToken.symbol}
+                timeLength={formatDistance(endDateTime, startDateTime)}
+              />
+            )}
           </div>
         )}
         {address ? (
@@ -511,7 +616,7 @@ const SelectTokenButton = ({
 
   return (
     <div
-      className={cx("flex flex-col space-y-2", {
+      className={cx("flex flex-col space-y-2 min-w-[125px]", {
         "items-end": !isFromToken,
       })}
     >
@@ -537,3 +642,27 @@ const SelectTokenButton = ({
     </div>
   );
 };
+
+interface StackDetailsTileTextProps {
+  amountPerOrder: string;
+  frequency: string;
+  toTokenSymbol: string;
+  fromTokenSymbol: string;
+  timeLength: string;
+}
+const StackDetailsTileText = ({
+  amountPerOrder,
+  frequency,
+  toTokenSymbol,
+  fromTokenSymbol,
+  timeLength,
+}: StackDetailsTileTextProps) => (
+  <BodyText size={1}>
+    Stacks <span className="text-em-med">{toTokenSymbol}</span>, worth{" "}
+    <span className="text-em-med">
+      {amountPerOrder} {fromTokenSymbol}
+    </span>
+    , <span className="text-em-med">every {frequency}</span> for{" "}
+    <span className="text-em-med">{timeLength}</span>
+  </BodyText>
+);
