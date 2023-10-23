@@ -1,8 +1,8 @@
 import { ChainId } from "@stackly/sdk";
 
 const EXPLORER_URL_BY_CHAIN = {
-  1: "https://etherscan.io",
-  100: "https://gnosisscan.io",
+  [ChainId.ETHEREUM]: "https://etherscan.io",
+  [ChainId.GNOSIS]: "https://gnosisscan.io",
 };
 
 export const getExplorerLink = (

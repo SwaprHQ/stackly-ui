@@ -27,17 +27,17 @@ export interface TokenWithBalance extends TokenFromTokenlist {
 const DEFAULT_TOKEN_LIST_BY_CHAIN: {
   [chainId: number]: TokenFromTokenlist[];
 } = {
-  1: defaultEthereumTokenlist,
-  100: defaultGnosisTokenlist,
+  [ChainId.ETHEREUM]: defaultEthereumTokenlist,
+  [ChainId.GNOSIS]: defaultGnosisTokenlist,
 };
 
 const TOKEN_LISTS_BY_CHAIN_URL: { [chainId: number]: string[] } = {
-  1: [
+  [ChainId.ETHEREUM]: [
     "https://tokens.1inch.eth.link/",
     "https://files.cow.fi/tokens/CoinGecko.json",
     "https://files.cow.fi/tokens/CowSwap.json",
   ],
-  100: [
+  [ChainId.GNOSIS]: [
     "https://tokens.honeyswap.org/",
     "https://files.cow.fi/tokens/CowSwap.json",
   ],

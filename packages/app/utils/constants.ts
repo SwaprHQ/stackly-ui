@@ -3,6 +3,7 @@ import {
   mainnetTokens,
   TokenFromTokenlist,
 } from "@/models/token";
+import { ChainId } from "@stackly/sdk";
 
 interface DefaultTokens {
   from: TokenFromTokenlist;
@@ -10,11 +11,11 @@ interface DefaultTokens {
 }
 
 export const DEFAULT_TOKENS_BY_CHAIN: { [chainId: number]: DefaultTokens } = {
-  1: {
+  [ChainId.ETHEREUM]: {
     from: mainnetTokens.USDC,
     to: mainnetTokens.WETH,
   },
-  100: {
+  [ChainId.GNOSIS]: {
     from: gnosisTokens.WXDAI,
     to: gnosisTokens.WETH,
   },

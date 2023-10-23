@@ -8,10 +8,10 @@ import { RPC_LIST } from "@/constants";
 
 const chainJsonRpc: Record<number, { http: string }> = {
   [ChainId.GNOSIS]: {
-    http: RPC_LIST[100],
+    http: RPC_LIST[ChainId.GNOSIS],
   },
   [ChainId.ETHEREUM]: {
-    http: RPC_LIST[1],
+    http: RPC_LIST[ChainId.ETHEREUM],
   },
 };
 

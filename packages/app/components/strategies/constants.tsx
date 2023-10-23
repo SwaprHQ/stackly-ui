@@ -1,6 +1,7 @@
 import { FREQUENCY_OPTIONS } from "@/models/stack";
 import { gnosisTokens, mainnetTokens } from "@/models/token";
 import { Strategy } from "@/contexts";
+import { ChainId } from "@stackly/sdk";
 
 type ChainStrategy = {
   label: string;
@@ -19,7 +20,7 @@ export const FREQUENCY_LABEL = {
 };
 
 export const STRATEGY_CATEGORIES: { [chainId: number]: ChainStrategies } = {
-  1: {
+  [ChainId.ETHEREUM]: {
     popular: {
       label: "Popular Strategies",
       strategies: [
@@ -62,7 +63,7 @@ export const STRATEGY_CATEGORIES: { [chainId: number]: ChainStrategies } = {
       ],
     },
   },
-  100: {
+  [ChainId.GNOSIS]: {
     popular: {
       label: "Popular Strategies",
       strategies: [
