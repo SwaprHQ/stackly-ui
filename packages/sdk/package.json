@@ -8,7 +8,8 @@
     ".": {
       "require": "./dist/index.js",
       "import": "./dist/index.js"
-    }
+    },
+    "./abis": "./abis"
   },
   "scripts": {
     "lint": "npx prettier --check . !./dist !./.turbo && eslint \"./**!(dist|.turbo)/*+(.tsx|.ts)\"",

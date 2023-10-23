@@ -3,17 +3,18 @@ import {
   mainnetTokens,
   TokenFromTokenlist,
 } from "@/models/token";
+import { ChainId } from "@stackly/sdk";
 
 export const TOKEN_PICKER_COMMON_TOKENS: {
   [chainId: number]: TokenFromTokenlist[];
 } = {
-  1: [
+  [ChainId.ETHEREUM]: [
     mainnetTokens.USDC,
     mainnetTokens.WETH,
     mainnetTokens.WBTC,
     mainnetTokens.RETH,
   ],
-  100: [
+  [ChainId.GNOSIS]: [
     gnosisTokens.GNO,
     gnosisTokens.SWAPR,
     gnosisTokens.WETH,
