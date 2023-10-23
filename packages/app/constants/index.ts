@@ -1,10 +1,11 @@
 // RPC endpoints
 
-export const RPC_GNOSIS =
-  process.env.RPC_GNOSIS ?? "https://rpc.gnosis.gateway.fm";
+import { ChainId } from "@stackly/sdk";
 
-export const RPC_MAINNET =
-  process.env.RPC_MAINNET ?? "https://eth.meowrpc.com/";
+export const RPC_LIST: { [chainId: number]: string } = {
+  [ChainId.ETHEREUM]: process.env.RPC_MAINNET ?? "https://eth.meowrpc.com/",
+  [ChainId.GNOSIS]: process.env.RPC_GNOSIS ?? "https://rpc.gnosis.gateway.fm",
+};
 
 // App URLs
 
