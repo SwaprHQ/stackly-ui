@@ -1,6 +1,7 @@
 "use client";
 
 import { PropsWithChildren, useState } from "react";
+import { formatDistanceToNow } from "date-fns";
 import {
   BodyText,
   Button,
@@ -20,10 +21,7 @@ import {
   orderPairSymbolsText,
   totalOrderSlotsDone,
 } from "@/models/order";
-import {
-  formatTimestampToDate,
-  formatTimestampToDateWithSuffix,
-} from "@/utils/datetime";
+import { formatTimestampToDate } from "@/utils/datetime";
 import {
   StackOrder,
   StackOrderProps,
@@ -170,41 +168,13 @@ const OrdersProgressText = ({ stackOrder }: StackOrderProps) => {
     );
   }
 
+  const firtTimeSlot = Number(stackOrder.orderSlots[0]);
+  const date = new Date(firtTimeSlot * 1000); // Convert seconds to milliseconds
+  const distanceToNow = formatDistanceToNow(date, { addSuffix: true });
+
   return (
     <BodyText className="text-primary-700">
-      {getDateMessage(stackOrder)}
+      {`Starts ${distanceToNow}`}
     </BodyText>
   );
-};
-
-const pluralize = (value: number, unit: string) =>
-  value === 1 ? unit : `${unit}s`;
-
-const getDateMessage = (stackOrder: StackOrder) => {
-  const firtTimeSlot = Number(stackOrder.orderSlots[0]);
-  const timeUntilStart = firtTimeSlot - Math.round(new Date().getTime() / 1000);
-  const minutesUntilStart = Math.floor(timeUntilStart / 60);
-  const hoursUntilStart = Math.floor(timeUntilStart / (60 * 60));
-
-  let dateMessage;
-
-  if (minutesUntilStart === 0) {
-    dateMessage = "Starting...";
-  } else if (minutesUntilStart < 60) {
-    dateMessage = `Starts in ${minutesUntilStart} ${pluralize(
-      minutesUntilStart,
-      "minute"
-    )}`;
-  } else if (hoursUntilStart < 24) {
-    dateMessage = `Starts in about ${hoursUntilStart} ${pluralize(
-      hoursUntilStart,
-      "hour"
-    )}`;
-  } else {
-    dateMessage = `Starts on ${formatTimestampToDateWithSuffix(
-      stackOrder.orderSlots[0]
-    )}`;
-  }
-
-  return dateMessage;
 };
