@@ -123,13 +123,13 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
             "aggregate",
             response
           );
-          const resultados = callResult.returnData;
+          const balances = callResult.returnData;
 
           const listWithBalances = tokenList
             .map((token, index) => ({
               ...token,
               balance: formatUnits(
-                hexToBigInt(resultados[index]),
+                hexToBigInt(balances[index]),
                 token.decimals
               ),
             }))
