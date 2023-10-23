@@ -1,6 +1,7 @@
 "use client";
 
 import { PropsWithChildren, useState } from "react";
+import { formatDistanceToNow } from "date-fns";
 import {
   BodyText,
   Button,
@@ -20,10 +21,7 @@ import {
   orderPairSymbolsText,
   totalOrderSlotsDone,
 } from "@/models/order";
-import {
-  formatTimestampToDate,
-  formatTimestampToDateWithSuffix,
-} from "@/utils/datetime";
+import { formatTimestampToDate } from "@/utils/datetime";
 import {
   StackOrder,
   StackOrderProps,
@@ -154,23 +152,32 @@ const CellWrapper = ({ children }: PropsWithChildren) => (
 );
 
 const OrdersProgressText = ({ stackOrder }: StackOrderProps) => {
-  if (stackOrder.cancelledAt)
+  if (stackOrder.cancelledAt) {
     return (
       <BodyText className="text-em-low">
         Cancelled at {formatTimestampToDate(stackOrder.cancelledAt)}
       </BodyText>
     );
+  }
 
-  return totalOrderSlotsDone(stackOrder) === 0 ? (
+  if (totalOrderSlotsDone(stackOrder) !== 0) {
+    return (
+      <>
+        <BodyText className="text-em-high">
+          {totalStackOrdersDone(stackOrder).toString()}
+        </BodyText>
+        <BodyText className="text-em-low">{`/ ${stackOrder.orderSlots.length} orders`}</BodyText>
+      </>
+    );
+  }
+
+  const firtTimeSlot = Number(stackOrder.orderSlots[0]);
+  const date = new Date(firtTimeSlot * 1000); // Convert seconds to milliseconds
+  const distanceToNow = formatDistanceToNow(date, { addSuffix: true });
+
+  return (
     <BodyText className="text-primary-700">
-      Starts on {formatTimestampToDateWithSuffix(stackOrder.orderSlots[0])}
+      {`Starts ${distanceToNow}`}
     </BodyText>
-  ) : (
-    <>
-      <BodyText className="text-em-high">
-        {totalStackOrdersDone(stackOrder).toString()}
-      </BodyText>
-      <BodyText className="text-em-low">{`/ ${stackOrder.orderSlots.length} orders`}</BodyText>
-    </>
   );
 };
