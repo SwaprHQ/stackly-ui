@@ -4,7 +4,6 @@ export * from "./stackbox";
 export * from "./strategies";
 export * from "./tabs";
 export * from "./token-picker";
-export * from "./BetaNFTModal";
 export * from "./ConnectButton";
 export * from "./DatePicker";
 export * from "./DialogConfirmTransactionLoading";
