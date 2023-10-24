@@ -23,7 +23,6 @@ import {
   DatePicker,
   TokenIcon,
   TokenPicker,
-  BetaNFTModal,
 } from "@/components";
 import {
   ModalId,
@@ -37,12 +36,7 @@ import {
   INITAL_ORDER,
   frequencySeconds,
 } from "@/models/stack";
-import {
-  ChainId,
-  getNftWhitelistAddress,
-  getWhitelist,
-  nftWhitelistBalanceOf,
-} from "@stackly/sdk";
+import { ChainId } from "@stackly/sdk";
 import { useEthersSigner } from "@/utils/ethers";
 import { DEFAULT_TOKENS_BY_CHAIN } from "@/utils/constants";
 import { Token } from "@/models/token";
@@ -298,29 +292,6 @@ export const Stackbox = () => {
   const amountPerOrder = (
     parseFloat(tokenAmount) / estimatedNumberOfOrders
   ).toFixed(2);
-
-  useEffect(() => {
-    if (!isConnected && isModalOpen(ModalId.BETA_NFT_GATEKEEPING))
-      closeModal(ModalId.BETA_NFT_GATEKEEPING);
-  }, [closeModal, isConnected, isModalOpen]);
-
-  useEffect(() => {
-    const getNFTHolder = async () => {
-      if (address && chain && signer) {
-        const nftWhitelist = getWhitelist(
-          getNftWhitelistAddress(chain.id),
-          signer
-        );
-        const nftAmount = await nftWhitelistBalanceOf(nftWhitelist, address);
-        if (nftAmount.eq(0)) {
-          openModal(ModalId.BETA_NFT_GATEKEEPING);
-        }
-      }
-    };
-
-    if (process.env.NEXT_PUBLIC_ACTIVE_NFT_GATEKEEPING !== "false")
-      getNFTHolder();
-  }, [address, chain, openModal, signer]);
 
   return (
     <div
@@ -599,7 +570,6 @@ export const Stackbox = () => {
           <BodyText className="text-em-med">View your stacks</BodyText>
         </Link>
       </Toast>
-      <BetaNFTModal />
     </div>
   );
 };
