@@ -53,14 +53,6 @@ export const SUBGRAPH_ENDPOINT_LIST: Readonly<Record<string, string>> = {
 };
 
 /**
- * Stackly's NFT Whitelist address list
- */
-export const NFT_WHITELIST_ADDRESS_LIST: Record<ChainId, string> = {
-  [ChainId.ETHEREUM]: AddressZero,
-  [ChainId.GNOSIS]: "0x610a4F6f4A9fDf5c715d60a65758d2fd9B6Ee138",
-};
-
-/**
  * Returns the address of the order factory for a given chain id
  * @param chainId The chain id
  * @returns
@@ -107,20 +99,6 @@ export function getCOWProtocolSettlementAddress(chainId: ChainId): string {
  */
 export function getSubgraphEndpoint(chainId: ChainId) {
   return validateVaultInfo(chainId, SUBGRAPH_ENDPOINT_LIST, "Subraph Endpoint");
-}
-
-/**
- * Gets the address of the NFT whitelist for a given chain id
- * @param {ChainId} chainId The chain id we want to get the deployed address from
- * @returns {string} NFT Whitelist deployed address in a supported chain
- */
-export function getNftWhitelistAddress(chainId: ChainId): string {
-  const address = NFT_WHITELIST_ADDRESS_LIST[chainId];
-  if (address === AddressZero) {
-    throw new Error(`NFT Whitelist is not deployed on chain ${chainId}`);
-  }
-
-  return address;
 }
 
 /**
