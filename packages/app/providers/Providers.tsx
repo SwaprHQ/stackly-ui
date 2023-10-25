@@ -7,11 +7,11 @@ import { WagmiConfig } from "wagmi";
 
 import { config } from "./wagmi-config";
 import {
+  AnalyticsProvider,
   ModalContextProvider,
   StrategyContextProvider,
   TokenListProvider,
 } from "@/contexts";
-import { AnalyticsProvider } from "./analytics";
 
 export const Providers = ({ children }: PropsWithChildren) => {
   return (
