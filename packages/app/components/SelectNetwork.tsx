@@ -5,9 +5,15 @@ import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
 import { ChainIcon } from "connectkit";
 import { Listbox, Transition } from "@headlessui/react";
 import { Fragment } from "react";
+import { parseAsInteger, useQueryState } from "next-usequerystate";
 
 export const SelectNetwork = () => {
-  const { switchNetwork } = useSwitchNetwork();
+  const [, setChainId] = useQueryState("chainId", parseAsInteger);
+  const { switchNetwork } = useSwitchNetwork({
+    onSuccess(data) {
+      setChainId(data.id);
+    },
+  });
   const { chain, chains } = useNetwork();
   const { isConnected } = useAccount();
 

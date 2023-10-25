@@ -1,8 +1,14 @@
 "use client";
 
-import { useRef, useState, useEffect, AnimationEventHandler } from "react";
+import {
+  useRef,
+  useState,
+  useEffect,
+  AnimationEventHandler,
+  useCallback,
+} from "react";
 import { cx } from "class-variance-authority";
-import { useAccount, useBalance, useNetwork } from "wagmi";
+import { useAccount, useBalance, useNetwork, useSwitchNetwork } from "wagmi";
 import { formatUnits, parseUnits } from "viem";
 import Link from "next/link";
 import { add, formatDistance } from "date-fns";
@@ -37,9 +43,17 @@ import {
   frequencySeconds,
 } from "@/models/stack";
 import { ChainId } from "@stackly/sdk";
-import { useEthersSigner } from "@/utils/ethers";
 import { DEFAULT_TOKENS_BY_CHAIN } from "@/utils/constants";
 import { Token } from "@/models/token";
+import {
+  createParser,
+  parseAsInteger,
+  parseAsString,
+  parseAsStringEnum,
+  parseAsTimestamp,
+  useQueryState,
+} from "next-usequerystate";
+
 interface SelectTokenButtonProps {
   label: string;
   onClick: (isFromToken?: boolean) => void;
@@ -80,11 +94,27 @@ const balanceOptions = [
   { name: "Max", divider: BalanceDivider.MAX },
 ];
 
+const startDateParseAsTimestamp = createParser({
+  parse: (v) => {
+    const ms = parseInt(v);
+    if (Number.isNaN(ms)) {
+      return null;
+    }
+
+    const searchParamsStartDate = new Date(ms);
+    const nowDate = new Date();
+
+    if (nowDate.getTime() > searchParamsStartDate.getTime()) return nowDate;
+
+    return new Date(ms);
+  },
+  serialize: (v: Date) => v.valueOf().toString(),
+});
+
 export const Stackbox = () => {
   const searchTokenBarRef = useRef<HTMLInputElement>(null);
   const [isPickingFromToken, setIsPickingFromToken] = useState<boolean>(false);
-  const [fromToken, setFromToken] = useState<TokenWithBalance | null>();
-  const [toToken, setToToken] = useState<TokenWithBalance | null>();
+
   const { closeModal, isModalOpen, openModal } = useModalContext();
   const {
     selectedStrategy,
@@ -92,27 +122,57 @@ export const Stackbox = () => {
     setShouldResetStackbox,
     shouldResetStackbox,
   } = useStrategyContext();
-  const { tokenListWithBalances } = useTokenListContext();
-  const signer = useEthersSigner();
+  const {
+    tokenListWithBalances,
+    getTokenFromList,
+    isLoading: isTokenListLoading,
+  } = useTokenListContext();
 
   const { chain } = useNetwork();
-  const { address, isConnected } = useAccount();
-  const { data: balance } = useBalance({
-    address: Boolean(fromToken) ? address : undefined,
-    token: fromToken?.address as `0x${string}`,
-    chainId: chain?.id,
+  const { switchNetwork } = useSwitchNetwork({
+    onSuccess(data) {
+      setChainId(data.id);
+    },
   });
-  const [tokenAmount, setTokenAmount] = useState("");
+  const { address } = useAccount();
 
-  const [frequency, setFrequency] = useState<FREQUENCY_OPTIONS>(
-    FREQUENCY_OPTIONS.hour
+  const getDefaultParsedToken = (tokenDirection: "to" | "from") =>
+    createParser({
+      parse: (address: string) => getTokenFromList(address),
+      serialize: (token) => token?.address || "",
+    }).withDefault(
+      chain?.id && !chain?.unsupported
+        ? DEFAULT_TOKENS_BY_CHAIN[chain.id][tokenDirection]
+        : DEFAULT_TOKENS_BY_CHAIN[ChainId.GNOSIS][tokenDirection]
+    );
+
+  const [fromToken, setFromToken] = useQueryState<TokenWithBalance>(
+    "fromToken",
+    getDefaultParsedToken("from")
   );
-  const [startDateTime, setStartDateTime] = useState<Date>(
-    new Date(Date.now())
+  const [toToken, setToToken] = useQueryState<TokenWithBalance>(
+    "toToken",
+    getDefaultParsedToken("to")
   );
-  const [endDateTime, setEndDateTime] = useState<Date>(
-    new Date(endDateByFrequency[frequency])
+  const [tokenAmount, setTokenAmount] = useQueryState(
+    "tokenAmount",
+    parseAsString.withDefault("")
   );
+  const [frequency, setFrequency] = useQueryState(
+    "frequency",
+    parseAsStringEnum<FREQUENCY_OPTIONS>(
+      Object.values(FREQUENCY_OPTIONS)
+    ).withDefault(FREQUENCY_OPTIONS.hour)
+  );
+  const [startDateTime, setStartDateTime] = useQueryState(
+    "startDate",
+    startDateParseAsTimestamp.withDefault(new Date(Date.now()))
+  );
+  const [endDateTime, setEndDateTime] = useQueryState(
+    "endDate",
+    parseAsTimestamp.withDefault(new Date(endDateByFrequency[frequency]))
+  );
+  const [chainId, setChainId] = useQueryState("chainId", parseAsInteger);
 
   const [showTokenAmountError, setShowTokenAmountError] = useState(false);
   const [showPastEndDateError, setShowPastEndDateError] = useState(false);
@@ -122,24 +182,50 @@ export const Stackbox = () => {
   const [showInsufficentBalanceError, setShowInsufficentBalanceError] =
     useState(false);
 
-  const isStrategySelected = Boolean(selectedStrategy);
+  const { data: balance, isRefetching: isRefetchingBalance } = useBalance({
+    address: Boolean(fromToken) ? address : undefined,
+    token: fromToken?.address as `0x${string}`,
+    chainId: chain?.id,
+  });
 
   useEffect(() => {
-    if (!selectedStrategy)
-      setEndDateTime(new Date(endDateByFrequency[frequency]));
+    if (isTokenListLoading) return;
+
+    const searchParams = new URLSearchParams(window.location.search);
+
+    const fromTokenParam = searchParams.get("fromToken");
+    if (
+      fromTokenParam &&
+      fromToken.address.toLowerCase() != fromTokenParam.toLowerCase()
+    ) {
+      setFromToken(getTokenFromList(fromTokenParam));
+    }
+
+    const toTokenParam = searchParams.get("toToken");
+    if (
+      toTokenParam &&
+      toToken.address.toLowerCase() != toTokenParam.toLowerCase()
+    ) {
+      setToToken(getTokenFromList(toTokenParam));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [frequency]);
+  }, [isTokenListLoading]);
 
-  // set default tokens
   useEffect(() => {
-    const chainId = chain?.unsupported
-      ? ChainId.GNOSIS
-      : chain?.id ?? ChainId.GNOSIS;
+    if (chain) setChainId(chain.id);
+  }, [chain, setChainId]);
 
-    const { from, to } = DEFAULT_TOKENS_BY_CHAIN[chainId];
-    setFromToken(from);
-    setToToken(to);
-  }, [chain]);
+  useEffect(() => {
+    if (
+      chainId &&
+      switchNetwork &&
+      chainId !== chain?.id &&
+      Boolean(ChainId[chainId])
+    ) {
+      switchNetwork(chainId);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [switchNetwork]);
 
   /**
    * Form state handler when we select a
@@ -160,7 +246,7 @@ export const Stackbox = () => {
         tokenListWithBalances?.find(
           (token) =>
             token.address.toUpperCase() === strategyToken.address.toUpperCase()
-        );
+        ) ?? null;
 
       const strategyEndDate = add(Date.now(), {
         days: selectedStrategy.daysAmount,
@@ -177,7 +263,18 @@ export const Stackbox = () => {
     } else if (shouldResetStackbox) {
       resetDefaultFormValues();
     }
-  }, [frequency, selectedStrategy, shouldResetStackbox, tokenListWithBalances]);
+  }, [
+    frequency,
+    selectedStrategy,
+    setEndDateTime,
+    setFrequency,
+    setFromToken,
+    setStartDateTime,
+    setToToken,
+    setTokenAmount,
+    shouldResetStackbox,
+    tokenListWithBalances,
+  ]);
 
   const deselectStrategy = () => {
     if (selectedStrategy) setSelectedStrategy(null);
@@ -188,7 +285,7 @@ export const Stackbox = () => {
     openModal(ModalId.TOKEN_PICKER);
   };
 
-  const openConfirmStack = () => {
+  const openConfirmStack = useCallback(() => {
     const startDate = startDateTime.getTime();
     const endDate = endDateTime.getTime();
     const isEndTimeBeforeStartTime = endDate <= startDate;
@@ -201,18 +298,24 @@ export const Stackbox = () => {
     if (!fromToken || !toToken) {
       if (!fromToken) setShowFromTokenError(true);
       if (!toToken) setShowToTokenError(true);
+      return;
+    }
+
+    if (!tokenAmount) {
+      setShowTokenAmountError(true);
 
       return;
     }
 
-    if (!tokenAmount) setShowTokenAmountError(true);
     if (
       fromToken &&
       balance &&
       tokenAmount &&
       BigInt(balance.value) < parseUnits(tokenAmount, fromToken.decimals)
-    )
+    ) {
       setShowInsufficentBalanceError(true);
+      return;
+    }
 
     if (
       fromToken &&
@@ -226,7 +329,15 @@ export const Stackbox = () => {
       setShowInsufficentBalanceError(false);
       openModal(ModalId.CONFIRM_STACK);
     }
-  };
+  }, [
+    balance,
+    endDateTime,
+    fromToken,
+    openModal,
+    startDateTime,
+    toToken,
+    tokenAmount,
+  ]);
 
   const selectToken = (selectedToken: TokenWithBalance) => {
     deselectStrategy();
@@ -292,6 +403,8 @@ export const Stackbox = () => {
   const amountPerOrder = (
     parseFloat(tokenAmount) / estimatedNumberOfOrders
   ).toFixed(2);
+
+  const isStrategySelected = Boolean(selectedStrategy);
 
   return (
     <div
@@ -547,7 +660,9 @@ export const Stackbox = () => {
           }
           endTime={endDateTime}
           isOpen={isModalOpen(ModalId.CONFIRM_STACK)}
-          closeAction={() => closeModal(ModalId.CONFIRM_STACK)}
+          closeAction={() => {
+            closeModal(ModalId.CONFIRM_STACK);
+          }}
           key={`${fromToken.address}-$${tokenAmount}`}
           onSuccess={() => {
             closeModal(ModalId.CONFIRM_STACK);
