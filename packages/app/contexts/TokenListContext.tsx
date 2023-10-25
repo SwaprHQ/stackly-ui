@@ -44,14 +44,16 @@ const TOKEN_LISTS_BY_CHAIN_URL: { [chainId: number]: string[] } = {
 };
 
 const TokenListContext = createContext<{
+  isLoading: boolean;
   tokenList: TokenFromTokenlist[];
   tokenListWithBalances?: TokenWithBalance[];
   getTokenLogoURL: (tokenAddress: string) => string;
-  getTokenFromList: (tokenAddress: string) => TokenFromTokenlist | false;
+  getTokenFromList: (tokenAddress: string) => TokenFromTokenlist | null;
 }>({
+  isLoading: true,
   tokenList: DEFAULT_TOKEN_LIST_BY_CHAIN[ChainId.GNOSIS],
   getTokenLogoURL: (tokenAddress: string) => "#",
-  getTokenFromList: (tokenAddress: string) => false,
+  getTokenFromList: (tokenAddress: string) => null,
 });
 
 const mergeTokenlists = (
@@ -77,6 +79,7 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
   );
   const [tokenListWithBalances, setTokenListWithBalances] =
     useState<TokenWithBalance[]>();
+  const [isLoading, setIsLoading] = useState(true);
   const { chain } = useNetwork();
   const { address } = useAccount();
 
@@ -145,7 +148,7 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
 
   const setupTokenList = useCallback(async () => {
     let mergedTokenlistTokens = defaultTokenList;
-
+    setIsLoading(true);
     async function getTokenListData(tokenlistURL: string) {
       const res = await fetch(tokenlistURL);
       if (!res.ok) {
@@ -173,6 +176,7 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
           (token: TokenFromTokenlist) => token.chainId === chainId
         )
       );
+      setIsLoading(false);
     });
   }, [chainId, defaultTokenList, fetchTokenlistURLS]);
 
@@ -182,18 +186,19 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
 
   const tokenListContext = useMemo(
     () => ({
+      isLoading,
       tokenList,
       tokenListWithBalances,
       getTokenFromList: (tokenAddress: string) =>
         tokenList.find(
           (token) => token.address.toUpperCase() === tokenAddress?.toUpperCase()
-        ) ?? false,
+        ) ?? null,
       getTokenLogoURL: (tokenAddress: string) =>
         tokenList.find(
           (token) => token.address.toUpperCase() === tokenAddress?.toUpperCase()
         )?.logoURI ?? "#",
     }),
-    [tokenList, tokenListWithBalances]
+    [isLoading, tokenList, tokenListWithBalances]
   );
 
   return (
