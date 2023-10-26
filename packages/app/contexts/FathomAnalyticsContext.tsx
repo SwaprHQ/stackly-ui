@@ -1,50 +1,51 @@
-import { useEffect, useState, createContext } from "react";
+"use client";
 
-import { Fathom, loadFathom } from "@/analytics";
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useMemo,
+} from "react";
 
-interface IAnalyticsContext {
-  fathom: Fathom;
+import { EventName } from "@/constants";
+import { EventOptions } from "@/analytics";
+
+const siteId = process.env.NEXT_PUBLIC_FATHOM_SITE_ID;
+
+interface AnalyticsContextProps {
+  trackClick: (eventName: EventName, opts?: EventOptions) => void;
 }
 
-interface AnalyticsProviderProps {
-  children: React.ReactNode;
-}
+const AnalyticsContext = createContext<AnalyticsContextProps>({
+  trackClick: () => {
+    throw new Error("No AnalyticsContext available");
+  },
+});
 
-const AnalyticsContext = createContext({} as IAnalyticsContext);
-
-/**
- * AnalyticsProvider: provides the analytics context to the application
- */
-export function AnalyticsProvider({ children }: AnalyticsProviderProps) {
-  const [fathom, setFathom] = useState<Fathom>();
-  // Load the fathom site information
+export const AnalyticsProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
-    const siteId = process.env.NEXT_PUBLIC_FATHOM_SITE_ID;
-    const siteScriptURL = process.env.NEXT_PUBLIC_FATHOM_SITE_SCRIPT_URL;
-
-    if (!siteId) {
-      console.warn("Site ID not set, skipping Fathom analytics");
-      return;
-    }
-
-    loadFathom(siteId, siteScriptURL)
-      .then(() => {
-        setFathom(window.fathom);
-      })
-      .catch((error: Error) => {
-        console.error("Error loading Fathom analytics", error);
-      });
+    if (!siteId) throw new Error("Site ID not set, skipping Fathom analytics");
   }, []);
 
+  const analyticsContextValues = useMemo(
+    () => ({
+      trackClick: (eventName: EventName, opts?: EventOptions) => {
+        window.fathom.trackEvent(eventName, opts);
+        console.log(
+          `Click event emitted: ${eventName}.${opts ? " Options: " : ""}`,
+          opts ?? ""
+        );
+      },
+    }),
+    []
+  );
+
   return (
-    <AnalyticsContext.Provider
-      value={
-        {
-          fathom,
-        } as IAnalyticsContext
-      }
-    >
+    <AnalyticsContext.Provider value={analyticsContextValues}>
       {children}
     </AnalyticsContext.Provider>
   );
-}
+};
+
+export const useFathomAnalytics = () => useContext(AnalyticsContext);
