@@ -394,7 +394,7 @@ export const Stackbox = () => {
       <div className="px-5 py-6 space-y-6">
         <div className="space-y-2">
           <TitleText weight="bold" className="text-em-med">
-            Stack WETH every
+            {toToken ? `Stack ${toToken?.symbol} every` : "Stack every"}
           </TitleText>
           <div className="space-y-6">
             <div className="flex space-x-2">
