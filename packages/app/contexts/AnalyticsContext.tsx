@@ -32,10 +32,6 @@ export const AnalyticsProvider = ({ children }: PropsWithChildren) => {
     () => ({
       trackClick: (eventName: EventName, opts?: EventOptions) => {
         window.fathom.trackEvent(eventName, opts);
-        console.log(
-          `Click event emitted: ${eventName}.${opts ? " Options: " : ""}`,
-          opts ?? ""
-        );
       },
     }),
     []
