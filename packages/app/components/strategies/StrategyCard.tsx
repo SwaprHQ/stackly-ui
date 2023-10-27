@@ -3,7 +3,7 @@
 import { cx } from "class-variance-authority";
 
 import { Button, CaptionText, Icon } from "@/ui";
-import { EVENTS } from "@/constants";
+import { EVENTS } from "@/analytics";
 import { Strategy, useFathomAnalytics, useStrategyContext } from "@/contexts";
 import { TokenLogoPair } from "@/components/TokenLogoPair";
 

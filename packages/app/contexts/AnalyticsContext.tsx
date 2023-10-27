@@ -8,8 +8,7 @@ import {
   useMemo,
 } from "react";
 
-import { EventName } from "@/constants";
-import { EventOptions } from "@/analytics";
+import { EventName, EventOptions } from "@/analytics";
 
 const siteId = process.env.NEXT_PUBLIC_FATHOM_SITE_ID;
 
