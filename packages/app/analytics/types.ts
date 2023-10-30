@@ -1,15 +1,23 @@
+type PageViewOptions = {
+  url?: string;
+  referrer?: string;
+};
+
+export type EventOptions = {
+  _site_id?: string;
+  _value?: number;
+};
+
 export interface Fathom {
-  siteId: string
-  blockTrackingForMe(): void
-  enableTrackingForMe(): void
-  setSite(siteId: string): void
-  trackGoal(goalId: string, data: any): void
-  trackEvent(eventId: string, payload: Record<string, any>): void
-  trackPageview(params?: Record<string, any>): void
+  blockTrackingForMe: () => void;
+  enableTrackingForMe: () => void;
+  trackPageview: (opts?: PageViewOptions) => void;
+  trackEvent(eventId: string, opts?: EventOptions): void;
+  setSite: (siteId: string) => void;
 }
 
 declare global {
   interface Window {
-    fathom: Fathom
+    fathom: Fathom;
   }
 }
