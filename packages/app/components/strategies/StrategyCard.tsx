@@ -28,6 +28,7 @@ export const StrategyCard = ({ strategy }: StrategyCardProps) => {
     { label: "No. of days", totalAmount: strategy.daysAmount },
   ];
 
+  const cardClickEventName = `${EVENTS.CLICK.STRATEGY_CARD}-${strategy.buyToken.symbol}/${strategy.sellToken.symbol}-${strategy.frequency}-${strategy.totalSellAmount}`;
   const isSelected = selectedStrategy?.id === strategy.id;
 
   return (
@@ -41,7 +42,7 @@ export const StrategyCard = ({ strategy }: StrategyCardProps) => {
       onClick={() => {
         setSelectedStrategy(isSelected ? null : strategy);
         setShouldResetStackbox(isSelected);
-        trackClick(EVENTS.CLICK.STRATEGY_CARD);
+        if (!isSelected) trackClick(cardClickEventName);
       }}
     >
       <div className="flex">
