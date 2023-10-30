@@ -1,11 +1,14 @@
 import { PropsWithChildren } from "react";
-import { Metadata } from "next";
+
 import localFont from "next/font/local";
+import { Metadata } from "next";
+import Script from "next/script";
 
 import { Navbar } from "@/components";
 import { Providers } from "@/providers";
-import "@/styles/global.css";
 import { STACKLY_APP_URL } from "@/constants";
+
+import "@/styles/global.css";
 
 const stabilGrotesk = localFont({
   src: [
@@ -42,13 +45,22 @@ export const metadata: Metadata = {
   },
 };
 
+const siteId = process.env.NEXT_PUBLIC_FATHOM_SITE_ID;
+
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" className={stabilGrotesk.variable}>
       <body className="font-sans bg-fixed bg-surface-25 bg-auto-100 bg-matrix-and-green-gradient text-em-high">
+        <Script
+          src="https://cdn.usefathom.com/script.js"
+          data-auto
+          data-site={siteId}
+          data-spa="hash"
+          defer
+        />
         <Providers>
           <Navbar />
-          <div className="px-4 py-12 md:py-16 mx-auto md:px-0">{children}</div>
+          <div className="px-4 py-12 mx-auto md:py-16 md:px-0">{children}</div>
         </Providers>
       </body>
     </html>
