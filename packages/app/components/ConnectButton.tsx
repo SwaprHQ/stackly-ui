@@ -1,10 +1,11 @@
 "use client";
 
 import { ConnectKitButton } from "connectkit";
-import { useEnsAvatar, useBalance } from "wagmi";
+import { useEnsAvatar, useBalance, useNetwork } from "wagmi";
 import Image from "next/image";
 import { BodyText, Button, SizeProps } from "@/ui";
 import { useAutoConnect } from "@/hooks";
+import { ChainId, WETH, WXDAI } from "@stackly/sdk";
 
 const CustomConnectButton = ({
   address,
@@ -17,12 +18,22 @@ const CustomConnectButton = ({
   ensName?: string;
   size: SizeProps;
 }) => {
+  const { chain } = useNetwork();
   const { data: avatar } = useEnsAvatar({
     name: ensName,
     chainId: 1,
   });
+
+  const TOKEN_BY_CHAIN: { [chainId: number]: string } = {
+    [ChainId.ETHEREUM]: WETH[ChainId.ETHEREUM].address,
+    [ChainId.GNOSIS]: WXDAI.address,
+  };
+
   const { data: balance } = useBalance({
     address: address,
+    token: chain
+      ? (TOKEN_BY_CHAIN[chain.id] as `0x${string}`)
+      : (TOKEN_BY_CHAIN[ChainId.GNOSIS] as `0x${string}`),
   });
 
   const truncatedAddress = (size: number) =>
