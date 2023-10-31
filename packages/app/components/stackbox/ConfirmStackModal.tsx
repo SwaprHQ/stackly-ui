@@ -191,7 +191,7 @@ export const ConfirmStackModal = ({
           <div>
             <TitleText size={2} className="text-center text-em-low">
               Stacks <span className="text-em-high">{toToken.symbol}</span>,
-              worth{" "}
+              swapping{" "}
               <span className="text-em-high">
                 {amountPerOrder} {fromToken.symbol}
               </span>
