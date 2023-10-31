@@ -25,7 +25,7 @@ const CustomConnectButton = ({
   });
 
   const TOKEN_BY_CHAIN: { [chainId: number]: string } = {
-    [ChainId.ETHEREUM]: WETH[1].address,
+    [ChainId.ETHEREUM]: WETH[ChainId.ETHEREUM].address,
     [ChainId.GNOSIS]: WXDAI.address,
   };
 
@@ -35,7 +35,6 @@ const CustomConnectButton = ({
       ? (TOKEN_BY_CHAIN[chain.id] as `0x${string}`)
       : (TOKEN_BY_CHAIN[ChainId.GNOSIS] as `0x${string}`),
   });
-  console.log("balance:", balance);
 
   const truncatedAddress = (size: number) =>
     `${address.slice(0, size)}...${address.slice(
