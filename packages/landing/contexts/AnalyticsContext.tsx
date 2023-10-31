@@ -30,7 +30,6 @@ export const AnalyticsProvider = ({ children }: PropsWithChildren) => {
   const analyticsContextValues = useMemo(
     () => ({
       trackClick: (eventName: EventName, opts?: EventOptions) => {
-        console.log("tracking event: ", eventName);
         window.fathom.trackEvent(eventName, opts);
       },
     }),
