@@ -1,9 +1,13 @@
 "use client";
 
 import { useState } from "react";
+
 import Link from "next/link";
+
 import { Button, ButtonLink } from "@/ui";
+import { EVENTS } from "@/analytics";
 import { STACKLY_APP_URL } from "@/constants";
+import { useFathomAnalytics } from "@/contexts";
 
 export default function MobileMenu({
   passedThresholdHeight,
@@ -11,6 +15,7 @@ export default function MobileMenu({
   passedThresholdHeight: boolean;
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const { trackClick } = useFathomAnalytics();
 
   const toggle = () => setIsOpen(!isOpen);
 
@@ -20,7 +25,9 @@ export default function MobileMenu({
         target="_blank"
         variant={passedThresholdHeight ? "primary" : "secondary"}
         href={STACKLY_APP_URL}
-        onClick={toggle}
+        onClick={() => {
+          trackClick(`${EVENTS.CLICK.LAUNCH_APP}-navbar-mobile`);
+        }}
       >
         Launch app
       </ButtonLink>
