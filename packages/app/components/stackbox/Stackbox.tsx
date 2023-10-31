@@ -628,7 +628,7 @@ const StackDetailsTileText = ({
   timeLength,
 }: StackDetailsTileTextProps) => (
   <BodyText size={1}>
-    Stacks <span className="text-em-med">{toTokenSymbol}</span>, worth{" "}
+    Stacks <span className="text-em-med">{toTokenSymbol}</span>, swapping{" "}
     <span className="text-em-med">
       {amountPerOrder} {fromTokenSymbol}
     </span>
