@@ -406,6 +406,11 @@ export const Stackbox = () => {
 
   const isStrategySelected = Boolean(selectedStrategy);
 
+  const swapFromToTokens = () => {
+    setToToken(fromToken);
+    setFromToken(toToken);
+  };
+
   return (
     <div
       className={cx("max-w-lg mx-auto bg-white shadow-2xl rounded-2xl", {
@@ -425,9 +430,12 @@ export const Stackbox = () => {
               setShowFromTokenError(false);
             }}
           />
-          <Icon
-            name="arrow-left"
-            className="flex items-center justify-center w-10 p-2 rotate-180 md:w-16 h-9 bg-surface-50 rounded-2xl"
+          <Button
+            onClick={swapFromToTokens}
+            size="icon"
+            variant="secondary"
+            iconLeft="arrow-left"
+            className="w-10 rotate-180 md:w-16 h-9 rounded-2xl"
           />
           <SelectTokenButton
             label="To receive"
