@@ -10,12 +10,12 @@ import {
   SWAPR_URL,
 } from "@/constants";
 import { StacklyLogoIcon } from "@/public/assets";
-import { MainSection, QAndAAccordion, TryStacklyBanner } from "@/components";
+import { FAQ, HeroBanner, TryStacklyBanner } from "@/components";
 
 export default function Home() {
   return (
     <main>
-      <MainSection />
+      <HeroBanner />
       <section
         className="py-20 bg-white border-b border-gray-100 md:py-32"
         id="how-it-works"
@@ -60,54 +60,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="px-6 py-12 md:py-32" id="faqs">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row md:justify-between">
-            <HeadingText size={4} className="pb-10 md:pb-0">
-              Frequently asked questions
-            </HeadingText>
-            <div className="w-full max-w-lg space-y-4">
-              <QAndAAccordion question="What is Stackly?" startOpen>
-                Stackly is a simple non-custodial DCA app that makes it easy to
-                do recurring swaps of any token.
-              </QAndAAccordion>
-              <QAndAAccordion question="What is a stack?">
-                <p>
-                  We call it stack the creation of the recurrent order with the
-                  total amount that will be used to swap the choosen tokens on
-                  the choosen frequency (hourly, daily, etc).
-                </p>
-                <p>
-                  Example: A stack of WETH using 500WXDAI that will do recurrent
-                  swaps every day till the end of the week.
-                </p>
-              </QAndAAccordion>
-              <QAndAAccordion question="How does Stackly work?">
-                When you stack a token, stackly creates a contract for you with
-                the funds and uses CoW protocol to place recurring orders
-                (stacks) at the frequency you choose.
-              </QAndAAccordion>
-              <QAndAAccordion question="What is DCA?">
-                DCA stands for Dollar-Cost Averaging, which is an investment
-                strategy used in the financial markets. DCA involves regularly
-                investing a fixed amount of money at predetermined intervals,
-                regardless of the {"asset's"} price.
-              </QAndAAccordion>
-              <QAndAAccordion question="Why one should do DCA?">
-                Recurring swaps (aka DCA) remove the need to time the market,
-                neutralising the short term market volatility, and helps you
-                build a portfolio, distributed over a period of time.
-              </QAndAAccordion>
-              <QAndAAccordion question="Can I cancel my stacks?">
-                Yes. You can cancel your stacks anytime. Your funds will be
-                withdrawn immediately to your wallet. To do it, you have to
-                connect your wallet, go to your stacks, choose a stack, click
-                cancel and confirm transaction with your wallet.
-              </QAndAAccordion>
-            </div>
-          </div>
-        </div>
-      </section>
+      <FAQ />
       <section className="px-6 mx-auto mb-20 max-w-7xl lg:px-0 md:mb-32">
         <TryStacklyBanner />
       </section>
