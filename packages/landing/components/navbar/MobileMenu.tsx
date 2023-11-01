@@ -26,7 +26,7 @@ export default function MobileMenu({
         variant={passedThresholdHeight ? "primary" : "secondary"}
         href={STACKLY_APP_URL}
         onClick={() => {
-          trackClick(`${EVENTS.CLICK.LAUNCH_APP}-navbar-mobile`);
+          trackClick(EVENTS.NAVBAR.MOBILE.LAUNCH_APP_CLICK);
         }}
       >
         Launch app

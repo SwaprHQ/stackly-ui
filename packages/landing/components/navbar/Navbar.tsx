@@ -58,7 +58,7 @@ export function Navbar() {
             variant={passedThresholdHeight ? "primary" : "quaternary"}
             href={STACKLY_APP_URL}
             onClick={() => {
-              trackClick(`${EVENTS.CLICK.LAUNCH_APP}-navbar-desktop`);
+              trackClick(EVENTS.NAVBAR.DESKTOP.LAUNCH_APP_CLICK);
             }}
           >
             Launch app
