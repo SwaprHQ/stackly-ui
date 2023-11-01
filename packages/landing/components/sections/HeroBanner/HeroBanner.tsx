@@ -15,7 +15,7 @@ import { EVENTS } from "@/analytics/constants";
 import { STACKLY_APP_URL } from "@/constants";
 import { useFathomAnalytics } from "@/contexts";
 
-export const MainSection = () => {
+export const HeroBanner = () => {
   const { trackClick } = useFathomAnalytics();
 
   return (
@@ -33,7 +33,7 @@ export const MainSection = () => {
         width="fit"
         className="!py-4 mx-auto text-lg !px-16 md:!px-28 mt-8"
         onClick={() => {
-          trackClick(`${EVENTS.CLICK.LAUNCH_APP}-landing-CTA`);
+          trackClick(EVENTS.SECTIONS.HERO_BANNER.STACK_NOW_CLICK);
         }}
       >
         Stack now
