@@ -182,7 +182,7 @@ export const Stackbox = () => {
   const [showInsufficentBalanceError, setShowInsufficentBalanceError] =
     useState(false);
 
-  const { data: balance, isRefetching: isRefetchingBalance } = useBalance({
+  const { data: balance } = useBalance({
     address: Boolean(fromToken) ? address : undefined,
     token: fromToken?.address as `0x${string}`,
     chainId: chain?.id,
@@ -375,14 +375,22 @@ export const Stackbox = () => {
   };
 
   const setTokenAmountBasedOnBalance = (divider: number) => {
-    deselectStrategy();
     if (!balance || !fromToken) return;
+    deselectStrategy();
 
     setShowTokenAmountError(false);
     setShowInsufficentBalanceError(false);
-    setTokenAmount(
-      formatUnits(balance.value / BigInt(divider), fromToken.decimals)
+
+    let formattedBalance = formatUnits(
+      balance.value / BigInt(divider),
+      fromToken.decimals
     );
+
+    if (divider != BalanceDivider.MAX) {
+      formattedBalance = Number(formattedBalance).toFixed(6);
+    }
+
+    setTokenAmount(formattedBalance);
   };
 
   const handleStartDateTimeChange = (newDateTime: Date) => {
