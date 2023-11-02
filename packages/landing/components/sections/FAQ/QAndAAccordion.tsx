@@ -1,17 +1,19 @@
 "use client";
 
-import { Icon } from "@/ui";
-import { cx } from "class-variance-authority";
 import { PropsWithChildren, useState } from "react";
 
+import { Icon } from "@/ui";
+
 interface QAndAAccordionProps extends PropsWithChildren {
+  onClick?: (args?: any) => void;
   question: string;
   startOpen?: boolean;
 }
 
 export const QAndAAccordion = ({
-  question,
   children,
+  onClick,
+  question,
   startOpen,
 }: QAndAAccordionProps) => {
   const [isOpen, setIsOpen] = useState(startOpen ?? false);
@@ -19,14 +21,19 @@ export const QAndAAccordion = ({
 
   return (
     <div
-      className={cx(
-        "px-6 py-3 space-y-4 bg-white border cursor-pointer rounded-xl hover:bg-surface-25",
-        {
-          "shadow-md": isOpen,
-          "shadow-sm": !isOpen,
-        }
-      )}
-      onClick={toggle}
+      className={`
+      bg-white hover:bg-surface-25
+      border
+      cursor-pointer
+      px-6 py-3
+      rounded-xl
+      space-y-4
+      ${isOpen ? "shadow-md" : "shadow-sm"}
+      `}
+      onClick={() => {
+        if (onClick && !isOpen) onClick();
+        toggle();
+      }}
     >
       <div className="flex items-center justify-between">
         <p className="text-lg font-semibold md:text-xl">{question}</p>
