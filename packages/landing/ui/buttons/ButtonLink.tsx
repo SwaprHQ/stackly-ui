@@ -22,6 +22,7 @@ export function ButtonLink({
   iconLeft,
   iconRight,
   id,
+  onClick,
 }: ButtonLinkProps) {
   return (
     <Link
@@ -37,6 +38,7 @@ export function ButtonLink({
         active,
         className,
       })}
+      onClick={onClick}
     >
       {iconLeft && <Icon size={getIconSize(size)} name={iconLeft} />}
       {children && <div>{children}</div>}

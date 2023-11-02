@@ -84,7 +84,7 @@ export const buttonStyles = cva(
 export type SizeProps = "xs" | "sm" | "md" | "lg" | "icon";
 
 export interface ButtonBaseProps
-  extends ButtonHTMLAttributes<HTMLButtonElement> {
+  extends ButtonHTMLAttributes<HTMLButtonElement | HTMLAnchorElement> {
   children?: ReactNode;
   variant?: "primary" | "secondary" | "tertiary" | "quaternary";
   className?: string;

@@ -1,97 +1,21 @@
+import { PropsWithChildren } from "react";
+
 import Link from "next/link";
 import Image from "next/image";
+
+import { BodyText, ButtonLink, HeadingText, Icon } from "@/ui";
 import {
-  BodyText,
-  ButtonLink,
-  DisplayText,
-  HeadingText,
-  Icon,
-  TitleText,
-} from "@/ui";
-import {
-  STACKLY_APP_URL,
   STACKLY_DISCORD_URL,
   STACKLY_TWITTER_URL,
   SWAPR_URL,
 } from "@/constants";
 import { StacklyLogoIcon } from "@/public/assets";
-import { PropsWithChildren } from "react";
-import { QAndAAccordion, TryStacklyBanner } from "@/components";
+import { FAQ, HeroBanner, TryStacklyBanner } from "@/components";
 
 export default function Home() {
   return (
     <main>
-      <section className="px-6 pt-16 border-b border-gray-100 md:pt-20">
-        <div className="space-y-4 text-center md:space-y-6 ">
-          <DisplayText>DCA simplified</DisplayText>
-          <HeadingText className="!font-medium text-em-med max-w-2xl mx-auto">
-            Say goodbye to market timing and hello to effortless recurrent
-            swaps.
-          </HeadingText>
-        </div>
-        <ButtonLink
-          target="_blank"
-          href={STACKLY_APP_URL}
-          size="lg"
-          width="fit"
-          className="!py-4 mx-auto text-lg !px-16 md:!px-28 mt-8"
-        >
-          Stack now
-        </ButtonLink>
-        <div className="relative max-w-4xl mx-auto mt-12 mb-24 md:my-20">
-          <Link
-            passHref
-            href={STACKLY_APP_URL}
-            className="relative block mx-auto w-fit"
-          >
-            <div className="invisible sm:visible absolute w-[3px] h-[26px] bg-em-med bottom-[60px] left-[17px] animate-cursor-blink"></div>
-            <Image
-              className="mx-auto border shadow-xl hover:shadow-2xl rounded-2xl border-surface-50"
-              alt="amount widget"
-              src="/assets/images/landing-widget.png"
-              height={200}
-              width={512}
-            />
-          </Link>
-          <div className="absolute w-full -top-36 -z-10 h-[460px] md:bg-radial-gradient"></div>
-        </div>
-        <Link
-          href="https://ipfs.io/ipfs/QmUmmFkKvktZ14iA3237WuDrzNuhi4BMb4MoYMJHeFFbey"
-          target="_blank"
-        >
-          <div className="mx-auto flex items-center px-5 py-3 bg-primary-50 rounded-[20px] w-fit space-x-3 my-20 shadow-sm hover:shadow-md hover:bg-primary-75">
-            <Icon name="check" className="text-primary-600" />
-            <TitleText>Stackly has undergone an audit by Omega.</TitleText>
-            <Image
-              alt="omega team logo"
-              src="/assets/images/omega-team-logo.svg"
-              height={30}
-              width={30}
-            />
-          </div>
-        </Link>
-
-        {false && (
-          <div className="mx-auto flex items-center px-5 py-2 bg-black/5 rounded-[20px] w-fit space-x-6 mt-20">
-            <div className="flex items-center space-x-2">
-              <BodyText size={3} weight="medium" className="text-em-med">
-                Total Stacks created:
-              </BodyText>
-              <BodyText size={3} weight="bold">
-                732
-              </BodyText>
-            </div>
-            <div className="flex items-center space-x-2">
-              <BodyText size={3} weight="medium" className="text-em-med">
-                Total transactions:
-              </BodyText>
-              <BodyText size={3} weight="bold">
-                1232
-              </BodyText>
-            </div>
-          </div>
-        )}
-      </section>
+      <HeroBanner />
       <section
         className="py-20 bg-white border-b border-gray-100 md:py-32"
         id="how-it-works"
@@ -136,54 +60,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="px-6 py-12 md:py-32" id="faqs">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row md:justify-between">
-            <HeadingText size={4} className="pb-10 md:pb-0">
-              Frequently asked questions
-            </HeadingText>
-            <div className="w-full max-w-lg space-y-4">
-              <QAndAAccordion question="What is Stackly?" startOpen>
-                Stackly is a simple non-custodial DCA app that makes it easy to
-                do recurring swaps of any token.
-              </QAndAAccordion>
-              <QAndAAccordion question="What is a stack?">
-                <p>
-                  We call it stack the creation of the recurrent order with the
-                  total amount that will be used to swap the choosen tokens on
-                  the choosen frequency (hourly, daily, etc).
-                </p>
-                <p>
-                  Example: A stack of WETH using 500WXDAI that will do recurrent
-                  swaps every day till the end of the week.
-                </p>
-              </QAndAAccordion>
-              <QAndAAccordion question="How does Stackly work?">
-                When you stack a token, stackly creates a contract for you with
-                the funds and uses CoW protocol to place recurring orders
-                (stacks) at the frequency you choose.
-              </QAndAAccordion>
-              <QAndAAccordion question="What is DCA?">
-                DCA stands for Dollar-Cost Averaging, which is an investment
-                strategy used in the financial markets. DCA involves regularly
-                investing a fixed amount of money at predetermined intervals,
-                regardless of the {"asset's"} price.
-              </QAndAAccordion>
-              <QAndAAccordion question="Why one should do DCA?">
-                Recurring swaps (aka DCA) remove the need to time the market,
-                neutralising the short term market volatility, and helps you
-                build a portfolio, distributed over a period of time.
-              </QAndAAccordion>
-              <QAndAAccordion question="Can I cancel my stacks?">
-                Yes. You can cancel your stacks anytime. Your funds will be
-                withdrawn immediately to your wallet. To do it, you have to
-                connect your wallet, go to your stacks, choose a stack, click
-                cancel and confirm transaction with your wallet.
-              </QAndAAccordion>
-            </div>
-          </div>
-        </div>
-      </section>
+      <FAQ />
       <section className="px-6 mx-auto mb-20 max-w-7xl lg:px-0 md:mb-32">
         <TryStacklyBanner />
       </section>
