@@ -12,7 +12,7 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "turbo run build",
+    "build": "cd packages/sdk && yarn typechain && cd ../.. && turbo run build",
     "build:app": "cd packages/sdk && yarn typechain && turbo run build --filter=@stackly/sdk --filter=app",
     "build:landing": "cd packages/sdk && yarn typechain && turbo run build --filter=@stackly/sdk --filter=landing",
     "dev": "turbo run dev",
