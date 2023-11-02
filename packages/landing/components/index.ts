@@ -1,3 +1,2 @@
 export * from "./navbar";
-export * from "./QAndAAccordion";
-export * from "./TryStacklyBanner";
+export * from "./sections";

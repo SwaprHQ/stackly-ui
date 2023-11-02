@@ -1,8 +1,11 @@
-import { Metadata } from "next";
 import localFont from "next/font/local";
+import { Metadata } from "next";
+import Script from "next/script";
 
 import { Navbar } from "@/components";
+import { Providers } from "@/providers";
 import { STACKLY_LANDING_URL } from "@/constants";
+
 import "@/styles/global.css";
 
 const stabilGrotesk = localFont({
@@ -34,6 +37,8 @@ export const metadata: Metadata = {
     "Stackly is a simple, non-custodial tool that uses the CoW protocol to place recurring swaps based on DCA",
 };
 
+const siteId = process.env.NEXT_PUBLIC_FATHOM_SITE_ID;
+
 export default function RootLayout({
   children,
 }: {
@@ -42,8 +47,18 @@ export default function RootLayout({
   return (
     <html lang="en" className={stabilGrotesk.variable}>
       <body className="font-sans bg-surface-25 text-em-high">
-        <Navbar />
-        {children}
+        <Script
+          src="https://cdn.usefathom.com/script.js"
+          data-auto
+          data-site={siteId}
+          data-spa="hash"
+          defer
+        />
+
+        <Providers>
+          <Navbar />
+          {children}
+        </Providers>
       </body>
     </html>
   );
