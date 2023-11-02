@@ -456,7 +456,7 @@ export const Stackbox = () => {
             pattern="[0-9]*"
             placeholder="0.0"
             className={cx(
-              "w-full py-3 text-4xl font-semibold outline-none text-em-med",
+              "w-full py-3 text-4xl font-semibold outline-none text-em-med text-ellipsis",
               {
                 "animate-wiggle-alert bg-transparent placeholder:text-current text-gray-400":
                   showTokenAmountError,
