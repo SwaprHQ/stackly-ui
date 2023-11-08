@@ -216,7 +216,8 @@ export const Stackbox = () => {
 
   useEffect(() => {
     if (chain) setChainId(chain.id);
-  }, [chain, setChainId]);
+    setShouldResetStackbox(true);
+  }, [chain, setChainId, setShouldResetStackbox]);
 
   useEffect(() => {
     if (
@@ -230,20 +231,32 @@ export const Stackbox = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [switchNetwork]);
 
-  /**
-   * Form state handler when we select a
-   * strategy
-   */
   useEffect(() => {
     const resetDefaultFormValues = () => {
-      setFromToken(null);
-      setToToken(null);
-      setTokenAmount("");
+      const chainId =
+        chain?.id && !chain?.unsupported ? chain.id : ChainId.GNOSIS;
+
+      deselectStrategy();
+      setFromToken(DEFAULT_TOKENS_BY_CHAIN[chainId].from);
+      setToToken(DEFAULT_TOKENS_BY_CHAIN[chainId].to);
+      setTokenAmount("0.0");
       setFrequency(FREQUENCY_OPTIONS.hour);
       setStartDateTime(new Date(Date.now()));
       setEndDateTime(new Date(endDateByFrequency[frequency]));
     };
 
+    if (!isTokenListLoading && shouldResetStackbox) {
+      resetDefaultFormValues();
+      setShouldResetStackbox(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isTokenListLoading, shouldResetStackbox]);
+
+  /**
+   * Form state handler when we select a
+   * strategy
+   */
+  useEffect(() => {
     if (selectedStrategy) {
       const getStrategyToken = (strategyToken: Token) =>
         tokenListWithBalances?.find(
@@ -263,10 +276,9 @@ export const Stackbox = () => {
       setFrequency(selectedStrategy.frequency);
       setStartDateTime(new Date(Date.now()));
       setEndDateTime(new Date(strategyEndDate));
-    } else if (shouldResetStackbox) {
-      resetDefaultFormValues();
     }
   }, [
+    chain,
     frequency,
     selectedStrategy,
     setEndDateTime,
