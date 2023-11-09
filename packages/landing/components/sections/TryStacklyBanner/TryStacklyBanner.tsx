@@ -3,11 +3,8 @@
 import { EVENTS } from "@/analytics";
 import { ButtonLink, HeadingText } from "@/ui";
 import { STACKLY_APP_URL } from "@/constants";
-import { useFathomAnalytics } from "@/contexts";
 
 export const TryStacklyBanner = () => {
-  const { trackClick } = useFathomAnalytics();
-
   return (
     <div
       className={`
@@ -36,11 +33,6 @@ export const TryStacklyBanner = () => {
           href={STACKLY_APP_URL}
           width="fit"
           className="px-6 mt-8 md:px-8 md:mt-20"
-          onClick={() => {
-            trackClick(
-              EVENTS.SECTIONS.TRY_STACKLY_BANNER.TRY_STACKLY_NOW_CLICK
-            );
-          }}
         >
           Try Stackly Now
         </ButtonLink>

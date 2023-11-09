@@ -7,7 +7,6 @@ import Link from "next/link";
 import { EVENTS } from "@/analytics";
 import { ButtonLink } from "@/ui";
 import { STACKLY_APP_URL } from "@/constants";
-import { useFathomAnalytics } from "@/contexts";
 
 import MobileMenu from "./MobileMenu";
 import Logo from "./Logo";
@@ -16,7 +15,6 @@ const THRESHOLD_HEIGHT = 320;
 
 export function Navbar() {
   const [scrollYPos, setScrollYPos] = useState(0);
-  const { trackClick } = useFathomAnalytics();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -57,9 +55,6 @@ export function Navbar() {
             target="_blank"
             variant={passedThresholdHeight ? "primary" : "quaternary"}
             href={STACKLY_APP_URL}
-            onClick={() => {
-              trackClick(EVENTS.NAVBAR.DESKTOP.LAUNCH_APP_CLICK);
-            }}
           >
             Launch app
           </ButtonLink>
