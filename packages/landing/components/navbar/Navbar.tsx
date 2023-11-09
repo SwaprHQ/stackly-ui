@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import Link from "next/link";
+import { trackEvent } from "fathom-client";
 
 import { EVENTS } from "@/analytics";
 import { ButtonLink } from "@/ui";
@@ -55,6 +56,9 @@ export function Navbar() {
             target="_blank"
             variant={passedThresholdHeight ? "primary" : "quaternary"}
             href={STACKLY_APP_URL}
+            onClick={() => {
+              trackEvent(EVENTS.NAVBAR.DESKTOP.LAUNCH_APP_CLICK);
+            }}
           >
             Launch app
           </ButtonLink>

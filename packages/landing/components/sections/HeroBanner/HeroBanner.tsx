@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { trackEvent } from "fathom-client";
 
 import {
   BodyText,
@@ -29,6 +30,9 @@ export const HeroBanner = () => {
         size="lg"
         width="fit"
         className="!py-4 mx-auto text-lg !px-16 md:!px-28 mt-8"
+        onClick={() => {
+          trackEvent(EVENTS.SECTIONS.HERO_BANNER.STACK_NOW_CLICK);
+        }}
       >
         Stack now
       </ButtonLink>

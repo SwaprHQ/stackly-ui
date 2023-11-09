@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import Link from "next/link";
+import { trackEvent } from "fathom-client";
 
 import { Button, ButtonLink } from "@/ui";
 import { EVENTS } from "@/analytics";
@@ -23,6 +24,9 @@ export default function MobileMenu({
         target="_blank"
         variant={passedThresholdHeight ? "primary" : "secondary"}
         href={STACKLY_APP_URL}
+        onClick={() => {
+          trackEvent(EVENTS.NAVBAR.MOBILE.LAUNCH_APP_CLICK);
+        }}
       >
         Launch app
       </ButtonLink>

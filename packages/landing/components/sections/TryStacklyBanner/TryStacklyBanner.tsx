@@ -1,5 +1,7 @@
 "use client";
 
+import { trackEvent } from "fathom-client";
+
 import { EVENTS } from "@/analytics";
 import { ButtonLink, HeadingText } from "@/ui";
 import { STACKLY_APP_URL } from "@/constants";
@@ -33,6 +35,11 @@ export const TryStacklyBanner = () => {
           href={STACKLY_APP_URL}
           width="fit"
           className="px-6 mt-8 md:px-8 md:mt-20"
+          onClick={() => {
+            trackEvent(
+              EVENTS.SECTIONS.TRY_STACKLY_BANNER.TRY_STACKLY_NOW_CLICK
+            );
+          }}
         >
           Try Stackly Now
         </ButtonLink>
