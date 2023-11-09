@@ -1,7 +1,7 @@
 import localFont from "next/font/local";
 import { Metadata } from "next";
 
-import { Navbar } from "@/components";
+import { Fathom, Navbar } from "@/components";
 import { STACKLY_LANDING_URL } from "@/constants";
 
 import "@/styles/global.css";
@@ -45,6 +45,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={stabilGrotesk.variable}>
       <body className="font-sans bg-surface-25 text-em-high">
+        <Fathom />
         <Navbar />
         {children}
       </body>
