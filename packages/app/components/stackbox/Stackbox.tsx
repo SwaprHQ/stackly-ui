@@ -331,7 +331,7 @@ export const Stackbox = () => {
     ) {
       setShowInsufficentBalanceError(false);
       openModal(ModalId.CONFIRM_STACK);
-      trackEvent(EVENTS.CREATE_FLOW.STACKBOX_CONFIRM_STACK_CLICK);
+      trackEvent(EVENTS.CREATE_FLOW.STACKBOX_CONFIRM_CLICK);
     }
   }, [
     balance,
@@ -687,6 +687,7 @@ export const Stackbox = () => {
           onSuccess={() => {
             closeModal(ModalId.CONFIRM_STACK);
             openModal(ModalId.SUCCESS_STACK_TOAST);
+            trackEvent(EVENTS.CREATE_FLOW.STACK_SUCCESS);
           }}
         />
       )}

@@ -159,7 +159,6 @@ export const ConfirmStackModal = ({
 
     try {
       openModal(ModalId.STACK_CREATION_PROCESSING);
-      trackEvent(EVENTS.CREATE_FLOW.STACK_CREATION_IN_PROGRESS);
 
       const createOrderTransaction = await createDCAOrderWithNonce(
         orderFactory,
@@ -254,7 +253,7 @@ export const ConfirmStackModal = ({
           size="lg"
           variant="primary"
           onClick={() => {
-            trackEvent(EVENTS.CREATE_FLOW.CONFIRM_STACK_MODAL_STACK_NOW_CLICK);
+            trackEvent(EVENTS.CREATE_FLOW.STACKBOX_STACK_CLICK);
             createStack();
           }}
           width="full"
