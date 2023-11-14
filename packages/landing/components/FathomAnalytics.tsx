@@ -33,7 +33,7 @@ const TrackPageView = () => {
   return null;
 };
 
-export const Fathom = () => {
+export const FathomAnalytics = () => {
   return (
     <Suspense fallback={null}>
       <TrackPageView />
