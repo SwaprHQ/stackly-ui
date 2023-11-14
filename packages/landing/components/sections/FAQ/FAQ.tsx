@@ -1,5 +1,7 @@
 "use client";
 
+import { trackEvent } from "fathom-client";
+
 import { HeadingText } from "@/ui";
 
 import { QAndAAccordion } from "./QAndAAccordion";
@@ -17,6 +19,7 @@ export const FAQ = () => {
             {FAQ_QUESTIONS_AND_ANSWERS.map((faq: FaqQa, faqIndex: number) => (
               <QAndAAccordion
                 key={faqIndex}
+                onClick={() => trackEvent(faq.trackEventName)}
                 question={faq.question}
                 startOpen={faq.startOpen}
               >
