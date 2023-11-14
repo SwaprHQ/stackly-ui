@@ -7,11 +7,21 @@ import {
   AnimationEventHandler,
   useCallback,
 } from "react";
+
+import { add, formatDistance } from "date-fns";
+import {
+  createParser,
+  parseAsInteger,
+  parseAsString,
+  parseAsStringEnum,
+  parseAsTimestamp,
+  useQueryState,
+} from "next-usequerystate";
 import { cx } from "class-variance-authority";
-import { useAccount, useBalance, useNetwork, useSwitchNetwork } from "wagmi";
 import { formatUnits, parseUnits } from "viem";
 import Link from "next/link";
-import { add, formatDistance } from "date-fns";
+import { trackEvent } from "fathom-client";
+import { useAccount, useBalance, useNetwork, useSwitchNetwork } from "wagmi";
 
 import {
   BodyText,
@@ -23,6 +33,7 @@ import {
   TitleText,
   Toast,
 } from "@/ui";
+import { ChainId } from "@stackly/sdk";
 import {
   ConfirmStackModal,
   ConnectButton,
@@ -30,29 +41,21 @@ import {
   TokenIcon,
   TokenPicker,
 } from "@/components";
+import { DEFAULT_TOKENS_BY_CHAIN } from "@/utils";
+import { EVENTS } from "@/analytics";
 import {
   ModalId,
-  useModalContext,
   TokenWithBalance,
+  useModalContext,
   useStrategyContext,
   useTokenListContext,
 } from "@/contexts";
 import {
   FREQUENCY_OPTIONS,
   INITAL_ORDER,
+  Token,
   frequencySeconds,
-} from "@/models/stack";
-import { ChainId } from "@stackly/sdk";
-import { DEFAULT_TOKENS_BY_CHAIN } from "@/utils/constants";
-import { Token } from "@/models/token";
-import {
-  createParser,
-  parseAsInteger,
-  parseAsString,
-  parseAsStringEnum,
-  parseAsTimestamp,
-  useQueryState,
-} from "next-usequerystate";
+} from "@/models";
 
 interface SelectTokenButtonProps {
   label: string;
@@ -328,6 +331,7 @@ export const Stackbox = () => {
     ) {
       setShowInsufficentBalanceError(false);
       openModal(ModalId.CONFIRM_STACK);
+      trackEvent(EVENTS.CREATE_FLOW.STACKBOX_CONFIRM_STACK_CLICK);
     }
   }, [
     balance,

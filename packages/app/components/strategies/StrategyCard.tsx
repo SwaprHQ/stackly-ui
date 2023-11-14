@@ -1,6 +1,7 @@
 "use client";
 
 import { cx } from "class-variance-authority";
+import { trackEvent } from "fathom-client";
 
 import { Button, CaptionText, Icon } from "@/ui";
 import { EVENTS } from "@/analytics";
@@ -41,6 +42,7 @@ export const StrategyCard = ({ strategy }: StrategyCardProps) => {
       onClick={() => {
         setSelectedStrategy(isSelected ? null : strategy);
         setShouldResetStackbox(isSelected);
+        if (!isSelected) trackEvent(cardClickEventName);
       }}
     >
       <div className="flex">

@@ -1,9 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { parseUnits } from "viem";
+
 import { format } from "date-fns";
+import { parseUnits } from "viem";
+import { trackEvent } from "fathom-client";
 import { useAccount, useNetwork } from "wagmi";
+
 import {
   ChainId,
   createDCAOrderWithNonce,
@@ -11,6 +14,20 @@ import {
   getOrderFactory,
   getOrderFactoryAddress,
 } from "@stackly/sdk";
+import { dateToUnixTimestamp, useEthersSigner } from "@/utils";
+import {
+  DialogConfirmTransactionLoading,
+  FromToStackTokenPair,
+  TransactionLink,
+} from "@/components";
+import { EVENTS } from "@/analytics";
+import {
+  FREQUENCY_OPTIONS,
+  INITAL_ORDER,
+  Token,
+  Transaction,
+  frequencySeconds,
+} from "@/models";
 import {
   Modal,
   ModalFooter,
@@ -21,21 +38,7 @@ import {
   TitleText,
   ModalBaseProps,
 } from "@/ui";
-import {
-  FromToStackTokenPair,
-  DialogConfirmTransactionLoading,
-  TransactionLink,
-} from "@/components";
-import { Token } from "@/models/token";
-import {
-  FREQUENCY_OPTIONS,
-  INITAL_ORDER,
-  Transaction,
-  frequencySeconds,
-} from "@/models/stack";
-import { useEthersSigner } from "@/utils/ethers";
 import { ModalId, useModalContext } from "@/contexts";
-import { dateToUnixTimestamp } from "@/utils/datetime";
 
 interface ConfirmStackModalProps extends ModalBaseProps {
   fromToken: Token;
@@ -156,6 +159,8 @@ export const ConfirmStackModal = ({
 
     try {
       openModal(ModalId.STACK_CREATION_PROCESSING);
+      trackEvent(EVENTS.CREATE_FLOW.STACK_CREATION_IN_PROGRESS);
+
       const createOrderTransaction = await createDCAOrderWithNonce(
         orderFactory,
         initParams
@@ -248,7 +253,10 @@ export const ConfirmStackModal = ({
         <Button
           size="lg"
           variant="primary"
-          onClick={createStack}
+          onClick={() => {
+            trackEvent(EVENTS.CREATE_FLOW.CONFIRM_STACK_MODAL_STACK_NOW_CLICK);
+            createStack();
+          }}
           width="full"
           ref={focusBtnRef}
           disabled={step === CREATE_STACK_STEPS.approve}
