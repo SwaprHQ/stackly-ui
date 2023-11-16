@@ -9,14 +9,6 @@ import {
 } from "react";
 
 import { add, formatDistance } from "date-fns";
-import {
-  createParser,
-  parseAsInteger,
-  parseAsString,
-  parseAsStringEnum,
-  parseAsTimestamp,
-  useQueryState,
-} from "next-usequerystate";
 import { cx } from "class-variance-authority";
 import { formatUnits, parseUnits } from "viem";
 import Link from "next/link";
@@ -41,7 +33,6 @@ import {
   TokenIcon,
   TokenPicker,
 } from "@/components";
-import { DEFAULT_TOKENS_BY_CHAIN } from "@/utils";
 import { EVENTS } from "@/analytics";
 import {
   ModalId,
@@ -106,7 +97,7 @@ export const Stackbox = () => {
   const { chain } = useNetwork();
   const { switchNetwork } = useSwitchNetwork({
     onSuccess(data) {
-      setChainId(data.id);
+      handleChainIdChange(data.id);
     },
   });
   const { address } = useAccount();
@@ -117,7 +108,7 @@ export const Stackbox = () => {
   const [frequency, setFrequency] = stackboxFormState.frequencyState;
   const [startDateTime, setStartDateTime] = stackboxFormState.startDateState;
   const [endDateTime, setEndDateTime] = stackboxFormState.endDateState;
-  const [chainId, setChainId] = stackboxFormState.chainIdState;
+  const [chainId, handleChainIdChange] = stackboxFormState.chainIdState;
 
   const [showTokenAmountError, setShowTokenAmountError] = useState(false);
   const [showPastEndDateError, setShowPastEndDateError] = useState(false);
@@ -157,13 +148,9 @@ export const Stackbox = () => {
   }, [isTokenListLoading]);
 
   useEffect(() => {
-    if (chain) setChainId(chain.id);
-  }, [chain, setChainId]);
-
-  useEffect(() => {
-    if (!isTokenListLoading) resetDefaultFormValues();
+    if (chain) handleChainIdChange(chain.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chain?.id, isTokenListLoading]);
+  }, [chain]);
 
   useEffect(() => {
     if (

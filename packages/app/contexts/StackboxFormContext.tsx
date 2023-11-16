@@ -130,6 +130,11 @@ export const StackboxFormContextProvider = ({
       setEndDateTime(new Date(endDateByFrequency[frequency]));
     };
 
+    const handleChainIdChange = (newChainId: ChainId) => {
+      resetDefaultFormValues();
+      setChainId(newChainId);
+    };
+
     const stackboxFormState = {
       fromTokenState: [fromToken, setFromToken],
       toTokenState: [toToken, setToToken],
@@ -137,7 +142,7 @@ export const StackboxFormContextProvider = ({
       frequencyState: [frequency, setFrequency],
       startDateState: [startDateTime, setStartDateTime],
       endDateState: [endDateTime, setEndDateTime],
-      chainIdState: [chainId, setChainId],
+      chainIdState: [chainId, handleChainIdChange],
     };
 
     return {
