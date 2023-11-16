@@ -3,11 +3,11 @@
 import { useState } from "react";
 
 import Link from "next/link";
+import { trackEvent } from "fathom-client";
 
 import { Button, ButtonLink } from "@/ui";
 import { EVENTS } from "@/analytics";
 import { STACKLY_APP_URL } from "@/constants";
-import { useFathomAnalytics } from "@/contexts";
 
 export default function MobileMenu({
   passedThresholdHeight,
@@ -15,7 +15,6 @@ export default function MobileMenu({
   passedThresholdHeight: boolean;
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const { trackClick } = useFathomAnalytics();
 
   const toggle = () => setIsOpen(!isOpen);
 
@@ -26,7 +25,7 @@ export default function MobileMenu({
         variant={passedThresholdHeight ? "primary" : "secondary"}
         href={STACKLY_APP_URL}
         onClick={() => {
-          trackClick(EVENTS.NAVBAR.MOBILE.LAUNCH_APP_CLICK);
+          trackEvent(EVENTS.NAVBAR.MOBILE.LAUNCH_APP_CLICK);
         }}
       >
         Launch app

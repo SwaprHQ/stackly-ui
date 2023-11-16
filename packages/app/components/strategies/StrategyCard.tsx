@@ -1,10 +1,11 @@
 "use client";
 
 import { cx } from "class-variance-authority";
+import { trackEvent } from "fathom-client";
 
 import { Button, CaptionText, Icon } from "@/ui";
 import { EVENTS } from "@/analytics";
-import { Strategy, useFathomAnalytics, useStrategyContext } from "@/contexts";
+import { Strategy, useStrategyContext } from "@/contexts";
 import { TokenLogoPair } from "@/components/TokenLogoPair";
 
 import { FREQUENCY_LABEL } from "./constants";
@@ -14,7 +15,6 @@ interface StrategyCardProps {
 }
 
 export const StrategyCard = ({ strategy }: StrategyCardProps) => {
-  const { trackClick } = useFathomAnalytics();
   const { selectedStrategy, setSelectedStrategy, setShouldResetStackbox } =
     useStrategyContext();
 
@@ -42,7 +42,7 @@ export const StrategyCard = ({ strategy }: StrategyCardProps) => {
       onClick={() => {
         setSelectedStrategy(isSelected ? null : strategy);
         setShouldResetStackbox(isSelected);
-        if (!isSelected) trackClick(cardClickEventName);
+        if (!isSelected) trackEvent(cardClickEventName);
       }}
     >
       <div className="flex">

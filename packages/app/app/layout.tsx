@@ -2,9 +2,8 @@ import { PropsWithChildren } from "react";
 
 import localFont from "next/font/local";
 import { Metadata } from "next";
-import Script from "next/script";
 
-import { Navbar } from "@/components";
+import { FathomAnalytics, Navbar } from "@/components";
 import { Providers } from "@/providers";
 import { STACKLY_APP_URL } from "@/constants";
 
@@ -51,13 +50,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" className={stabilGrotesk.variable}>
       <body className="font-sans bg-fixed bg-surface-25 bg-auto-100 bg-matrix-and-green-gradient text-em-high">
-        <Script
-          src="https://cdn.usefathom.com/script.js"
-          data-auto
-          data-site={siteId}
-          data-spa="hash"
-          defer
-        />
+        <FathomAnalytics />
         <Providers>
           <Navbar />
           <div className="px-4 py-12 mx-auto md:py-16 md:px-0">{children}</div>

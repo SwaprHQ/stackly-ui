@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { trackEvent } from "fathom-client";
 
 import {
   BodyText,
@@ -11,13 +12,10 @@ import {
   Icon,
   TitleText,
 } from "@/ui";
-import { EVENTS } from "@/analytics/constants";
+import { EVENTS } from "@/analytics";
 import { STACKLY_APP_URL } from "@/constants";
-import { useFathomAnalytics } from "@/contexts";
 
 export const HeroBanner = () => {
-  const { trackClick } = useFathomAnalytics();
-
   return (
     <section className="px-6 pt-16 border-b border-gray-100 md:pt-20">
       <div className="space-y-4 text-center md:space-y-6 ">
@@ -33,7 +31,7 @@ export const HeroBanner = () => {
         width="fit"
         className="!py-4 mx-auto text-lg !px-16 md:!px-28 mt-8"
         onClick={() => {
-          trackClick(EVENTS.SECTIONS.HERO_BANNER.STACK_NOW_CLICK);
+          trackEvent(EVENTS.SECTIONS.HERO_BANNER.STACK_NOW_CLICK);
         }}
       >
         Stack now

@@ -1,14 +1,13 @@
 "use client";
 
+import { trackEvent } from "fathom-client";
+
 import { HeadingText } from "@/ui";
 
 import { QAndAAccordion } from "./QAndAAccordion";
 import { FAQ_QUESTIONS_AND_ANSWERS, FaqQa } from "./constants";
-import { useFathomAnalytics } from "@/contexts";
 
 export const FAQ = () => {
-  const { trackClick } = useFathomAnalytics();
-
   return (
     <section className="px-6 py-12 md:py-32" id="faqs">
       <div className="max-w-6xl mx-auto">
@@ -20,7 +19,7 @@ export const FAQ = () => {
             {FAQ_QUESTIONS_AND_ANSWERS.map((faq: FaqQa, faqIndex: number) => (
               <QAndAAccordion
                 key={faqIndex}
-                onClick={() => trackClick(faq.trackEventName)}
+                onClick={() => trackEvent(faq.trackEventName)}
                 question={faq.question}
                 startOpen={faq.startOpen}
               >
