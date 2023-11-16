@@ -49,6 +49,7 @@ import {
   useModalContext,
   useStrategyContext,
   useTokenListContext,
+  useStackboxFormContext,
 } from "@/contexts";
 import {
   FREQUENCY_OPTIONS,
@@ -76,15 +77,6 @@ const frequencyOptions = [
   { option: FREQUENCY_OPTIONS.month, name: "Month" },
 ];
 
-const endDateByFrequency: Record<string, number> = {
-  [FREQUENCY_OPTIONS.hour]: new Date().setDate(new Date().getDate() + 2),
-  [FREQUENCY_OPTIONS.day]: new Date().setMonth(new Date().getMonth() + 1),
-  [FREQUENCY_OPTIONS.week]: new Date().setMonth(new Date().getMonth() + 3),
-  [FREQUENCY_OPTIONS.month]: new Date().setFullYear(
-    new Date().getFullYear() + 1
-  ),
-};
-
 enum BalanceDivider {
   MAX = 1,
   HALF = 2,
@@ -97,34 +89,14 @@ const balanceOptions = [
   { name: "Max", divider: BalanceDivider.MAX },
 ];
 
-const startDateParseAsTimestamp = createParser({
-  parse: (v) => {
-    const ms = parseInt(v);
-    if (Number.isNaN(ms)) {
-      return null;
-    }
-
-    const searchParamsStartDate = new Date(ms);
-    const nowDate = new Date();
-
-    if (nowDate.getTime() > searchParamsStartDate.getTime()) return nowDate;
-
-    return new Date(ms);
-  },
-  serialize: (v: Date) => v.valueOf().toString(),
-});
-
 export const Stackbox = () => {
   const searchTokenBarRef = useRef<HTMLInputElement>(null);
   const [isPickingFromToken, setIsPickingFromToken] = useState<boolean>(false);
 
   const { closeModal, isModalOpen, openModal } = useModalContext();
-  const {
-    selectedStrategy,
-    setSelectedStrategy,
-    setShouldResetStackbox,
-    shouldResetStackbox,
-  } = useStrategyContext();
+  const { resetDefaultFormValues, stackboxFormState } =
+    useStackboxFormContext();
+  const { deselectStrategy, selectedStrategy } = useStrategyContext();
   const {
     tokenListWithBalances,
     getTokenFromList,
@@ -139,43 +111,13 @@ export const Stackbox = () => {
   });
   const { address } = useAccount();
 
-  const getDefaultParsedToken = (tokenDirection: "to" | "from") =>
-    createParser({
-      parse: (address: string) => getTokenFromList(address),
-      serialize: (token) => token?.address || "",
-    }).withDefault(
-      chain?.id && !chain?.unsupported
-        ? DEFAULT_TOKENS_BY_CHAIN[chain.id][tokenDirection]
-        : DEFAULT_TOKENS_BY_CHAIN[ChainId.GNOSIS][tokenDirection]
-    );
-
-  const [fromToken, setFromToken] = useQueryState<TokenWithBalance>(
-    "fromToken",
-    getDefaultParsedToken("from")
-  );
-  const [toToken, setToToken] = useQueryState<TokenWithBalance>(
-    "toToken",
-    getDefaultParsedToken("to")
-  );
-  const [tokenAmount, setTokenAmount] = useQueryState(
-    "tokenAmount",
-    parseAsString.withDefault("")
-  );
-  const [frequency, setFrequency] = useQueryState(
-    "frequency",
-    parseAsStringEnum<FREQUENCY_OPTIONS>(
-      Object.values(FREQUENCY_OPTIONS)
-    ).withDefault(FREQUENCY_OPTIONS.hour)
-  );
-  const [startDateTime, setStartDateTime] = useQueryState(
-    "startDate",
-    startDateParseAsTimestamp.withDefault(new Date(Date.now()))
-  );
-  const [endDateTime, setEndDateTime] = useQueryState(
-    "endDate",
-    parseAsTimestamp.withDefault(new Date(endDateByFrequency[frequency]))
-  );
-  const [chainId, setChainId] = useQueryState("chainId", parseAsInteger);
+  const [fromToken, setFromToken] = stackboxFormState.fromTokenState;
+  const [toToken, setToToken] = stackboxFormState.toTokenState;
+  const [tokenAmount, setTokenAmount] = stackboxFormState.tokenAmountState;
+  const [frequency, setFrequency] = stackboxFormState.frequencyState;
+  const [startDateTime, setStartDateTime] = stackboxFormState.startDateState;
+  const [endDateTime, setEndDateTime] = stackboxFormState.endDateState;
+  const [chainId, setChainId] = stackboxFormState.chainIdState;
 
   const [showTokenAmountError, setShowTokenAmountError] = useState(false);
   const [showPastEndDateError, setShowPastEndDateError] = useState(false);
@@ -216,8 +158,12 @@ export const Stackbox = () => {
 
   useEffect(() => {
     if (chain) setChainId(chain.id);
-    setShouldResetStackbox(true);
-  }, [chain, setChainId, setShouldResetStackbox]);
+  }, [chain, setChainId]);
+
+  useEffect(() => {
+    if (!isTokenListLoading) resetDefaultFormValues();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chain?.id, isTokenListLoading]);
 
   useEffect(() => {
     if (
@@ -230,27 +176,6 @@ export const Stackbox = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [switchNetwork]);
-
-  useEffect(() => {
-    const resetDefaultFormValues = () => {
-      const chainId =
-        chain?.id && !chain?.unsupported ? chain.id : ChainId.GNOSIS;
-
-      deselectStrategy();
-      setFromToken(DEFAULT_TOKENS_BY_CHAIN[chainId].from);
-      setToToken(DEFAULT_TOKENS_BY_CHAIN[chainId].to);
-      setTokenAmount("0.0");
-      setFrequency(FREQUENCY_OPTIONS.hour);
-      setStartDateTime(new Date(Date.now()));
-      setEndDateTime(new Date(endDateByFrequency[frequency]));
-    };
-
-    if (!isTokenListLoading && shouldResetStackbox) {
-      resetDefaultFormValues();
-      setShouldResetStackbox(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isTokenListLoading, shouldResetStackbox]);
 
   /**
    * Form state handler when we select a
@@ -287,13 +212,8 @@ export const Stackbox = () => {
     setStartDateTime,
     setToToken,
     setTokenAmount,
-    shouldResetStackbox,
     tokenListWithBalances,
   ]);
-
-  const deselectStrategy = () => {
-    if (selectedStrategy) setSelectedStrategy(null);
-  };
 
   const openTokenPicker = (isFromToken = true) => {
     setIsPickingFromToken(isFromToken);
@@ -421,7 +341,7 @@ export const Stackbox = () => {
   const estimatedNumberOfOrders =
     Math.floor(
       (endDateTime.getTime() - startDateTime.getTime()) /
-        frequencySeconds[frequency]
+        frequencySeconds[frequency as FREQUENCY_OPTIONS]
     ) + INITAL_ORDER;
 
   const amountPerOrder = (
@@ -627,7 +547,9 @@ export const Stackbox = () => {
                   <Icon className="mr-2" name="sparkles" size={14} />
                   <StackDetailsTileText
                     amountPerOrder={amountPerOrder}
-                    frequency={FREQUENCY_OPTIONS[frequency]}
+                    frequency={
+                      FREQUENCY_OPTIONS[frequency as FREQUENCY_OPTIONS]
+                    }
                     toTokenSymbol={toToken.symbol}
                     fromTokenSymbol={fromToken.symbol}
                     timeLength={formatDistance(endDateTime, startDateTime)}
@@ -637,7 +559,7 @@ export const Stackbox = () => {
                   className="text-primary-800"
                   onClick={() => {
                     deselectStrategy();
-                    setShouldResetStackbox(true);
+                    resetDefaultFormValues();
                   }}
                   size="xs"
                   variant="caption"
@@ -648,7 +570,7 @@ export const Stackbox = () => {
             ) : (
               <StackDetailsTileText
                 amountPerOrder={amountPerOrder}
-                frequency={FREQUENCY_OPTIONS[frequency]}
+                frequency={FREQUENCY_OPTIONS[frequency as FREQUENCY_OPTIONS]}
                 toTokenSymbol={toToken.symbol}
                 fromTokenSymbol={fromToken.symbol}
                 timeLength={formatDistance(endDateTime, startDateTime)}
@@ -700,6 +622,7 @@ export const Stackbox = () => {
             closeModal(ModalId.CONFIRM_STACK);
             openModal(ModalId.SUCCESS_STACK_TOAST);
             trackEvent(EVENTS.CREATE_FLOW.STACK_SUCCESS);
+            resetDefaultFormValues();
           }}
         />
       )}

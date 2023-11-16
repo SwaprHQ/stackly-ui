@@ -8,6 +8,7 @@ import { WagmiConfig } from "wagmi";
 import { config } from "./wagmi-config";
 import {
   ModalContextProvider,
+  StackboxFormContextProvider,
   StrategyContextProvider,
   TokenListProvider,
 } from "@/contexts";
@@ -18,7 +19,11 @@ export const Providers = ({ children }: PropsWithChildren) => {
       <ConnectKitProvider mode="light">
         <TokenListProvider>
           <ModalContextProvider>
-            <StrategyContextProvider>{children}</StrategyContextProvider>
+            <StrategyContextProvider>
+              <StackboxFormContextProvider>
+                {children}
+              </StackboxFormContextProvider>
+            </StrategyContextProvider>
           </ModalContextProvider>
         </TokenListProvider>
       </ConnectKitProvider>
