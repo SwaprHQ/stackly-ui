@@ -1,9 +1,7 @@
 import localFont from "next/font/local";
 import { Metadata } from "next";
-import Script from "next/script";
 
-import { Navbar } from "@/components";
-import { Providers } from "@/providers";
+import { FathomAnalytics, Navbar } from "@/components";
 import { STACKLY_LANDING_URL } from "@/constants";
 
 import "@/styles/global.css";
@@ -47,18 +45,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={stabilGrotesk.variable}>
       <body className="font-sans bg-surface-25 text-em-high">
-        <Script
-          src="https://cdn.usefathom.com/script.js"
-          data-auto
-          data-site={siteId}
-          data-spa="hash"
-          defer
-        />
-
-        <Providers>
-          <Navbar />
-          {children}
-        </Providers>
+        <FathomAnalytics />
+        <Navbar />
+        {children}
       </body>
     </html>
   );
