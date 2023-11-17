@@ -51,11 +51,6 @@ const throwStackboxFormContextError = () => {
   throw new Error("No StackboxFormContext available");
 };
 
-/**
- * @TODO enhance `stackboxFormState` typing
- * @see https://github.com/youha-info/next-query-state#background-on-types
- * @see https://www.typescriptlang.org/docs/handbook/2/generics.html
- */
 interface StackboxFormContextProps {
   resetFormValues: () => void;
   stackboxFormState: any;
