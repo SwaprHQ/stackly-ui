@@ -16,6 +16,8 @@
     "build:app": "cd packages/sdk && bun typechain && turbo run build --filter=@stackly/sdk --filter=app",
     "build:landing": "cd packages/sdk && bun typechain && turbo run build --filter=@stackly/sdk --filter=landing",
     "dev": "turbo run dev",
+    "dev:app": "cd packages/app && turbo run dev",
+    "dev:landing": "cd packages/landing && turbo run dev",
     "start": "turbo run start",
     "lint": "turbo run lint",
     "clean": "turbo run clean",
