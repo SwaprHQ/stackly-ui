@@ -114,7 +114,7 @@ export const StackboxFormContextProvider = ({
     "endDate",
     parseAsTimestamp.withDefault(new Date(endDateByFrequency[frequency]))
   );
-  const [chainId, setChainId] = useQueryState("chainId", parseAsInteger);
+  const [chainId, setContextChainId] = useQueryState("chainId", parseAsInteger);
 
   const stackboxFormContext = useMemo(() => {
     const resetDefaultFormValues = () => {
@@ -130,9 +130,9 @@ export const StackboxFormContextProvider = ({
       setEndDateTime(new Date(endDateByFrequency[frequency]));
     };
 
-    const handleChainIdChange = (newChainId: ChainId) => {
+    const setChainId = (newChainId: ChainId) => {
       resetDefaultFormValues();
-      setChainId(newChainId);
+      setContextChainId(newChainId);
     };
 
     const stackboxFormState = {
@@ -142,7 +142,7 @@ export const StackboxFormContextProvider = ({
       frequencyState: [frequency, setFrequency],
       startDateState: [startDateTime, setStartDateTime],
       endDateState: [endDateTime, setEndDateTime],
-      chainIdState: [chainId, handleChainIdChange],
+      chainIdState: [chainId, setChainId],
     };
 
     return {
@@ -156,7 +156,7 @@ export const StackboxFormContextProvider = ({
     endDateTime,
     frequency,
     fromToken,
-    setChainId,
+    setContextChainId,
     setEndDateTime,
     setFrequency,
     setFromToken,

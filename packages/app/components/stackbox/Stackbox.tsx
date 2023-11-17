@@ -97,7 +97,7 @@ export const Stackbox = () => {
   const { chain } = useNetwork();
   const { switchNetwork } = useSwitchNetwork({
     onSuccess(data) {
-      handleChainIdChange(data.id);
+      setChainId(data.id);
     },
   });
   const { address } = useAccount();
@@ -108,7 +108,7 @@ export const Stackbox = () => {
   const [frequency, setFrequency] = stackboxFormState.frequencyState;
   const [startDateTime, setStartDateTime] = stackboxFormState.startDateState;
   const [endDateTime, setEndDateTime] = stackboxFormState.endDateState;
-  const [chainId, handleChainIdChange] = stackboxFormState.chainIdState;
+  const [chainId, setChainId] = stackboxFormState.chainIdState;
 
   const [showTokenAmountError, setShowTokenAmountError] = useState(false);
   const [showPastEndDateError, setShowPastEndDateError] = useState(false);
@@ -148,7 +148,7 @@ export const Stackbox = () => {
   }, [isTokenListLoading]);
 
   useEffect(() => {
-    if (chain) handleChainIdChange(chain.id);
+    if (chain) setChainId(chain.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chain]);
 
