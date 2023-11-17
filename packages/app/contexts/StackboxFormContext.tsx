@@ -57,12 +57,12 @@ const throwStackboxFormContextError = () => {
  * @see https://www.typescriptlang.org/docs/handbook/2/generics.html
  */
 interface StackboxFormContextProps {
-  resetDefaultFormValues: () => void;
+  resetFormValues: () => void;
   stackboxFormState: any;
 }
 
 const StackboxFormContext = createContext<StackboxFormContextProps>({
-  resetDefaultFormValues: throwStackboxFormContextError,
+  resetFormValues: throwStackboxFormContextError,
   stackboxFormState: null,
 });
 
@@ -117,7 +117,7 @@ export const StackboxFormContextProvider = ({
   const [chainId, setContextChainId] = useQueryState("chainId", parseAsInteger);
 
   const stackboxFormContext = useMemo(() => {
-    const resetDefaultFormValues = () => {
+    const resetFormValues = () => {
       const chainId =
         chain?.id && !chain?.unsupported ? chain.id : ChainId.GNOSIS;
 
@@ -131,7 +131,7 @@ export const StackboxFormContextProvider = ({
     };
 
     const setChainId = (newChainId: ChainId) => {
-      resetDefaultFormValues();
+      resetFormValues();
       setContextChainId(newChainId);
     };
 
@@ -146,7 +146,7 @@ export const StackboxFormContextProvider = ({
     };
 
     return {
-      resetDefaultFormValues,
+      resetFormValues,
       stackboxFormState,
     };
   }, [

@@ -19,7 +19,7 @@ interface StrategyCardProps {
 }
 
 export const StrategyCard = ({ strategy }: StrategyCardProps) => {
-  const { resetDefaultFormValues } = useStackboxFormContext();
+  const { resetFormValues } = useStackboxFormContext();
   const { selectedStrategy, setSelectedStrategy } = useStrategyContext();
 
   const { buyToken, sellToken } = strategy;
@@ -45,7 +45,7 @@ export const StrategyCard = ({ strategy }: StrategyCardProps) => {
       )}
       onClick={() => {
         setSelectedStrategy(isSelected ? null : strategy);
-        !isSelected ? trackEvent(cardClickEventName) : resetDefaultFormValues();
+        !isSelected ? trackEvent(cardClickEventName) : resetFormValues();
       }}
     >
       <div className="flex">

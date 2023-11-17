@@ -85,8 +85,7 @@ export const Stackbox = () => {
   const [isPickingFromToken, setIsPickingFromToken] = useState<boolean>(false);
 
   const { closeModal, isModalOpen, openModal } = useModalContext();
-  const { resetDefaultFormValues, stackboxFormState } =
-    useStackboxFormContext();
+  const { resetFormValues, stackboxFormState } = useStackboxFormContext();
   const { deselectStrategy, selectedStrategy } = useStrategyContext();
   const {
     tokenListWithBalances,
@@ -546,7 +545,7 @@ export const Stackbox = () => {
                   className="text-primary-800"
                   onClick={() => {
                     deselectStrategy();
-                    resetDefaultFormValues();
+                    resetFormValues();
                   }}
                   size="xs"
                   variant="caption"
@@ -609,7 +608,7 @@ export const Stackbox = () => {
             closeModal(ModalId.CONFIRM_STACK);
             openModal(ModalId.SUCCESS_STACK_TOAST);
             trackEvent(EVENTS.CREATE_FLOW.STACK_SUCCESS);
-            resetDefaultFormValues();
+            resetFormValues();
           }}
         />
       )}
