@@ -5,7 +5,11 @@ import { trackEvent } from "fathom-client";
 
 import { Button, CaptionText, Icon } from "@/ui";
 import { EVENTS } from "@/analytics";
-import { Strategy, useStrategyContext } from "@/contexts";
+import {
+  Strategy,
+  useStackboxFormContext,
+  useStrategyContext,
+} from "@/contexts";
 import { TokenLogoPair } from "@/components/TokenLogoPair";
 
 import { FREQUENCY_LABEL } from "./constants";
@@ -15,8 +19,8 @@ interface StrategyCardProps {
 }
 
 export const StrategyCard = ({ strategy }: StrategyCardProps) => {
-  const { selectedStrategy, setSelectedStrategy, setShouldResetStackbox } =
-    useStrategyContext();
+  const { resetFormValues } = useStackboxFormContext();
+  const { selectedStrategy, setSelectedStrategy } = useStrategyContext();
 
   const { buyToken, sellToken } = strategy;
 
@@ -41,8 +45,7 @@ export const StrategyCard = ({ strategy }: StrategyCardProps) => {
       )}
       onClick={() => {
         setSelectedStrategy(isSelected ? null : strategy);
-        setShouldResetStackbox(isSelected);
-        if (!isSelected) trackEvent(cardClickEventName);
+        !isSelected ? trackEvent(cardClickEventName) : resetFormValues();
       }}
     >
       <div className="flex">
