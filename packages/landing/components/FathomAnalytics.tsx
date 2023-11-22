@@ -16,7 +16,7 @@ const TrackPageView = () => {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (!siteId) throw new Error("Site ID not set, skipping Fathom analytics");
+    if (!siteId) console.log("Site ID not set, skipping Fathom analytics");
   }, []);
 
   useEffect(() => {
