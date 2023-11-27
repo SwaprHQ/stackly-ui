@@ -1,9 +1,12 @@
+"use client";
+
+import { ChainId } from "@stackly/sdk";
+import { SafeConnector } from "wagmi/connectors/safe";
 import { configureChains, createConfig } from "wagmi";
 import { getDefaultConfig } from "connectkit";
 import { gnosis, mainnet } from "wagmi/chains";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
-import { ChainId } from "@stackly/sdk";
-import { SafeConnector } from "wagmi/connectors/safe";
+
 import { RPC_LIST } from "@/constants";
 
 const chainJsonRpc: Record<number, { http: string }> = {

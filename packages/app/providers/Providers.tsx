@@ -17,15 +17,13 @@ export const Providers = ({ children }: PropsWithChildren) => {
   return (
     <WagmiConfig config={config}>
       <ConnectKitProvider mode="light">
-        <TokenListProvider>
-          <ModalContextProvider>
-            <StrategyContextProvider>
-              <StackboxFormContextProvider>
-                {children}
-              </StackboxFormContextProvider>
-            </StrategyContextProvider>
-          </ModalContextProvider>
-        </TokenListProvider>
+        <ModalContextProvider>
+          <StrategyContextProvider>
+            <StackboxFormContextProvider>
+              <TokenListProvider>{children}</TokenListProvider>
+            </StackboxFormContextProvider>
+          </StrategyContextProvider>
+        </ModalContextProvider>
       </ConnectKitProvider>
     </WagmiConfig>
   );
