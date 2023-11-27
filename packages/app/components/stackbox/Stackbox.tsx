@@ -447,7 +447,7 @@ export const Stackbox = () => {
           <TitleText weight="bold" className="text-em-med">
             {toToken ? `Stack ${toToken?.symbol} every` : "Stack every"}
           </TitleText>
-          <div className="space-y-6">
+          <div className="space-y-4 lg:space-y-6">
             <div className="flex space-x-2">
               {frequencyOptions.map(({ option, name }) => {
                 const isSelected = frequency === option;
@@ -475,7 +475,7 @@ export const Stackbox = () => {
             </div>
             <div className="space-y-1">
               <div className="flex flex-col border divide-y md:divide-y-0 md:flex-row rounded-2xl border-surface-50 md:divide-x divide-surface-50">
-                <div className="flex flex-col w-full p-3 space-y-2 hover:bg-surface-25">
+                <div className="flex flex-col w-full pl-4 pr-3 py-2 lg:py-3 space-y-2 hover:bg-surface-25">
                   <BodyText size={2}>Starting from</BodyText>
                   <DatePicker
                     dateTime={startDateTime}
