@@ -2,8 +2,6 @@
 
 import { ChangeEvent, RefObject, forwardRef, useEffect, useState } from "react";
 
-import { ChainId } from "@stackly/sdk";
-
 import {
   BodyText,
   Button,
@@ -44,15 +42,15 @@ export const TokenPicker = ({
   isOpen,
   onTokenSelect,
 }: TokenPickerProps) => {
-  const [tokenSearchQuery, setTokenSearchQuery] = useState("");
-  const [commonTokens, setCommonTokens] = useState<TokenFromTokenlist[]>(
-    TOKEN_PICKER_COMMON_TOKENS[ChainId.GNOSIS]
-  );
-  const [debouncedQuery, setDebouncedQuery] = useState(tokenSearchQuery);
-
   const { tokenList, tokenListWithBalances } = useTokenListContext();
   const { stackboxFormState } = useStackboxFormContext();
   const [chainId] = stackboxFormState.chainIdState;
+
+  const [tokenSearchQuery, setTokenSearchQuery] = useState("");
+  const [commonTokens, setCommonTokens] = useState<TokenFromTokenlist[]>(
+    TOKEN_PICKER_COMMON_TOKENS[chainId]
+  );
+  const [debouncedQuery, setDebouncedQuery] = useState(tokenSearchQuery);
 
   const tokenListSearchCleanup = () => {
     setDebouncedQuery("");
