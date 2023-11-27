@@ -1,29 +1,85 @@
 "use client";
 
-import { Button, Icon } from "@/ui";
-import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
+import { Fragment, useEffect, useState } from "react";
+
+import type { Chain } from "viem/chains";
 import { ChainIcon } from "connectkit";
 import { Listbox, Transition } from "@headlessui/react";
-import { Fragment } from "react";
-import { parseAsInteger, useQueryState } from "next-usequerystate";
+import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
+
+import { Button, Icon } from "@/ui";
+import { config } from "@/providers";
+import { useStackboxFormContext } from "@/contexts";
+
+interface WagmiChain extends Chain {
+  unsupported?: boolean;
+}
 
 export const SelectNetwork = () => {
-  const [, setChainId] = useQueryState("chainId", parseAsInteger);
+  const { stackboxFormState } = useStackboxFormContext();
+  const [, setChainId] = stackboxFormState.chainIdState;
   const { switchNetwork } = useSwitchNetwork({
     onSuccess(data) {
       setChainId(data.id);
     },
   });
-  const { chain, chains } = useNetwork();
+  const { chain } = useNetwork();
   const { isConnected } = useAccount();
+  const [selectedChain, setSelectedChain] = useState<WagmiChain>();
+  const [allowedChains, setAllowedChains] = useState<WagmiChain[] | undefined>(
+    []
+  );
 
-  if (!isConnected || !chain) return <></>;
+  const handleOfflineNetworkSwitch = (newChainId: number) => {
+    config.setState((oldState: any) => {
+      const { publicClient } = oldState;
+      const { chains } = publicClient;
 
-  const onValueChange = (networkId: string) =>
-    switchNetwork && switchNetwork(Number(networkId));
+      const offlineChain = chains?.find(
+        (allowedChain: any) => allowedChain.id === newChainId
+      );
+
+      setChainId(offlineChain.id);
+      setSelectedChain(offlineChain);
+
+      return {
+        ...oldState,
+        publicClient: {
+          ...publicClient,
+          chain: offlineChain,
+        },
+      };
+    });
+  };
+
+  const onValueChange = (networkId: string) => {
+    if (isConnected) {
+      switchNetwork && switchNetwork(Number(networkId));
+    } else {
+      handleOfflineNetworkSwitch(parseInt(networkId));
+    }
+  };
+
+  useEffect(() => {
+    if (chain) setChainId(chain.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chain]);
+
+  useEffect(() => {
+    const { chains } = config.getPublicClient();
+
+    if (chains) {
+      setAllowedChains(chains);
+      setSelectedChain(chains[0]);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isConnected && chain) setSelectedChain(chain);
+  }, [chain, isConnected]);
 
   return (
-    <Listbox value={chain.id.toString()} onChange={onValueChange}>
+    <Listbox value={selectedChain?.id.toString()} onChange={onValueChange}>
       <div className="relative">
         <Listbox.Button
           as={Button}
@@ -35,11 +91,13 @@ export const SelectNetwork = () => {
           <div className="flex items-center space-x-2">
             <ChainIcon
               size={20}
-              id={chain.id}
-              unsupported={chain.unsupported}
+              id={selectedChain?.id}
+              unsupported={selectedChain?.unsupported}
             />
             <span className="hidden md:inline-block">
-              {chain.unsupported ? "Unsupported Network" : chain.name}
+              {selectedChain?.unsupported
+                ? "Unsupported Network"
+                : selectedChain?.name}
             </span>
           </div>
         </Listbox.Button>
@@ -50,7 +108,7 @@ export const SelectNetwork = () => {
           leaveTo="opacity-0"
         >
           <Listbox.Options className="absolute z-10 w-auto py-1 mt-1 overflow-auto text-base bg-white shadow-md max-h-60 rounded-2xl focus:outline-none sm:text-sm">
-            {chains.map(({ id, name }) => (
+            {allowedChains?.map(({ id, name }) => (
               <Listbox.Option
                 key={id}
                 className="relative py-2 pl-4 pr-10 cursor-pointer select-none hover:bg-surface-75"
