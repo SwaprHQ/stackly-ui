@@ -9,16 +9,19 @@ import {
   useMemo,
   useState,
 } from "react";
-import { useAccount, useNetwork } from "wagmi";
-import { formatUnits, hexToBigInt } from "viem";
 
 import { ChainId, MULTICALL_ADDRESS } from "@stackly/sdk";
 import { Erc20Abi, MulticallAbi } from "@stackly/sdk/abis";
+import { ethers } from "ethers";
+import { formatUnits, hexToBigInt } from "viem";
+import { useAccount } from "wagmi";
+
+import { RPC_LIST } from "@/constants";
+import { TokenFromTokenlist } from "@/models";
+
 import defaultGnosisTokenlist from "public/assets/blockchains/gnosis/tokenlist.json";
 import defaultEthereumTokenlist from "public/assets/blockchains/ethereum/tokenlist.json";
-import { TokenFromTokenlist } from "@/models/token/types";
-import { ethers } from "ethers";
-import { RPC_LIST } from "@/constants";
+import { useStackboxFormContext } from "./StackboxFormContext";
 
 export interface TokenWithBalance extends TokenFromTokenlist {
   balance?: string;
@@ -74,23 +77,23 @@ const mergeTokenlists = (
 };
 
 export const TokenListProvider = ({ children }: PropsWithChildren) => {
+  const { address } = useAccount();
+  const { stackboxFormState } = useStackboxFormContext();
+  const [chainId] = stackboxFormState.chainIdState;
+
   const [tokenList, setTokenList] = useState<TokenFromTokenlist[]>(
     defaultGnosisTokenlist
   );
   const [tokenListWithBalances, setTokenListWithBalances] =
     useState<TokenWithBalance[]>();
   const [isLoading, setIsLoading] = useState(true);
-  const { chain } = useNetwork();
-  const { address } = useAccount();
 
-  const chainId = chain?.id ?? ChainId.GNOSIS;
-
-  const defaultTokenList = chain
-    ? DEFAULT_TOKEN_LIST_BY_CHAIN[chain.id]
+  const defaultTokenList = chainId
+    ? DEFAULT_TOKEN_LIST_BY_CHAIN[chainId]
     : DEFAULT_TOKEN_LIST_BY_CHAIN[ChainId.GNOSIS];
 
-  const fetchTokenlistURLS = chain
-    ? TOKEN_LISTS_BY_CHAIN_URL[chain.id]
+  const fetchTokenlistURLS = chainId
+    ? TOKEN_LISTS_BY_CHAIN_URL[chainId]
     : TOKEN_LISTS_BY_CHAIN_URL[ChainId.GNOSIS];
 
   const callArray = useMemo(() => {

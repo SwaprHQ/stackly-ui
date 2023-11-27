@@ -10,7 +10,7 @@ import {
   useStackboxFormContext,
   useStrategyContext,
 } from "@/contexts";
-import { TokenLogoPair } from "@/components/TokenLogoPair";
+import { TokenLogoPair } from "@/components";
 
 import { FREQUENCY_LABEL } from "./constants";
 
@@ -19,8 +19,9 @@ interface StrategyCardProps {
 }
 
 export const StrategyCard = ({ strategy }: StrategyCardProps) => {
-  const { resetFormValues } = useStackboxFormContext();
+  const { stackboxFormState, resetFormValues } = useStackboxFormContext();
   const { selectedStrategy, setSelectedStrategy } = useStrategyContext();
+  const [chainId] = stackboxFormState.chainIdState;
 
   const { buyToken, sellToken } = strategy;
 
@@ -45,7 +46,7 @@ export const StrategyCard = ({ strategy }: StrategyCardProps) => {
       )}
       onClick={() => {
         setSelectedStrategy(isSelected ? null : strategy);
-        !isSelected ? trackEvent(cardClickEventName) : resetFormValues();
+        !isSelected ? trackEvent(cardClickEventName) : resetFormValues(chainId);
       }}
     >
       <div className="flex">

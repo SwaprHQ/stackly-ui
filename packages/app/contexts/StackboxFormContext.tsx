@@ -2,6 +2,7 @@
 
 import { createContext, useContext, ReactNode, useMemo } from "react";
 
+import { ChainId } from "@stackly/sdk";
 import {
   createParser,
   parseAsInteger,
@@ -10,7 +11,6 @@ import {
   parseAsTimestamp,
   useQueryState,
 } from "next-usequerystate";
-import { useNetwork } from "wagmi";
 
 import {
   TokenWithBalance,
@@ -18,7 +18,6 @@ import {
   useTokenListContext,
 } from "@/contexts";
 import { FREQUENCY_OPTIONS } from "@/models/stack";
-import { ChainId } from "@stackly/sdk";
 import { DEFAULT_TOKENS_BY_CHAIN } from "@/utils/constants";
 
 const endDateByFrequency: Record<string, number> = {
@@ -52,7 +51,7 @@ const throwStackboxFormContextError = () => {
 };
 
 interface StackboxFormContextProps {
-  resetFormValues: () => void;
+  resetFormValues: (newChainId: ChainId) => void;
   stackboxFormState: any;
 }
 
@@ -71,17 +70,16 @@ export const StackboxFormContextProvider = ({
   const { deselectStrategy } = useStrategyContext();
   const { getTokenFromList } = useTokenListContext();
 
-  const { chain } = useNetwork();
+  const [chainId, setContextChainId] = useQueryState(
+    "chainId",
+    parseAsInteger.withDefault(ChainId.GNOSIS)
+  );
 
   const getDefaultParsedToken = (tokenDirection: "to" | "from") =>
     createParser({
       parse: (address: string) => getTokenFromList(address),
       serialize: (token) => token?.address || "",
-    }).withDefault(
-      chain?.id && !chain?.unsupported
-        ? DEFAULT_TOKENS_BY_CHAIN[chain.id][tokenDirection]
-        : DEFAULT_TOKENS_BY_CHAIN[ChainId.GNOSIS][tokenDirection]
-    );
+    }).withDefault(DEFAULT_TOKENS_BY_CHAIN[chainId][tokenDirection]);
 
   const [fromToken, setFromToken] = useQueryState<TokenWithBalance>(
     "fromToken",
@@ -109,25 +107,21 @@ export const StackboxFormContextProvider = ({
     "endDate",
     parseAsTimestamp.withDefault(new Date(endDateByFrequency[frequency]))
   );
-  const [chainId, setContextChainId] = useQueryState("chainId", parseAsInteger);
 
   const stackboxFormContext = useMemo(() => {
-    const resetFormValues = () => {
-      const chainId =
-        chain?.id && !chain?.unsupported ? chain.id : ChainId.GNOSIS;
-
+    const resetFormValues = (newChainId: ChainId) => {
       deselectStrategy();
-      setFromToken(DEFAULT_TOKENS_BY_CHAIN[chainId].from);
-      setToToken(DEFAULT_TOKENS_BY_CHAIN[chainId].to);
+      setFromToken(DEFAULT_TOKENS_BY_CHAIN[newChainId].from);
+      setToToken(DEFAULT_TOKENS_BY_CHAIN[newChainId].to);
       setTokenAmount("0.0");
       setFrequency(FREQUENCY_OPTIONS.hour);
       setStartDateTime(new Date(Date.now()));
       setEndDateTime(new Date(endDateByFrequency[frequency]));
+      setContextChainId(newChainId);
     };
 
     const setChainId = (newChainId: ChainId) => {
-      resetFormValues();
-      setContextChainId(newChainId);
+      resetFormValues(newChainId);
     };
 
     const stackboxFormState = {
@@ -145,7 +139,6 @@ export const StackboxFormContextProvider = ({
       stackboxFormState,
     };
   }, [
-    chain,
     chainId,
     deselectStrategy,
     endDateTime,
