@@ -486,7 +486,7 @@ export const Stackbox = () => {
                 </div>
                 <div
                   className={cx(
-                    "flex flex-col w-full p-3 space-y-2 hover:bg-surface-25",
+                    "flex flex-col w-full pl-4 pr-3 py-2 lg:py-3 space-y-2 hover:bg-surface-25",
                     {
                       "!border !border-danger-200 !rounded-r-2xl":
                         showPastEndDateError,
