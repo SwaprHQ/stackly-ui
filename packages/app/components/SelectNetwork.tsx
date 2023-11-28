@@ -4,11 +4,13 @@ import { Fragment, useEffect, useState } from "react";
 
 import type { Chain } from "viem/chains";
 import { ChainIcon } from "connectkit";
+import { ChainId } from "@stackly/sdk";
 import { Listbox, Transition } from "@headlessui/react";
 import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
 
 import { Button, Icon } from "@/ui";
 import { config } from "@/providers";
+import { getIsValidChainId } from "@/utils";
 import { useStackboxFormContext } from "@/contexts";
 
 interface WagmiChain extends Chain {
@@ -17,7 +19,7 @@ interface WagmiChain extends Chain {
 
 export const SelectNetwork = () => {
   const { stackboxFormState } = useStackboxFormContext();
-  const [, setChainId] = stackboxFormState.chainIdState;
+  const [chainId, setChainId] = stackboxFormState.chainIdState;
   const { switchNetwork } = useSwitchNetwork({
     onSuccess(data) {
       setChainId(data.id);
@@ -61,17 +63,25 @@ export const SelectNetwork = () => {
   };
 
   useEffect(() => {
-    if (chain) setChainId(chain.id);
+    const { chains } = config.getPublicClient();
+    const isValidChainId = getIsValidChainId(chainId);
+
+    if (!isValidChainId) setChainId(ChainId.GNOSIS);
+    if (chains) {
+      const validChainId = isValidChainId ? chainId : ChainId.GNOSIS;
+      const validChain = chains.find((chain) => chain.id === validChainId);
+
+      setSelectedChain(validChain);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chain]);
+  }, [chainId]);
 
   useEffect(() => {
     const { chains } = config.getPublicClient();
 
-    if (chains) {
-      setAllowedChains(chains);
-      setSelectedChain(chains[0]);
-    }
+    if (!chainId) setChainId(ChainId.GNOSIS);
+    if (chains) setAllowedChains(chains);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

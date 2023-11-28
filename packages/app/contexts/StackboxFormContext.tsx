@@ -12,13 +12,13 @@ import {
   useQueryState,
 } from "next-usequerystate";
 
+import { DEFAULT_TOKENS_BY_CHAIN, getIsValidChainId } from "@/utils";
+import { FREQUENCY_OPTIONS } from "@/models/stack";
 import {
   TokenWithBalance,
   useStrategyContext,
   useTokenListContext,
 } from "@/contexts";
-import { FREQUENCY_OPTIONS } from "@/models/stack";
-import { DEFAULT_TOKENS_BY_CHAIN } from "@/utils/constants";
 
 const endDateByFrequency: Record<string, number> = {
   [FREQUENCY_OPTIONS.hour]: new Date().setDate(new Date().getDate() + 2),
@@ -75,11 +75,14 @@ export const StackboxFormContextProvider = ({
     parseAsInteger.withDefault(ChainId.GNOSIS)
   );
 
-  const getDefaultParsedToken = (tokenDirection: "to" | "from") =>
-    createParser({
+  const getDefaultParsedToken = (tokenDirection: "to" | "from") => {
+    const validChainId = getIsValidChainId(chainId) ? chainId : ChainId.GNOSIS;
+
+    return createParser({
       parse: (address: string) => getTokenFromList(address),
       serialize: (token) => token?.address || "",
-    }).withDefault(DEFAULT_TOKENS_BY_CHAIN[chainId][tokenDirection]);
+    }).withDefault(DEFAULT_TOKENS_BY_CHAIN[validChainId][tokenDirection]);
+  };
 
   const [fromToken, setFromToken] = useQueryState<TokenWithBalance>(
     "fromToken",
@@ -110,14 +113,18 @@ export const StackboxFormContextProvider = ({
 
   const stackboxFormContext = useMemo(() => {
     const resetFormValues = (newChainId: ChainId) => {
+      const validChainId = getIsValidChainId(newChainId)
+        ? newChainId
+        : ChainId.GNOSIS;
+
       deselectStrategy();
-      setFromToken(DEFAULT_TOKENS_BY_CHAIN[newChainId].from);
-      setToToken(DEFAULT_TOKENS_BY_CHAIN[newChainId].to);
+      setFromToken(DEFAULT_TOKENS_BY_CHAIN[validChainId].from);
+      setToToken(DEFAULT_TOKENS_BY_CHAIN[validChainId].to);
       setTokenAmount("0.0");
       setFrequency(FREQUENCY_OPTIONS.hour);
       setStartDateTime(new Date(Date.now()));
       setEndDateTime(new Date(endDateByFrequency[frequency]));
-      setContextChainId(newChainId);
+      setContextChainId(validChainId);
     };
 
     const setChainId = (newChainId: ChainId) => {

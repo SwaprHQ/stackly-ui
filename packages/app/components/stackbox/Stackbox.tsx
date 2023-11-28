@@ -87,11 +87,12 @@ export const Stackbox = () => {
   const { resetFormValues, stackboxFormState } = useStackboxFormContext();
   const { deselectStrategy, selectedStrategy } = useStrategyContext();
   const {
+    tokenList,
     tokenListWithBalances,
     getTokenFromList,
     isLoading: isTokenListLoading,
   } = useTokenListContext();
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
 
   const [fromToken, setFromToken] = stackboxFormState.fromTokenState;
   const [toToken, setToToken] = stackboxFormState.toTokenState;
@@ -144,11 +145,20 @@ export const Stackbox = () => {
    */
   useEffect(() => {
     if (selectedStrategy) {
-      const getStrategyToken = (strategyToken: Token) =>
-        tokenListWithBalances?.find(
-          (token) =>
-            token.address.toUpperCase() === strategyToken.address.toUpperCase()
-        ) ?? null;
+      const getStrategyToken = (strategyToken: Token) => {
+        const tokenListToIterate =
+          address && isConnected && tokenListWithBalances
+            ? tokenListWithBalances
+            : tokenList;
+
+        return (
+          tokenListToIterate.find(
+            (token) =>
+              token.address.toUpperCase() ===
+              strategyToken.address.toUpperCase()
+          ) ?? null
+        );
+      };
 
       const strategyEndDate = add(Date.now(), {
         days: selectedStrategy.daysAmount,
@@ -164,8 +174,10 @@ export const Stackbox = () => {
       setEndDateTime(new Date(strategyEndDate));
     }
   }, [
+    address,
     chainId,
     frequency,
+    isConnected,
     selectedStrategy,
     setEndDateTime,
     setFrequency,
@@ -173,6 +185,7 @@ export const Stackbox = () => {
     setStartDateTime,
     setToToken,
     setTokenAmount,
+    tokenList,
     tokenListWithBalances,
   ]);
 
