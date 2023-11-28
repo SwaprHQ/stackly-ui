@@ -30,23 +30,23 @@ export const SelectNetwork = () => {
     []
   );
 
-  const handleOfflineNetworkSwitch = (newChainId: number) => {
+  const handleDisconnectedNetworkSwitch = (newChainId: number) => {
     config.setState((oldState: any) => {
       const { publicClient } = oldState;
       const { chains } = publicClient;
 
-      const offlineChain = chains?.find(
+      const newChain = chains?.find(
         (allowedChain: any) => allowedChain.id === newChainId
       );
 
-      setChainId(offlineChain.id);
-      setSelectedChain(offlineChain);
+      setChainId(newChain.id);
+      setSelectedChain(newChain);
 
       return {
         ...oldState,
         publicClient: {
           ...publicClient,
-          chain: offlineChain,
+          chain: newChain,
         },
       };
     });
@@ -56,7 +56,7 @@ export const SelectNetwork = () => {
     if (isConnected) {
       switchNetwork && switchNetwork(Number(networkId));
     } else {
-      handleOfflineNetworkSwitch(parseInt(networkId));
+      handleDisconnectedNetworkSwitch(parseInt(networkId));
     }
   };
 
