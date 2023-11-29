@@ -80,7 +80,7 @@ module.exports = {
       current: "currentColor",
     },
     backgroundSize: {
-      "auto-100": "auto 100%",
+      "100-100": "100% 100%",
     },
     extend: {
       opacity: {
