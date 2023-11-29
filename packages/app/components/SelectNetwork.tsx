@@ -1,95 +1,25 @@
 "use client";
 
-import { Fragment, useEffect, useState } from "react";
+import { Fragment } from "react";
 
-import type { Chain } from "viem/chains";
 import { ChainIcon } from "connectkit";
-import { ChainId } from "@stackly/sdk";
 import { Listbox, Transition } from "@headlessui/react";
-import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
 
 import { Button, Icon } from "@/ui";
-import { config } from "@/providers";
-import { getIsValidChainId } from "@/utils";
-import { useStackboxFormContext } from "@/contexts";
-
-interface WagmiChain extends Chain {
-  unsupported?: boolean;
-}
+import { useNetworkContext, useStackboxFormContext } from "@/contexts";
 
 export const SelectNetwork = () => {
-  const { stackboxFormState } = useStackboxFormContext();
-  const [chainId, setChainId] = stackboxFormState.chainIdState;
-  const { switchNetwork } = useSwitchNetwork({
-    onSuccess(data) {
-      setChainId(data.id);
-    },
-  });
-  const { chain } = useNetwork();
-  const { isConnected } = useAccount();
-  const [selectedChain, setSelectedChain] = useState<WagmiChain>();
-  const [allowedChains, setAllowedChains] = useState<WagmiChain[] | undefined>(
-    []
-  );
-
-  const handleDisconnectedNetworkSwitch = (newChainId: number) => {
-    config.setState((oldState: any) => {
-      const { publicClient } = oldState;
-      const { chains } = publicClient;
-
-      const newChain = chains?.find(
-        (allowedChain: any) => allowedChain.id === newChainId
-      );
-
-      setChainId(newChain.id);
-      setSelectedChain(newChain);
-
-      return {
-        ...oldState,
-        publicClient: {
-          ...publicClient,
-          chain: newChain,
-        },
-      };
-    });
-  };
-
-  const onValueChange = (networkId: string) => {
-    if (isConnected) {
-      switchNetwork && switchNetwork(Number(networkId));
-    } else {
-      handleDisconnectedNetworkSwitch(parseInt(networkId));
-    }
-  };
-
-  useEffect(() => {
-    const { chains } = config.getPublicClient();
-    const isValidChainId = getIsValidChainId(chainId);
-
-    if (!isValidChainId) setChainId(ChainId.GNOSIS);
-    if (chains) {
-      const validChainId = isValidChainId ? chainId : ChainId.GNOSIS;
-      const validChain = chains.find((chain) => chain.id === validChainId);
-
-      setSelectedChain(validChain);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chainId]);
-
-  useEffect(() => {
-    const { chains } = config.getPublicClient();
-
-    if (!chainId) setChainId(ChainId.GNOSIS);
-    if (chains) setAllowedChains(chains);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (isConnected && chain) setSelectedChain(chain);
-  }, [chain, isConnected]);
+  const { allowedChains, changeNetwork, selectedChain } = useNetworkContext();
+  const { resetFormValues } = useStackboxFormContext();
 
   return (
-    <Listbox value={selectedChain?.id.toString()} onChange={onValueChange}>
+    <Listbox
+      value={selectedChain?.id.toString()}
+      onChange={(chainId) => {
+        changeNetwork(chainId);
+        resetFormValues(parseInt(chainId));
+      }}
+    >
       <div className="relative">
         <Listbox.Button
           as={Button}
