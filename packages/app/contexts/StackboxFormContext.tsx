@@ -1,11 +1,10 @@
 "use client";
 
-import { createContext, useContext, ReactNode, useMemo } from "react";
+import { ReactNode, createContext, useContext, useMemo } from "react";
 
 import { ChainId } from "@stackly/sdk";
 import {
   createParser,
-  parseAsInteger,
   parseAsString,
   parseAsStringEnum,
   parseAsTimestamp,
@@ -16,6 +15,7 @@ import { DEFAULT_TOKENS_BY_CHAIN, getIsValidChainId } from "@/utils";
 import { FREQUENCY_OPTIONS } from "@/models/stack";
 import {
   TokenWithBalance,
+  useNetworkContext,
   useStrategyContext,
   useTokenListContext,
 } from "@/contexts";
@@ -67,13 +67,9 @@ interface StackboxFormContextProviderProps {
 export const StackboxFormContextProvider = ({
   children,
 }: StackboxFormContextProviderProps) => {
+  const { chainId } = useNetworkContext();
   const { deselectStrategy } = useStrategyContext();
   const { getTokenFromList } = useTokenListContext();
-
-  const [chainId, setContextChainId] = useQueryState(
-    "chainId",
-    parseAsInteger.withDefault(ChainId.GNOSIS)
-  );
 
   const getDefaultParsedToken = (tokenDirection: "to" | "from") => {
     const validChainId = getIsValidChainId(chainId) ? chainId : ChainId.GNOSIS;
@@ -124,11 +120,6 @@ export const StackboxFormContextProvider = ({
       setFrequency(FREQUENCY_OPTIONS.hour);
       setStartDateTime(new Date(Date.now()));
       setEndDateTime(new Date(endDateByFrequency[frequency]));
-      setContextChainId(validChainId);
-    };
-
-    const setChainId = (newChainId: ChainId) => {
-      resetFormValues(newChainId);
     };
 
     const stackboxFormState = {
@@ -138,7 +129,6 @@ export const StackboxFormContextProvider = ({
       frequencyState: [frequency, setFrequency],
       startDateState: [startDateTime, setStartDateTime],
       endDateState: [endDateTime, setEndDateTime],
-      chainIdState: [chainId, setChainId],
     };
 
     return {
@@ -146,12 +136,10 @@ export const StackboxFormContextProvider = ({
       stackboxFormState,
     };
   }, [
-    chainId,
     deselectStrategy,
     endDateTime,
     frequency,
     fromToken,
-    setContextChainId,
     setEndDateTime,
     setFrequency,
     setFromToken,

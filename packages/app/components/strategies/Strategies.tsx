@@ -2,15 +2,14 @@
 
 import { Tab } from "@headlessui/react";
 
-import { Strategy, useStackboxFormContext } from "@/contexts";
+import { Strategy, useNetworkContext } from "@/contexts";
 import { tabButtonStyles } from "@/components";
 
 import { StrategyCard } from "./StrategyCard";
 import { STRATEGY_CATEGORIES } from "./constants";
 
 export const Strategies = () => {
-  const { stackboxFormState } = useStackboxFormContext();
-  const [chainId] = stackboxFormState.chainIdState;
+  const { chainId } = useNetworkContext();
 
   const chainStrategies = STRATEGY_CATEGORIES[chainId];
 

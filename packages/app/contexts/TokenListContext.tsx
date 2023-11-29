@@ -21,7 +21,7 @@ import { TokenFromTokenlist } from "@/models";
 
 import defaultGnosisTokenlist from "public/assets/blockchains/gnosis/tokenlist.json";
 import defaultEthereumTokenlist from "public/assets/blockchains/ethereum/tokenlist.json";
-import { useStackboxFormContext } from "./StackboxFormContext";
+import { useNetworkContext } from "./NetworkContext";
 
 export interface TokenWithBalance extends TokenFromTokenlist {
   balance?: string;
@@ -78,8 +78,7 @@ const mergeTokenlists = (
 
 export const TokenListProvider = ({ children }: PropsWithChildren) => {
   const { address } = useAccount();
-  const { stackboxFormState } = useStackboxFormContext();
-  const [chainId] = stackboxFormState.chainIdState;
+  const { chainId } = useNetworkContext();
 
   const [tokenList, setTokenList] = useState<TokenFromTokenlist[]>(
     defaultGnosisTokenlist
@@ -88,13 +87,8 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
     useState<TokenWithBalance[]>();
   const [isLoading, setIsLoading] = useState(true);
 
-  const defaultTokenList = chainId
-    ? DEFAULT_TOKEN_LIST_BY_CHAIN[chainId]
-    : DEFAULT_TOKEN_LIST_BY_CHAIN[ChainId.GNOSIS];
-
-  const fetchTokenlistURLS = chainId
-    ? TOKEN_LISTS_BY_CHAIN_URL[chainId]
-    : TOKEN_LISTS_BY_CHAIN_URL[ChainId.GNOSIS];
+  const defaultTokenList = DEFAULT_TOKEN_LIST_BY_CHAIN[chainId];
+  const fetchTokenlistUrls = TOKEN_LISTS_BY_CHAIN_URL[chainId];
 
   const callArray = useMemo(() => {
     const erc20Interface = new ethers.utils.Interface(Erc20Abi);
@@ -161,7 +155,7 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
     }
 
     Promise.allSettled(
-      fetchTokenlistURLS.map((list) => getTokenListData(list))
+      fetchTokenlistUrls.map((list) => getTokenListData(list))
     ).then((results) => {
       results.forEach((result) => {
         if (result.status === "fulfilled") {
@@ -181,7 +175,7 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
       );
       setIsLoading(false);
     });
-  }, [chainId, defaultTokenList, fetchTokenlistURLS]);
+  }, [chainId, defaultTokenList, fetchTokenlistUrls]);
 
   useEffect(() => {
     setupTokenList();

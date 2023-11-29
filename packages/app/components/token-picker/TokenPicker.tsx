@@ -2,6 +2,8 @@
 
 import { ChangeEvent, RefObject, forwardRef, useEffect, useState } from "react";
 
+import { useAccount } from "wagmi";
+
 import {
   BodyText,
   Button,
@@ -16,7 +18,7 @@ import { EmptyStateTokenPickerImg } from "@/public/assets";
 import { TokenIcon } from "@/components";
 import {
   TokenWithBalance,
-  useStackboxFormContext,
+  useNetworkContext,
   useTokenListContext,
 } from "@/contexts";
 import { formatTokenValue } from "@/utils/token";
@@ -43,8 +45,8 @@ export const TokenPicker = ({
   onTokenSelect,
 }: TokenPickerProps) => {
   const { tokenList, tokenListWithBalances } = useTokenListContext();
-  const { stackboxFormState } = useStackboxFormContext();
-  const [chainId] = stackboxFormState.chainIdState;
+  const { chainId } = useNetworkContext();
+  const { isConnected } = useAccount();
 
   const [tokenSearchQuery, setTokenSearchQuery] = useState("");
   const [commonTokens, setCommonTokens] = useState<TokenFromTokenlist[]>(
@@ -113,9 +115,7 @@ export const TokenPicker = ({
         <TokenList
           onClearSearch={tokenListSearchCleanup}
           onTokenSelect={handleTokenSelect}
-          tokenList={
-            tokenListWithBalances?.length ? tokenListWithBalances : tokenList
-          }
+          tokenList={isConnected ? tokenListWithBalances : tokenList}
           tokenSearchQuery={tokenSearchQuery}
         />
       </ModalContent>

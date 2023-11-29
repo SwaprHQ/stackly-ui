@@ -37,6 +37,7 @@ import {
   ModalId,
   TokenWithBalance,
   useModalContext,
+  useNetworkContext,
   useStackboxFormContext,
   useStrategyContext,
   useTokenListContext,
@@ -93,6 +94,7 @@ export const Stackbox = () => {
     isLoading: isTokenListLoading,
   } = useTokenListContext();
   const { address, isConnected } = useAccount();
+  const { chainId } = useNetworkContext();
 
   const [fromToken, setFromToken] = stackboxFormState.fromTokenState;
   const [toToken, setToToken] = stackboxFormState.toTokenState;
@@ -100,7 +102,6 @@ export const Stackbox = () => {
   const [frequency, setFrequency] = stackboxFormState.frequencyState;
   const [startDateTime, setStartDateTime] = stackboxFormState.startDateState;
   const [endDateTime, setEndDateTime] = stackboxFormState.endDateState;
-  const [chainId] = stackboxFormState.chainIdState;
 
   const [showTokenAmountError, setShowTokenAmountError] = useState(false);
   const [showPastEndDateError, setShowPastEndDateError] = useState(false);

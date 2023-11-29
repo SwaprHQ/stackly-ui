@@ -7,6 +7,7 @@ import { Button, CaptionText, Icon } from "@/ui";
 import { EVENTS } from "@/analytics";
 import {
   Strategy,
+  useNetworkContext,
   useStackboxFormContext,
   useStrategyContext,
 } from "@/contexts";
@@ -19,9 +20,9 @@ interface StrategyCardProps {
 }
 
 export const StrategyCard = ({ strategy }: StrategyCardProps) => {
-  const { stackboxFormState, resetFormValues } = useStackboxFormContext();
+  const { resetFormValues } = useStackboxFormContext();
   const { selectedStrategy, setSelectedStrategy } = useStrategyContext();
-  const [chainId] = stackboxFormState.chainIdState;
+  const { chainId } = useNetworkContext();
 
   const { buyToken, sellToken } = strategy;
 
