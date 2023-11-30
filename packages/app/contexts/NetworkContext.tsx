@@ -83,7 +83,7 @@ export const NetworkContextProvider = ({
       const validChainId = isValidChainId ? chainId : ChainId.GNOSIS;
       const validChain = chains.find((chain) => chain.id === validChainId);
 
-      setSelectedChain(validChain ?? gnosis);
+      setSelectedChain(validChain as WagmiChain);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chainId]);
