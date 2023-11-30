@@ -9,7 +9,7 @@ import { Button, Icon } from "@/ui";
 import { useNetworkContext, useStackboxFormContext } from "@/contexts";
 
 export const SelectNetwork = () => {
-  const { allowedChains, changeNetwork, selectedChain } = useNetworkContext();
+  const { chains, changeNetwork, selectedChain } = useNetworkContext();
   const { resetFormValues } = useStackboxFormContext();
 
   return (
@@ -48,7 +48,7 @@ export const SelectNetwork = () => {
           leaveTo="opacity-0"
         >
           <Listbox.Options className="absolute z-10 w-auto py-1 mt-1 overflow-auto text-base bg-white shadow-md max-h-60 rounded-2xl focus:outline-none sm:text-sm">
-            {allowedChains?.map(({ id, name }) => (
+            {chains?.map(({ id, name }) => (
               <Listbox.Option
                 key={id}
                 className="relative py-2 pl-4 pr-10 cursor-pointer select-none hover:bg-surface-75"

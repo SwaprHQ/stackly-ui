@@ -27,7 +27,7 @@ const throwNetworkContextError = () => {
 };
 
 interface NetworkContextProps {
-  allowedChains?: WagmiChain[];
+  chains?: WagmiChain[];
   chainId: ChainId;
   changeNetwork: (newChainId: string) => void;
   selectedChain: WagmiChain;
@@ -56,9 +56,7 @@ export const NetworkContextProvider = ({
     parseAsInteger.withDefault(ChainId.GNOSIS)
   );
   const [selectedChain, setSelectedChain] = useState<WagmiChain>(gnosis);
-  const [allowedChains, setAllowedChains] = useState<WagmiChain[] | undefined>(
-    []
-  );
+  const [chains, setChains] = useState<WagmiChain[] | undefined>([]);
 
   const { switchNetwork } = useSwitchNetwork({
     onSuccess(data) {
@@ -67,10 +65,13 @@ export const NetworkContextProvider = ({
   });
 
   useEffect(() => {
-    const { chains } = config.getPublicClient();
+    const { chains: wagmiChains } = config.getPublicClient();
 
-    if (!chainId) setChainId(ChainId.GNOSIS);
-    if (chains) setAllowedChains(chains);
+    if (!chainId) {
+      setChainId(ChainId.GNOSIS);
+      setSelectedChain(gnosis);
+    }
+    if (chains) setChains(wagmiChains);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -98,9 +99,7 @@ export const NetworkContextProvider = ({
         const { publicClient } = oldState;
         const { chains } = publicClient;
 
-        const newChain = chains?.find(
-          (allowedChain: any) => allowedChain.id === newChainId
-        );
+        const newChain = chains?.find((chain: any) => chain.id === newChainId);
 
         setChainId(newChain.id);
         setSelectedChain(newChain);
@@ -124,20 +123,13 @@ export const NetworkContextProvider = ({
     };
 
     return {
-      allowedChains,
+      chains,
       chainId,
       changeNetwork,
       selectedChain,
       setChainId,
     };
-  }, [
-    allowedChains,
-    chainId,
-    isConnected,
-    selectedChain,
-    setChainId,
-    switchNetwork,
-  ]);
+  }, [chains, chainId, isConnected, selectedChain, setChainId, switchNetwork]);
 
   return (
     <NetworkContext.Provider value={networkContext}>
