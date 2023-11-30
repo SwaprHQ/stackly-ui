@@ -14,7 +14,7 @@ import { ChainId } from "@stackly/sdk";
 import { gnosis } from "wagmi/chains";
 import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
 
-import { config } from "@/providers";
+import { config } from "@/providers/wagmi-config";
 import { parseAsInteger, useQueryState } from "next-usequerystate";
 import { getIsValidChainId } from "@/utils";
 

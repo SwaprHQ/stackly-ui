@@ -1,5 +1,3 @@
-"use client";
-
 import { ChainId } from "@stackly/sdk";
 import { SafeConnector } from "wagmi/connectors/safe";
 import { configureChains, createConfig } from "wagmi";
