@@ -87,7 +87,7 @@ export const NetworkContextProvider = ({
       setSelectedChain(validChain as WagmiChain);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chainId]);
+  }, [chainId, selectedChain]);
 
   useEffect(() => {
     if (isConnected && chain) setSelectedChain(chain);
