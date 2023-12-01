@@ -67,13 +67,23 @@ export const NetworkContextProvider = ({
   useEffect(() => {
     const { chains: wagmiChains } = config.getPublicClient();
 
+    if (chains) setChains(wagmiChains);
     if (!chainId) {
       setChainId(ChainId.GNOSIS);
       setSelectedChain(gnosis);
     }
-    if (chains) setChains(wagmiChains);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    const { chains: wagmiChains } = config.getPublicClient();
+    const chainFromParams = wagmiChains?.find((chain) => chain.id === chainId);
+
+    if (isConnected && chain?.id !== chainFromParams?.id && switchNetwork)
+      switchNetwork?.(chainId);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [switchNetwork]);
 
   useEffect(() => {
     const { chains } = config.getPublicClient();
