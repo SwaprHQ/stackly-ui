@@ -138,7 +138,7 @@ const TableCowBody = ({
                 </BodyText>
               ) : (
                 <BodyText className="text-gray-400 animate-pulse" size={1}>
-                  fulfilling
+                  in progress
                 </BodyText>
               )}
             </TableCell>
