@@ -1,9 +1,14 @@
 import { useState } from "react";
 
 import Link from "next/link";
-import { Order as CowOrder } from "@cowprotocol/cow-sdk";
+import { Order as CowOrder, OrderStatus } from "@cowprotocol/cow-sdk";
 
-import { addressShortner, convertedAmount, formatDate } from "@/utils";
+import {
+  addressShortner,
+  capitalize,
+  convertedAmount,
+  formatDate,
+} from "@/utils";
 import {
   BodyText,
   Icon,
@@ -92,6 +97,31 @@ const TableCowBody = ({
 }) => {
   const { chainId } = useNetworkContext();
 
+  const renderOrderStatus = (orderStatus: OrderStatus, price?: number) => {
+    switch (orderStatus) {
+      case "fulfilled":
+        return (
+          <BodyText className="text-em-med" size={1}>
+            {price?.toFixed(4)}
+          </BodyText>
+        );
+      case "cancelled":
+      case "expired":
+      case "presignaturePending":
+        return (
+          <BodyText className="text-em-med" size={1}>
+            {capitalize(orderStatus)}
+          </BodyText>
+        );
+      case "open":
+        return (
+          <BodyText className="text-em-med" size={1}>
+            in progress
+          </BodyText>
+        );
+    }
+  };
+
   return (
     <TableBody>
       {cowOrders.map((cowOrder) => {
@@ -136,15 +166,7 @@ const TableCowBody = ({
               </BodyText>
             </TableCell>
             <TableCell className="hidden py-2 text-right md:table-cell">
-              {cowOrder.status === "fulfilled" ? (
-                <BodyText className="text-em-med" size={1}>
-                  {averagePrice.toFixed(4)}
-                </BodyText>
-              ) : (
-                <BodyText className="text-gray-400 animate-pulse" size={1}>
-                  in progress
-                </BodyText>
-              )}
+              {renderOrderStatus(cowOrder.status, averagePrice)}
             </TableCell>
           </TableRow>
         );
