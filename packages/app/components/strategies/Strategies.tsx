@@ -1,18 +1,15 @@
 "use client";
 
 import { Tab } from "@headlessui/react";
-import { useNetwork } from "wagmi";
 
-import { ChainId } from "@stackly/sdk";
-import { Strategy } from "@/contexts";
+import { Strategy, useNetworkContext } from "@/contexts";
 import { tabButtonStyles } from "@/components";
 
 import { StrategyCard } from "./StrategyCard";
 import { STRATEGY_CATEGORIES } from "./constants";
 
 export const Strategies = () => {
-  const { chain } = useNetwork();
-  const chainId = chain?.id ?? ChainId.GNOSIS;
+  const { chainId } = useNetworkContext();
 
   const chainStrategies = STRATEGY_CATEGORIES[chainId];
 

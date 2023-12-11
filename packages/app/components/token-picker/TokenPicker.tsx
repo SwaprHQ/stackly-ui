@@ -2,6 +2,8 @@
 
 import { ChangeEvent, RefObject, forwardRef, useEffect, useState } from "react";
 
+import { useAccount } from "wagmi";
+
 import {
   BodyText,
   Button,
@@ -14,12 +16,15 @@ import {
 } from "@/ui";
 import { EmptyStateTokenPickerImg } from "@/public/assets";
 import { TokenIcon } from "@/components";
-import { TOKEN_PICKER_COMMON_TOKENS } from "./constants";
-import { TokenWithBalance, useTokenListContext } from "@/contexts";
+import {
+  TokenWithBalance,
+  useNetworkContext,
+  useTokenListContext,
+} from "@/contexts";
 import { formatTokenValue } from "@/utils/token";
 import { TokenFromTokenlist } from "@/models/token";
-import { useNetwork } from "wagmi";
-import { ChainId } from "@stackly/sdk";
+
+import { TOKEN_PICKER_COMMON_TOKENS } from "./constants";
 
 const HALF_SECOND = 500;
 
@@ -39,14 +44,15 @@ export const TokenPicker = ({
   isOpen,
   onTokenSelect,
 }: TokenPickerProps) => {
+  const { tokenList, tokenListWithBalances } = useTokenListContext();
+  const { chainId } = useNetworkContext();
+  const { isConnected } = useAccount();
+
   const [tokenSearchQuery, setTokenSearchQuery] = useState("");
   const [commonTokens, setCommonTokens] = useState<TokenFromTokenlist[]>(
-    TOKEN_PICKER_COMMON_TOKENS[ChainId.GNOSIS]
+    TOKEN_PICKER_COMMON_TOKENS[chainId]
   );
   const [debouncedQuery, setDebouncedQuery] = useState(tokenSearchQuery);
-
-  const { tokenList, tokenListWithBalances } = useTokenListContext();
-  const { chain } = useNetwork();
 
   const tokenListSearchCleanup = () => {
     setDebouncedQuery("");
@@ -84,8 +90,8 @@ export const TokenPicker = ({
    * Updates the token common tokens on chain switch
    */
   useEffect(() => {
-    if (chain?.id) setCommonTokens(TOKEN_PICKER_COMMON_TOKENS[chain.id]);
-  }, [chain]);
+    if (chainId) setCommonTokens(TOKEN_PICKER_COMMON_TOKENS[chainId]);
+  }, [chainId]);
 
   return (
     <Modal
@@ -109,9 +115,7 @@ export const TokenPicker = ({
         <TokenList
           onClearSearch={tokenListSearchCleanup}
           onTokenSelect={handleTokenSelect}
-          tokenList={
-            tokenListWithBalances?.length ? tokenListWithBalances : tokenList
-          }
+          tokenList={isConnected ? tokenListWithBalances : tokenList}
           tokenSearchQuery={tokenSearchQuery}
         />
       </ModalContent>
