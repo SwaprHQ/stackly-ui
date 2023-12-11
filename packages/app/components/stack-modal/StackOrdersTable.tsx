@@ -3,12 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Order as CowOrder, OrderStatus } from "@cowprotocol/cow-sdk";
 
-import {
-  addressShortner,
-  capitalize,
-  convertedAmount,
-  formatDate,
-} from "@/utils";
+import { addressShortner, convertedAmount, formatDate } from "@/utils";
 import {
   BodyText,
   Icon,
@@ -30,6 +25,14 @@ import { useNetworkContext } from "@/contexts";
 
 const INITIAL_NUMBER_OF_COW_ORDERS = 8;
 const MORE_ORDERS_NUMBER = 4;
+
+enum CowOrderStatus {
+  PRESIGNATURE_PENDING = "presignaturePending",
+  OPEN = "open",
+  FULFILLED = "fulfilled",
+  CANCELLED = "cancelled",
+  EXPIRED = "expired",
+}
 
 export const StackOrdersTable = ({ stackOrder }: StackOrderProps) => {
   const initialCowOrders =
@@ -97,28 +100,19 @@ const TableCowBody = ({
 }) => {
   const { chainId } = useNetworkContext();
 
-  const renderOrderStatus = (orderStatus: OrderStatus, price?: number) => {
+  const getOrderStatusText = (
+    orderStatus: OrderStatus | CowOrderStatus,
+    price?: number
+  ) => {
     switch (orderStatus) {
-      case "fulfilled":
-        return (
-          <BodyText className="text-em-med" size={1}>
-            {price?.toFixed(4)}
-          </BodyText>
-        );
-      case "cancelled":
-      case "expired":
-      case "presignaturePending":
-        return (
-          <BodyText className="text-em-med" size={1}>
-            {capitalize(orderStatus)}
-          </BodyText>
-        );
-      case "open":
-        return (
-          <BodyText className="text-em-med" size={1}>
-            in progress
-          </BodyText>
-        );
+      case CowOrderStatus.FULFILLED:
+        return price?.toFixed(4);
+      case CowOrderStatus.CANCELLED:
+      case CowOrderStatus.EXPIRED:
+      case CowOrderStatus.PRESIGNATURE_PENDING:
+        return orderStatus;
+      case CowOrderStatus.OPEN:
+        return "in progress";
     }
   };
 
@@ -166,7 +160,9 @@ const TableCowBody = ({
               </BodyText>
             </TableCell>
             <TableCell className="hidden py-2 text-right md:table-cell">
-              {renderOrderStatus(cowOrder.status, averagePrice)}
+              <BodyText className="capitalize text-em-med" size={1}>
+                {getOrderStatusText(cowOrder.status, averagePrice)}
+              </BodyText>
             </TableCell>
           </TableRow>
         );
