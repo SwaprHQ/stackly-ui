@@ -3,10 +3,11 @@
 import { ChainId, WETH, WXDAI } from "@stackly/sdk";
 import { ConnectKitButton } from "connectkit";
 import Image from "next/image";
-import { useAccount, useBalance, useEnsAvatar, useNetwork } from "wagmi";
+import { useAccount, useBalance, useEnsAvatar } from "wagmi";
 
 import { BodyText, Button, SizeProps } from "@/ui";
 import { useAutoConnect } from "@/hooks";
+import { useNetworkContext } from "@/contexts";
 
 const CustomConnectButton = ({
   address,
@@ -19,7 +20,7 @@ const CustomConnectButton = ({
   ensName?: string;
   size: SizeProps;
 }) => {
-  const { chain } = useNetwork();
+  const { selectedChain } = useNetworkContext();
   const { isConnected } = useAccount();
   const { data: avatar } = useEnsAvatar({
     name: ensName,
@@ -34,8 +35,8 @@ const CustomConnectButton = ({
   const { data: balance } = useBalance({
     address: address,
     token:
-      chain && isConnected
-        ? (TOKEN_BY_CHAIN[chain.id] as `0x${string}`)
+      selectedChain && isConnected
+        ? (TOKEN_BY_CHAIN[selectedChain.id] as `0x${string}`)
         : (TOKEN_BY_CHAIN[ChainId.GNOSIS] as `0x${string}`),
   });
 
