@@ -1,11 +1,11 @@
 "use client";
 
 import {
-  useRef,
-  useState,
-  useEffect,
   AnimationEventHandler,
   useCallback,
+  useEffect,
+  useRef,
+  useState,
 } from "react";
 
 import { add, formatDistance } from "date-fns";
@@ -13,7 +13,7 @@ import { cx } from "class-variance-authority";
 import { formatUnits, parseUnits } from "viem";
 import Link from "next/link";
 import { trackEvent } from "fathom-client";
-import { useAccount, useBalance, useNetwork, useSwitchNetwork } from "wagmi";
+import { useAccount, useBalance } from "wagmi";
 
 import {
   BodyText,
@@ -25,7 +25,6 @@ import {
   TitleText,
   Toast,
 } from "@/ui";
-import { ChainId } from "@stackly/sdk";
 import {
   ConfirmStackModal,
   ConnectButton,
@@ -38,9 +37,10 @@ import {
   ModalId,
   TokenWithBalance,
   useModalContext,
+  useNetworkContext,
+  useStackboxFormContext,
   useStrategyContext,
   useTokenListContext,
-  useStackboxFormContext,
 } from "@/contexts";
 import {
   FREQUENCY_OPTIONS,
@@ -88,18 +88,13 @@ export const Stackbox = () => {
   const { resetFormValues, stackboxFormState } = useStackboxFormContext();
   const { deselectStrategy, selectedStrategy } = useStrategyContext();
   const {
+    tokenList,
     tokenListWithBalances,
     getTokenFromList,
     isLoading: isTokenListLoading,
   } = useTokenListContext();
-
-  const { chain } = useNetwork();
-  const { switchNetwork } = useSwitchNetwork({
-    onSuccess(data) {
-      setChainId(data.id);
-    },
-  });
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
+  const { chainId } = useNetworkContext();
 
   const [fromToken, setFromToken] = stackboxFormState.fromTokenState;
   const [toToken, setToToken] = stackboxFormState.toTokenState;
@@ -107,7 +102,6 @@ export const Stackbox = () => {
   const [frequency, setFrequency] = stackboxFormState.frequencyState;
   const [startDateTime, setStartDateTime] = stackboxFormState.startDateState;
   const [endDateTime, setEndDateTime] = stackboxFormState.endDateState;
-  const [chainId, setChainId] = stackboxFormState.chainIdState;
 
   const [showTokenAmountError, setShowTokenAmountError] = useState(false);
   const [showPastEndDateError, setShowPastEndDateError] = useState(false);
@@ -118,9 +112,9 @@ export const Stackbox = () => {
     useState(false);
 
   const { data: balance } = useBalance({
-    address: Boolean(fromToken) ? address : undefined,
+    address: fromToken && address ? address : undefined,
     token: fromToken?.address as `0x${string}`,
-    chainId: chain?.id,
+    chainId,
   });
 
   useEffect(() => {
@@ -146,34 +140,26 @@ export const Stackbox = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isTokenListLoading]);
 
-  useEffect(() => {
-    if (chain) setChainId(chain.id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chain]);
-
-  useEffect(() => {
-    if (
-      chainId &&
-      switchNetwork &&
-      chainId !== chain?.id &&
-      Boolean(ChainId[chainId])
-    ) {
-      switchNetwork(chainId);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [switchNetwork]);
-
   /**
    * Form state handler when we select a
    * strategy
    */
   useEffect(() => {
     if (selectedStrategy) {
-      const getStrategyToken = (strategyToken: Token) =>
-        tokenListWithBalances?.find(
-          (token) =>
-            token.address.toUpperCase() === strategyToken.address.toUpperCase()
-        ) ?? null;
+      const getStrategyToken = (strategyToken: Token) => {
+        const tokenListToIterate =
+          address && isConnected && tokenListWithBalances
+            ? tokenListWithBalances
+            : tokenList;
+
+        return (
+          tokenListToIterate.find(
+            (token) =>
+              token.address.toUpperCase() ===
+              strategyToken.address.toUpperCase()
+          ) ?? null
+        );
+      };
 
       const strategyEndDate = add(Date.now(), {
         days: selectedStrategy.daysAmount,
@@ -189,8 +175,10 @@ export const Stackbox = () => {
       setEndDateTime(new Date(strategyEndDate));
     }
   }, [
-    chain,
+    address,
+    chainId,
     frequency,
+    isConnected,
     selectedStrategy,
     setEndDateTime,
     setFrequency,
@@ -198,6 +186,7 @@ export const Stackbox = () => {
     setStartDateTime,
     setToToken,
     setTokenAmount,
+    tokenList,
     tokenListWithBalances,
   ]);
 
@@ -545,7 +534,7 @@ export const Stackbox = () => {
                   className="text-primary-800"
                   onClick={() => {
                     deselectStrategy();
-                    resetFormValues();
+                    resetFormValues(chainId);
                   }}
                   size="xs"
                   variant="caption"
@@ -608,7 +597,7 @@ export const Stackbox = () => {
             closeModal(ModalId.CONFIRM_STACK);
             openModal(ModalId.SUCCESS_STACK_TOAST);
             trackEvent(EVENTS.CREATE_FLOW.STACK_SUCCESS);
-            resetFormValues();
+            resetFormValues(chainId);
           }}
         />
       )}
