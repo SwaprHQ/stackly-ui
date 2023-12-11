@@ -1,8 +1,9 @@
 import { useState } from "react";
+
 import Link from "next/link";
-import { cowExplorerUrl } from "@/models/cow-order";
-import { orderPairSymbolsText } from "@/models/order";
-import { StackOrder, StackOrderProps } from "@/models/stack-order";
+import { Order as CowOrder } from "@cowprotocol/cow-sdk";
+
+import { addressShortner, convertedAmount, formatDate } from "@/utils";
 import {
   BodyText,
   Icon,
@@ -14,10 +15,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/ui";
-import { formatDate } from "@/utils/datetime";
-import { convertedAmount } from "@/utils/numbers";
-import { addressShortner } from "@/utils/token";
-import { Order as CowOrder } from "@cowprotocol/cow-sdk";
+import {
+  cowExplorerUrl,
+  orderPairSymbolsText,
+  StackOrder,
+  StackOrderProps,
+} from "@/models";
+import { useNetworkContext } from "@/contexts";
 
 const INITIAL_NUMBER_OF_COW_ORDERS = 8;
 const MORE_ORDERS_NUMBER = 4;
@@ -86,7 +90,7 @@ const TableCowBody = ({
   stackOrder: StackOrder;
   cowOrders: CowOrder[];
 }) => {
-  const chainId = 100; // @todo use context or useNetwork hook
+  const { chainId } = useNetworkContext();
 
   return (
     <TableBody>
