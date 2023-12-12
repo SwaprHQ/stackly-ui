@@ -91,6 +91,21 @@ export const StackOrdersTable = ({ stackOrder }: StackOrderProps) => {
   );
 };
 
+const getOrderStatusText = (
+  orderStatus: OrderStatus | CowOrderStatus,
+  price?: number
+) => {
+  switch (orderStatus) {
+    case CowOrderStatus.FULFILLED:
+      return price?.toFixed(4);
+    case CowOrderStatus.CANCELLED:
+    case CowOrderStatus.EXPIRED:
+    case CowOrderStatus.PRESIGNATURE_PENDING:
+      return orderStatus;
+    case CowOrderStatus.OPEN:
+      return "in progress";
+  }
+};
 const TableCowBody = ({
   stackOrder,
   cowOrders,
@@ -99,22 +114,6 @@ const TableCowBody = ({
   cowOrders: CowOrder[];
 }) => {
   const { chainId } = useNetworkContext();
-
-  const getOrderStatusText = (
-    orderStatus: OrderStatus | CowOrderStatus,
-    price?: number
-  ) => {
-    switch (orderStatus) {
-      case CowOrderStatus.FULFILLED:
-        return price?.toFixed(4);
-      case CowOrderStatus.CANCELLED:
-      case CowOrderStatus.EXPIRED:
-      case CowOrderStatus.PRESIGNATURE_PENDING:
-        return orderStatus;
-      case CowOrderStatus.OPEN:
-        return "in progress";
-    }
-  };
 
   return (
     <TableBody>
