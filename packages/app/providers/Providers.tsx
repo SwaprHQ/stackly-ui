@@ -7,24 +7,29 @@ import { WagmiConfig } from "wagmi";
 
 import { config } from "./wagmi-config";
 import {
-  AnalyticsProvider,
   ModalContextProvider,
+  NetworkContextProvider,
+  StackboxFormContextProvider,
   StrategyContextProvider,
   TokenListProvider,
 } from "@/contexts";
 
 export const Providers = ({ children }: PropsWithChildren) => {
   return (
-    <AnalyticsProvider>
-      <WagmiConfig config={config}>
-        <ConnectKitProvider mode="light">
+    <WagmiConfig config={config}>
+      <ConnectKitProvider mode="light">
+        <NetworkContextProvider>
           <TokenListProvider>
             <ModalContextProvider>
-              <StrategyContextProvider>{children}</StrategyContextProvider>
+              <StrategyContextProvider>
+                <StackboxFormContextProvider>
+                  {children}
+                </StackboxFormContextProvider>
+              </StrategyContextProvider>
             </ModalContextProvider>
           </TokenListProvider>
-        </ConnectKitProvider>
-      </WagmiConfig>
-    </AnalyticsProvider>
+        </NetworkContextProvider>
+      </ConnectKitProvider>
+    </WagmiConfig>
   );
 };

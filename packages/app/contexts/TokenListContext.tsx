@@ -9,16 +9,19 @@ import {
   useMemo,
   useState,
 } from "react";
-import { useAccount, useNetwork } from "wagmi";
-import { formatUnits, hexToBigInt } from "viem";
 
 import { ChainId, MULTICALL_ADDRESS } from "@stackly/sdk";
 import { Erc20Abi, MulticallAbi } from "@stackly/sdk/abis";
+import { ethers } from "ethers";
+import { formatUnits, hexToBigInt } from "viem";
+import { useAccount } from "wagmi";
+
+import { RPC_LIST } from "@/constants";
+import { TokenFromTokenlist } from "@/models";
+
 import defaultGnosisTokenlist from "public/assets/blockchains/gnosis/tokenlist.json";
 import defaultEthereumTokenlist from "public/assets/blockchains/ethereum/tokenlist.json";
-import { TokenFromTokenlist } from "@/models/token/types";
-import { ethers } from "ethers";
-import { RPC_LIST } from "@/constants";
+import { useNetworkContext } from "./NetworkContext";
 
 export interface TokenWithBalance extends TokenFromTokenlist {
   balance?: string;
@@ -74,24 +77,18 @@ const mergeTokenlists = (
 };
 
 export const TokenListProvider = ({ children }: PropsWithChildren) => {
+  const { address } = useAccount();
+  const { chainId } = useNetworkContext();
+
   const [tokenList, setTokenList] = useState<TokenFromTokenlist[]>(
     defaultGnosisTokenlist
   );
   const [tokenListWithBalances, setTokenListWithBalances] =
     useState<TokenWithBalance[]>();
   const [isLoading, setIsLoading] = useState(true);
-  const { chain } = useNetwork();
-  const { address } = useAccount();
 
-  const chainId = chain?.id ?? ChainId.GNOSIS;
-
-  const defaultTokenList = chain
-    ? DEFAULT_TOKEN_LIST_BY_CHAIN[chain.id]
-    : DEFAULT_TOKEN_LIST_BY_CHAIN[ChainId.GNOSIS];
-
-  const fetchTokenlistURLS = chain
-    ? TOKEN_LISTS_BY_CHAIN_URL[chain.id]
-    : TOKEN_LISTS_BY_CHAIN_URL[ChainId.GNOSIS];
+  const defaultTokenList = DEFAULT_TOKEN_LIST_BY_CHAIN[chainId];
+  const fetchTokenlistUrls = TOKEN_LISTS_BY_CHAIN_URL[chainId];
 
   const callArray = useMemo(() => {
     const erc20Interface = new ethers.utils.Interface(Erc20Abi);
@@ -158,7 +155,7 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
     }
 
     Promise.allSettled(
-      fetchTokenlistURLS.map((list) => getTokenListData(list))
+      fetchTokenlistUrls.map((list) => getTokenListData(list))
     ).then((results) => {
       results.forEach((result) => {
         if (result.status === "fulfilled") {
@@ -178,7 +175,7 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
       );
       setIsLoading(false);
     });
-  }, [chainId, defaultTokenList, fetchTokenlistURLS]);
+  }, [chainId, defaultTokenList, fetchTokenlistUrls]);
 
   useEffect(() => {
     setupTokenList();

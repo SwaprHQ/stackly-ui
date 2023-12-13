@@ -19,17 +19,15 @@ const throwStrategyContextError = () => {
 };
 
 interface StrategyContextProps {
+  deselectStrategy: () => void;
   selectedStrategy: Strategy | null;
   setSelectedStrategy: React.Dispatch<React.SetStateAction<Strategy | null>>;
-  setShouldResetStackbox: React.Dispatch<React.SetStateAction<Boolean>>;
-  shouldResetStackbox: Boolean;
 }
 
 const StrategyContext = createContext<StrategyContextProps>({
+  deselectStrategy: throwStrategyContextError,
   selectedStrategy: null,
   setSelectedStrategy: throwStrategyContextError,
-  setShouldResetStackbox: throwStrategyContextError,
-  shouldResetStackbox: false,
 });
 
 interface StrategyContextProviderProps {
@@ -42,18 +40,18 @@ export const StrategyContextProvider = ({
   const [selectedStrategy, setSelectedStrategy] = useState<Strategy | null>(
     null
   );
-  const [shouldResetStackbox, setShouldResetStackbox] =
-    useState<Boolean>(false);
 
-  const strategyContext = useMemo(
-    () => ({
+  const strategyContext = useMemo(() => {
+    const deselectStrategy = () => {
+      if (selectedStrategy) setSelectedStrategy(null);
+    };
+
+    return {
+      deselectStrategy,
       selectedStrategy,
       setSelectedStrategy,
-      setShouldResetStackbox,
-      shouldResetStackbox,
-    }),
-    [selectedStrategy, shouldResetStackbox]
-  );
+    };
+  }, [selectedStrategy]);
 
   return (
     <StrategyContext.Provider value={strategyContext}>

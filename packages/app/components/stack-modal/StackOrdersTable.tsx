@@ -1,8 +1,9 @@
 import { useState } from "react";
+
 import Link from "next/link";
-import { cowExplorerUrl } from "@/models/cow-order";
-import { orderPairSymbolsText } from "@/models/order";
-import { StackOrder, StackOrderProps } from "@/models/stack-order";
+import { Order as CowOrder, OrderStatus } from "@cowprotocol/cow-sdk";
+
+import { addressShortner, convertedAmount, formatDate } from "@/utils";
 import {
   BodyText,
   Icon,
@@ -14,13 +15,24 @@ import {
   TableHeader,
   TableRow,
 } from "@/ui";
-import { formatDate } from "@/utils/datetime";
-import { convertedAmount } from "@/utils/numbers";
-import { addressShortner } from "@/utils/token";
-import { Order as CowOrder } from "@cowprotocol/cow-sdk";
+import {
+  cowExplorerUrl,
+  orderPairSymbolsText,
+  StackOrder,
+  StackOrderProps,
+} from "@/models";
+import { useNetworkContext } from "@/contexts";
 
 const INITIAL_NUMBER_OF_COW_ORDERS = 8;
 const MORE_ORDERS_NUMBER = 4;
+
+enum CowOrderStatus {
+  PRESIGNATURE_PENDING = "presignaturePending",
+  OPEN = "open",
+  FULFILLED = "fulfilled",
+  CANCELLED = "cancelled",
+  EXPIRED = "expired",
+}
 
 export const StackOrdersTable = ({ stackOrder }: StackOrderProps) => {
   const initialCowOrders =
@@ -79,6 +91,21 @@ export const StackOrdersTable = ({ stackOrder }: StackOrderProps) => {
   );
 };
 
+const getOrderStatusText = (
+  orderStatus: OrderStatus | CowOrderStatus,
+  price?: number
+) => {
+  switch (orderStatus) {
+    case CowOrderStatus.FULFILLED:
+      return price?.toFixed(4);
+    case CowOrderStatus.CANCELLED:
+    case CowOrderStatus.EXPIRED:
+    case CowOrderStatus.PRESIGNATURE_PENDING:
+      return orderStatus;
+    case CowOrderStatus.OPEN:
+      return "in progress";
+  }
+};
 const TableCowBody = ({
   stackOrder,
   cowOrders,
@@ -86,63 +113,59 @@ const TableCowBody = ({
   stackOrder: StackOrder;
   cowOrders: CowOrder[];
 }) => {
-  const chainId = 100; // @todo use context or useNetwork hook
-  const averagePrice = (cowOrder: CowOrder) =>
-    (
-      Number(cowOrder.executedSellAmount) / Number(cowOrder.executedBuyAmount)
-    ).toFixed(4);
+  const { chainId } = useNetworkContext();
 
   return (
     <TableBody>
-      {cowOrders.map((cowOrder) => (
-        <TableRow key={cowOrder.uid}>
-          <TableCell className="py-2 md:table-cell">
-            <BodyText
-              size={1}
-              className="text-primary-700 hover:underline hover:underline-offset-2"
-            >
-              <Link
-                target="_blank"
-                href={cowExplorerUrl(chainId, cowOrder.uid)}
+      {cowOrders.map((cowOrder) => {
+        const executedBuyAmount = convertedAmount(
+          cowOrder.executedBuyAmount,
+          stackOrder.buyToken.decimals
+        );
+        const executedSellAmount = convertedAmount(
+          cowOrder.executedSellAmount,
+          stackOrder.sellToken.decimals
+        );
+        const averagePrice = executedSellAmount / executedBuyAmount;
+
+        return (
+          <TableRow key={cowOrder.uid}>
+            <TableCell className="py-2 md:table-cell">
+              <BodyText
+                size={1}
+                className="text-primary-700 hover:underline hover:underline-offset-2"
               >
-                {addressShortner(cowOrder.uid)}
-              </Link>
-            </BodyText>
-          </TableCell>
-          <TableCell className="py-2">
-            <BodyText className="text-em-med" size={1}>
-              {formatDate(cowOrder.creationDate)}
-            </BodyText>
-          </TableCell>
-          <TableCell className="py-2 text-right ">
-            <BodyText className="text-em-med" size={1}>
-              {convertedAmount(
-                cowOrder.executedSellAmount,
-                stackOrder.sellToken.decimals
-              ).toFixed(4)}
-            </BodyText>
-          </TableCell>
-          <TableCell className="py-2 text-right ">
-            <BodyText className="text-em-med" size={1}>
-              {convertedAmount(
-                cowOrder.executedBuyAmount,
-                stackOrder.buyToken.decimals
-              ).toFixed(4)}
-            </BodyText>
-          </TableCell>
-          <TableCell className="hidden py-2 text-right md:table-cell">
-            {cowOrder.status === "fulfilled" ? (
+                <Link
+                  target="_blank"
+                  href={cowExplorerUrl(chainId, cowOrder.uid)}
+                >
+                  {addressShortner(cowOrder.uid)}
+                </Link>
+              </BodyText>
+            </TableCell>
+            <TableCell className="py-2">
               <BodyText className="text-em-med" size={1}>
-                {averagePrice(cowOrder)}
+                {formatDate(cowOrder.creationDate)}
               </BodyText>
-            ) : (
-              <BodyText className="text-gray-400 animate-pulse" size={1}>
-                fulfilling
+            </TableCell>
+            <TableCell className="py-2 text-right ">
+              <BodyText className="text-em-med" size={1}>
+                {executedSellAmount.toFixed(4)}
               </BodyText>
-            )}
-          </TableCell>
-        </TableRow>
-      ))}
+            </TableCell>
+            <TableCell className="py-2 text-right ">
+              <BodyText className="text-em-med" size={1}>
+                {executedBuyAmount.toFixed(4)}
+              </BodyText>
+            </TableCell>
+            <TableCell className="hidden py-2 text-right md:table-cell">
+              <BodyText className="capitalize text-em-med" size={1}>
+                {getOrderStatusText(cowOrder.status, averagePrice)}
+              </BodyText>
+            </TableCell>
+          </TableRow>
+        );
+      })}
     </TableBody>
   );
 };
