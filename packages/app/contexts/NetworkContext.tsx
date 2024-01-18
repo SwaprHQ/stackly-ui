@@ -14,7 +14,7 @@ import { gnosis } from "wagmi/chains";
 import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
 
 import { config } from "@/providers/wagmi-config";
-import { parseAsInteger, useQueryState } from "next-usequerystate";
+import { useQueryState } from "next-usequerystate";
 import { checkIsValidChainId } from "@/utils";
 
 interface WagmiChain extends Chain {
@@ -27,10 +27,10 @@ const throwNetworkContextError = () => {
 
 interface NetworkContextProps {
   chains?: WagmiChain[];
-  chainId?: ChainId;
+  chainId: ChainId;
   changeNetwork: (newChainId: number) => void;
   selectedChain: WagmiChain;
-  setChainId: React.Dispatch<React.SetStateAction<ChainId | undefined>>;
+  setChainId: React.Dispatch<React.SetStateAction<ChainId>>;
 }
 
 const NetworkContext = createContext<NetworkContextProps>({
@@ -55,7 +55,7 @@ export const NetworkContextProvider = ({
   const { chains } = config.getPublicClient();
 
   const [selectedChain, setSelectedChain] = useState<WagmiChain>(gnosis);
-  const [selectedChainId, setSelectedChainId] = useState<ChainId>();
+  const [selectedChainId, setSelectedChainId] = useState<ChainId>(gnosis.id);
 
   const { switchNetwork } = useSwitchNetwork({
     onSuccess(data) {
