@@ -47,9 +47,8 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
   const fetchStacks = useCallback(() => {
     getOrders(chainId, address.toLowerCase())
       .then(async (orders) => {
-        if (!orders || orders.length === 0) {
-          setCurrentStackOrders([]);
-        } else {
+        if (!orders || orders.length === 0) setCurrentStackOrders([]);
+        else {
           const stackOrders = await getStackOrders(chainId, orders);
           if (stackOrders.length > 0) setCurrentStackOrders(stackOrders);
         }
