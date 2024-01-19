@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { format } from "date-fns";
 import { parseUnits } from "viem";
 import { trackEvent } from "fathom-client";
-import { useAccount, useNetwork } from "wagmi";
+import { useAccount } from "wagmi";
 
 import {
   ChainId,
@@ -38,7 +38,7 @@ import {
   TitleText,
   ModalBaseProps,
 } from "@/ui";
-import { ModalId, useModalContext } from "@/contexts";
+import { ModalId, useModalContext, useNetworkContext } from "@/contexts";
 
 interface ConfirmStackModalProps extends ModalBaseProps {
   fromToken: Token;
@@ -74,8 +74,8 @@ export const ConfirmStackModal = ({
   onSuccess,
 }: ConfirmStackModalProps) => {
   const { address } = useAccount();
-  const { chain } = useNetwork();
-  const signer = useEthersSigner({ chainId: chain?.id });
+  const { chainId } = useNetworkContext();
+  const signer = useEthersSigner({ chainId });
   const { closeModal, isModalOpen, openModal } = useModalContext();
 
   const focusBtnRef = useRef<HTMLButtonElement>(null);
@@ -105,24 +105,24 @@ export const ConfirmStackModal = ({
     if (!signer || !address) return;
 
     try {
-      const factoryAddress = getOrderFactoryAddress(chain?.id as ChainId);
+      const factoryAddress = getOrderFactoryAddress(chainId as ChainId);
       getERC20Contract(fromToken.address, signer)
         .allowance(address, factoryAddress)
         .then((value) => setAllowance(value.toString()));
     } catch (e) {
       console.error(e);
     }
-  }, [signer, address, fromToken.address, chain]);
+  }, [signer, address, fromToken.address, chainId]);
 
   const approveFromToken = async () => {
-    if (!signer || !address || !chain) return;
+    if (!signer || !address || !chainId) return;
 
     const sellTokenContract = getERC20Contract(fromToken.address, signer);
 
     try {
       openModal(ModalId.STACK_APPROVE_PROCESSING);
       const approveFactoryTransaction = await sellTokenContract.approve(
-        getOrderFactoryAddress(chain.id),
+        getOrderFactoryAddress(chainId),
         rawAmount
       );
       setApproveTx(approveFactoryTransaction);
@@ -138,7 +138,7 @@ export const ConfirmStackModal = ({
   };
 
   const createStack = async () => {
-    if (!signer || !address || !chain) return;
+    if (!signer || !address || !chainId) return;
 
     const initParams: Parameters<typeof createDCAOrderWithNonce>[1] = {
       nonce: dateToUnixTimestamp(new Date()),
@@ -153,7 +153,7 @@ export const ConfirmStackModal = ({
     };
 
     const orderFactory = getOrderFactory(
-      getOrderFactoryAddress(chain.id),
+      getOrderFactoryAddress(chainId),
       signer
     );
 
@@ -268,8 +268,8 @@ export const ConfirmStackModal = ({
         title={approveTx && "Proceeding approval"}
         description={approveTx && "Waiting for transaction confirmation."}
       >
-        {approveTx?.hash && chain && (
-          <TransactionLink chainId={chain.id} hash={approveTx.hash} />
+        {approveTx?.hash && chainId && (
+          <TransactionLink chainId={chainId} hash={approveTx.hash} />
         )}
       </DialogConfirmTransactionLoading>
       <DialogConfirmTransactionLoading
@@ -278,8 +278,8 @@ export const ConfirmStackModal = ({
         title={stackCreationTx && "Proceeding stack creation"}
         description={stackCreationTx && "Waiting for transaction confirmation."}
       >
-        {stackCreationTx?.hash && chain && (
-          <TransactionLink chainId={chain.id} hash={stackCreationTx.hash} />
+        {stackCreationTx?.hash && chainId && (
+          <TransactionLink chainId={chainId} hash={stackCreationTx.hash} />
         )}
       </DialogConfirmTransactionLoading>
     </Modal>
