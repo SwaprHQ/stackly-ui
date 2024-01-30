@@ -26,6 +26,7 @@ import { useNetworkContext } from "./NetworkContext";
 
 export interface TokenWithBalance extends TokenFromTokenlist {
   balance?: string;
+  isImported?: boolean;
 }
 
 const DEFAULT_TOKEN_LIST_BY_CHAIN: {
@@ -123,7 +124,9 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
                 Number(tokenB.balance) - Number(tokenA.balance)
             );
 
-          setTokenListWithBalances(listWithBalances);
+          setTokenListWithBalances(
+            mergeTokenlists(listWithBalances, tokenList)
+          );
         });
     }
   }, [address, callArray, chainId, tokenList]);
