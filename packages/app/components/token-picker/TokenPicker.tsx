@@ -8,6 +8,9 @@ import {
   BodyText,
   Button,
   ChipButton,
+  Dialog,
+  DialogContent,
+  DialogFooterActions,
   Icon,
   Modal,
   ModalBaseProps,
@@ -15,7 +18,7 @@ import {
   ModalHeaderTitle,
 } from "@/ui";
 import { EmptyStateTokenPickerImg } from "@/public/assets";
-import { TokenIcon } from "@/components";
+import { EmptyState, TokenIcon } from "@/components";
 import {
   TokenWithBalance,
   useNetworkContext,
@@ -25,6 +28,9 @@ import { formatTokenValue } from "@/utils/token";
 import { TokenFromTokenlist } from "@/models/token";
 
 import { TOKEN_PICKER_COMMON_TOKENS } from "./constants";
+import { isAddress } from "viem";
+import { getERC20Contract } from "@stackly/sdk";
+import { getExplorerLink, useEthersSigner } from "../../utils";
 
 const HALF_SECOND = 500;
 
@@ -46,21 +52,41 @@ export const TokenPicker = ({
 }: TokenPickerProps) => {
   const { tokenList, tokenListWithBalances } = useTokenListContext();
   const { chainId } = useNetworkContext();
+  const signer = useEthersSigner({ chainId });
+
   const { isConnected } = useAccount();
 
   const [tokenSearchQuery, setTokenSearchQuery] = useState("");
   const [commonTokens, setCommonTokens] = useState<TokenFromTokenlist[]>(
     TOKEN_PICKER_COMMON_TOKENS[chainId]
   );
+
   const [debouncedQuery, setDebouncedQuery] = useState(tokenSearchQuery);
+  const trimmedQuery = debouncedQuery.trim();
+
+  const [isFetchingCustomToken, setIsFetchingCustomToken] =
+    useState<boolean>(false);
+  const [filteredTokenList, setFilteredTokenList] =
+    useState<TokenWithBalance[]>(tokenList);
 
   const tokenListSearchCleanup = () => {
     setDebouncedQuery("");
     setTokenSearchQuery("");
   };
 
+  const tokenListCleanup = () => {
+    setFilteredTokenList(
+      isConnected && tokenListWithBalances ? tokenListWithBalances : tokenList
+    );
+  };
+
   const handleTokenSearchInput = (event: ChangeEvent<HTMLInputElement>) => {
-    setDebouncedQuery(event.target.value);
+    const query = event.target.value;
+    setDebouncedQuery(query);
+
+    if (!query.trim()) {
+      tokenListCleanup();
+    }
   };
 
   const handleModalClose = () => {
@@ -93,6 +119,71 @@ export const TokenPicker = ({
     if (chainId) setCommonTokens(TOKEN_PICKER_COMMON_TOKENS[chainId]);
   }, [chainId]);
 
+  useEffect(() => {
+    if (isConnected && tokenListWithBalances) {
+      setFilteredTokenList(tokenListWithBalances);
+    } else {
+      setFilteredTokenList(tokenList);
+    }
+  }, [isConnected, tokenList, tokenListWithBalances]);
+
+  const onClearSearch = () => {
+    tokenListSearchCleanup();
+    tokenListCleanup();
+  };
+
+  useEffect(() => {
+    if (trimmedQuery) {
+      const newList =
+        isConnected && tokenListWithBalances
+          ? tokenListWithBalances
+          : tokenList;
+
+      const filteredList = newList.filter(
+        (token) =>
+          token.symbol.toLowerCase().includes(trimmedQuery.toLowerCase()) ||
+          token.name.toLowerCase().includes(trimmedQuery.toLowerCase()) ||
+          token.address.toLowerCase().includes(trimmedQuery.toLowerCase())
+      );
+
+      setFilteredTokenList(filteredList);
+    }
+  }, [isConnected, tokenList, tokenListWithBalances, trimmedQuery]);
+
+  useEffect(() => {
+    (async () => {
+      if (isAddress(trimmedQuery) && !filteredTokenList.length) {
+        if (!signer) return;
+        setIsFetchingCustomToken(true);
+
+        const sellTokenContract = getERC20Contract(trimmedQuery, signer);
+
+        const address = sellTokenContract.address;
+        try {
+          const decimals = await sellTokenContract.decimals();
+          const name = await sellTokenContract.name();
+          const symbol = await sellTokenContract.symbol();
+
+          setFilteredTokenList([
+            {
+              address,
+              decimals,
+              name,
+              symbol,
+              chainId,
+              logoURI: "",
+              isImported: true,
+            },
+          ]);
+        } catch (e) {
+          console.error(e);
+        } finally {
+          setIsFetchingCustomToken(false);
+        }
+      }
+    })();
+  }, [chainId, trimmedQuery, filteredTokenList.length, signer]);
+
   return (
     <Modal
       closeAction={handleModalClose}
@@ -113,10 +204,11 @@ export const TokenPicker = ({
           />
         </div>
         <TokenList
-          onClearSearch={tokenListSearchCleanup}
+          onClearSearch={onClearSearch}
           onTokenSelect={handleTokenSelect}
-          tokenList={isConnected ? tokenListWithBalances : tokenList}
+          tokenList={filteredTokenList}
           tokenSearchQuery={tokenSearchQuery}
+          isLoading={isFetchingCustomToken}
         />
       </ModalContent>
     </Modal>
@@ -171,54 +263,46 @@ interface TokenListProps {
   onTokenSelect: (token: TokenWithBalance) => void;
   tokenList?: TokenFromTokenlist[] | TokenWithBalance[];
   tokenSearchQuery?: string;
+  isLoading?: boolean;
 }
 const TokenList = ({
   onClearSearch,
   onTokenSelect,
   tokenList = [],
   tokenSearchQuery,
+  isLoading,
 }: TokenListProps) => {
-  const [filteredTokenList, setFilteredTokenList] =
-    useState<TokenWithBalance[]>(tokenList);
-
-  const handleClearSearch = () => {
-    onClearSearch();
-    setFilteredTokenList(tokenList);
-  };
-
-  useEffect(() => {
-    if (tokenSearchQuery) {
-      const filteredItems = tokenList.filter(
-        (token) =>
-          token.symbol.toLowerCase().includes(tokenSearchQuery.toLowerCase()) ||
-          token.name.toLowerCase().includes(tokenSearchQuery.toLowerCase())
-      );
-
-      setFilteredTokenList(filteredItems);
-    } else {
-      setFilteredTokenList(tokenList);
-    }
-  }, [tokenList, tokenSearchQuery]);
+  const { isConnected } = useAccount();
+  const queryIsAddress = tokenSearchQuery && isAddress(tokenSearchQuery);
 
   return (
     <div className="mt-5 overflow-y-auto border-t divide-y h-72 border-surface-50 divide-surface-50">
-      {filteredTokenList.length
-        ? filteredTokenList.map((token) => (
-            <TokenListRow
-              onTokenSelect={onTokenSelect}
-              key={token.address}
-              token={token}
-            />
-          ))
-        : tokenSearchQuery && (
-            <div className="flex flex-col items-center justify-center mt-8 space-y-4">
-              <EmptyStateTokenPickerImg />
-              <BodyText className="text-center">{`Nothing found for "${tokenSearchQuery}"`}</BodyText>
-              <Button variant="secondary" onClick={handleClearSearch} size="md">
-                Clear search
-              </Button>
-            </div>
-          )}
+      {isLoading ? (
+        <EmptyState className="animate-pulse" text="Loading..." />
+      ) : tokenList.length ? (
+        tokenList.map((token) => (
+          <TokenListRow
+            onTokenSelect={onTokenSelect}
+            key={token.address}
+            token={token}
+          />
+        ))
+      ) : (
+        tokenSearchQuery && (
+          <div className="flex flex-col items-center justify-center mt-8 space-y-4">
+            <EmptyStateTokenPickerImg />
+            <BodyText className="text-center">{`Nothing found for "${tokenSearchQuery}".`}</BodyText>
+            {queryIsAddress && !isConnected && (
+              <BodyText className="text-sm text-center text-em-med">
+                Connect your wallet to import this token.
+              </BodyText>
+            )}
+            <Button variant="secondary" onClick={onClearSearch} size="md">
+              Clear search
+            </Button>
+          </div>
+        )
+      )}
     </div>
   );
 };
@@ -227,29 +311,93 @@ interface TokenListRowProps {
   token: TokenWithBalance;
   onTokenSelect: (token: TokenWithBalance) => void;
 }
-const TokenListRow = ({ onTokenSelect, token }: TokenListRowProps) => (
-  <div
-    className="flex items-center justify-between w-full h-16 px-4 cursor-pointer hover:bg-surface-50"
-    key={token.address}
-    onClick={() => onTokenSelect(token)}
-  >
-    <div className="flex items-center justify-between w-full">
-      <div className="flex items-center space-x-3">
-        <TokenIcon token={token} size="md" />
-        <div>
-          <BodyText size={2}>{token.symbol}</BodyText>
-          <BodyText className="text-em-low" size={1}>
-            {token.name}
-          </BodyText>
+const TokenListRow = ({ onTokenSelect, token }: TokenListRowProps) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  return (
+    <div
+      className="flex items-center justify-between w-full h-16 px-4 cursor-pointer hover:bg-surface-50"
+      key={token.address}
+      onClick={() =>
+        token.isImported ? setIsDialogOpen(true) : onTokenSelect(token)
+      }
+    >
+      <div className="flex items-center justify-between w-full">
+        <div className="flex items-center space-x-3">
+          <TokenIcon token={token} size="md" />
+          <div>
+            <BodyText size={2}>{token.symbol}</BodyText>
+            <BodyText className="text-em-low" size={1}>
+              {token.name}
+            </BodyText>
+          </div>
         </div>
+        {token.balance && (
+          <BodyText>
+            {token.balance === "0"
+              ? token.balance
+              : formatTokenValue(token.balance as string)}
+          </BodyText>
+        )}
+        {token.isImported && (
+          <>
+            <Button variant="secondary">Import token</Button>
+            <DialogImportToken
+              isOpen={isDialogOpen}
+              closeAction={() => setIsDialogOpen(false)}
+              confirmAction={() => {
+                setIsDialogOpen(false);
+                onTokenSelect(token);
+              }}
+              token={token}
+            />
+          </>
+        )}
       </div>
-      {token.balance && (
-        <BodyText>
-          {token.balance === "0"
-            ? token.balance
-            : formatTokenValue(token.balance as string)}
-        </BodyText>
-      )}
     </div>
-  </div>
+  );
+};
+
+interface DialogImportTokenProps {
+  token: TokenWithBalance;
+  isOpen: boolean;
+  closeAction: () => void;
+  confirmAction: () => void;
+}
+
+const DialogImportToken = ({
+  isOpen,
+  closeAction,
+  confirmAction,
+  token,
+}: DialogImportTokenProps) => (
+  <Dialog isOpen={isOpen} closeAction={closeAction}>
+    <Icon name="warning" className="text-danger-500" size={38} />
+    <DialogContent
+      title=" Are you sure you want to import this token?"
+      description="This token doesn't appear on the token list. Stack orders might malfunction with imported tokens."
+    />
+    <div className="flex flex-col items-center pt-3 space-y-3">
+      <BodyText size={3} className="text-primary-100">
+        {token.symbol}
+      </BodyText>
+      <BodyText className="text-primary-100">{token.name}</BodyText>
+      <BodyText size={1}>
+        <a
+          className="flex items-center text-primary-100 hover:underline hover:underline-offset-4"
+          href={getExplorerLink(token.chainId, token.address, "address")}
+          target="blank"
+        >
+          {token.address}{" "}
+          <Icon size={16} name="arrow-external" className="ml-1" />
+        </a>
+      </BodyText>
+    </div>
+    <DialogFooterActions
+      primaryAction={confirmAction}
+      primaryText="Import token"
+      secondaryAction={closeAction}
+      secondaryText="Dismiss"
+    />
+  </Dialog>
 );
