@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { cx } from "class-variance-authority";
 import { Tab } from "@headlessui/react";
 
 import {
@@ -13,10 +12,9 @@ import {
 } from "@/models/stack-order";
 import { getOrders } from "@/models/order";
 import { ChainId } from "@stackly/sdk";
-import { BodyText, ButtonLink, HeadingText } from "@/ui";
-import { StacksTable, tabButtonStyles } from "@/components";
-
-import EmptyState from "./empty-state";
+import { ButtonLink, HeadingText } from "@/ui";
+import { EmptyState, StacksTable, tabButtonStyles } from "@/components";
+import EmptyStatePage from "./empty-state";
 
 export interface StackOrdersProps {
   address: string;
@@ -58,7 +56,7 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
 
   useEffect(() => fetchStacks(), [fetchStacks]);
 
-  if (!loading && currentStackOrders.length === 0) return <EmptyState />;
+  if (!loading && currentStackOrders.length === 0) return <EmptyStatePage />;
 
   return (
     <>
@@ -85,7 +83,7 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
           </Tab.List>
           <Tab.Panels>
             {loading ? (
-              <EmptyStacks className="animate-pulse" text="Loading..." />
+              <EmptyState className="animate-pulse" text="Loading..." />
             ) : (
               <>
                 {ordersByType.map((stacks) => (
@@ -96,7 +94,7 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
                         refetchStacks={fetchStacks}
                       />
                     ) : (
-                      <EmptyStacks text={stacks.emptyText} />
+                      <EmptyState text={stacks.emptyText} />
                     )}
                   </Tab.Panel>
                 ))}
@@ -108,17 +106,3 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
     </>
   );
 };
-
-const EmptyStacks = ({
-  text,
-  className,
-}: {
-  text: string;
-  className?: string;
-}) => (
-  <div className="py-12 bg-white rounded-xl">
-    <BodyText className={cx("text-center text-em-low", className)}>
-      {text}
-    </BodyText>
-  </div>
-);
