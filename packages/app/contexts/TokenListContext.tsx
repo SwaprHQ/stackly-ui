@@ -124,7 +124,9 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
                 Number(tokenB.balance) - Number(tokenA.balance)
             );
 
-          setTokenListWithBalances(listWithBalances);
+          setTokenListWithBalances(
+            mergeTokenlists(listWithBalances, tokenList)
+          );
         });
     }
   }, [address, callArray, chainId, tokenList]);
