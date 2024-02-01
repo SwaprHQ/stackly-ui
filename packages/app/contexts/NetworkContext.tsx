@@ -3,6 +3,7 @@
 import {
   ReactNode,
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -16,6 +17,7 @@ import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
 import { config } from "@/providers/wagmi-config";
 import { useQueryState } from "next-usequerystate";
 import { checkIsValidChainId } from "@/utils";
+import { useChains, ChainIcon } from "connectkit";
 
 interface WagmiChain extends Chain {
   unsupported?: boolean;
@@ -28,7 +30,7 @@ const throwNetworkContextError = () => {
 interface NetworkContextProps {
   chains?: WagmiChain[];
   chainId: ChainId;
-  changeNetwork: (newChainId: number) => void;
+  changeNetwork: (newChainId: ChainId) => void;
   selectedChain: WagmiChain;
   setChainId: React.Dispatch<React.SetStateAction<ChainId>>;
 }
@@ -47,23 +49,58 @@ interface NetworkContextProviderProps {
 export const NetworkContextProvider = ({
   children,
 }: NetworkContextProviderProps) => {
+  const { chains } = config.getPublicClient();
   const { chain } = useNetwork();
   const { isConnected } = useAccount();
 
   const [searchParamsChainId, setSearchParamsChainId] =
     useQueryState("chainId");
-  const { chains } = config.getPublicClient();
+  const [toTokenSearchParams, setToTokenSearchParams] =
+    useQueryState("toToken");
+  const [fromTokenSearchParams, setFromTokenSearchParams] =
+    useQueryState("fromToken");
 
   const [selectedChain, setSelectedChain] = useState<WagmiChain>(gnosis);
   const [selectedChainId, setSelectedChainId] = useState<ChainId>(gnosis.id);
 
+  const resetTokensSearchParams = useCallback(() => {
+    if (fromTokenSearchParams) setFromTokenSearchParams(null);
+    if (toTokenSearchParams) setToTokenSearchParams(null);
+  }, [
+    fromTokenSearchParams,
+    setFromTokenSearchParams,
+    setToTokenSearchParams,
+    toTokenSearchParams,
+  ]);
+
+  const switchNetworkNotConnected = (newChainId: ChainId) => {
+    config.setState((oldState: any) => {
+      const { publicClient } = oldState;
+      const { chains } = publicClient;
+
+      const newChain = chains?.find((chain: any) => chain.id === newChainId);
+
+      setSelectedChain(newChain);
+      setSelectedChainId(newChain.id);
+      setSearchParamsChainId(newChain.id);
+
+      return {
+        ...oldState,
+        publicClient: {
+          ...publicClient,
+          chain: newChain,
+        },
+      };
+    });
+  };
+
   const { switchNetwork } = useSwitchNetwork({
     onSuccess(data) {
+      resetTokensSearchParams();
       setSearchParamsChainId(data?.id.toString());
     },
   });
 
-  // sets chainId from search params
   useEffect(() => {
     if (isConnected && chains) {
       if (searchParamsChainId && switchNetwork) {
@@ -84,8 +121,7 @@ export const NetworkContextProvider = ({
         );
 
         if (chainFromSearchParams) {
-          setSelectedChain(chainFromSearchParams);
-          setSelectedChainId(chainFromSearchParams.id);
+          switchNetworkNotConnected(chainFromSearchParams.id);
         }
       } else {
         // set default chain
@@ -103,52 +139,18 @@ export const NetworkContextProvider = ({
       setSelectedChainId(chain?.id);
     }
   }, [chain, isConnected]);
-
-  const networkContext = useMemo(() => {
-    const handleDisconnectedNetworkSwitch = (newChainId: number) => {
-      config.setState((oldState: any) => {
-        const { publicClient } = oldState;
-        const { chains } = publicClient;
-
-        const newChain = chains?.find((chain: any) => chain.id === newChainId);
-
-        setSelectedChain(newChain);
-        setSelectedChainId(newChain.id);
-        setSearchParamsChainId(newChain.id);
-
-        return {
-          ...oldState,
-          publicClient: {
-            ...publicClient,
-            chain: newChain,
-          },
-        };
-      });
-    };
-
-    const changeNetwork = (networkId: number) => {
-      if (isConnected) {
-        switchNetwork && switchNetwork(networkId);
-      } else {
-        handleDisconnectedNetworkSwitch(networkId);
-      }
-    };
-
-    return {
-      chains,
-      chainId: selectedChainId,
-      changeNetwork,
-      selectedChain,
-      setChainId: setSelectedChainId,
-    };
-  }, [
+  const changeNetwork = (networkId: ChainId) => {
+    isConnected
+      ? switchNetwork && switchNetwork(networkId)
+      : switchNetworkNotConnected(networkId);
+  };
+  const networkContext = {
     chains,
-    selectedChainId,
+    chainId: selectedChainId,
+    changeNetwork,
     selectedChain,
-    setSearchParamsChainId,
-    isConnected,
-    switchNetwork,
-  ]);
+    setChainId: setSelectedChainId,
+  };
 
   return (
     <NetworkContext.Provider value={networkContext}>
