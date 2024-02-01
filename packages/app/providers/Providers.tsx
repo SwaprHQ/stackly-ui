@@ -17,7 +17,7 @@ import {
 export const Providers = ({ children }: PropsWithChildren) => {
   return (
     <WagmiConfig config={config}>
-      <ConnectKitProvider mode="light">
+      <ConnectKitProvider mode="light" options={{ initialChainId: 0 }}>
         <NetworkContextProvider>
           <TokenListProvider>
             <ModalContextProvider>
