@@ -60,23 +60,6 @@ const TokenListContext = createContext<{
   getTokenFromList: (tokenAddress: string) => null,
 });
 
-const mergeTokenlists = (
-  tokenList: TokenFromTokenlist[],
-  newTokenlist: TokenFromTokenlist[]
-) => {
-  const addresses = new Set(
-    tokenList.map((token) => token.address.toLowerCase())
-  );
-  const mergedLists = [
-    ...tokenList,
-    ...newTokenlist.filter(
-      (token) => !addresses.has(token.address.toLowerCase())
-    ),
-  ];
-
-  return mergedLists;
-};
-
 export const TokenListProvider = ({ children }: PropsWithChildren) => {
   const { address } = useAccount();
   const { chainId } = useNetworkContext();
@@ -146,7 +129,6 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
   }, [address, callArray, chainId, tokenList]);
 
   const setupTokenList = useCallback(async () => {
-    let mergedTokenlistTokens = defaultTokenList;
     setIsLoading(true);
     async function getTokenListData(tokenlistURL: string) {
       const { signal } = abortControllerRef.current;
@@ -162,29 +144,21 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
     ).then((results) => {
       results.forEach((result) => {
         if (result.status === "fulfilled") {
-          mergedTokenlistTokens = mergeTokenlists(
-            mergedTokenlistTokens,
-            result.value.tokens
-          );
-          const tokenUniqueAddresses: string[] = [];
-          const tokenListNoDuplicates: TokenFromTokenlist[] = [];
+          const mergedTokenlist = [...defaultTokenList, ...result.value.tokens];
 
-          const tokenList = () => {
-            mergedTokenlistTokens.forEach((token) => {
-              if (!tokenUniqueAddresses.includes(token.address)) {
-                tokenUniqueAddresses.push(token.address);
-                tokenListNoDuplicates.push(token);
-              }
-            });
+          const tokenUniqueAddressesSet = new Set<string>();
+          const tokenListNoDuplicates = mergedTokenlist.filter((token) => {
+            if (
+              token.chainId === chainId &&
+              !tokenUniqueAddressesSet.has(token.address.toLowerCase())
+            ) {
+              tokenUniqueAddressesSet.add(token.address.toLowerCase());
+              return true;
+            }
+            return false;
+          });
 
-            const tokenListOfCurrentChainId = tokenListNoDuplicates.filter(
-              (token: TokenFromTokenlist) => token.chainId === chainId
-            );
-
-            return tokenListOfCurrentChainId;
-          };
-
-          setTokenList(tokenList());
+          setTokenList(tokenListNoDuplicates);
           setIsLoading(false);
         } else {
           console.error("Error fetching tokenlist data:", result.reason);
