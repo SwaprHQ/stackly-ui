@@ -3,7 +3,7 @@
 import { ChainId, WETH, WXDAI } from "@stackly/sdk";
 import { ConnectKitButton } from "connectkit";
 import Image from "next/image";
-import { useAccount, useBalance, useEnsAvatar } from "wagmi";
+import { useBalance, useEnsAvatar } from "wagmi";
 
 import { BodyText, Button, SizeProps } from "@/ui";
 import { useAutoConnect } from "@/hooks";
@@ -21,7 +21,6 @@ const CustomConnectButton = ({
   size: SizeProps;
 }) => {
   const { selectedChain } = useNetworkContext();
-  const { isConnected } = useAccount();
   const { data: avatar } = useEnsAvatar({
     name: ensName,
     chainId: ChainId.ETHEREUM,
@@ -34,10 +33,7 @@ const CustomConnectButton = ({
 
   const { data: balance } = useBalance({
     address: address,
-    token:
-      selectedChain && isConnected
-        ? (TOKEN_BY_CHAIN[selectedChain.id] as `0x${string}`)
-        : (TOKEN_BY_CHAIN[ChainId.GNOSIS] as `0x${string}`),
+    token: TOKEN_BY_CHAIN[selectedChain.id] as `0x${string}`,
   });
 
   const truncatedAddress = (size: number) =>

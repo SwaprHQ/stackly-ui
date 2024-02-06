@@ -45,10 +45,9 @@ import {
 } from "@/components";
 import { StackProgress } from "@/components/stack-modal/StackProgress";
 import { StackOrdersTable } from "@/components/stack-modal/StackOrdersTable";
-import { ModalId, useModalContext } from "@/contexts";
+import { ModalId, useModalContext, useNetworkContext } from "@/contexts";
 import { TransactionLink } from "./TransactionLink";
 import { Transaction } from "@/models/stack";
-import { useNetwork } from "wagmi";
 
 interface StackModalProps extends ModalBaseProps {
   stackOrder: StackOrder;
@@ -71,7 +70,7 @@ export const StackModal = ({
   closeAction,
 }: StackModalProps) => {
   const signer = useEthersSigner();
-  const { chain } = useNetwork();
+  const { chainId } = useNetworkContext();
   const { closeModal, isModalOpen, openModal } = useModalContext();
 
   const [cancellationTx, setCancellationTx] = useState<Transaction>();
@@ -148,12 +147,12 @@ export const StackModal = ({
                 buyToken={stackOrder.buyToken}
                 sellToken={stackOrder.sellToken}
               />
-              {chain?.id && (
+              {chainId && (
                 <Link
                   passHref
                   target="_blank"
                   href={getExplorerLink(
-                    chain?.id,
+                    chainId,
                     stackOrder.id,
                     "address",
                     "#tokentxns"
@@ -256,8 +255,8 @@ export const StackModal = ({
         title={cancellationTx && "Proceeding cancellation"}
         description={cancellationTx && "Waiting for transaction confirmation."}
       >
-        {cancellationTx?.hash && chain?.id && (
-          <TransactionLink chainId={chain.id} hash={cancellationTx.hash} />
+        {cancellationTx?.hash && chainId && (
+          <TransactionLink chainId={chainId} hash={cancellationTx.hash} />
         )}
       </DialogConfirmTransactionLoading>
       <Dialog
@@ -269,8 +268,8 @@ export const StackModal = ({
           title="Stack Cancelled"
           description={`The ${stackRemainingFundsWithTokenText} were sent to your wallet.`}
         />
-        {cancellationTx?.hash && chain?.id && (
-          <TransactionLink chainId={chain.id} hash={cancellationTx.hash} />
+        {cancellationTx?.hash && chainId && (
+          <TransactionLink chainId={chainId} hash={cancellationTx.hash} />
         )}
         <DialogFooterActions
           primaryAction={() => {

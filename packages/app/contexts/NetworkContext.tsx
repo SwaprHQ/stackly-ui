@@ -3,20 +3,19 @@
 import {
   ReactNode,
   createContext,
+  useCallback,
   useContext,
   useEffect,
-  useMemo,
   useState,
 } from "react";
-
 import type { Chain } from "viem/chains";
 import { ChainId } from "@stackly/sdk";
 import { gnosis } from "wagmi/chains";
 import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
 
 import { config } from "@/providers/wagmi-config";
-import { parseAsInteger, useQueryState } from "next-usequerystate";
-import { getIsValidChainId } from "@/utils";
+import { useQueryState } from "next-usequerystate";
+import { checkIsValidChainId } from "@/utils";
 
 interface WagmiChain extends Chain {
   unsupported?: boolean;
@@ -29,13 +28,13 @@ const throwNetworkContextError = () => {
 interface NetworkContextProps {
   chains?: WagmiChain[];
   chainId: ChainId;
-  changeNetwork: (newChainId: string) => void;
+  changeNetwork: (newChainId: ChainId) => void;
   selectedChain: WagmiChain;
-  setChainId: React.Dispatch<React.SetStateAction<ChainId | null>>;
+  setChainId: React.Dispatch<React.SetStateAction<ChainId>>;
 }
 
 const NetworkContext = createContext<NetworkContextProps>({
-  chainId: ChainId.GNOSIS,
+  chainId: gnosis.id,
   changeNetwork: throwNetworkContextError,
   selectedChain: gnosis,
   setChainId: throwNetworkContextError,
@@ -48,98 +47,106 @@ interface NetworkContextProviderProps {
 export const NetworkContextProvider = ({
   children,
 }: NetworkContextProviderProps) => {
+  const { chains } = config.getPublicClient();
   const { chain } = useNetwork();
   const { isConnected } = useAccount();
 
-  const [chainId, setChainId] = useQueryState(
-    "chainId",
-    parseAsInteger.withDefault(ChainId.GNOSIS)
-  );
+  const [, setFromTokenSearchParams] = useQueryState("fromToken");
+  const [, setToTokenSearchParams] = useQueryState("toToken");
+  const [searchParamsChainId, setSearchParamsChainId] =
+    useQueryState("chainId");
+
   const [selectedChain, setSelectedChain] = useState<WagmiChain>(gnosis);
-  const [chains, setChains] = useState<WagmiChain[] | undefined>([]);
+  const [selectedChainId, setSelectedChainId] = useState<ChainId>(gnosis.id);
+
+  const resetTokensOnSearchParams = useCallback(() => {
+    setFromTokenSearchParams(null);
+    setToTokenSearchParams(null);
+  }, [setFromTokenSearchParams, setToTokenSearchParams]);
+
+  const switchNetworkNotConnected = (newChainId: ChainId) => {
+    config.setState((oldState: any) => {
+      const { publicClient } = oldState;
+      const { chains } = publicClient;
+
+      const newChain = chains?.find((chain: any) => chain.id === newChainId);
+
+      setSelectedChain(newChain);
+      setSelectedChainId(newChain.id);
+      setSearchParamsChainId(newChain.id);
+
+      return {
+        ...oldState,
+        publicClient: {
+          ...publicClient,
+          chain: newChain,
+        },
+      };
+    });
+  };
 
   const { switchNetwork } = useSwitchNetwork({
     onSuccess(data) {
-      setChainId(data.id);
+      setSearchParamsChainId(data?.id.toString());
     },
   });
 
   useEffect(() => {
-    const { chains: wagmiChains } = config.getPublicClient();
+    const parsedSearchParamsChainId = searchParamsChainId
+      ? parseInt(searchParamsChainId)
+      : 0;
+    const newChainIsDiferentFromCurrent =
+      parsedSearchParamsChainId !== chain?.id;
 
-    if (chains) setChains(wagmiChains);
-    if (!chainId) {
-      setChainId(ChainId.GNOSIS);
-      setSelectedChain(gnosis);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    const isValidSearchParamsChainId = checkIsValidChainId(
+      parsedSearchParamsChainId
+    );
 
-  useEffect(() => {
-    const { chains: wagmiChains } = config.getPublicClient();
-    const chainFromParams = wagmiChains?.find((chain) => chain.id === chainId);
-
-    if (isConnected && chain?.id !== chainFromParams?.id && switchNetwork)
-      switchNetwork?.(chainId);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [switchNetwork]);
-
-  useEffect(() => {
-    const { chains } = config.getPublicClient();
-    const isValidChainId = getIsValidChainId(chainId);
-
-    if (!isValidChainId) setChainId(ChainId.GNOSIS);
-    if (chains) {
-      const validChainId = isValidChainId ? chainId : ChainId.GNOSIS;
-      const validChain = chains.find((chain) => chain.id === validChainId);
-
-      setSelectedChain(validChain as WagmiChain);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chainId, selectedChain]);
-
-  useEffect(() => {
-    if (isConnected && chain) setSelectedChain(chain);
-  }, [chain, isConnected]);
-
-  const networkContext = useMemo(() => {
-    const handleDisconnectedNetworkSwitch = (newChainId: number) => {
-      config.setState((oldState: any) => {
-        const { publicClient } = oldState;
-        const { chains } = publicClient;
-
-        const newChain = chains?.find((chain: any) => chain.id === newChainId);
-
-        setChainId(newChain.id);
-        setSelectedChain(newChain);
-
-        return {
-          ...oldState,
-          publicClient: {
-            ...publicClient,
-            chain: newChain,
-          },
-        };
-      });
-    };
-
-    const changeNetwork = (networkId: string) => {
-      if (isConnected) {
-        switchNetwork && switchNetwork(Number(networkId));
-      } else {
-        handleDisconnectedNetworkSwitch(parseInt(networkId));
+    if (isValidSearchParamsChainId) {
+      if (isConnected && switchNetwork && newChainIsDiferentFromCurrent) {
+        switchNetwork(parsedSearchParamsChainId);
+        return;
       }
-    };
 
-    return {
-      chains,
-      chainId,
-      changeNetwork,
-      selectedChain,
-      setChainId,
-    };
-  }, [chains, chainId, isConnected, selectedChain, setChainId, switchNetwork]);
+      if (chains) {
+        const chainFromSearchParams = chains.find(
+          (chain) => chain.id === parsedSearchParamsChainId
+        );
+
+        if (chainFromSearchParams) {
+          setSelectedChain(chainFromSearchParams);
+          setSelectedChainId(chainFromSearchParams.id);
+          return;
+        }
+      }
+    }
+    // set default chain
+    setSelectedChain(gnosis);
+    setSelectedChainId(gnosis.id);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isConnected, chains, searchParamsChainId, switchNetwork]);
+
+  useEffect(() => {
+    if (isConnected && chain) {
+      setSelectedChain(chain);
+      setSelectedChainId(chain?.id);
+    }
+  }, [chain, isConnected]);
+  const changeNetwork = (networkId: ChainId) => {
+    resetTokensOnSearchParams();
+    isConnected
+      ? switchNetwork && switchNetwork(networkId)
+      : switchNetworkNotConnected(networkId);
+  };
+
+  const networkContext = {
+    chains,
+    chainId: selectedChainId,
+    changeNetwork,
+    selectedChain,
+    setChainId: setSelectedChainId,
+  };
 
   return (
     <NetworkContext.Provider value={networkContext}>

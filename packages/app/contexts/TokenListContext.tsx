@@ -7,6 +7,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 
@@ -54,31 +55,15 @@ const TokenListContext = createContext<{
   getTokenFromList: (tokenAddress: string) => TokenFromTokenlist | null;
 }>({
   isLoading: true,
-  tokenList: DEFAULT_TOKEN_LIST_BY_CHAIN[ChainId.GNOSIS],
+  tokenList: DEFAULT_TOKEN_LIST_BY_CHAIN[ChainId.ETHEREUM],
   getTokenLogoURL: (tokenAddress: string) => "#",
   getTokenFromList: (tokenAddress: string) => null,
 });
 
-const mergeTokenlists = (
-  tokenList: TokenFromTokenlist[],
-  newTokenlist: TokenFromTokenlist[]
-) => {
-  const addresses = new Set(
-    tokenList.map((token) => token.address.toLowerCase())
-  );
-  const mergedLists = [
-    ...tokenList,
-    ...newTokenlist.filter(
-      (token) => !addresses.has(token.address.toLowerCase())
-    ),
-  ];
-
-  return mergedLists;
-};
-
 export const TokenListProvider = ({ children }: PropsWithChildren) => {
   const { address } = useAccount();
   const { chainId } = useNetworkContext();
+  const abortControllerRef = useRef(new AbortController());
 
   const [tokenList, setTokenList] = useState<TokenFromTokenlist[]>(
     defaultGnosisTokenlist
@@ -144,42 +129,55 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
   }, [address, callArray, chainId, tokenList]);
 
   const setupTokenList = useCallback(async () => {
-    let mergedTokenlistTokens = defaultTokenList;
     setIsLoading(true);
     async function getTokenListData(tokenlistURL: string) {
-      const res = await fetch(tokenlistURL);
+      const { signal } = abortControllerRef.current;
+      const res = await fetch(tokenlistURL, { signal });
       if (!res.ok) {
         throw new Error("Failed to fetch tokenlist data");
       }
       return res.json();
     }
 
-    Promise.allSettled(
+    await Promise.allSettled(
       fetchTokenlistUrls.map((list) => getTokenListData(list))
     ).then((results) => {
       results.forEach((result) => {
         if (result.status === "fulfilled") {
-          mergedTokenlistTokens = mergeTokenlists(
-            mergedTokenlistTokens,
-            result.value.tokens
-          );
+          const mergedTokenlist = [...defaultTokenList, ...result.value.tokens];
+
+          const tokenUniqueAddressesSet = new Set<string>();
+          const tokenListNoDuplicates = mergedTokenlist.filter((token) => {
+            if (
+              token.chainId === chainId &&
+              !tokenUniqueAddressesSet.has(token.address.toLowerCase())
+            ) {
+              tokenUniqueAddressesSet.add(token.address.toLowerCase());
+              return true;
+            }
+            return false;
+          });
+
+          setTokenList(tokenListNoDuplicates);
+          setIsLoading(false);
         } else {
           console.error("Error fetching tokenlist data:", result.reason);
         }
       });
-
-      setTokenList(
-        mergedTokenlistTokens.filter(
-          (token: TokenFromTokenlist) => token.chainId === chainId
-        )
-      );
-      setIsLoading(false);
     });
   }, [chainId, defaultTokenList, fetchTokenlistUrls]);
 
   useEffect(() => {
+    // abort if still fetching other chain async
+    abortControllerRef.current.abort();
+    abortControllerRef.current = new AbortController();
     setupTokenList();
-  }, [address, chainId, setupTokenList]);
+
+    return () => {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = new AbortController();
+    };
+  }, [setupTokenList]);
 
   const tokenListContext = useMemo(
     () => ({
