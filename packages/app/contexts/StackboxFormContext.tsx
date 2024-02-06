@@ -11,7 +11,7 @@ import {
   useQueryState,
 } from "next-usequerystate";
 
-import { DEFAULT_TOKENS_BY_CHAIN, getIsValidChainId } from "@/utils";
+import { DEFAULT_TOKENS_BY_CHAIN, checkIsValidChainId } from "@/utils";
 import { FREQUENCY_OPTIONS } from "@/models/stack";
 import {
   TokenWithBalance,
@@ -72,7 +72,9 @@ export const StackboxFormContextProvider = ({
   const { getTokenFromList } = useTokenListContext();
 
   const getDefaultParsedToken = (tokenDirection: "to" | "from") => {
-    const validChainId = getIsValidChainId(chainId) ? chainId : ChainId.GNOSIS;
+    const validChainId = checkIsValidChainId(chainId)
+      ? chainId
+      : ChainId.GNOSIS;
 
     return createParser({
       parse: (address: string) => getTokenFromList(address),
@@ -109,7 +111,7 @@ export const StackboxFormContextProvider = ({
 
   const stackboxFormContext = useMemo(() => {
     const resetFormValues = (newChainId: ChainId) => {
-      const validChainId = getIsValidChainId(newChainId)
+      const validChainId = checkIsValidChainId(newChainId)
         ? newChainId
         : ChainId.GNOSIS;
 

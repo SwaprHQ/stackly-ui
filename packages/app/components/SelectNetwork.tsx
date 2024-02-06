@@ -1,7 +1,6 @@
 "use client";
 
 import { Fragment } from "react";
-
 import { ChainIcon } from "connectkit";
 import { Listbox, Transition } from "@headlessui/react";
 
@@ -14,9 +13,9 @@ export const SelectNetwork = () => {
 
   return (
     <Listbox
-      value={selectedChain?.id.toString()}
+      value={selectedChain.id.toString()}
       onChange={(chainId) => {
-        changeNetwork(chainId);
+        changeNetwork(parseInt(chainId));
         resetFormValues(parseInt(chainId));
       }}
     >
