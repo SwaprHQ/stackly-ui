@@ -174,7 +174,6 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
     setupTokenList();
 
     return () => {
-      // Cleanup: Abort ongoing fetch when component unmounts or chainId changes
       abortControllerRef.current.abort();
       abortControllerRef.current = new AbortController();
     };
