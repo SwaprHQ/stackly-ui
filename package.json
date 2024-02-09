@@ -18,6 +18,7 @@
     "dev": "turbo run dev",
     "dev:app": "cd packages/app && turbo run dev",
     "dev:landing": "cd packages/landing && turbo run dev",
+    "setup": "bun install && bun run build",
     "start": "turbo run start",
     "lint": "turbo run lint",
     "clean": "turbo run clean",
