@@ -27,20 +27,34 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
     []
   );
 
-  const ordersByType = [
+  type SortTime = "startTime" | "endTime" | "cancelledAt";
+
+  interface OrderByType {
+    orders: StackOrder[];
+    emptyText: string;
+    sort: SortTime;
+  }
+
+  const ordersByType: OrderByType[] = [
     {
       orders: filterActiveOrders(currentStackOrders),
       emptyText: "No active stacks",
+      sort: "startTime",
     },
     {
       orders: filterCompletedOrders(currentStackOrders),
       emptyText: "No complete stacks",
+      sort: "endTime",
     },
     {
       orders: filterCancelledOrders(currentStackOrders),
       emptyText: "No cancelled stacks",
+      sort: "cancelledAt",
     },
   ];
+
+  const sortedOrdersByTime = (orders: StackOrder[], time: SortTime) =>
+    orders.sort((a, b) => Number(b[time]) - Number(a[time]));
 
   const fetchStacks = useCallback(() => {
     getOrders(chainId, address.toLowerCase())
@@ -90,7 +104,10 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
                   <Tab.Panel key={stacks.emptyText}>
                     {stacks.orders.length ? (
                       <StacksTable
-                        stackOrders={stacks.orders}
+                        stackOrders={sortedOrdersByTime(
+                          stacks.orders,
+                          stacks.sort
+                        )}
                         refetchStacks={fetchStacks}
                       />
                     ) : (
