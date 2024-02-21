@@ -7,7 +7,7 @@ import { trackEvent } from "fathom-client";
 
 import { EVENTS } from "@/analytics";
 import { ButtonLink } from "@/ui";
-import { STACKLY_APP_URL } from "@/constants";
+import { DUNE_ANALYTICS_URL, STACKLY_APP_URL } from "@/constants";
 
 import MobileMenu from "./MobileMenu";
 import Logo from "./Logo";
@@ -46,6 +46,17 @@ export function Navbar() {
           </Link>
         </div>
         <div className="items-center justify-end hidden w-full gap-4 md:flex">
+          <ButtonLink
+            variant="quaternary"
+            size="sm"
+            href={DUNE_ANALYTICS_URL}
+            target="_blank"
+            onClick={() => {
+              trackEvent(EVENTS.NAVBAR.DESKTOP.DUNE_ANALYTICS);
+            }}
+          >
+            Analytics
+          </ButtonLink>
           <ButtonLink variant="quaternary" size="sm" href="#how-it-works">
             How it works
           </ButtonLink>
