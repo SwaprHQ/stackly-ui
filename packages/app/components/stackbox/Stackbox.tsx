@@ -464,7 +464,7 @@ export const Stackbox = () => {
             </div>
             <div className="space-y-1">
               <div className="flex flex-col border divide-y md:divide-y-0 md:flex-row rounded-2xl border-surface-50 md:divide-x divide-surface-50">
-                <div className="flex flex-col w-full pl-4 pr-3 py-2 lg:py-3 space-y-2 hover:bg-surface-25">
+                <div className="flex flex-col w-full py-2 pl-4 pr-3 space-y-2 lg:py-3 hover:bg-surface-25">
                   <BodyText size={2}>Starting from</BodyText>
                   <DatePicker
                     dateTime={startDateTime}
@@ -506,7 +506,7 @@ export const Stackbox = () => {
             </div>
           </div>
         </div>
-        {fromToken && toToken && tokenAmount && tokenAmount > "0" && (
+        {fromToken && toToken && tokenAmount && parseFloat(tokenAmount) > 0 && (
           <div
             className={cx(
               "p-2 text-center bg-surface-25 text-em-low rounded-xl",
