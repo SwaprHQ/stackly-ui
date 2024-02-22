@@ -11,3 +11,6 @@ export const STACKLY_DISCORD_URL =
 
 export const STACKLY_TWITTER_URL =
   process.env.STACKLY_TWITTER_URL ?? "https://twitter.com/Stacklydapp";
+
+export const DUNE_ANALYTICS_URL =
+  process.env.DUNE_ANALYTICS_URL ?? "https://dune.com/stackly/app";
