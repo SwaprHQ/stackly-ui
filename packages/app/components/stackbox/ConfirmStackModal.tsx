@@ -102,22 +102,29 @@ export const ConfirmStackModal = ({
   }, [allowance, rawAmount]);
 
   useEffect(() => {
-    if (!signer || !address) return;
+    (async () => {
+      const signerInstance = await signer;
+      if (!signerInstance || !address) return;
 
-    try {
-      const factoryAddress = getOrderFactoryAddress(chainId as ChainId);
-      getERC20Contract(fromToken.address, signer)
-        .allowance(address, factoryAddress)
-        .then((value) => setAllowance(value.toString()));
-    } catch (e) {
-      console.error(e);
-    }
+      try {
+        const factoryAddress = getOrderFactoryAddress(chainId as ChainId);
+        getERC20Contract(fromToken.address, signerInstance)
+          .allowance(address, factoryAddress)
+          .then((value) => setAllowance(value.toString()));
+      } catch (e) {
+        console.error(e);
+      }
+    })();
   }, [signer, address, fromToken.address, chainId]);
 
   const approveFromToken = async () => {
-    if (!signer || !address || !chainId) return;
+    const signerInstance = await signer;
+    if (!signerInstance || !address || !chainId) return;
 
-    const sellTokenContract = getERC20Contract(fromToken.address, signer);
+    const sellTokenContract = getERC20Contract(
+      fromToken.address,
+      signerInstance
+    );
 
     try {
       openModal(ModalId.STACK_APPROVE_PROCESSING);
@@ -138,7 +145,8 @@ export const ConfirmStackModal = ({
   };
 
   const createStack = async () => {
-    if (!signer || !address || !chainId) return;
+    const signerInstance = await signer;
+    if (!signerInstance || !address || !chainId) return;
 
     const initParams: Parameters<typeof createDCAOrderWithNonce>[1] = {
       nonce: dateToUnixTimestamp(new Date()),
@@ -154,7 +162,7 @@ export const ConfirmStackModal = ({
 
     const orderFactory = getOrderFactory(
       getOrderFactoryAddress(chainId),
-      signer
+      signerInstance
     );
 
     try {

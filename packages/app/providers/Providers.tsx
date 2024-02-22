@@ -3,7 +3,8 @@
 import { PropsWithChildren } from "react";
 
 import { ConnectKitProvider } from "connectkit";
-import { WagmiConfig } from "wagmi";
+import { WagmiProvider } from "wagmi";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { config } from "./wagmi-config";
 import {
@@ -14,22 +15,26 @@ import {
   TokenListProvider,
 } from "@/contexts";
 
+const queryClient = new QueryClient();
+
 export const Providers = ({ children }: PropsWithChildren) => {
   return (
-    <WagmiConfig config={config}>
-      <ConnectKitProvider mode="light" options={{ initialChainId: 0 }}>
-        <NetworkContextProvider>
-          <TokenListProvider>
-            <ModalContextProvider>
-              <StrategyContextProvider>
-                <StackboxFormContextProvider>
-                  {children}
-                </StackboxFormContextProvider>
-              </StrategyContextProvider>
-            </ModalContextProvider>
-          </TokenListProvider>
-        </NetworkContextProvider>
-      </ConnectKitProvider>
-    </WagmiConfig>
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <ConnectKitProvider mode="light" options={{ initialChainId: 0 }}>
+          <NetworkContextProvider>
+            <TokenListProvider>
+              <ModalContextProvider>
+                <StrategyContextProvider>
+                  <StackboxFormContextProvider>
+                    {children}
+                  </StackboxFormContextProvider>
+                </StrategyContextProvider>
+              </ModalContextProvider>
+            </TokenListProvider>
+          </NetworkContextProvider>
+        </ConnectKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
   );
 };

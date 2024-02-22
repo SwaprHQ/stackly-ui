@@ -20,7 +20,7 @@ const CustomConnectButton = ({
   ensName?: string;
   size: SizeProps;
 }) => {
-  const { selectedChain } = useNetworkContext();
+  const { chainId } = useNetworkContext();
   const { data: avatar } = useEnsAvatar({
     name: ensName,
     chainId: ChainId.ETHEREUM,
@@ -33,7 +33,7 @@ const CustomConnectButton = ({
 
   const { data: balance } = useBalance({
     address: address,
-    token: TOKEN_BY_CHAIN[selectedChain.id] as `0x${string}`,
+    token: TOKEN_BY_CHAIN[chainId] as `0x${string}`,
   });
 
   const truncatedAddress = (size: number) =>
