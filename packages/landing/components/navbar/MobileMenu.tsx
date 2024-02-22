@@ -7,7 +7,7 @@ import { trackEvent } from "fathom-client";
 
 import { Button, ButtonLink } from "@/ui";
 import { EVENTS } from "@/analytics";
-import { STACKLY_APP_URL } from "@/constants";
+import { DUNE_ANALYTICS_URL, STACKLY_APP_URL } from "@/constants";
 
 export default function MobileMenu({
   passedThresholdHeight,
@@ -45,6 +45,17 @@ export default function MobileMenu({
             onClick={toggle}
           ></div>
           <div className="absolute left-0 w-full gap-2 px-6 py-2 border-b border-solid rounded-lg bg-surface-25 top-nav-height border-surface-75">
+            <Link
+              className="block py-3 text-em-med"
+              href={DUNE_ANALYTICS_URL}
+              rel="noopener noreferrer"
+              target="_blank"
+              onClick={() => {
+                trackEvent(EVENTS.NAVBAR.MOBILE.DUNE_ANALYTICS);
+              }}
+            >
+              Analytics
+            </Link>
             <Link
               href="#how-it-works"
               className="block py-3 text-em-med"
