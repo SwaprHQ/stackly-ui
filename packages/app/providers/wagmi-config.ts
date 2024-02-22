@@ -1,9 +1,8 @@
 import { ChainId } from "@stackly/sdk";
-import { SafeConnector } from "wagmi/connectors/safe";
-import { configureChains, createConfig } from "wagmi";
+import { createConfig, fallback, http } from "wagmi";
 import { getDefaultConfig } from "connectkit";
 import { gnosis, mainnet } from "wagmi/chains";
-import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
+import { safe } from "wagmi/connectors";
 
 import { RPC_LIST } from "@/constants";
 
@@ -16,42 +15,29 @@ const chainJsonRpc: Record<number, { http: string }> = {
   },
 };
 
-const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [gnosis, mainnet],
-  [
-    jsonRpcProvider({
-      rpc: (chain) => chainJsonRpc[chain.id],
-    }),
-  ],
-  { batch: { multicall: true } }
-);
-
 const defaultConfig = getDefaultConfig({
-  autoConnect: true,
-  alchemyId: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
+  chains: [gnosis, mainnet],
   walletConnectProjectId:
     process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || "",
-
+  transports: {
+    [mainnet.id]: fallback([http(RPC_LIST[ChainId.ETHEREUM]), http()]),
+    [gnosis.id]: fallback([http(RPC_LIST[ChainId.GNOSIS]), http()]),
+  },
   appName: "Stackly",
   appDescription: "Stack crypto over time.",
   appUrl: "https://stackly.app",
   appIcon: "https://stackly.app/favicon.ico",
-  chains,
-  publicClient,
-  webSocketPublicClient,
+  ssr: true,
 });
 
-const safeConnector = new SafeConnector({
-  chains,
-  options: {
-    allowedDomains: [/app.safe.global$/],
-    debug: false,
-  },
+const safeConnector = safe({
+  allowedDomains: [/app.safe.global$/],
+  debug: false,
 });
 
 export const config = createConfig({
   ...defaultConfig,
   connectors: defaultConfig.connectors
-    ? [...defaultConfig.connectors]
+    ? defaultConfig.connectors
     : [safeConnector],
 });
