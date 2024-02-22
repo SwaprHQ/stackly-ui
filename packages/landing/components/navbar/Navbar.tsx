@@ -48,6 +48,7 @@ export function Navbar() {
         <div className="items-center justify-end hidden w-full gap-4 md:flex">
           <ButtonLink
             variant="quaternary"
+            iconRight="arrow-external"
             size="sm"
             rel="noopener noreferrer"
             href={DUNE_ANALYTICS_URL}
