@@ -153,10 +153,14 @@ export const TokenPicker = ({
   useEffect(() => {
     (async () => {
       if (isAddress(trimmedQuery) && !filteredTokenList.length) {
-        if (!signer) return;
+        const signerInstance = await signer;
+        if (!signerInstance) return;
         setIsFetchingCustomToken(true);
 
-        const sellTokenContract = getERC20Contract(trimmedQuery, signer);
+        const sellTokenContract = getERC20Contract(
+          trimmedQuery,
+          signerInstance
+        );
 
         const address = sellTokenContract.address;
         try {
