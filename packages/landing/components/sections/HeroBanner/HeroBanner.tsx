@@ -19,7 +19,7 @@ export const HeroBanner = () => {
   return (
     <section className="px-6 pt-16 border-b border-gray-100 md:pt-20">
       <div className="space-y-4 text-center md:space-y-6 ">
-        <DisplayText>DCA simplified</DisplayText>
+        <DisplayText>Empower your portfolio</DisplayText>
         <HeadingText className="!font-medium text-em-med max-w-2xl mx-auto">
           Say goodbye to market timing and hello to effortless recurrent swaps.
         </HeadingText>
@@ -34,7 +34,7 @@ export const HeroBanner = () => {
           trackEvent(EVENTS.SECTIONS.HERO_BANNER.STACK_NOW_CLICK);
         }}
       >
-        Stack now
+        Start stacking now
       </ButtonLink>
       <div className="relative max-w-4xl mx-auto mt-12 mb-24 md:my-20">
         <Link

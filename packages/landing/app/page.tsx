@@ -24,7 +24,7 @@ export default function Home() {
           <div className="max-w-xl px-6 space-y-2 md:pb-28">
             <HeadingText size={4}>Using Stackly is super easy</HeadingText>
             <HeadingText weight="regular" className="text-em-med">
-              Create a stack (aka recurring swaps) in 3 steps.
+              Create recurring swaps (aka stack) in 3 steps.
             </HeadingText>
           </div>
           <div className="px-6 space-y-12 md:space-y-32">
