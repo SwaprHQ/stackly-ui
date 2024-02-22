@@ -108,11 +108,15 @@ export const StackModal = ({
   };
 
   const cancelStack = async () => {
-    if (!signer) return;
+    const signerInstance = await signer;
+    if (!signerInstance) return;
 
     try {
       openModal(ModalId.CANCEL_STACK_PROCESSING);
-      const tx = await getDCAOrderContract(stackOrder.id, signer).cancel();
+      const tx = await getDCAOrderContract(
+        stackOrder.id,
+        signerInstance
+      ).cancel();
       setCancellationTx(tx);
       await tx.wait();
       closeModal(ModalId.CANCEL_STACK_PROCESSING);

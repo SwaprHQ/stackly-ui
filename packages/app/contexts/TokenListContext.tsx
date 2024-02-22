@@ -115,7 +115,7 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
             .map((token, index) => ({
               ...token,
               balance: formatUnits(
-                hexToBigInt(balances[index]),
+                hexToBigInt(balances[index] !== "0x" ? balances[index] : 0),
                 token.decimals
               ),
             }))
@@ -125,7 +125,8 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
             );
 
           setTokenListWithBalances(listWithBalances);
-        });
+        })
+        .catch((error) => console.error(error));
     }
   }, [address, callArray, chainId, tokenList]);
 

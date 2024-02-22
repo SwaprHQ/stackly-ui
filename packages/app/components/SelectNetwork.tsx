@@ -6,14 +6,15 @@ import { Listbox, Transition } from "@headlessui/react";
 
 import { Button, Icon } from "@/ui";
 import { useNetworkContext, useStackboxFormContext } from "@/contexts";
+import { useAccount, useConnect } from "wagmi";
 
 export const SelectNetwork = () => {
-  const { chains, changeNetwork, selectedChain } = useNetworkContext();
+  const { chains, changeNetwork, chainId, selectedChain } = useNetworkContext();
   const { resetFormValues } = useStackboxFormContext();
 
   return (
     <Listbox
-      value={selectedChain.id.toString()}
+      value={chainId.toString()}
       onChange={(chainId) => {
         changeNetwork(parseInt(chainId));
         resetFormValues(parseInt(chainId));
@@ -28,15 +29,9 @@ export const SelectNetwork = () => {
           className="flex h-10 border-none shadow-sm rounded-xl focus:bg-white focus:ring-0 active:ring-0"
         >
           <div className="flex items-center space-x-2">
-            <ChainIcon
-              size={20}
-              id={selectedChain?.id}
-              unsupported={selectedChain?.unsupported}
-            />
+            <ChainIcon size={20} id={chainId} />
             <span className="hidden md:inline-block">
-              {selectedChain?.unsupported
-                ? "Unsupported Network"
-                : selectedChain?.name}
+              {selectedChain?.name}
             </span>
           </div>
         </Listbox.Button>
