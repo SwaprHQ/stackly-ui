@@ -86,5 +86,13 @@
     "decimals": 6,
     "logoURI": "/assets/images/tokens/usdc.png",
     "chainId": 1
+  },
+  {
+    "address": "0xae78736cd615f374d3085123a210448e74fc6393",
+    "name": "Rocket Pool ETH",
+    "symbol": "rETH",
+    "decimals": 18,
+    "logoURI": "/assets/images/tokens/reth.png",
+    "chainId": 1
   }
 ]
