@@ -3,14 +3,17 @@ const LAUNCH_APP_NAVBAR = `${LAUNCH_APP}-navbar`;
 const FAQ = "click/faq";
 const FAQ_WHAT_IS = `${FAQ}-what-is`;
 const FAQ_HOW = `${FAQ}-how`;
+const DUNE_ANALYTICS = "click/dune";
 
 export const EVENTS = {
   NAVBAR: {
     DESKTOP: {
       LAUNCH_APP_CLICK: `${LAUNCH_APP_NAVBAR}-desktop`,
+      DUNE_ANALYTICS: `${DUNE_ANALYTICS}-desktop`,
     },
     MOBILE: {
       LAUNCH_APP_CLICK: `${LAUNCH_APP_NAVBAR}-mobile`,
+      DUNE_ANALYTICS: `${DUNE_ANALYTICS}-mobile`,
     },
   },
   SECTIONS: {
