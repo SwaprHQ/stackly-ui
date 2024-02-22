@@ -49,6 +49,7 @@ export function Navbar() {
           <ButtonLink
             variant="quaternary"
             size="sm"
+            rel="noopener noreferrer"
             href={DUNE_ANALYTICS_URL}
             target="_blank"
             onClick={() => {

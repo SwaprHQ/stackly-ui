@@ -48,6 +48,7 @@ export default function MobileMenu({
             <Link
               className="block py-3 text-em-med"
               href={DUNE_ANALYTICS_URL}
+              rel="noopener noreferrer"
               target="_blank"
               onClick={() => {
                 trackEvent(EVENTS.NAVBAR.MOBILE.DUNE_ANALYTICS);
