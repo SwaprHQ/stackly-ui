@@ -1,6 +1,7 @@
 import { allOrderSlotsDone, stacklyFee } from "@/models/order";
 import { StackOrder } from "@/models/stack-order";
 import { convertedAmount } from "@/utils/numbers";
+import { OrderStatus } from "@cowprotocol/cow-sdk";
 
 export const totalStackOrdersDone = (order: StackOrder) => {
   if (!order?.cowOrders?.length) return 0;
@@ -16,6 +17,7 @@ export const calculateStackAveragePrice = (order: StackOrder) => {
 
   order.cowOrders.forEach((cowOrder) => {
     if (cowOrder.executedBuyAmount === "0") return;
+    if (cowOrder.status !== OrderStatus.FULFILLED) return;
 
     totalExecutedBuyAmount += convertedAmount(
       cowOrder.executedBuyAmount,
