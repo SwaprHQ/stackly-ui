@@ -16,7 +16,7 @@
     "format": "npx prettier --write . !./dist !./.turbo && eslint --fix \"./**!(dist|.turbo)/*+(.tsx|.ts)\"",
     "typechain": "node --experimental-specifier-resolution=node ./bin/typechain.js",
     "clean": "rimraf ./dist",
-    "build": "yarn clean && tsc",
+    "build": "bun clean && tsc",
     "test": "echo 'no tests'",
     "dev": "nodemon -x ts-node src/index.ts"
   },
@@ -51,7 +51,7 @@
     "@typescript-eslint/eslint-plugin": "latest",
     "abitype": "^0.2.5",
     "dotenv": "^16.0.1",
-    "node-fetch": "^3.3.0",
+    "node-fetch": "2.x.x",
     "nodemon": "^2.0.18",
     "rimraf": "^3.0.2",
     "ts-node": "^10.8.2",
