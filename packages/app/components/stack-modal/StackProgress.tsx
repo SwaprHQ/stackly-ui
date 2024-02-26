@@ -1,4 +1,5 @@
 import {
+  allOrderSlotsDone,
   totalFundsAmountWithTokenText,
   totalOrderSlotsDone,
 } from "@/models/order";
@@ -9,6 +10,7 @@ import {
   StackOrderProps,
   totalStackOrdersDone,
   totalFundsUsed,
+  estimatedTotalStack,
 } from "@/models/stack-order";
 import { formatTokenValue } from "@/utils/token";
 
@@ -29,8 +31,28 @@ export const StackProgress = ({ stackOrder }: StackOrderProps) => (
       </div>
     </div>
     <OrdersProgressBar stackOrder={stackOrder} />
+    <TotalStackEstimationText stackOrder={stackOrder} />
   </div>
 );
+
+const TotalStackEstimationText = ({ stackOrder }: StackOrderProps) => {
+  if (allOrderSlotsDone(stackOrder)) return;
+  if (totalStackOrdersDone(stackOrder) < 1) return;
+
+  return (
+    <div className="flex flex-row-reverse">
+      <div className="flex items-center space-x-1">
+        <BodyText size="responsive" className="space-x-1">
+          <span className="text-em-low">Estimated total stack:</span>
+          <span className="text-em-med">
+            {formatTokenValue(estimatedTotalStack(stackOrder))}
+          </span>
+        </BodyText>
+        <TokenIcon size="xs" token={stackOrder.buyToken} />
+      </div>
+    </div>
+  );
+};
 
 const OrdersExecuted = ({ stackOrder }: StackOrderProps) => {
   if (!totalOrderSlotsDone(stackOrder))
