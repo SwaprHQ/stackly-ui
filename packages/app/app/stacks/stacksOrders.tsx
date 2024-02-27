@@ -3,72 +3,89 @@
 import { useCallback, useEffect, useState } from "react";
 import { Tab } from "@headlessui/react";
 
+import { StackOrder, getStackOrders } from "@/models/stack-order";
 import {
-  StackOrder,
-  filterActiveOrders,
-  filterCancelledOrders,
-  filterCompletedOrders,
-  getStackOrders,
-} from "@/models/stack-order";
-import { getOrders } from "@/models/order";
+  getActiveOrders,
+  getCancelledOrders,
+  getCompleteOrders,
+} from "@/models/order";
 import { ChainId } from "@stackly/sdk";
 import { ButtonLink, HeadingText } from "@/ui";
 import { EmptyState, StacksTable, tabButtonStyles } from "@/components";
 import EmptyStatePage from "./empty-state";
+import { currentTimestampInSeconds } from "@/utils";
+
+type SortTime = "startTime" | "endTime" | "cancelledAt";
+
+const sortedOrdersByTime = (orders: StackOrder[], time: SortTime) =>
+  orders.sort((a, b) => Number(b[time]) - Number(a[time]));
+
+interface OrderByState {
+  orders: StackOrder[];
+  emptyText: string;
+  sort: SortTime;
+  fetcher: (
+    chainId: ChainId,
+    address: string,
+    currentTimestamp: number,
+    skip?: number | undefined,
+    first?: number | undefined
+  ) => Promise<any>;
+}
 
 export interface StackOrdersProps {
   address: string;
   chainId: ChainId;
 }
 
+type StackStateIndex = 0 | 1 | 2;
+
 export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
   const [loading, setLoading] = useState(true);
+  const [stackStateIndex, setStackStateIndex] = useState<StackStateIndex>(0);
   const [currentStackOrders, setCurrentStackOrders] = useState<StackOrder[]>(
     []
   );
 
-  type SortTime = "startTime" | "endTime" | "cancelledAt";
-
-  interface OrderByType {
-    orders: StackOrder[];
-    emptyText: string;
-    sort: SortTime;
-  }
-
-  const ordersByType: OrderByType[] = [
+  const ordersByState: OrderByState[] = [
     {
-      orders: filterActiveOrders(currentStackOrders),
+      orders: currentStackOrders,
       emptyText: "No active stacks",
       sort: "startTime",
+      fetcher: getActiveOrders,
     },
     {
-      orders: filterCompletedOrders(currentStackOrders),
+      orders: currentStackOrders,
       emptyText: "No complete stacks",
       sort: "endTime",
+      fetcher: getCompleteOrders,
     },
     {
-      orders: filterCancelledOrders(currentStackOrders),
+      orders: currentStackOrders,
       emptyText: "No cancelled stacks",
       sort: "cancelledAt",
+      fetcher: getCancelledOrders,
     },
   ];
 
-  const sortedOrdersByTime = (orders: StackOrder[], time: SortTime) =>
-    orders.sort((a, b) => Number(b[time]) - Number(a[time]));
+  const fetchStacks = useCallback(
+    (stackStateIndex: StackStateIndex) => {
+      ordersByState[stackStateIndex]
+        .fetcher(chainId, address.toLowerCase(), currentTimestampInSeconds)
+        .then(async (orders) => {
+          if (!orders || orders.length === 0) setCurrentStackOrders([]);
+          else {
+            const stackOrders = await getStackOrders(chainId, orders);
+            if (stackOrders.length > 0) setCurrentStackOrders(stackOrders);
+          }
+        })
+        .finally(() => setLoading(false));
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [address, chainId]
+  );
 
-  const fetchStacks = useCallback(() => {
-    getOrders(chainId, address.toLowerCase())
-      .then(async (orders) => {
-        if (!orders || orders.length === 0) setCurrentStackOrders([]);
-        else {
-          const stackOrders = await getStackOrders(chainId, orders);
-          if (stackOrders.length > 0) setCurrentStackOrders(stackOrders);
-        }
-      })
-      .finally(() => setLoading(false));
-  }, [address, chainId]);
-
-  useEffect(() => fetchStacks(), [fetchStacks]);
+  useEffect(() => fetchStacks(stackStateIndex), [fetchStacks, stackStateIndex]);
 
   if (!loading && currentStackOrders.length === 0) return <EmptyStatePage />;
 
@@ -81,7 +98,11 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
         </ButtonLink>
       </div>
       <div className="space-y-6">
-        <Tab.Group>
+        <Tab.Group
+          onChange={(index) => {
+            setStackStateIndex(index as StackStateIndex);
+          }}
+        >
           <Tab.List>
             <div className="flex space-x-2">
               <Tab as="button" className={tabButtonStyles}>
@@ -100,7 +121,7 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
               <EmptyState className="animate-pulse" text="Loading..." />
             ) : (
               <>
-                {ordersByType.map((stacks) => (
+                {ordersByState.map((stacks, index) => (
                   <Tab.Panel key={stacks.emptyText}>
                     {stacks.orders.length ? (
                       <StacksTable
@@ -108,7 +129,9 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
                           stacks.orders,
                           stacks.sort
                         )}
-                        refetchStacks={fetchStacks}
+                        refetchStacks={() =>
+                          fetchStacks(index as StackStateIndex)
+                        }
                       />
                     ) : (
                       <EmptyState text={stacks.emptyText} />
