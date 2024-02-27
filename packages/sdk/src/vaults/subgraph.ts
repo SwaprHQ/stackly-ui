@@ -87,8 +87,81 @@ const OrderFragment = gql`
 `;
 
 const getUserOrdersQuery = gql`
-  query getUserOrders($userAddress: String!) {
-    orders: dcaorders(where: { owner: $userAddress }) {
+  query getUserOrders($userAddress: String!, $first: Int = 20, $skip: Int = 0) {
+    orders: dcaorders(
+      where: { owner: $userAddress }
+      first: $first
+      skip: $skip
+      limit: 10
+      orderBy: createdAt
+      orderDirection: desc
+    ) {
+      ...OrderFragment
+    }
+  }
+  ${OrderFragment}
+`;
+
+const getUserActiveOrdersQuery = gql`
+  query getUserOrders(
+    $userAddress: String!
+    $first: Int = 20
+    $skip: Int = 0
+    $currentTimestamp: Int!
+  ) {
+    orders: dcaorders(
+      where: {
+        owner: $userAddress
+        cancelledAt: null
+        endTime_gt: $currentTimestamp
+      }
+      first: $first
+      skip: $skip
+      limit: 10
+      orderBy: createdAt
+      orderDirection: desc
+    ) {
+      ...OrderFragment
+    }
+  }
+  ${OrderFragment}
+`;
+
+const getUserCompleteOrdersQuery = gql`
+  query getUserOrders(
+    $userAddress: String!
+    $first: Int = 20
+    $skip: Int = 0
+    $currentTimestamp: Int!
+  ) {
+    orders: dcaorders(
+      where: {
+        owner: $userAddress
+        cancelledAt: null
+        endTime_lt: $currentTimestamp
+      }
+      first: $first
+      skip: $skip
+      limit: 10
+      orderBy: createdAt
+      orderDirection: desc
+    ) {
+      ...OrderFragment
+    }
+  }
+  ${OrderFragment}
+`;
+
+const getUserCancelledOrdersQuery = gql`
+  query getUserOrders($userAddress: String!, $first: Int = 20, $skip: Int = 0) {
+    orders: dcaorders(
+      where: { owner: $userAddress, cancelledAt_not: null }
+      first: $first
+      skip: $skip
+      limit: 10
+      orderBy: createdAt
+      orderDirection: desc
+    ) {
       ...OrderFragment
     }
   }
@@ -118,6 +191,86 @@ export async function getUserOrders(
     orders: Order[];
   }>(getUserOrdersQuery, {
     userAddress: userAddress.toLowerCase(),
+  });
+
+  return response.orders;
+}
+/**
+ * Get all orders for a user from the subgraph
+ * @param client - GraphQL client
+ * @param userAddress - User address
+ * @param currentTimestamp - Current Timesamp
+ * @param skip - items to skip (optinal, default: 0)
+ * @param first - how many items to get (optinal, default: 20)
+ * @returns
+ */
+export async function getUserActiveOrders(
+  client: GraphQLClient,
+  userAddress: string,
+  currentTimestamp: number,
+  skip: number,
+  first: number
+) {
+  const response = await client.request<{
+    orders: Order[];
+  }>(getUserActiveOrdersQuery, {
+    userAddress: userAddress.toLowerCase(),
+    currentTimestamp: currentTimestamp,
+    skip: skip,
+    first: first,
+  });
+
+  return response.orders;
+}
+
+/**
+ * Get all orders for a user from the subgraph
+ * @param client - GraphQL client
+ * @param userAddress - User address
+ * @param currentTimestamp - Current Timesamp
+ * @param skip - items to skip (optinal, default: 0)
+ * @param first - how many items to get (optinal, default: 20)
+ * @returns
+ */
+export async function getUserCompleteOrders(
+  client: GraphQLClient,
+  userAddress: string,
+  currentTimestamp: number,
+  skip: number,
+  first: number
+) {
+  const response = await client.request<{
+    orders: Order[];
+  }>(getUserCompleteOrdersQuery, {
+    userAddress: userAddress.toLowerCase(),
+    currentTimestamp: currentTimestamp,
+    skip: skip,
+    first: first,
+  });
+
+  return response.orders;
+}
+
+/**
+ * Get all orders for a user from the subgraph
+ * @param client - GraphQL client
+ * @param userAddress - User address
+ * @param skip - items to skip (optinal, default: 0)
+ * @param first - how many items to get (optinal, default: 20)
+ * @returns
+ */
+export async function getUserCancelledOrders(
+  client: GraphQLClient,
+  userAddress: string,
+  skip: number,
+  first: number
+) {
+  const response = await client.request<{
+    orders: Order[];
+  }>(getUserCancelledOrdersQuery, {
+    userAddress: userAddress.toLowerCase(),
+    skip: skip,
+    first: first,
   });
 
   return response.orders;
