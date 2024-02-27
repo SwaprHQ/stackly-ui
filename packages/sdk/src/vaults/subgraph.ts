@@ -208,8 +208,8 @@ export async function getUserActiveOrders(
   client: GraphQLClient,
   userAddress: string,
   currentTimestamp: number,
-  skip: number,
-  first: number
+  skip?: number,
+  first?: number
 ) {
   const response = await client.request<{
     orders: Order[];
@@ -236,8 +236,8 @@ export async function getUserCompleteOrders(
   client: GraphQLClient,
   userAddress: string,
   currentTimestamp: number,
-  skip: number,
-  first: number
+  skip?: number,
+  first?: number
 ) {
   const response = await client.request<{
     orders: Order[];
@@ -262,8 +262,8 @@ export async function getUserCompleteOrders(
 export async function getUserCancelledOrders(
   client: GraphQLClient,
   userAddress: string,
-  skip: number,
-  first: number
+  skip?: number,
+  first?: number
 ) {
   const response = await client.request<{
     orders: Order[];
