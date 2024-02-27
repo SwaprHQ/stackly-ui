@@ -51,13 +51,20 @@ type StackStateIndex = 0 | 1 | 2;
 const ITEMS_PER_PAGE = 10;
 
 export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
-  const [loading, setLoading] = useState(true);
+  const [loadingAllStacks, setLoadingAllStacks] = useState(true);
+  const [loadingStacks, setLoadingStacks] = useState(true);
+
   const [allOrders, setAllOrders] = useState<Order[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [stackStateIndex, setStackStateIndex] = useState<StackStateIndex>(0);
   const [currentStackOrders, setCurrentStackOrders] = useState<StackOrder[]>(
     []
   );
+
+  const resetState = () => {
+    setLoadingStacks(true);
+    setCurrentPage(1);
+  };
 
   const totalStacksNumber = allOrders.length;
 
@@ -119,12 +126,14 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
   ];
 
   const fetchAllOrders = useCallback(() => {
-    getOrders(chainId, address.toLowerCase()).then(async (orders) => {
-      if (!orders || orders.length === 0) setAllOrders([]);
-      else {
-        setAllOrders(orders);
-      }
-    });
+    getOrders(chainId, address.toLowerCase())
+      .then(async (orders) => {
+        if (!orders || orders.length === 0) setAllOrders([]);
+        else {
+          setAllOrders(orders);
+        }
+      })
+      .finally(() => setLoadingAllStacks(false));
   }, [address, chainId]);
 
   useEffect(() => {
@@ -148,7 +157,7 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
             if (stackOrders.length > 0) setCurrentStackOrders(stackOrders);
           }
         })
-        .finally(() => setLoading(false));
+        .finally(() => setLoadingStacks(false));
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [address, chainId, currentPage]
@@ -156,16 +165,19 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
 
   useEffect(() => fetchStacks(stackStateIndex), [fetchStacks, stackStateIndex]);
 
-  if (!loading && allOrders.length === 0) return <EmptyStatePage />;
+  if (!loadingStacks && !loadingAllStacks && allOrders.length === 0)
+    return <EmptyStatePage />;
 
   return (
     <>
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2">
           <HeadingText size={3}>Your stacks</HeadingText>
-          <div className="px-2 py-1 text-xs font-semibold bg-surface-75 rounded-xl">
-            {totalStacksNumber}
-          </div>
+          {!loadingAllStacks && (
+            <div className="px-2 py-1 text-xs font-semibold bg-surface-75 rounded-xl">
+              {totalStacksNumber}
+            </div>
+          )}
         </div>
         <ButtonLink iconLeft="plus" href="/" className="hidden sm:flex">
           Create New Stack
@@ -175,7 +187,7 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
         <Tab.Group
           onChange={(index) => {
             setStackStateIndex(index as StackStateIndex);
-            setCurrentPage(1);
+            resetState();
           }}
         >
           <Tab.List>
@@ -194,7 +206,7 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
             </div>
           </Tab.List>
           <Tab.Panels>
-            {loading ? (
+            {loadingStacks ? (
               <EmptyState className="animate-pulse" text="Loading..." />
             ) : (
               <>
