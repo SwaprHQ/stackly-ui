@@ -87,12 +87,9 @@ const OrderFragment = gql`
 `;
 
 const getUserOrdersQuery = gql`
-  query getUserOrders($userAddress: String!, $first: Int = 20, $skip: Int = 0) {
+  query getUserOrders($userAddress: String!) {
     orders: dcaorders(
       where: { owner: $userAddress }
-      first: $first
-      skip: $skip
-      limit: 10
       orderBy: createdAt
       orderDirection: desc
     ) {
