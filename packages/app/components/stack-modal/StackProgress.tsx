@@ -52,7 +52,7 @@ const TotalStackEstimationText = ({ stackOrder }: StackOrderProps) => {
           </span>
           <span>{stackOrder.buyToken.symbol}</span>
         </BodyText>
-        <TokenIcon size="xs" token={stackOrder.buyToken} />
+        <TokenIcon size="2xs" token={stackOrder.buyToken} />
       </div>
     </div>
   );
