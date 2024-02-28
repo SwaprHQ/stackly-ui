@@ -27,18 +27,20 @@ type SortTime = "startTime" | "endTime" | "cancelledAt";
 const sortedOrdersByTime = (orders: StackOrder[], time: SortTime) =>
   orders.sort((a, b) => Number(b[time]) - Number(a[time]));
 
+interface FetcherParams {
+  chainId: ChainId;
+  address: string;
+  currentTimestamp: number;
+  skip?: number;
+  first?: number;
+}
+
 interface OrderByState {
   orders: StackOrder[];
   emptyText: string;
   sort: SortTime;
   numberOfPages: number;
-  fetcher: (
-    chainId: ChainId,
-    address: string,
-    currentTimestamp: number,
-    skip?: number | undefined,
-    first?: number | undefined
-  ) => Promise<any>;
+  fetcher: (params: FetcherParams) => Promise<any>;
 }
 
 export interface StackOrdersProps {
@@ -143,13 +145,13 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
   const fetchStacks = useCallback(
     (stackStateIndex: StackStateIndex) => {
       ordersByState[stackStateIndex]
-        .fetcher(
-          chainId,
-          address.toLowerCase(),
-          currentTimestampInSeconds,
-          skipItems,
-          ITEMS_PER_PAGE
-        )
+        .fetcher({
+          chainId: chainId,
+          address: address.toLowerCase(),
+          currentTimestamp: currentTimestampInSeconds,
+          skip: skipItems,
+          first: ITEMS_PER_PAGE,
+        })
         .then(async (orders) => {
           if (!orders || orders.length === 0) setCurrentStackOrders([]);
           else {

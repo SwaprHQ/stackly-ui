@@ -8,6 +8,17 @@ import {
   ChainId,
 } from "@stackly/sdk";
 
+interface GetOrderBase {
+  chainId: ChainId;
+  address: string;
+  skip?: number;
+  first?: number;
+}
+
+interface GetOrder extends GetOrderBase {
+  currentTimestamp: number;
+}
+
 export async function getOrders(chainId: ChainId, address: string) {
   try {
     const graphqlClient = new GraphQLClient(getSubgraphEndpoint(chainId));
@@ -21,13 +32,13 @@ export async function getOrders(chainId: ChainId, address: string) {
   }
 }
 
-export async function getActiveOrders(
-  chainId: ChainId,
-  address: string,
-  currentTimestamp: number,
-  skip?: number,
-  first?: number
-) {
+export async function getActiveOrders({
+  chainId,
+  address,
+  currentTimestamp,
+  skip,
+  first,
+}: GetOrder) {
   try {
     const graphqlClient = new GraphQLClient(getSubgraphEndpoint(chainId));
     const orders = await getUserActiveOrders(
@@ -46,13 +57,13 @@ export async function getActiveOrders(
   }
 }
 
-export async function getCompleteOrders(
-  chainId: ChainId,
-  address: string,
-  currentTimestamp: number,
-  skip?: number,
-  first?: number
-) {
+export async function getCompleteOrders({
+  chainId,
+  address,
+  currentTimestamp,
+  skip,
+  first,
+}: GetOrder) {
   try {
     const graphqlClient = new GraphQLClient(getSubgraphEndpoint(chainId));
     const orders = await getUserCompleteOrders(
@@ -71,15 +82,13 @@ export async function getCompleteOrders(
   }
 }
 
-export async function getCancelledOrders(
-  chainId: ChainId,
-  address: string,
-  currentTimestamp: number,
-  skip?: number,
-  first?: number
-) {
+export async function getCancelledOrders({
+  chainId,
+  address,
+  skip,
+  first,
+}: GetOrder) {
   try {
-    console.log("currentTimestamp:", currentTimestamp);
     const graphqlClient = new GraphQLClient(getSubgraphEndpoint(chainId));
     const orders = await getUserCancelledOrders(
       graphqlClient,
