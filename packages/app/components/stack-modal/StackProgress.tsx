@@ -43,7 +43,7 @@ const TotalStackEstimationText = ({ stackOrder }: StackOrderProps) => {
     <div className="flex flex-row-reverse">
       <div
         className="flex items-center space-x-1"
-        title="An estimation of the total tokens you'll buy based on the average price."
+        title="An estimation of the total tokens you'll buy based on the average price (calc: amount / avg)."
       >
         <BodyText size={1} className="space-x-1">
           <span className="text-em-low">Estimated total:</span>
