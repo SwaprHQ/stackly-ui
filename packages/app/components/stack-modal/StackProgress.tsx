@@ -41,12 +41,16 @@ const TotalStackEstimationText = ({ stackOrder }: StackOrderProps) => {
 
   return (
     <div className="flex flex-row-reverse">
-      <div className="flex items-center space-x-1">
-        <BodyText size="responsive" className="space-x-1">
-          <span className="text-em-low">Estimated total stack:</span>
+      <div
+        className="flex items-center space-x-1"
+        title="An estimation of the total tokens you'll buy based on the average price."
+      >
+        <BodyText size={1} className="space-x-1">
+          <span className="text-em-low">Estimated total:</span>
           <span className="text-em-med">
             {formatTokenValue(estimatedTotalStack(stackOrder))}
           </span>
+          <span>{stackOrder.buyToken.symbol}</span>
         </BodyText>
         <TokenIcon size="xs" token={stackOrder.buyToken} />
       </div>
