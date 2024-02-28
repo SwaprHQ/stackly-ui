@@ -10,12 +10,12 @@ export const totalStackOrdersDone = (order: StackOrder) => {
 };
 
 export const estimatedTotalStack = (order: StackOrder) => {
-  const avgStackPrice = calculateStackAveragePrice(order);
   let estimation = 0;
+  const avgStackPrice = calculateStackAveragePrice(order);
 
   if (order.cowOrders && order.cowOrders.length > 0) {
     estimation =
-      convertedAmount(order.amount, order.buyToken.decimals) / avgStackPrice;
+      convertedAmount(order.amount, order.sellToken.decimals) / avgStackPrice;
   }
 
   return estimation;
