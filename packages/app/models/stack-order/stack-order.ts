@@ -9,6 +9,18 @@ export const totalStackOrdersDone = (order: StackOrder) => {
   return order.cowOrders.length;
 };
 
+export const estimatedTotalStack = (order: StackOrder) => {
+  let estimation = 0;
+  const avgStackPrice = calculateStackAveragePrice(order);
+
+  if (order.cowOrders && order.cowOrders.length > 0) {
+    estimation =
+      convertedAmount(order.amount, order.sellToken.decimals) / avgStackPrice;
+  }
+
+  return estimation;
+};
+
 export const calculateStackAveragePrice = (order: StackOrder) => {
   let totalExecutedBuyAmount = 0;
   let totalExecutedSellAmount = 0;
