@@ -8,14 +8,11 @@ import {
   ChainId,
 } from "@stackly/sdk";
 
-interface GetOrderBase {
+interface GetOrder {
   chainId: ChainId;
   address: string;
   skip?: number;
   first?: number;
-}
-
-interface GetOrder extends GetOrderBase {
   currentTimestamp: number;
 }
 
