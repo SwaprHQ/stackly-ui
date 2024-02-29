@@ -11,6 +11,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -37,11 +38,19 @@ import { ModalId, useModalContext } from "@/contexts";
 interface StacksTableProps {
   stackOrders: StackOrder[];
   refetchStacks: () => void;
+  hasMorePages: boolean;
+  hasLessPages: boolean;
+  nextPage: () => void;
+  previousPage: () => void;
 }
 
 export const StacksTable = ({
   stackOrders,
   refetchStacks,
+  hasMorePages,
+  hasLessPages,
+  nextPage,
+  previousPage,
 }: StacksTableProps) => {
   const [stackOrder, setStackOrder] = useState<StackOrder>();
 
@@ -132,6 +141,26 @@ export const StacksTable = ({
             </TableRow>
           ))}
         </TableBody>
+        <TableFooter>
+          {(hasMorePages || hasLessPages) && (
+            <div className={`flex items-center w-full mx-auto space-x-4 p-4`}>
+              <Button
+                variant="tertiary"
+                iconLeft="caret-left"
+                size="icon"
+                onClick={previousPage}
+                disabled={!hasLessPages}
+              />
+              <Button
+                variant="tertiary"
+                iconLeft="caret-right"
+                size="icon"
+                onClick={nextPage}
+                disabled={!hasMorePages}
+              />
+            </div>
+          )}
+        </TableFooter>
       </Table>
       {stackOrder && (
         <StackModal
