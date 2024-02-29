@@ -94,12 +94,14 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
   const nextPage = (numberOfPages: number) => {
     if (hasMorePages(numberOfPages)) {
       setCurrentPage(currentPage + 1);
+      setLoadingStacks(true);
     }
   };
 
   const previousPage = () => {
     if (hasLessPages) {
       setCurrentPage(currentPage - 1);
+      setLoadingStacks(true);
     }
   };
 
