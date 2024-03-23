@@ -56,7 +56,7 @@ export default function Page() {
   const modalButtons = [
     {
       label: "Confirm Stack",
-      onClick: () => openModal(ModalId.CONFIRM_STACK),
+      onClick: () => alert('Temporarily unavailable. Please try again later. More info on Twitter.'),//openModal(ModalId.CONFIRM_STACK),
     },
     {
       label: "Token Picker",
