@@ -48,6 +48,7 @@ import {
   Token,
   frequencySeconds,
 } from "@/models";
+import { ChainId } from "@stackly/sdk";
 
 interface SelectTokenButtonProps {
   label: string;
@@ -330,6 +331,8 @@ export const Stackbox = () => {
     setFromToken(toToken);
   };
 
+  const isGnosis = chainId === ChainId.GNOSIS;
+
   return (
     <div
       className={cx("max-w-lg mx-auto bg-white shadow-2xl rounded-2xl", {
@@ -553,7 +556,11 @@ export const Stackbox = () => {
             )}
           </div>
         )}
-        {address ? (
+        {isGnosis ? (
+          <Button width="full" size="lg" disabled>
+            Stacks are temporarily unavailbe on Gnosis Chain
+          </Button>
+        ) : address ? (
           <Button
             width="full"
             size="lg"
