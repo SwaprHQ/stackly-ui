@@ -33,7 +33,7 @@ export const ORDER_FACTORY_ADDRESS_LIST: Record<ChainId, string> = {
  */
 export const DCAORDER_SINGLETON_ADDRESS_LIST: Record<ChainId, string> = {
   [ChainId.ETHEREUM]: "0xc97ecbdba20c672c61e27bd657d4dfbd2328f6fa",
-  [ChainId.GNOSIS]: "0xc805e6558757d5aa68acd4eafdccc17ca575c92b",
+  [ChainId.GNOSIS]: "0xC38EE432Ce1ba198041e736F334ef472A56946A9",
 };
 
 /**
