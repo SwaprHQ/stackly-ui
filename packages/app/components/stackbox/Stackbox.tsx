@@ -57,9 +57,11 @@ interface SelectTokenButtonProps {
   onAnimationEnd: AnimationEventHandler<HTMLElement>;
 }
 
-const START_TIME_MINUTES_OFFSET = 10;
-const getDateNowPlus10Mins = () =>
-  new Date().setMinutes(new Date().getMinutes() + START_TIME_MINUTES_OFFSET);
+const PAST_TIME_MINUTES_OFFSET = 10;
+const getDatePlus10Mins = (oldDate: Date) =>
+  new Date(oldDate).setMinutes(
+    new Date(oldDate).getMinutes() + PAST_TIME_MINUTES_OFFSET
+  );
 
 const frequencyOptions = [
   { option: FREQUENCY_OPTIONS.hour, name: "Hour" },
@@ -199,7 +201,9 @@ export const Stackbox = () => {
     const startDate = startDateTime.getTime();
     const endDate = endDateTime.getTime();
     const isEndTimeBeforeStartTime = endDate <= startDate;
-    const isStartTimeInThePast = startDate <= Date.now();
+    const isStartTimeInThePast =
+      startDate <= Date.now() &&
+      new Date(startDate).getMinutes() <= new Date().getMinutes();
     const isTokenAmountZero = tokenAmount === "0";
 
     setShowPastEndDateError(isEndTimeBeforeStartTime);
@@ -585,9 +589,15 @@ export const Stackbox = () => {
           amount={tokenAmount}
           frequency={frequency}
           startTime={
-            isPastStartDate ? new Date(getDateNowPlus10Mins()) : startDateTime
+            isPastStartDate
+              ? new Date(getDatePlus10Mins(startDateTime))
+              : startDateTime
           }
-          endTime={endDateTime}
+          endTime={
+            isPastStartDate
+              ? new Date(getDatePlus10Mins(endDateTime))
+              : endDateTime
+          }
           isOpen={isModalOpen(ModalId.CONFIRM_STACK)}
           closeAction={() => {
             closeModal(ModalId.CONFIRM_STACK);
