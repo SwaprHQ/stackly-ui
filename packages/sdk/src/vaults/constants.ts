@@ -46,10 +46,11 @@ export const COW_SETTLEMENT_ADDRESS_LIST: Record<ChainId, string> = {
   [ChainId.GNOSIS]: "0x9008D19f58AAbD9eD0D60971565AA8510560ab41",
 };
 
+const STACKLY_SUBGRAPH_KEY = "5fdd9e74c326b644f8088068769d72af";
+
 export const SUBGRAPH_ENDPOINT_LIST: Readonly<Record<string, string>> = {
-  [ChainId.ETHEREUM]:
-    "https://api.thegraph.com/subgraphs/name/swaprhq/stackly-ethereum",
-  [ChainId.GNOSIS]: "https://api.thegraph.com/subgraphs/name/swaprhq/stackly",
+  [ChainId.ETHEREUM]: `https://gateway-arbitrum.network.thegraph.com/api/${STACKLY_SUBGRAPH_KEY}/subgraphs/id/5AMWcp9zv791teVUZT7Nm1jYeaLYmF4VYYnhh3JLZDGc`,
+  [ChainId.GNOSIS]: `https://gateway-arbitrum.network.thegraph.com/api/${STACKLY_SUBGRAPH_KEY}/subgraphs/id/29A9NjwmhSgF8UKRvEnRbXSyqFmYnrspyPF69mFAMVGX`,
 };
 
 /**
