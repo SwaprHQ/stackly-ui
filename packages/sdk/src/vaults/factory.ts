@@ -7,7 +7,7 @@ import {
   getCOWProtocolSettlementAddress,
   getDCAOrderSingletonAddress,
 } from "./constants";
-import { ChainId } from "../constants";
+import { ChainId, MULTICALL_ADDRESS } from "../constants";
 import {
   OrderFactory__factory,
   DCAOrder__factory,
@@ -139,7 +139,12 @@ export async function createDCAOrderWithNonce(
     .then((n) => n.chainId)) as number;
   const chainId = rawChainId as ChainId;
 
-  if (chainId !== ChainId.ETHEREUM && chainId !== ChainId.GNOSIS) {
+  const chainNotSupported =
+    chainId !== ChainId.ETHEREUM &&
+    chainId !== ChainId.GNOSIS &&
+    chainId != ChainId.ARBITRUM;
+
+  if (chainNotSupported) {
     throw new Error(`Chain id ${chainId} is not supported`);
   }
 
@@ -160,8 +165,6 @@ export async function createDCAOrderWithNonce(
     nonce
   );
 }
-
-export const MULTICALL_ADDRESS = "0xcA11bde05977b3631167028862bE2a173976CA11";
 
 /**
  * Returns a contract instance for the Multicall contract

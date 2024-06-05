@@ -6,7 +6,6 @@ import { Listbox, Transition } from "@headlessui/react";
 
 import { Button, Icon } from "@/ui";
 import { useNetworkContext, useStackboxFormContext } from "@/contexts";
-import { useAccount, useConnect } from "wagmi";
 
 export const SelectNetwork = () => {
   const { chains, changeNetwork, chainId, selectedChain } = useNetworkContext();
