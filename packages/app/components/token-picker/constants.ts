@@ -1,4 +1,5 @@
 import {
+  arbitrumTokens,
   gnosisTokens,
   mainnetTokens,
   TokenFromTokenlist,
@@ -13,6 +14,13 @@ export const TOKEN_PICKER_COMMON_TOKENS: {
     mainnetTokens.WETH,
     mainnetTokens.WBTC,
     mainnetTokens.RETH,
+  ],
+  [ChainId.ARBITRUM]: [
+    arbitrumTokens.USDC,
+    arbitrumTokens.WETH,
+    arbitrumTokens.WBTC,
+    arbitrumTokens.DAI,
+    arbitrumTokens.ARB,
   ],
   [ChainId.GNOSIS]: [
     gnosisTokens.GNO,

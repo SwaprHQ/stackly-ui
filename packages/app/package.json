@@ -1,7 +1,7 @@
 {
   "name": "app",
-  "version": "0.0.0",
-  "repository": "https://github.com/ImpeccableHQ/stackly-ui/packages/app",
+  "version": "1.0.0",
+  "repository": "https://github.com/SwaprHQ/stackly-ui/",
   "license": "MIT",
   "private": true,
   "scripts": {

@@ -22,6 +22,8 @@ import { TokenFromTokenlist } from "@/models";
 
 import defaultGnosisTokenlist from "public/assets/blockchains/gnosis/tokenlist.json";
 import defaultEthereumTokenlist from "public/assets/blockchains/ethereum/tokenlist.json";
+import defaultArbitrumTokenList from "public/assets/blockchains/arbitrum/tokenlist.json";
+
 import { useNetworkContext } from "./NetworkContext";
 
 export interface TokenWithBalance extends TokenFromTokenlist {
@@ -34,6 +36,7 @@ const DEFAULT_TOKEN_LIST_BY_CHAIN: {
 } = {
   [ChainId.ETHEREUM]: defaultEthereumTokenlist,
   [ChainId.GNOSIS]: defaultGnosisTokenlist,
+  [ChainId.ARBITRUM]: defaultArbitrumTokenList,
 };
 
 const TOKEN_LISTS_BY_CHAIN_URL: { [chainId: number]: string[] } = {
@@ -45,6 +48,11 @@ const TOKEN_LISTS_BY_CHAIN_URL: { [chainId: number]: string[] } = {
   [ChainId.GNOSIS]: [
     "https://tokens.honeyswap.org/",
     "https://files.cow.fi/tokens/CowSwap.json",
+  ],
+  [ChainId.ARBITRUM]: [
+    "https://raw.githubusercontent.com/cowprotocol/token-lists/main/src/public/ArbitrumOneUniswapTokensList.json/",
+    "https://tokens.coingecko.com/arbitrum-one/all.json/",
+    "https://t2crtokens.eth.limo/",
   ],
 };
 

@@ -1,13 +1,5 @@
 [
   {
-    "address": "0x6cAcDB97e3fC8136805a9E7c342d866ab77D0957",
-    "name": "Swapr on Ethereum mainnet",
-    "symbol": "SWPR",
-    "decimals": 18,
-    "logoURI": "/assets/images/tokens/swapr.png",
-    "chainId": 1
-  },
-  {
     "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
     "name": "Wrapped Ether on Ethereum mainnet",
     "symbol": "WETH",
@@ -93,6 +85,14 @@
     "symbol": "rETH",
     "decimals": 18,
     "logoURI": "/assets/images/tokens/reth.png",
+    "chainId": 1
+  },
+  {
+    "address": "0x6cAcDB97e3fC8136805a9E7c342d866ab77D0957",
+    "name": "Swapr on Ethereum mainnet",
+    "symbol": "SWPR",
+    "decimals": 18,
+    "logoURI": "/assets/images/tokens/swapr.png",
     "chainId": 1
   }
 ]
