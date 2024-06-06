@@ -1,8 +1,7 @@
 [
-
   {
     "address": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
-    "name": "Wrapped Ether on Arbitrum network",
+    "name": "Wrapped Ether",
     "symbol": "WETH",
     "decimals": 18,
     "logoURI": "/assets/images/tokens/weth.png",
@@ -10,7 +9,7 @@
   },
   {
     "address": "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
-    "name": "Dai Stablecoin on Arbitrum network",
+    "name": "Dai Stablecoin",
     "symbol": "DAI",
     "decimals": 18,
     "logoURI": "/assets/images/tokens/dai.png",
@@ -18,7 +17,7 @@
   },
   {
     "address": "0x912CE59144191C1204E64559FE8253a0e49E6548",
-    "name": "Arb Token on Arbitrum network",
+    "name": "Arbitrum",
     "symbol": "ARB",
     "decimals": 18,
     "logoURI": "/assets/images/tokens/arb.png",
@@ -26,7 +25,7 @@
   },
   {
     "address": "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
-    "name": "Wrapped BTC on Arbitrum network",
+    "name": "Wrapped BTC",
     "symbol": "WBTC",
     "decimals": 8,
     "logoURI": "/assets/images/tokens/wbtc.png",
@@ -34,7 +33,7 @@
   },
   {
     "address": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
-    "name": "USDC on Arbitrum network",
+    "name": "USD Coin",
     "symbol": "USDC",
     "decimals": 6,
     "logoURI": "/assets/images/tokens/usdc.png",
@@ -42,7 +41,7 @@
   },
   {
     "address": "0xdE903E2712288A1dA82942DDdF2c20529565aC30",
-    "name": "Swapr on Arbitrum network",
+    "name": "Swapr",
     "symbol": "SWPR",
     "decimals": 18,
     "logoURI": "/assets/images/tokens/swapr.png",
@@ -50,14 +49,10 @@
   },
   {
     "address": "0x040d1EdC9569d4Bab2D15287Dc5A4F10F56a56B8",
-    "name": "Balancer on Arbitrum network",
+    "name": "Balancer",
     "symbol": "BAL",
     "decimals": 18,
     "logoURI": "/assets/images/tokens/balancer.png",
     "chainId": 42161
   }
 ]
-
-
-
-
