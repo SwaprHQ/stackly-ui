@@ -49,7 +49,11 @@ const TOKEN_LISTS_BY_CHAIN_URL: { [chainId: number]: string[] } = {
     "https://tokens.honeyswap.org/",
     "https://files.cow.fi/tokens/CowSwap.json",
   ],
-  [ChainId.ARBITRUM]: ["https://t2crtokens.eth.limo/"],
+  [ChainId.ARBITRUM]: [
+    "https://raw.githubusercontent.com/cowprotocol/token-lists/main/src/public/ArbitrumOneUniswapTokensList.json/",
+    "https://tokens.coingecko.com/arbitrum-one/all.json/",
+    "https://t2crtokens.eth.limo/",
+  ],
 };
 
 const TokenListContext = createContext<{

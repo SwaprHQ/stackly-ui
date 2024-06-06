@@ -52,7 +52,7 @@ export const SelectNetwork = () => {
                     <>
                       <div className="flex items-center space-x-2">
                         <ChainIcon size={20} id={id} />
-                        <p>{name}</p>
+                        <p className="text-nowrap">{name}</p>
                       </div>
                       {selected ? (
                         <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-amber-600">
