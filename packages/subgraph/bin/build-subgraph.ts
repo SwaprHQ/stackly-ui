@@ -7,7 +7,7 @@ import { config } from "./config";
  * @see https://thegraph.com/docs/en/developing/supported-networks/
  * for supported chain names
  */
-const SUPPORTED_NETWORKS = ["mainnet", "gnosis"];
+const SUPPORTED_NETWORKS = ["mainnet", "gnosis", "arbitrum-one"];
 
 async function main() {
   // get network from command line
