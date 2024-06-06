@@ -61,7 +61,7 @@ const STACKLY_SUBGRAPH_KEY = "5fdd9e74c326b644f8088068769d72af";
 export const SUBGRAPH_ENDPOINT_LIST: Readonly<Record<string, string>> = {
   [ChainId.ETHEREUM]: `https://gateway-arbitrum.network.thegraph.com/api/${STACKLY_SUBGRAPH_KEY}/subgraphs/id/5AMWcp9zv791teVUZT7Nm1jYeaLYmF4VYYnhh3JLZDGc`,
   [ChainId.GNOSIS]: `https://gateway-arbitrum.network.thegraph.com/api/${STACKLY_SUBGRAPH_KEY}/subgraphs/id/29A9NjwmhSgF8UKRvEnRbXSyqFmYnrspyPF69mFAMVGX`,
-  [ChainId.ARBITRUM]: `https://gateway-arbitrum.network.thegraph.com/api/${STACKLY_SUBGRAPH_KEY}/subgraphs/id/arbitrum`, // todo: change to correct address
+  [ChainId.ARBITRUM]: `https://api.studio.thegraph.com/query/63508/stackly-arbitrum-one/version/latest`, // todo: change to correct address
 };
 
 /**
