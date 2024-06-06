@@ -35,7 +35,7 @@ export const arbitrumTokens = {
   DAI: {
     address: "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
     name: "Dai Stablecoin",
-    symbol: "AI",
+    symbol: "DAI",
     decimals: 18,
     logoURI: "/assets/images/tokens/dai.png",
     chainId: 42161,
