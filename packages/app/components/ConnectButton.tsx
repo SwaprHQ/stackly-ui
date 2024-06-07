@@ -1,6 +1,6 @@
 "use client";
 
-import { ChainId, DAI, WETH, WXDAI } from "@stackly/sdk";
+import { ChainId, WETH, WXDAI } from "@stackly/sdk";
 import { ConnectKitButton } from "connectkit";
 import Image from "next/image";
 import { useBalance, useEnsAvatar } from "wagmi";
@@ -29,7 +29,7 @@ const CustomConnectButton = ({
   const TOKEN_BY_CHAIN: { [chainId: number]: string } = {
     [ChainId.ETHEREUM]: WETH[ChainId.ETHEREUM].address,
     [ChainId.GNOSIS]: WXDAI.address,
-    [ChainId.ARBITRUM]: DAI[ChainId.ARBITRUM].address,
+    [ChainId.ARBITRUM]: WETH[ChainId.ARBITRUM].address,
   };
 
   const { data: balance } = useBalance({

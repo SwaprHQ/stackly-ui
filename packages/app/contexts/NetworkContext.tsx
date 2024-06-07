@@ -10,7 +10,7 @@ import {
 } from "react";
 import type { Chain } from "viem/chains";
 import { ChainId } from "@stackly/sdk";
-import { gnosis } from "wagmi/chains";
+import { arbitrum } from "wagmi/chains";
 import { useAccount, useSwitchChain } from "wagmi";
 
 import { config } from "@/providers/wagmi-config";
@@ -34,9 +34,9 @@ interface NetworkContextProps {
 }
 
 const NetworkContext = createContext<NetworkContextProps>({
-  chainId: gnosis.id,
+  chainId: arbitrum.id,
   changeNetwork: throwNetworkContextError,
-  selectedChain: gnosis,
+  selectedChain: arbitrum,
   setChainId: throwNetworkContextError,
 });
 
@@ -55,8 +55,8 @@ export const NetworkContextProvider = ({
   const [searchParamsChainId, setSearchParamsChainId] =
     useQueryState("chainId");
 
-  const [selectedChain, setSelectedChain] = useState<WagmiChain>(gnosis);
-  const [selectedChainId, setSelectedChainId] = useState<ChainId>(gnosis.id);
+  const [selectedChain, setSelectedChain] = useState<WagmiChain>(arbitrum);
+  const [selectedChainId, setSelectedChainId] = useState<ChainId>(arbitrum.id);
 
   const resetTokensOnSearchParams = useCallback(() => {
     setFromTokenSearchParams(null);
@@ -125,8 +125,8 @@ export const NetworkContextProvider = ({
       }
     }
     // set default chain
-    setSelectedChain(gnosis);
-    setSelectedChainId(gnosis.id);
+    setSelectedChain(arbitrum);
+    setSelectedChainId(arbitrum.id);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isConnected, chains, searchParamsChainId, switchChain]);

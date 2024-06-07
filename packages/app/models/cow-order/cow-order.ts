@@ -13,9 +13,9 @@ const COW_EXPLORER_BASE_URL = "https://explorer.cow.fi";
 const ORDERS_PATH = "orders";
 
 export const COW_API_EXPLORER_URL: Readonly<Record<ChainId, string>> = {
-  [ChainId.ETHEREUM]: `${COW_EXPLORER_BASE_URL}${ORDERS_PATH},`,
-  [ChainId.GNOSIS]: `${COW_EXPLORER_BASE_URL}/gc/${ORDERS_PATH},`,
-  [ChainId.ARBITRUM]: `${COW_EXPLORER_BASE_URL}/arb1/${ORDERS_PATH},`,
+  [ChainId.ETHEREUM]: `${COW_EXPLORER_BASE_URL}/${ORDERS_PATH}/`,
+  [ChainId.GNOSIS]: `${COW_EXPLORER_BASE_URL}/gc/${ORDERS_PATH}/`,
+  [ChainId.ARBITRUM]: `${COW_EXPLORER_BASE_URL}/arb1/${ORDERS_PATH}/`,
 };
 
 export const cowExplorerUrl = (chainId: ChainId, uid: string) =>
