@@ -14,7 +14,7 @@ import {
 import { ChainId, MULTICALL_ADDRESS } from "@stackly/sdk";
 import { Erc20Abi, MulticallAbi } from "@stackly/sdk/abis";
 import { ethers } from "ethers";
-import { formatUnits, hexToBigInt } from "viem";
+import { formatUnits, hexToBigInt, isAddress } from "viem";
 import { useAccount } from "wagmi";
 
 import { RPC_LIST } from "@/constants";
@@ -50,9 +50,8 @@ const TOKEN_LISTS_BY_CHAIN_URL: { [chainId: number]: string[] } = {
     "https://files.cow.fi/tokens/CowSwap.json",
   ],
   [ChainId.ARBITRUM]: [
-    "https://raw.githubusercontent.com/cowprotocol/token-lists/main/src/public/ArbitrumOneUniswapTokensList.json/",
-    "https://tokens.coingecko.com/arbitrum-one/all.json/",
-    "https://t2crtokens.eth.limo/",
+    "https://raw.githubusercontent.com/cowprotocol/token-lists/main/src/public/ArbitrumOneUniswapTokensList.json",
+    "https://tokens.coingecko.com/arbitrum-one/all.json",
   ],
 };
 
@@ -64,7 +63,7 @@ const TokenListContext = createContext<{
   getTokenFromList: (tokenAddress: string) => TokenFromTokenlist | null;
 }>({
   isLoading: true,
-  tokenList: DEFAULT_TOKEN_LIST_BY_CHAIN[ChainId.ETHEREUM],
+  tokenList: DEFAULT_TOKEN_LIST_BY_CHAIN[ChainId.ARBITRUM],
   getTokenLogoURL: (tokenAddress: string) => "#",
   getTokenFromList: (tokenAddress: string) => null,
 });
@@ -75,7 +74,7 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
   const abortControllerRef = useRef(new AbortController());
 
   const [tokenList, setTokenList] = useState<TokenFromTokenlist[]>(
-    defaultGnosisTokenlist
+    DEFAULT_TOKEN_LIST_BY_CHAIN[chainId]
   );
   const [tokenListWithBalances, setTokenListWithBalances] =
     useState<TokenWithBalance[]>();
@@ -159,6 +158,7 @@ export const TokenListProvider = ({ children }: PropsWithChildren) => {
           const tokenUniqueAddressesSet = new Set<string>();
           const tokenListNoDuplicates = mergedTokenlist.filter((token) => {
             if (
+              isAddress(token.address) &&
               token.chainId === chainId &&
               !tokenUniqueAddressesSet.has(token.address.toLowerCase())
             ) {
