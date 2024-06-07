@@ -1,30 +1,22 @@
 import { ChainId } from "@stackly/sdk";
 import { createConfig, fallback, http } from "wagmi";
 import { getDefaultConfig } from "connectkit";
-import { gnosis, mainnet } from "wagmi/chains";
+import { gnosis, mainnet, arbitrum } from "wagmi/chains";
 import { safe } from "wagmi/connectors";
 
 import { RPC_LIST } from "@/constants";
 
-const chainJsonRpc: Record<number, { http: string }> = {
-  [ChainId.GNOSIS]: {
-    http: RPC_LIST[ChainId.GNOSIS],
-  },
-  [ChainId.ETHEREUM]: {
-    http: RPC_LIST[ChainId.ETHEREUM],
-  },
-};
-
 const defaultConfig = getDefaultConfig({
-  chains: [gnosis, mainnet],
+  chains: [gnosis, mainnet, arbitrum],
   walletConnectProjectId:
     process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || "",
   transports: {
     [mainnet.id]: fallback([http(RPC_LIST[ChainId.ETHEREUM]), http()]),
     [gnosis.id]: fallback([http(RPC_LIST[ChainId.GNOSIS]), http()]),
+    [arbitrum.id]: fallback([http(RPC_LIST[ChainId.ARBITRUM]), http()]),
   },
   appName: "Stackly",
-  appDescription: "Stack crypto over time.",
+  appDescription: "Empower your portfolio with DCA.",
   appUrl: "https://stackly.app",
   appIcon: "https://stackly.app/favicon.ico",
   ssr: true,
