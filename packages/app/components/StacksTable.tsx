@@ -69,7 +69,7 @@ export const StacksTable = ({
             <TableHead>Stack</TableHead>
             <TableHead className="text-right">Used funds</TableHead>
             <TableHead className="text-right">Avg. Buy Price</TableHead>
-            <TableHead className="text-right">Progress</TableHead>
+            <TableHead className="text-right">Orders</TableHead>
             <TableHead className="text-right"></TableHead>
           </TableRow>
         </TableHeader>
