@@ -207,7 +207,10 @@ export const ConfirmStackModal = ({
               <span className="text-em-high">
                 {amountPerOrder} {fromToken.symbol}
               </span>
-              , every {FREQUENCY_OPTIONS[frequency]}
+              <br />
+              <span className="text-em-high">
+                every {FREQUENCY_OPTIONS[frequency]}
+              </span>
             </TitleText>
           </div>
           <div className="w-full p-5 space-y-2 bg-surface-25 rounded-xl">
@@ -220,15 +223,13 @@ export const ConfirmStackModal = ({
               <BodyText>{format(endTime, "dd MMM yy, HH:mm")}</BodyText>
             </div>
             <div className="flex items-center justify-between">
-              <BodyText className="text-em-med">
-                Total funds to be used
-              </BodyText>
+              <BodyText className="text-em-med">Total funds</BodyText>
               <BodyText className="text-end">
                 {amount} {fromToken.symbol}
               </BodyText>
             </div>
             <div className="flex items-center justify-between">
-              <BodyText className="text-em-med">Stack fee</BodyText>
+              <BodyText className="text-em-med">Fee</BodyText>
               <BodyText>0.25%</BodyText>
             </div>
           </div>
