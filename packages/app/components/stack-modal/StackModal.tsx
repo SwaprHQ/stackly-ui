@@ -212,11 +212,11 @@ export const StackModal = ({
             </div>
           )}
           <div className="px-4 space-y-4 md:px-6">
+            <StackDigest stackOrder={stackOrder} />
             <TitleText size={2} weight="bold">
               Orders
             </TitleText>
             <StackProgress stackOrder={stackOrder} />
-            <StackInfo stackOrder={stackOrder} />
             {totalStackOrdersDone(stackOrder) > 0 && (
               <StackOrdersTable stackOrder={stackOrder} />
             )}
@@ -289,7 +289,7 @@ export const StackModal = ({
   );
 };
 
-const StackInfo = ({ stackOrder }: StackOrderProps) => (
+const StackDigest = ({ stackOrder }: StackOrderProps) => (
   <div className="flex flex-col justify-between gap-2 px-4 py-3 md:px-6 md:items-center md:flex-row bg-surface-25 rounded-2xl">
     <FromToStackTokenPair
       fromToken={stackOrder.sellToken}
