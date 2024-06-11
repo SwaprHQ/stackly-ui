@@ -7,7 +7,7 @@ Stackly is a Next.js Cloudflare mono repo project that implements Dollar Cost Av
 Before you can run this project, make sure you have the following software installed:
 
 - Node.js 18 or higher
-- Yarn
+- Bun
 - Git
 
 ## Getting Started
@@ -24,14 +24,14 @@ git clone https://github.com/SwaprHQ/stackly-ui.git
 
 ```
 cd stackly-ui
-yarn install
-yarn build:dev
+bun install
+bun build:dev
 ```
 
 3. Start the development server:
 
 ```
-yarn dev
+bun dev
 ```
 
 The development server will start at http://localhost:3000.
@@ -45,8 +45,8 @@ Make sure that, `bin/config.ts` is updated to reflect the latest changes for con
 To deploy the Subgraph, you need to run the following commands:
 
 ```
-yarn build
-yarn deploy
+bun build
+bun deploy
 ```
 
 ## Deployment
@@ -54,7 +54,7 @@ yarn deploy
 To deploy the Stackly project to production, you can use the following command:
 
 ```
-yarn build
+bun build
 ```
 
 This command will create a production build of the project in the `dist` directory. You can then deploy the contents of this directory to your server or hosting provider.
@@ -69,8 +69,8 @@ This command will create a production build of the project in the `dist` directo
      - CoW Protcol's settlement address
    - Add that information in `packages\sdk\src\vaults\constants.ts`
    - `cd packages/sdk`
-   - `yarn typechain`
-   - `yarn build`
+   - `bun typechain`
+   - `bun build`
 2. Update the Subraph.
    - Go to `packages\subgraph\bin\config.ts` and update the config object with the Factory contract `address` and `startBlock`
    - Go to `packages\subgraph\bin\build-subgraph.ts` and update the `SUPPORTED_NETWORKS` variable
@@ -107,13 +107,13 @@ React Context checks values using simple equality (`==`). For that reason, we ne
 
 - Error fetching `generated/contracts`.
 
-  This may happen due to app build failures. Try deleting `node_modules`, then re-install and rebuild the app before launching it again. Note that if you don't rebuild the app (`yarn build:app`) you may get some errors due to generated code during the build step not being present.
+  This may happen due to app build failures. Try deleting `node_modules`, then re-install and rebuild the app before launching it again. Note that if you don't rebuild the app (`bun build:app`) you may get some errors due to generated code during the build step not being present.
 
   ```bash
   rm -rf node_modules
-  yarn install
-  yarn build:app
-  yarn dev
+  bun install
+  bun build:app
+  bun dev
   ```
 
 ## Contributing
@@ -123,8 +123,8 @@ We welcome contributions to Stackly! To get started, fork this repository and cr
 Before submitting a pull request, make sure that your code passes the linting and formatting checks:
 
 ```
-yarn lint
-yarn typecheck
+bun lint
+bun typecheck
 ```
 
 ## License
