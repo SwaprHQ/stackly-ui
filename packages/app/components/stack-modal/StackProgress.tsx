@@ -11,6 +11,7 @@ import {
   totalStackOrdersDone,
   totalFundsUsed,
   estimatedTotalStack,
+  stackIsComplete,
 } from "@/models/stack-order";
 import { formatTokenValue } from "@/utils/token";
 
@@ -69,7 +70,12 @@ const OrdersExecuted = ({ stackOrder }: StackOrderProps) => {
       </BodyText>
       <BodyText size="responsive">
         {totalStackOrdersDone(stackOrder)}{" "}
-        <span className="text-xs">out of</span> {stackOrder.orderSlots.length}
+        {!stackIsComplete(stackOrder) && (
+          <>
+            <span className="text-xs">out of </span>
+            {stackOrder.orderSlots.length}
+          </>
+        )}
       </BodyText>
     </div>
   );
