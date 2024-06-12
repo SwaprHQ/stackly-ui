@@ -8,13 +8,6 @@ dist
 .DS_Store
 tsconfig.tsbuildinfo
 
-.yarn/*
-!.yarn/patches
-!.yarn/releases
-!.yarn/plugins
-!.yarn/sdks
-!.yarn/versions
-
 .env.local
 .env
 
