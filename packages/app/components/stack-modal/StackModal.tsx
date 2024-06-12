@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import { cx } from "class-variance-authority";
 
-import { orderPairSymbolsText, totalOrderSlotsDone } from "@/models/order";
+import { orderPairSymbolsText } from "@/models/order";
 import {
   Modal,
   ModalFooter,
@@ -13,40 +13,40 @@ import {
   ModalContent,
   BodyText,
   ModalHeader,
-  TitleText,
   ModalBaseProps,
   DialogContent,
   DialogFooterActions,
   Dialog,
 } from "@/ui";
-import {
-  formatFrequencyHours,
-  formatTimestampToDateWithTime,
-} from "@/utils/datetime";
+
 import {
   StackOrder,
   StackOrderProps,
   calculateStackAveragePrice,
-  totalStackOrdersDone,
   totalStacked,
   totalFundsUsed,
   stackIsFinishedWithFunds,
   stackIsComplete,
   stackRemainingFunds,
 } from "@/models/stack-order";
-import { formatTokenValue } from "@/utils/token";
-import { getDCAOrderContract } from "@stackly/sdk";
-import { getExplorerLink } from "@/utils/transaction";
-import { useEthersSigner } from "@/utils/ethers";
+
 import {
   DialogConfirmTransactionLoading,
   FromToStackTokenPair,
   TokenLogoPair,
+  TransactionLink,
 } from "@/components";
-import { StackProgress } from "@/components/stack-modal/StackProgress";
-import { StackOrdersTable } from "@/components/stack-modal/StackOrdersTable";
+
+import { StackOrdersProgress } from "@/components/stack-modal/StackOrdersProgress";
+import { StackFrequencyAndDates } from "@/components/stack-modal/StackFrequencyAndDates";
+
+import { formatTokenValue } from "@/utils/token";
+import { getDCAOrderContract } from "@stackly/sdk";
+import { getExplorerLink } from "@/utils/transaction";
+import { useEthersSigner } from "@/utils/ethers";
+
 import { ModalId, useModalContext, useNetworkContext } from "@/contexts";
-import { TransactionLink } from "./TransactionLink";
+
 import { Transaction } from "@/models/stack";
 
 interface StackModalProps extends ModalBaseProps {
@@ -74,11 +74,6 @@ export const StackModal = ({
   const { closeModal, isModalOpen, openModal } = useModalContext();
 
   const [cancellationTx, setCancellationTx] = useState<Transaction>();
-
-  const orderSlots = stackOrder.orderSlots;
-  const firstSlot = orderSlots[0];
-  const lastSlot = orderSlots[orderSlots.length - 1];
-  const nextSlot = orderSlots[totalOrderSlotsDone(stackOrder)];
 
   const stackRemainingFundsWithTokenText = `${stackRemainingFunds(
     stackOrder
@@ -183,43 +178,15 @@ export const StackModal = ({
           </div>
         </ModalHeader>
         <ModalContent className="px-0 space-y-4 md:px-0">
-          <div className="grid grid-cols-2 gap-5 px-4 md:px-6 gap-x-8 md:grid-cols-4">
-            <StackDetail title="Starts on">
-              {formatTimestampToDateWithTime(firstSlot)}
-            </StackDetail>
-            <StackDetail title="Ends on">
-              {formatTimestampToDateWithTime(lastSlot)}
-            </StackDetail>
-            <StackDetail title="Frequency">
-              Every {formatFrequencyHours(Number(stackOrder.interval))}
-            </StackDetail>
-            <StackDetail title="Next order">
-              {stackIsComplete(stackOrder)
-                ? "Complete"
-                : stackIsFinishedWithFunds(stackOrder)
-                ? "Finished with funds"
-                : stackOrder.cancelledAt
-                ? "Cancelled"
-                : formatTimestampToDateWithTime(nextSlot)}
-            </StackDetail>
-          </div>
+          <StackFrequencyAndDates stackOrder={stackOrder} />
           <div className="w-full my-4 border-b border-surface-50"></div>
-          {stackIsFinishedWithFunds(stackOrder) && (
-            <div className="px-4 md:px-6">
-              <HasRemainingFundsAlertMessage
-                remainingFundsWithSymbol={stackRemainingFundsWithTokenText}
-              />
-            </div>
-          )}
+          <WarningHasRemainingFunds
+            stackOrder={stackOrder}
+            stackRemainingFundsWithTokenText={stackRemainingFundsWithTokenText}
+          />
           <div className="px-4 space-y-4 md:px-6">
             <StackDigest stackOrder={stackOrder} />
-            <TitleText size={2} weight="bold">
-              Orders
-            </TitleText>
-            <StackProgress stackOrder={stackOrder} />
-            {totalStackOrdersDone(stackOrder) > 0 && (
-              <StackOrdersTable stackOrder={stackOrder} />
-            )}
+            <StackOrdersProgress stackOrder={stackOrder} />
           </div>
         </ModalContent>
         <ModalFooter
@@ -307,29 +274,23 @@ const StackDigest = ({ stackOrder }: StackOrderProps) => (
   </div>
 );
 
-const HasRemainingFundsAlertMessage = ({
-  remainingFundsWithSymbol,
-}: {
-  remainingFundsWithSymbol: string;
-}) => (
-  <div className="p-3 text-center rounded-lg bg-danger-75">
-    <BodyText className="text-em-med">
-      This contract has {remainingFundsWithSymbol} remaining funds.
-    </BodyText>
-  </div>
-);
+interface WarningHasRemainingFundsProps extends StackOrderProps {
+  stackRemainingFundsWithTokenText: string;
+}
 
-const StackDetail = ({
-  title,
-  children,
-}: {
-  title: string;
-  children: ReactNode;
-}) => (
-  <div className="space-y-1">
-    <BodyText size={1} className="text-em-low">
-      {title}
-    </BodyText>
-    <BodyText size={1}>{children}</BodyText>
-  </div>
-);
+const WarningHasRemainingFunds = ({
+  stackOrder,
+  stackRemainingFundsWithTokenText,
+}: WarningHasRemainingFundsProps) => {
+  if (!stackIsFinishedWithFunds(stackOrder)) return;
+
+  return (
+    <div className="px-4 md:px-6">
+      <div className="p-3 text-center rounded-lg bg-danger-75">
+        <BodyText className="text-em-med">
+          This contract has {stackRemainingFundsWithTokenText} remaining funds.
+        </BodyText>
+      </div>
+    </div>
+  );
+};
