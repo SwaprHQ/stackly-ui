@@ -44,7 +44,10 @@ export const StackOrdersTable = ({ stackOrder }: StackOrderProps) => {
         <TableHeader>
           <TableRow>
             <TableHead className="py-1 md:table-cell">
-              <BodyText size={1}>Transaction</BodyText>
+              <BodyText size={1}>
+                <span className="hidden md:inline-block">Transaction</span>
+                <span className="md:hidden">Tx</span>
+              </BodyText>
             </TableHead>
             <TableHead>
               <BodyText size={1}>Time</BodyText>
@@ -127,7 +130,12 @@ const TableCowBody = ({
                   target="_blank"
                   href={cowExplorerUrl(chainId, cowOrder.uid)}
                 >
-                  {addressShortner(cowOrder.uid)}
+                  <span className="md:hidden">
+                    {addressShortner(cowOrder.uid, 2)}
+                  </span>
+                  <span className="hidden md:inline-block">
+                    {addressShortner(cowOrder.uid)}
+                  </span>
                 </Link>
               </BodyText>
             </TableCell>

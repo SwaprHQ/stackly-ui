@@ -4,7 +4,7 @@ import {
   totalOrderSlotsDone,
 } from "@/models/order";
 import { OrdersProgressBar } from "@/components/OrdersProgressBar";
-import { BodyText } from "@/ui";
+import { BodyText, TitleText } from "@/ui";
 import { TokenIcon } from "@/components/TokenIcon";
 import {
   StackOrderProps,
@@ -14,26 +14,37 @@ import {
   stackIsComplete,
 } from "@/models/stack-order";
 import { formatTokenValue } from "@/utils/token";
+import { StackOrdersTable } from "@/components/stack-modal/StackOrdersTable";
 
-export const StackProgress = ({ stackOrder }: StackOrderProps) => (
-  <div className="space-y-2">
-    <div className="flex flex-col justify-between space-y-1 md:space-y-0 md:items-center md:flex-row">
-      <OrdersExecuted stackOrder={stackOrder} />
-      <div className="flex items-center space-x-1">
-        <BodyText size="responsive" className="text-em-low">
-          Total funds used:{" "}
-          <span className="text-em-high">
-            {formatTokenValue(totalFundsUsed(stackOrder), 2)}{" "}
-            <span className="text-xs">of</span>{" "}
-            {totalFundsAmountWithTokenText(stackOrder)}
-          </span>
-        </BodyText>
-        <TokenIcon size="xs" token={stackOrder.sellToken} />
+export const StackOrdersProgress = ({ stackOrder }: StackOrderProps) => (
+  <>
+    <div>
+      <TitleText size={2} weight="bold" className="mb-2">
+        Orders
+      </TitleText>
+      <div className="space-y-2">
+        <div className="flex flex-col justify-between space-y-1 md:space-y-0 md:items-center md:flex-row">
+          <OrdersExecuted stackOrder={stackOrder} />
+          <div className="flex items-center space-x-1">
+            <BodyText size="responsive" className="text-em-low">
+              Total funds used:{" "}
+              <span className="text-em-high">
+                {formatTokenValue(totalFundsUsed(stackOrder), 2)}{" "}
+                <span className="text-xs">of</span>{" "}
+                {totalFundsAmountWithTokenText(stackOrder)}
+              </span>
+            </BodyText>
+            <TokenIcon size="xs" token={stackOrder.sellToken} />
+          </div>
+        </div>
+        <OrdersProgressBar stackOrder={stackOrder} />
+        <TotalStackEstimationText stackOrder={stackOrder} />
       </div>
     </div>
-    <OrdersProgressBar stackOrder={stackOrder} />
-    <TotalStackEstimationText stackOrder={stackOrder} />
-  </div>
+    {totalStackOrdersDone(stackOrder) > 0 && (
+      <StackOrdersTable stackOrder={stackOrder} />
+    )}
+  </>
 );
 
 const TotalStackEstimationText = ({ stackOrder }: StackOrderProps) => {
