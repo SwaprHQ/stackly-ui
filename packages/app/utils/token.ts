@@ -1,5 +1,5 @@
-export const addressShortner = (address: string) =>
-  address.slice(0, 4) + "..." + address.slice(-4);
+export const addressShortner = (address: string, elements: number = 4) =>
+  address.slice(0, elements) + "..." + address.slice(-elements);
 
 export const formatTokenValue = (
   value: number | string,

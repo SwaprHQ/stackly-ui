@@ -22,15 +22,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 🧑🏻‍💻 Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 🥷 Setup node and bun
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21.1.0
       - uses: oven-sh/setup-bun@v1
         with:
-          node-version: lts/hydrogen
-          check-latest: true
-
+          bun-version: latest
       - name: 🎪 Install dependencies
         run: bun install --immutable
 
