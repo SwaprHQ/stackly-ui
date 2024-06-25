@@ -18,6 +18,35 @@ import { STACKLY_APP_URL } from "@/constants";
 export const HeroBanner = () => {
   return (
     <section className="px-6 pt-16 border-b border-gray-100 md:pt-20">
+      <div className="flex items-center px-3 py-2 mx-auto mb-3 space-x-2 border border-surface-75 rounded-3xl w-fit hover:border-primary-300">
+        <p className="text-xs text-em-med">Live on:</p>
+        <div className="flex items-center space-x-1">
+          <Image
+            src="/assets/images/ethereum-avatar.svg"
+            alt="ethereum logo"
+            width={20}
+            height={20}
+            title="live on ethereum mainnet network"
+            className="hover:scale-125"
+          />
+          <Image
+            src="/assets/images/gnosis-avatar.svg"
+            alt="gnosis logo"
+            width={20}
+            height={20}
+            title="live on gnosis network"
+            className="hover:scale-125"
+          />
+          <Image
+            src="/assets/images/arbitrum-avatar.svg"
+            alt="arbitrum logo"
+            width={20}
+            height={20}
+            title="live on arbitrum one network"
+            className="hover:scale-125"
+          />
+        </div>
+      </div>
       <div className="space-y-4 text-center md:space-y-6 ">
         <DisplayText>Empower your portfolio</DisplayText>
         <HeadingText className="!font-medium text-em-med max-w-2xl mx-auto">
