@@ -24,6 +24,7 @@ export const EVENTS = {
       WHAT_IS_STACK_CLICK: `${FAQ_WHAT_IS}-stack`,
       WHAT_IS_DCA: `${FAQ_WHAT_IS}-dca`,
       WHY_TO_DCA: `${FAQ}-why-to-dca`,
+      NETWORKS_AVAILABLE: `${FAQ}-networks-available`,
     },
     HERO_BANNER: {
       STACK_NOW_CLICK: `${LAUNCH_APP}-hero-banner`,
