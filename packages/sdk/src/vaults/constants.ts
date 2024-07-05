@@ -56,12 +56,13 @@ export const COW_SETTLEMENT_ADDRESS_LIST: Record<ChainId, string> = {
   [ChainId.ARBITRUM]: COW_SETTLEMENT_ADDRESS,
 };
 
-const STACKLY_SUBGRAPH_KEY = "5fdd9e74c326b644f8088068769d72af";
+const STACKLY_SUBGRAPH_API_KEY =
+  process.env.STACKLY_SUBGRAPH_API_KEY ?? "e7b7ff845e506590498946cd6bf83bf6";
 
 export const SUBGRAPH_ENDPOINT_LIST: Readonly<Record<string, string>> = {
-  [ChainId.ETHEREUM]: `https://gateway-arbitrum.network.thegraph.com/api/${STACKLY_SUBGRAPH_KEY}/subgraphs/id/5AMWcp9zv791teVUZT7Nm1jYeaLYmF4VYYnhh3JLZDGc`,
-  [ChainId.GNOSIS]: `https://gateway-arbitrum.network.thegraph.com/api/${STACKLY_SUBGRAPH_KEY}/subgraphs/id/29A9NjwmhSgF8UKRvEnRbXSyqFmYnrspyPF69mFAMVGX`,
-  [ChainId.ARBITRUM]: `https://api.studio.thegraph.com/query/63508/stackly-arbitrum-one/version/latest`, // todo: change to correct address
+  [ChainId.ETHEREUM]: `https://gateway-arbitrum.network.thegraph.com/api/${STACKLY_SUBGRAPH_API_KEY}/subgraphs/id/35bL4ohk2tnXqDnrp7NSyAKW8bbUmGDapyfe2ddCxV8H`,
+  [ChainId.GNOSIS]: `https://gateway-arbitrum.network.thegraph.com/api/${STACKLY_SUBGRAPH_API_KEY}/subgraphs/id/72Lysd4A2kZFqMqJtPQk3zMEEBExFfXeZbkJGTx8phRL`,
+  [ChainId.ARBITRUM]: `https://gateway-arbitrum.network.thegraph.com/api/${STACKLY_SUBGRAPH_API_KEY}/subgraphs/id/FNmemHB6tUh7eHmJnBFKYFf27U5GUAzXnatry4ZbrF7f`,
 };
 
 /**
