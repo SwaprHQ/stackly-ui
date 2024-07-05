@@ -67,4 +67,11 @@ export const FAQ_QUESTIONS_AND_ANSWERS: FaqQa[] = [
     ],
     trackEventName: EVENTS.SECTIONS.FAQ.HOW_CANCEL_STACK,
   },
+  {
+    question: "Which networks is Stackly available?",
+    answers: [
+      `Currently Stackly supports Arbitrum, Gnosis and Ethereum mainnet networks.`,
+    ],
+    trackEventName: EVENTS.SECTIONS.FAQ.NETWORKS_AVAILABLE,
+  },
 ];
