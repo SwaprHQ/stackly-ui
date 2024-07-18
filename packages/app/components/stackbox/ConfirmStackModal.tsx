@@ -87,11 +87,9 @@ export const ConfirmStackModal = ({
   const [stackCreationTx, setStackCreationTx] = useState<Transaction>();
 
   const rawAmount = parseUnits(amount, fromToken.decimals);
-  const estimatedNumberOfOrders =
-    Math.floor(
-      (endTime.getTime() - startTime.getTime()) / frequencySeconds[frequency]
-    ) + INITAL_ORDER;
-
+  const estimatedNumberOfOrders = Math.floor(
+    (endTime.getTime() - startTime.getTime()) / frequencySeconds[frequency]
+  );
   const amountPerOrder = (parseFloat(amount) / estimatedNumberOfOrders).toFixed(
     2
   );
