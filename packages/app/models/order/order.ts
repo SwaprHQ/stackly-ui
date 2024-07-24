@@ -18,8 +18,12 @@ export const totalOrderSlotsDone = (order: Order) => {
   }, 0);
 };
 
-export const allOrderSlotsDone = (order: Order) =>
-  totalOrderSlotsDone(order) === order.orderSlots.length;
+export const allOrderSlotsDone = (order: Order) => {
+  const orderSlotsLength = order.orderSlots.length;
+  if (!orderSlotsLength) return totalOrderSlotsDone(order) === 1;
+
+  return totalOrderSlotsDone(order) === orderSlotsLength;
+};
 
 export const totalFundsAmount = (order: Order) => {
   const total =
