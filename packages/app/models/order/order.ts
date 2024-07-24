@@ -3,6 +3,15 @@ import { currentTimestampInSeconds } from "@/utils/datetime";
 import { Order } from "@stackly/sdk";
 
 export const totalOrderSlotsDone = (order: Order) => {
+  /**
+   * An order that doesn't have slots happens when we have a 1 slot order
+   * that has start and end date in a timeframe equals to or less than 60'.
+   * As it's not possible to use the slot timestamp, we use the start time
+   * for this 1-time order.
+   */
+  if (!order.orderSlots.length)
+    return order.startTime < currentTimestampInSeconds ? 1 : 0;
+
   return order.orderSlots.reduce((count, orderTimestamp) => {
     if (Number(orderTimestamp) < currentTimestampInSeconds) return ++count;
     return count;
