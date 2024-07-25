@@ -195,12 +195,14 @@ const OrdersProgressText = ({ stackOrder }: StackOrderProps) => {
         <BodyText className="text-em-high">
           {totalStackOrdersDone(stackOrder).toString()}
         </BodyText>
-        <BodyText className="text-em-low">{`/ ${stackOrder.orderSlots.length} orders`}</BodyText>
+        <BodyText className="text-em-low">{`/ ${
+          stackOrder.orderSlots.length || stackOrder.cowOrders.length
+        } orders`}</BodyText>
       </>
     );
   }
 
-  const firtTimeSlot = Number(stackOrder.orderSlots[0]);
+  const firtTimeSlot = Number(stackOrder.orderSlots[0] ?? stackOrder.startTime);
   const date = new Date(firtTimeSlot * 1000); // Convert seconds to milliseconds
   const distanceToNow = formatDistanceToNow(date, { addSuffix: true });
 
