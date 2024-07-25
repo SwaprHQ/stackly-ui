@@ -105,7 +105,7 @@ export const Stackbox = () => {
 
   const [showTokenAmountError, setShowTokenAmountError] = useState(false);
   const [showPastEndDateError, setShowPastEndDateError] = useState(false);
-  const [isPastStartDate, setIsPastStartDate] = useState(false);
+  const [isNearStartDate, setIsNearStartDate] = useState(false);
   const [showFromTokenError, setShowFromTokenError] = useState(false);
   const [showToTokenError, setShowToTokenError] = useState(false);
   const [showInsufficentBalanceError, setShowInsufficentBalanceError] =
@@ -199,11 +199,11 @@ export const Stackbox = () => {
     const startDate = startDateTime.getTime();
     const endDate = endDateTime.getTime();
     const isEndTimeBeforeStartTime = endDate <= startDate;
-    const isStartTimeInThePast = startDate <= Date.now();
+    const isStartTimeNearNow = startDate <= getDateNowPlus10Mins();
     const isTokenAmountZero = tokenAmount === "0";
 
     setShowPastEndDateError(isEndTimeBeforeStartTime);
-    setIsPastStartDate(isStartTimeInThePast);
+    setIsNearStartDate(isStartTimeNearNow);
 
     if (!fromToken || !toToken) {
       if (!fromToken) setShowFromTokenError(true);
@@ -585,7 +585,7 @@ export const Stackbox = () => {
           amount={tokenAmount}
           frequency={frequency}
           startTime={
-            isPastStartDate ? new Date(getDateNowPlus10Mins()) : startDateTime
+            isNearStartDate ? new Date(getDateNowPlus10Mins()) : startDateTime
           }
           endTime={endDateTime}
           isOpen={isModalOpen(ModalId.CONFIRM_STACK)}
