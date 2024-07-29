@@ -50,7 +50,7 @@ export const StackFrequencyAndDates = ({ stackOrder }: StackOrderProps) => {
           ? "Finished with funds"
           : stackOrder.cancelledAt
           ? "Cancelled"
-          : formatTimestampToDateWithTime(nextSlot)}
+          : formatTimestampToDateWithTime(hasSlots ? nextSlot : firstSlot)}
       </StackDetail>
     </div>
   );
