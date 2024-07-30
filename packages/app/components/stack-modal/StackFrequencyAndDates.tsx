@@ -25,8 +25,11 @@ const StackDetail = ({
 
 export const StackFrequencyAndDates = ({ stackOrder }: StackOrderProps) => {
   const orderSlots = stackOrder.orderSlots;
-  const firstSlot = orderSlots[0];
-  const lastSlot = orderSlots[orderSlots.length - 1];
+  const hasSlots = Boolean(orderSlots.length);
+  const firstSlot = hasSlots ? orderSlots[0] : stackOrder.startTime;
+  const lastSlot = hasSlots
+    ? orderSlots[orderSlots.length - 1]
+    : stackOrder.endTime;
   const nextSlot = orderSlots[totalOrderSlotsDone(stackOrder)];
 
   return (
@@ -47,7 +50,7 @@ export const StackFrequencyAndDates = ({ stackOrder }: StackOrderProps) => {
           ? "Finished with funds"
           : stackOrder.cancelledAt
           ? "Cancelled"
-          : formatTimestampToDateWithTime(nextSlot)}
+          : formatTimestampToDateWithTime(hasSlots ? nextSlot : firstSlot)}
       </StackDetail>
     </div>
   );

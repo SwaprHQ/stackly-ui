@@ -86,5 +86,21 @@
     "decimals": 6,
     "logoURI": "/assets/images/tokens/usdc.png",
     "chainId": 100
+  },
+  {
+    "address": "0xcE11e14225575945b8E6Dc0D4F2dD4C570f79d9f",
+    "name": "Autonolas",
+    "symbol": "OLAS",
+    "decimals": 18,
+    "logoURI": "/assets/images/tokens/olas.png",
+    "chainId": 100
+  },
+  {
+    "address": "0x8CCd277Cc638E7e17F8100cE583cBcEf42007Dca",
+    "name": "Shutter Token",
+    "symbol": "SHU",
+    "decimals": 18,
+    "logoURI": "/assets/images/tokens/shutter.png",
+    "chainId": 100
   }
 ]

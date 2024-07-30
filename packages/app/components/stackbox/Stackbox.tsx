@@ -105,7 +105,7 @@ export const Stackbox = () => {
 
   const [showTokenAmountError, setShowTokenAmountError] = useState(false);
   const [showPastEndDateError, setShowPastEndDateError] = useState(false);
-  const [isPastStartDate, setIsPastStartDate] = useState(false);
+  const [isNearStartDate, setIsNearStartDate] = useState(false);
   const [showFromTokenError, setShowFromTokenError] = useState(false);
   const [showToTokenError, setShowToTokenError] = useState(false);
   const [showInsufficentBalanceError, setShowInsufficentBalanceError] =
@@ -199,11 +199,11 @@ export const Stackbox = () => {
     const startDate = startDateTime.getTime();
     const endDate = endDateTime.getTime();
     const isEndTimeBeforeStartTime = endDate <= startDate;
-    const isStartTimeInThePast = startDate <= Date.now();
+    const isStartTimeNearNow = startDate <= getDateNowPlus10Mins();
     const isTokenAmountZero = tokenAmount === "0";
 
     setShowPastEndDateError(isEndTimeBeforeStartTime);
-    setIsPastStartDate(isStartTimeInThePast);
+    setIsNearStartDate(isStartTimeNearNow);
 
     if (!fromToken || !toToken) {
       if (!fromToken) setShowFromTokenError(true);
@@ -506,53 +506,57 @@ export const Stackbox = () => {
             </div>
           </div>
         </div>
-        {fromToken && toToken && tokenAmount && parseFloat(tokenAmount) > 0 && (
-          <div
-            className={cx(
-              "p-2 text-center bg-surface-25 text-em-low rounded-xl",
-              {
-                "!bg-primary-50 flex items-center justify-between pr-3":
-                  isStrategySelected,
-              }
-            )}
-          >
-            {isStrategySelected ? (
-              <>
-                <div className="flex">
-                  <Icon className="mr-2" name="sparkles" size={14} />
-                  <StackDetailsTileText
-                    amountPerOrder={amountPerOrder}
-                    frequency={
-                      FREQUENCY_OPTIONS[frequency as FREQUENCY_OPTIONS]
-                    }
-                    toTokenSymbol={toToken.symbol}
-                    fromTokenSymbol={fromToken.symbol}
-                    timeLength={formatDistance(endDateTime, startDateTime)}
-                  />
-                </div>
-                <Button
-                  className="text-primary-800"
-                  onClick={() => {
-                    deselectStrategy();
-                    resetFormValues(chainId);
-                  }}
-                  size="xs"
-                  variant="caption"
-                >
-                  <CaptionText>Reset stack</CaptionText>
-                </Button>
-              </>
-            ) : (
-              <StackDetailsTileText
-                amountPerOrder={amountPerOrder}
-                frequency={FREQUENCY_OPTIONS[frequency as FREQUENCY_OPTIONS]}
-                toTokenSymbol={toToken.symbol}
-                fromTokenSymbol={fromToken.symbol}
-                timeLength={formatDistance(endDateTime, startDateTime)}
-              />
-            )}
-          </div>
-        )}
+        {fromToken &&
+          toToken &&
+          tokenAmount &&
+          parseFloat(tokenAmount) > 0 &&
+          endDateTime > startDateTime && (
+            <div
+              className={cx(
+                "p-2 text-center bg-surface-25 text-em-low rounded-xl",
+                {
+                  "!bg-primary-50 flex items-center justify-between pr-3":
+                    isStrategySelected,
+                }
+              )}
+            >
+              {isStrategySelected ? (
+                <>
+                  <div className="flex">
+                    <Icon className="mr-2" name="sparkles" size={14} />
+                    <StackDetailsTileText
+                      amountPerOrder={amountPerOrder}
+                      frequency={
+                        FREQUENCY_OPTIONS[frequency as FREQUENCY_OPTIONS]
+                      }
+                      toTokenSymbol={toToken.symbol}
+                      fromTokenSymbol={fromToken.symbol}
+                      timeLength={formatDistance(endDateTime, startDateTime)}
+                    />
+                  </div>
+                  <Button
+                    className="text-primary-800"
+                    onClick={() => {
+                      deselectStrategy();
+                      resetFormValues(chainId);
+                    }}
+                    size="xs"
+                    variant="caption"
+                  >
+                    <CaptionText>Reset stack</CaptionText>
+                  </Button>
+                </>
+              ) : (
+                <StackDetailsTileText
+                  amountPerOrder={amountPerOrder}
+                  frequency={FREQUENCY_OPTIONS[frequency as FREQUENCY_OPTIONS]}
+                  toTokenSymbol={toToken.symbol}
+                  fromTokenSymbol={fromToken.symbol}
+                  timeLength={formatDistance(endDateTime, startDateTime)}
+                />
+              )}
+            </div>
+          )}
         {address ? (
           <Button
             width="full"
@@ -585,7 +589,7 @@ export const Stackbox = () => {
           amount={tokenAmount}
           frequency={frequency}
           startTime={
-            isPastStartDate ? new Date(getDateNowPlus10Mins()) : startDateTime
+            isNearStartDate ? new Date(getDateNowPlus10Mins()) : startDateTime
           }
           endTime={endDateTime}
           isOpen={isModalOpen(ModalId.CONFIRM_STACK)}

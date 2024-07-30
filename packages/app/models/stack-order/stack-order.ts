@@ -41,7 +41,7 @@ export const calculateStackAveragePrice = (order: StackOrder) => {
     );
   });
   const averagePrice = totalExecutedSellAmount / totalExecutedBuyAmount;
-  return averagePrice;
+  return totalExecutedBuyAmount ? averagePrice : 0;
 };
 
 export const totalFundsUsed = (order: StackOrder) => {
