@@ -3,9 +3,9 @@ import React, { useRef, useEffect } from "react";
 
 export const OrdersProgressBar = ({ stackOrder }: StackOrderProps) => {
   const progressBarRef = useRef<HTMLDivElement>(null);
-  const totalOrders = totalStackOrdersDone(stackOrder)
-    ? totalStackOrdersDone(stackOrder)
-    : stackOrder.orderSlots.length;
+  const totalOrders = stackOrder.orderSlots.length
+    ? stackOrder.orderSlots.length
+    : 1;
 
   useEffect(() => {
     if (progressBarRef.current) {
