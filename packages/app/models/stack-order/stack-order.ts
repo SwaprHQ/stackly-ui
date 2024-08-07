@@ -63,7 +63,7 @@ export const totalStacked = (order: StackOrder) =>
     );
   }, 0) ?? 0;
 
-const stackHasRemainingFunds = (stackOrder: StackOrder) =>
+export const stackHasRemainingFunds = (stackOrder: StackOrder) =>
   totalFundsUsed(stackOrder) > stacklyFee(stackOrder) &&
   stackRemainingFunds(stackOrder) > stacklyFee(stackOrder);
 

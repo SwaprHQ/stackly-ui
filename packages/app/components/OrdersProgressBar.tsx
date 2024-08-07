@@ -1,5 +1,11 @@
-import { StackOrderProps, totalStackOrdersDone } from "@/models/stack-order";
+import {
+  stackHasRemainingFunds,
+  StackOrderProps,
+  totalStackOrdersDone,
+} from "@/models/stack-order";
 import React, { useRef, useEffect } from "react";
+
+const FULL_BAR_WIDTH = 100;
 
 export const OrdersProgressBar = ({ stackOrder }: StackOrderProps) => {
   const progressBarRef = useRef<HTMLDivElement>(null);
@@ -9,7 +15,9 @@ export const OrdersProgressBar = ({ stackOrder }: StackOrderProps) => {
 
   useEffect(() => {
     if (progressBarRef.current) {
-      const width = (100 * totalStackOrdersDone(stackOrder)) / totalOrders;
+      const width = stackHasRemainingFunds(stackOrder)
+        ? (FULL_BAR_WIDTH * totalStackOrdersDone(stackOrder)) / totalOrders
+        : FULL_BAR_WIDTH;
       progressBarRef.current.style.width = `${width}%`;
     }
   }, [stackOrder, totalOrders]);
