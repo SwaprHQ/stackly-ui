@@ -372,7 +372,8 @@ export const Stackbox = () => {
           <input
             min={0}
             type="number"
-            pattern="[0-9]*"
+            pattern="\d*"
+            inputMode="decimal"
             placeholder="0.0"
             className={cx(
               "w-full py-3 text-4xl font-semibold outline-none text-em-med text-ellipsis",
