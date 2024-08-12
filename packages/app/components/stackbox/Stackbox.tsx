@@ -487,6 +487,10 @@ export const Stackbox = () => {
                   <DatePicker
                     dateTime={endDateTime}
                     setDateTime={(date: Date) => {
+                      const isEndTimeBeforeStartTime =
+                        date.getTime() <= startDateTime.getTime();
+
+                      setShowPastEndDateError(isEndTimeBeforeStartTime);
                       deselectStrategy();
                       setEndDateTime(date);
                     }}
