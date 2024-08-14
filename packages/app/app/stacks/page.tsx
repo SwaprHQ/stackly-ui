@@ -1,13 +1,21 @@
 "use client";
 
-import { StackOrders } from "@/app/stacks/stacksOrders";
 import { useAccount } from "wagmi";
-import NoWalletState from "./no-wallet-state";
+
+import { ChainId } from "@stackly/sdk";
+
+import { StackOrders } from "@/app/stacks/stacksOrders";
 import { useNetworkContext } from "@/contexts";
 
+import NoWalletState from "./no-wallet-state";
+
 export default function Page() {
-  const { chainId } = useNetworkContext();
-  const { address, isDisconnected } = useAccount();
+  const { chainId: contextChainId } = useNetworkContext();
+  const { address, chainId: wagmiChainId, isDisconnected } = useAccount();
+
+  const chainId = isDisconnected
+    ? contextChainId
+    : wagmiChainId ?? ChainId.ARBITRUM;
 
   if (isDisconnected) return <NoWalletState />;
 
