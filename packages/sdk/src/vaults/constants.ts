@@ -56,13 +56,26 @@ export const COW_SETTLEMENT_ADDRESS_LIST: Record<ChainId, string> = {
   [ChainId.ARBITRUM]: COW_SETTLEMENT_ADDRESS,
 };
 
-const STACKLY_SUBGRAPH_API_KEY =
+const API_BASE_URL = "https://gateway-arbitrum.network.thegraph.com/api";
+const SUBGRAPH_API_KEY =
   process.env.STACKLY_SUBGRAPH_API_KEY ?? "e7b7ff845e506590498946cd6bf83bf6";
 
+export const ETHEREUM_API_ENDPOINT_URL =
+  process.env.ETHEREUM_SUBRAPH_API_URL ??
+  `${API_BASE_URL}/${SUBGRAPH_API_KEY}/subgraphs/id/7s9rGBffUTL8kDZuxvvpuc46v44iuDarbrADBFw5uVp2`;
+
+export const GNOSIS_API_ENDPOINT_URL =
+  process.env.GNOSIS_SUBRAPH_API_URL ??
+  `${API_BASE_URL}/${SUBGRAPH_API_KEY}/subgraphs/id/9fUVQpFwzpdWS9bq5WkAnmKbNNcoBwatMR4yZq81pbbz`;
+
+export const ARBITRUM_API_ENDPOINT_URL =
+  process.env.ARBITRUM_SUBRAPH_API_URL ??
+  `${API_BASE_URL}/${SUBGRAPH_API_KEY}/subgraphs/id/D58aXwnRLfosFtRaVJAbAjjvKZ11bEsbdiDLkJJRdSC9`;
+
 export const SUBGRAPH_ENDPOINT_LIST: Readonly<Record<string, string>> = {
-  [ChainId.ETHEREUM]: `https://gateway-arbitrum.network.thegraph.com/api/${STACKLY_SUBGRAPH_API_KEY}/subgraphs/id/35bL4ohk2tnXqDnrp7NSyAKW8bbUmGDapyfe2ddCxV8H`,
-  [ChainId.GNOSIS]: `https://gateway-arbitrum.network.thegraph.com/api/${STACKLY_SUBGRAPH_API_KEY}/subgraphs/id/72Lysd4A2kZFqMqJtPQk3zMEEBExFfXeZbkJGTx8phRL`,
-  [ChainId.ARBITRUM]: `https://gateway-arbitrum.network.thegraph.com/api/${STACKLY_SUBGRAPH_API_KEY}/subgraphs/id/FNmemHB6tUh7eHmJnBFKYFf27U5GUAzXnatry4ZbrF7f`,
+  [ChainId.ETHEREUM]: ETHEREUM_API_ENDPOINT_URL,
+  [ChainId.GNOSIS]: GNOSIS_API_ENDPOINT_URL,
+  [ChainId.ARBITRUM]: ARBITRUM_API_ENDPOINT_URL,
 };
 
 /**
