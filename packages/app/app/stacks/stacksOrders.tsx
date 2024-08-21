@@ -21,6 +21,7 @@ import { ButtonLink, HeadingText } from "@/ui";
 import { EmptyState, StacksTable, tabButtonStyles } from "@/components";
 import EmptyStatePage from "./empty-state";
 import { currentTimestampInSeconds } from "@/utils";
+import { PATHNAMES } from "@/constants";
 
 type SortTime = "startTime" | "endTime" | "cancelledAt";
 
@@ -183,7 +184,11 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
             </div>
           )}
         </div>
-        <ButtonLink iconLeft="plus" href="/" className="hidden sm:flex">
+        <ButtonLink
+          iconLeft="plus"
+          href={PATHNAMES.LANDING}
+          className="hidden sm:flex"
+        >
           Create New Stack
         </ButtonLink>
       </div>

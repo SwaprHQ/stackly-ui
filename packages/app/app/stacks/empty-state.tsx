@@ -1,5 +1,6 @@
 import { ButtonLink, HeadingText } from "@/ui";
 import { EmptyStateStacksImg } from "@/public/assets";
+import { PATHNAMES } from "@/constants";
 
 export default function EmptyState() {
   return (
@@ -16,7 +17,7 @@ export default function EmptyState() {
         </div>
       </div>
       <div className="mx-auto w-fit">
-        <ButtonLink size="lg" href="/" iconLeft="plus">
+        <ButtonLink size="lg" href={PATHNAMES.LANDING} iconLeft="plus">
           Create new stack
         </ButtonLink>
       </div>

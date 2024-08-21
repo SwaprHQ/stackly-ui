@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { ConnectButton, SelectNetwork } from "@/components";
+
 import Link from "next/link";
+
 import { Button, Icon } from "@/ui";
-import { STACKLY_LANDING_URL } from "@/constants";
+import { ConnectButton, SelectNetwork } from "@/components";
+import { PATHNAMES, STACKLY_LANDING_URL } from "@/constants";
 
 export default function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,7 +33,7 @@ export default function MobileMenu() {
           <div className="absolute left-0 w-full gap-2 px-6 py-2 border-b border-solid rounded-lg bg-surface-25 top-nav-height border-surface-75">
             <Link
               passHref
-              href="/stacks"
+              href={PATHNAMES.STACKS}
               className="flex items-center py-3 text-em-med"
               onClick={toggle}
             >
