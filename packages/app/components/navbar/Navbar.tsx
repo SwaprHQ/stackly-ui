@@ -1,12 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import MobileMenu from "./MobileMenu";
-import Logo from "./Logo";
+
 import { ButtonLink } from "@/ui";
 import { ConnectButton, SelectNetwork } from "@/components";
+import { useNetworkContext } from "@/contexts";
+import { PATHNAMES } from "@/constants";
+
+import Logo from "./Logo";
+import MobileMenu from "./MobileMenu";
 
 export function Navbar() {
+  const { chainId } = useNetworkContext();
+
   return (
     <header className="top-0 flex flex-col w-full px-4 border-b border-solid h-nav-height bg-surface-25 border-b-surface-75">
       <nav className="flex items-center w-full h-full">
@@ -14,7 +20,10 @@ export function Navbar() {
           <Link
             passHref
             tabIndex={0}
-            href="/"
+            href={{
+              pathname: PATHNAMES.LANDING,
+              query: `chainId=${chainId}`,
+            }}
             title="Stackly Home"
             className="flex items-center outline-none w-14 md:w-40"
           >
@@ -27,7 +36,7 @@ export function Navbar() {
             variant="quaternary"
             size="sm"
             iconLeft="blocks"
-            href="/stacks"
+            href={PATHNAMES.STACKS}
           >
             Your stacks
           </ButtonLink>
