@@ -1,8 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { ButtonBaseProps, buttonStyles, getIconSize } from "./base";
+
 import { Icon } from "@/ui/icon/Icon";
+import { useNetworkContext } from "@/contexts";
+
+import { ButtonBaseProps, buttonStyles, getIconSize } from "./base";
 
 interface ButtonLinkProps extends ButtonBaseProps {
   href: string;
@@ -25,10 +28,15 @@ export function ButtonLink({
   passHref,
   target,
 }: ButtonLinkProps) {
+  const { chainId } = useNetworkContext();
+
   return (
     <Link
       id={id}
-      href={href}
+      href={{
+        pathname: href,
+        query: `chainId=${chainId}`,
+      }}
       tabIndex={0}
       className={buttonStyles({
         size,

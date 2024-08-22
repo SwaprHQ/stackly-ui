@@ -48,6 +48,7 @@ import {
   Token,
   frequencySeconds,
 } from "@/models";
+import { PATHNAMES } from "@/constants";
 
 interface SelectTokenButtonProps {
   label: string;
@@ -619,7 +620,7 @@ export const Stackbox = () => {
         <Link
           passHref
           className="flex items-center space-x-0.5 hover:border-em-low border-b-2 border-em-disabled group"
-          href="/stacks"
+          href={PATHNAMES.STACKS}
           onClick={() => closeModal(ModalId.SUCCESS_STACK_TOAST)}
         >
           <BodyText className="text-em-med">View your stacks</BodyText>

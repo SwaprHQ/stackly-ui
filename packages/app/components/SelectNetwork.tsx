@@ -3,20 +3,23 @@
 import { Fragment } from "react";
 import { ChainIcon } from "connectkit";
 import { Listbox, Transition } from "@headlessui/react";
+import { usePathname } from "next/navigation";
 
 import { Button, Icon } from "@/ui";
 import { useNetworkContext, useStackboxFormContext } from "@/contexts";
+import { PATHNAMES } from "@/constants";
 
 export const SelectNetwork = () => {
   const { chains, changeNetwork, chainId, selectedChain } = useNetworkContext();
   const { resetFormValues } = useStackboxFormContext();
+  const pathname = usePathname();
 
   return (
     <Listbox
       value={chainId.toString()}
       onChange={(chainId) => {
         changeNetwork(parseInt(chainId));
-        resetFormValues(parseInt(chainId));
+        if (pathname === PATHNAMES.HOME) resetFormValues(parseInt(chainId));
       }}
     >
       <div className="relative">
