@@ -186,7 +186,7 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
         </div>
         <ButtonLink
           iconLeft="plus"
-          href={PATHNAMES.LANDING}
+          href={PATHNAMES.HOME}
           className="hidden sm:flex"
         >
           Create New Stack

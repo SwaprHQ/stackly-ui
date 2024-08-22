@@ -21,7 +21,7 @@ export function Navbar() {
             passHref
             tabIndex={0}
             href={{
-              pathname: PATHNAMES.LANDING,
+              pathname: PATHNAMES.HOME,
               query: `chainId=${chainId}`,
             }}
             title="Stackly Home"

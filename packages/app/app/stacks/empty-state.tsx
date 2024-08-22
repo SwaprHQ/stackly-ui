@@ -17,7 +17,7 @@ export default function EmptyState() {
         </div>
       </div>
       <div className="mx-auto w-fit">
-        <ButtonLink size="lg" href={PATHNAMES.LANDING} iconLeft="plus">
+        <ButtonLink size="lg" href={PATHNAMES.HOME} iconLeft="plus">
           Create new stack
         </ButtonLink>
       </div>

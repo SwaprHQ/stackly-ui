@@ -1,4 +1,4 @@
 export const PATHNAMES = {
-  LANDING: "/",
+  HOME: "/",
   STACKS: "/stacks",
 };

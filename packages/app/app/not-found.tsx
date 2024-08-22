@@ -26,7 +26,7 @@ export default function NotFound() {
         .
       </HeadingText>
       <div>
-        <ButtonLink href={PATHNAMES.LANDING}>Go back to homepage</ButtonLink>
+        <ButtonLink href={PATHNAMES.HOME}>Go back to homepage</ButtonLink>
       </div>
     </div>
   );
