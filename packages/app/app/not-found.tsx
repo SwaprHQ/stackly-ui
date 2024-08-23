@@ -1,7 +1,9 @@
 "use client";
 
-import { ButtonLink, HeadingText } from "@/ui";
 import Link from "next/link";
+
+import { ButtonLink, HeadingText } from "@/ui";
+import { PATHNAMES } from "@/constants";
 import StacksImg from "@/public/assets/images/stacks.svg";
 
 export default function NotFound() {
@@ -24,7 +26,7 @@ export default function NotFound() {
         .
       </HeadingText>
       <div>
-        <ButtonLink href="/">Go back to homepage</ButtonLink>
+        <ButtonLink href={PATHNAMES.HOME}>Go back to homepage</ButtonLink>
       </div>
     </div>
   );

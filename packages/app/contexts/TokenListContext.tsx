@@ -69,8 +69,11 @@ const TokenListContext = createContext<{
 });
 
 export const TokenListProvider = ({ children }: PropsWithChildren) => {
-  const { address } = useAccount();
-  const { chainId } = useNetworkContext();
+  const { address, chainId: wagmiChainId, isConnected } = useAccount();
+  const { chainId: contextChainId } = useNetworkContext();
+  const chainId = isConnected
+    ? wagmiChainId ?? ChainId.ARBITRUM
+    : contextChainId;
   const abortControllerRef = useRef(new AbortController());
 
   const [tokenList, setTokenList] = useState<TokenFromTokenlist[]>(

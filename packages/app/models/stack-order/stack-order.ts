@@ -63,14 +63,17 @@ export const totalStacked = (order: StackOrder) =>
     );
   }, 0) ?? 0;
 
-const stackHasRemainingFunds = (stackOrder: StackOrder) =>
-  totalFundsUsed(stackOrder) > stacklyFee(stackOrder) &&
+export const stackHasRemainingFunds = (stackOrder: StackOrder) =>
+  totalFundsUsed(stackOrder) >= stacklyFee(stackOrder) &&
   stackRemainingFunds(stackOrder) > stacklyFee(stackOrder);
 
 export const stackRemainingFunds = (stackOrder: StackOrder) => {
-  if (totalFundsUsed(stackOrder) === 0 && totalStackOrdersDone(stackOrder) > 0)
+  if (
+    stackOrder.cowOrders.length &&
+    totalFundsUsed(stackOrder) === 0 &&
+    totalStackOrdersDone(stackOrder) > 0
+  )
     return 0;
-
   return (
     convertedAmount(stackOrder.amount, stackOrder.sellToken.decimals) -
     totalFundsUsed(stackOrder)
