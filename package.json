@@ -1,7 +1,7 @@
 {
   "name": "stackly-ui",
   "repository": "https://github.com/SwaprHQ/stackly-ui",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "license": "MIT",
   "private": true,
   "packageManager": "bun@1.0.6",
@@ -29,7 +29,7 @@
     "@svgr/webpack": "^8.0.1",
     "eslint": "^8.28.0",
     "eslint-config-turbo": "latest",
-    "turbo": "^1.9.4"
+    "turbo": "^2.0.14"
   },
   "dependencies": {
     "fathom-client": "^3.6.0"
