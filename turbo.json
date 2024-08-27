@@ -1,9 +1,29 @@
 {
+  "globalEnv": [
+    "STACKLY_SUBGRAPH_API_KEY",
+    "ETHEREUM_SUBGRAPH_API_URL",
+    "GNOSIS_SUBGRAPH_API_URL",
+    "ARBITRUM_SUBGRAPH_API_URL"
+  ],
   "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
+  "globalDependencies": [".env"],
+  "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+      "env": [
+        "STACKLY_SUBGRAPH_API_KEY",
+        "ETHEREUM_SUBGRAPH_API_URL",
+        "GNOSIS_SUBGRAPH_API_URL",
+        "ARBITRUM_SUBGRAPH_API_URL"
+      ],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env.production.local",
+        ".env.local",
+        ".env.production",
+        ".env"
+      ]
     },
     "lint": {
       "outputs": []

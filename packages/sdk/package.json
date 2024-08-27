@@ -50,7 +50,6 @@
     "@types/node": "^18.11.18",
     "@typescript-eslint/eslint-plugin": "latest",
     "abitype": "^0.2.5",
-    "dotenv": "^16.0.1",
     "node-fetch": "2.x.x",
     "nodemon": "^2.0.18",
     "rimraf": "^3.0.2",
