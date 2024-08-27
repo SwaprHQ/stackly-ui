@@ -62,15 +62,15 @@ const SUBGRAPH_API_KEY =
   process.env.STACKLY_SUBGRAPH_API_KEY ?? "e7b7ff845e506590498946cd6bf83bf6";
 const ETHEREUM_SUBGRAPH_ENDPOINT_URL =
   process.env.ETHEREUM_SUBGRAPH_API_URL ??
-  `${API_BASE_URL}/${SUBGRAPH_API_KEY}/subgraphs/id/7s9rGBffUTL8kDZuxvvpuc46v44iuDarbrADBFw5uVp2`;
+  `${API_BASE_URL}/${SUBGRAPH_API_KEY}/subgraphs/id/35bL4ohk2tnXqDnrp7NSyAKW8bbUmGDapyfe2ddCxV8H`;
 
 const GNOSIS_SUBGRAPH_ENDPOINT_URL =
   process.env.GNOSIS_SUBGRAPH_API_URL ??
-  `${API_BASE_URL}/${SUBGRAPH_API_KEY}/subgraphs/id/9fUVQpFwzpdWS9bq5WkAnmKbNNcoBwatMR4yZq81pbbz`;
+  `${API_BASE_URL}/${SUBGRAPH_API_KEY}/subgraphs/id/72Lysd4A2kZFqMqJtPQk3zMEEBExFfXeZbkJGTx8phRL`;
 
 const ARBITRUM_SUBGRAPH_ENDPOINT_URL =
   process.env.ARBITRUM_SUBGRAPH_API_URL ??
-  `${API_BASE_URL}/${SUBGRAPH_API_KEY}/subgraphs/id/D58aXwnRLfosFtRaVJAbAjjvKZ11bEsbdiDLkJJRdSC9`;
+  `${API_BASE_URL}/${SUBGRAPH_API_KEY}/subgraphs/id/FNmemHB6tUh7eHmJnBFKYFf27U5GUAzXnatry4ZbrF7f`;
 
 export const SUBGRAPH_ENDPOINT_LIST: Readonly<Record<string, string>> = {
   [ChainId.ETHEREUM]: ETHEREUM_SUBGRAPH_ENDPOINT_URL,
