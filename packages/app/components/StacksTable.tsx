@@ -37,6 +37,7 @@ import { ModalId, useModalContext } from "@/contexts";
 
 interface StacksTableProps {
   stackOrders: StackOrder[];
+  refetchAllOrders: () => void;
   refetchStacks: () => void;
   hasMorePages: boolean;
   hasLessPages: boolean;
@@ -46,6 +47,7 @@ interface StacksTableProps {
 
 export const StacksTable = ({
   stackOrders,
+  refetchAllOrders,
   refetchStacks,
   hasMorePages,
   hasLessPages,
@@ -165,6 +167,7 @@ export const StacksTable = ({
       {stackOrder && (
         <StackModal
           refetchStacks={refetchStacks}
+          refetchAllOrders={refetchAllOrders}
           isOpen={isModalOpen(ModalId.STACK)}
           closeAction={() => closeModal(ModalId.STACK)}
           stackOrder={stackOrder}

@@ -51,6 +51,7 @@ import { Transaction } from "@/models/stack";
 
 interface StackModalProps extends ModalBaseProps {
   stackOrder: StackOrder;
+  refetchAllOrders: () => void;
   refetchStacks: () => void;
 }
 
@@ -66,6 +67,7 @@ type Content = {
 export const StackModal = ({
   stackOrder,
   isOpen,
+  refetchAllOrders,
   refetchStacks,
   closeAction,
 }: StackModalProps) => {
@@ -245,6 +247,7 @@ export const StackModal = ({
         <DialogFooterActions
           primaryAction={() => {
             refetchStacks();
+            refetchAllOrders();
             closeModal(ModalId.CANCEL_STACK_PROCESSING);
             closeModal(ModalId.CANCEL_STACK_SUCCESS);
             closeAction();
