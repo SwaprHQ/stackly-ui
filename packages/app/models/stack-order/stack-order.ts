@@ -69,7 +69,7 @@ export const stackHasRemainingFunds = (stackOrder: StackOrder) =>
 
 export const stackRemainingFunds = (stackOrder: StackOrder) => {
   if (
-    stackOrder.cowOrders.length &&
+    stackOrder.cowOrders?.length &&
     totalFundsUsed(stackOrder) === 0 &&
     totalStackOrdersDone(stackOrder) > 0
   )

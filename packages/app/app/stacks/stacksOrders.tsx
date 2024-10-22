@@ -231,6 +231,7 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
                           stacks.orders,
                           stacks.sort
                         )}
+                        fetchAllOrders={fetchAllOrders}
                         refetchStacks={() =>
                           fetchStacks(index as StackStateIndex)
                         }
