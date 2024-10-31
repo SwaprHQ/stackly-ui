@@ -19,7 +19,6 @@ export const SelectNetwork = () => {
       value={chainId.toString()}
       onChange={(chainId) => {
         changeNetwork(parseInt(chainId));
-        if (pathname === PATHNAMES.HOME) resetFormValues(parseInt(chainId));
       }}
     >
       <div className="relative">

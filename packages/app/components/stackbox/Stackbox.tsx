@@ -49,6 +49,7 @@ import {
   frequencySeconds,
 } from "@/models";
 import { PATHNAMES } from "@/constants";
+import { checkIsValidChainId } from "@/utils";
 
 interface SelectTokenButtonProps {
   label: string;
@@ -190,6 +191,13 @@ export const Stackbox = () => {
     tokenList,
     tokenListWithBalances,
   ]);
+
+  useEffect(() => {
+    const isValidChainId = checkIsValidChainId(chainId);
+
+    if (isValidChainId) resetFormValues(chainId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chainId]);
 
   const openTokenPicker = (isFromToken = true) => {
     setIsPickingFromToken(isFromToken);

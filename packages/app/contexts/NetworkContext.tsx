@@ -3,7 +3,6 @@
 import {
   ReactNode,
   createContext,
-  useCallback,
   useContext,
   useEffect,
   useState,
@@ -50,18 +49,11 @@ export const NetworkContextProvider = ({
   const { chains } = config;
   const { isConnected, chain } = useAccount();
 
-  const [, setFromTokenSearchParams] = useQueryState("fromToken");
-  const [, setToTokenSearchParams] = useQueryState("toToken");
   const [searchParamsChainId, setSearchParamsChainId] =
     useQueryState("chainId");
 
   const [selectedChain, setSelectedChain] = useState<WagmiChain>(arbitrum);
   const [selectedChainId, setSelectedChainId] = useState<ChainId>(arbitrum.id);
-
-  const resetTokensOnSearchParams = useCallback(() => {
-    setFromTokenSearchParams(null);
-    setToTokenSearchParams(null);
-  }, [setFromTokenSearchParams, setToTokenSearchParams]);
 
   const switchNetworkNotConnected = (newChainId: ChainId) => {
     config.setState((oldState: any) => {
@@ -138,7 +130,6 @@ export const NetworkContextProvider = ({
     }
   }, [chain, isConnected]);
   const changeNetwork = (networkId: ChainId) => {
-    resetTokensOnSearchParams();
     isConnected
       ? switchChain && switchChain({ chainId: networkId })
       : switchNetworkNotConnected(networkId);
