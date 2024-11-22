@@ -342,8 +342,6 @@ export const Stackbox = () => {
     setFromToken(toToken);
   };
 
-  console.log("frequency: ", frequency);
-
   return (
     <div
       className={cx("max-w-lg mx-auto bg-white shadow-2xl rounded-2xl", {
