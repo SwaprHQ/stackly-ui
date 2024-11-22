@@ -14,7 +14,7 @@ interface FrequencyOptionsCardProps {
 
 const defaultFrequencyOptions = {
   [FREQUENCY_OPTIONS.hour]: ["6", "12", "24"],
-  [FREQUENCY_OPTIONS.day]: ["2", "5", "10"],
+  [FREQUENCY_OPTIONS.day]: ["7", "15", "30"],
   [FREQUENCY_OPTIONS.week]: ["4", "8", "12"],
   [FREQUENCY_OPTIONS.month]: ["2", "6", "12"],
 };
