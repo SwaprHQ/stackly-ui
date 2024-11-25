@@ -74,9 +74,7 @@ export const FrequencyOptionsCard = ({
   };
 
   useEffect(() => {
-    const placeholderText = `Custom ${frequency} (max: ${
-      maxCustomFrequencies[frequency]
-    } ${getCroppedFrequency(frequency)})`;
+    const placeholderText = `Custom ${frequency} (max: ${maxCustomFrequencies[frequency]})`;
 
     setDefaultFrequency(defaultFrequencyOptions[frequency][0]);
     setPlaceholder(placeholderText);
