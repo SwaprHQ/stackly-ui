@@ -2,6 +2,7 @@
 
 import { ChangeEvent, useEffect, useState } from "react";
 
+import { add } from "date-fns";
 import { twMerge } from "tailwind-merge";
 
 import { FREQUENCY_OPTIONS } from "@/models";
@@ -30,19 +31,18 @@ const getEndDateByDefaultFrequency = (
   frequency: FREQUENCY_OPTIONS,
   timeAmount: number
 ) => {
-  const dateNow = new Date();
-  const endDateByDefaultFrequency = {
-    [FREQUENCY_OPTIONS.hour]: dateNow.setHours(dateNow.getHours() + timeAmount),
-    [FREQUENCY_OPTIONS.day]: dateNow.setDate(dateNow.getDate() + timeAmount),
-    [FREQUENCY_OPTIONS.week]: dateNow.setDate(
-      dateNow.getDate() + timeAmount * 7
-    ),
-    [FREQUENCY_OPTIONS.month]: dateNow.setMonth(
-      dateNow.getMonth() + timeAmount
-    ),
-  };
-
-  return new Date(endDateByDefaultFrequency[frequency]);
+  switch (frequency) {
+    case FREQUENCY_OPTIONS.hour:
+      return add(new Date(), { hours: timeAmount });
+    case FREQUENCY_OPTIONS.day:
+      return add(new Date(), { days: timeAmount });
+    case FREQUENCY_OPTIONS.week:
+      return add(new Date(), { weeks: timeAmount });
+    case FREQUENCY_OPTIONS.month:
+      return add(new Date(), { months: timeAmount });
+    default:
+      throw new Error("Invalid frequency option");
+  }
 };
 
 const getCroppedFrequency = (frequency: FREQUENCY_OPTIONS) => {
