@@ -3,7 +3,7 @@ import { twMerge } from "tailwind-merge";
 
 import { BodyText, CaptionText } from "../text";
 
-interface TextInputxProps extends InputProps {
+interface TextInputProps extends InputProps {
   className?: string;
   error?: string;
   id: string;
@@ -21,7 +21,7 @@ export const TextInput = ({
   value,
   wrapperClassName,
   ...inputProps
-}: TextInputxProps) => (
+}: TextInputProps) => (
   <Field className={twMerge("flex flex-col gap-2", wrapperClassName)}>
     {label && (
       <Label htmlFor={id}>
