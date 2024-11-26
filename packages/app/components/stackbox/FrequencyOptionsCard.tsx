@@ -59,7 +59,6 @@ export const FrequencyOptionsCard = ({
     defaultFrequencyOptions[frequency][0]
   );
   const [customFrequency, setCustomFrequency] = useState("");
-  const [placeholder, setPlaceholder] = useState("");
 
   const handleCustomFrequencyChange = (
     event: ChangeEvent<HTMLInputElement>
@@ -74,10 +73,7 @@ export const FrequencyOptionsCard = ({
   };
 
   useEffect(() => {
-    const placeholderText = `Custom ${frequency} (max: ${maxCustomFrequencies[frequency]})`;
-
     setDefaultFrequency(defaultFrequencyOptions[frequency][0]);
-    setPlaceholder(placeholderText);
   }, [frequency]);
 
   useEffect(() => {
@@ -86,6 +82,8 @@ export const FrequencyOptionsCard = ({
     setEndDate(getEndDateByDefaultFrequency(frequency, Number(newFrequency)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultFrequency, customFrequency]);
+
+  const placeholder = `Custom ${frequency} (max: ${maxCustomFrequencies[frequency]})`;
 
   return (
     <div
