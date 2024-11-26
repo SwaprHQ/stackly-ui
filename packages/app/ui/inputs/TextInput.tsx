@@ -8,7 +8,6 @@ interface TextInputProps extends InputProps {
   error?: string;
   id: string;
   label?: string;
-  wrapperClassName?: string;
 }
 
 export const TextInput = ({
@@ -19,10 +18,9 @@ export const TextInput = ({
   onChange,
   placeholder,
   value,
-  wrapperClassName,
   ...inputProps
 }: TextInputProps) => (
-  <Field className={twMerge("flex flex-col gap-2", wrapperClassName)}>
+  <Field className="flex flex-col gap-2">
     {label && (
       <Label htmlFor={id}>
         <BodyText className="text-em-low">{label}</BodyText>
