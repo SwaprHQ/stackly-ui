@@ -95,7 +95,7 @@ export const FrequencyOptionsCard = ({
       <BodyText className="text-em-low">Duration</BodyText>
       <div className="flex gap-2 flex-col md:flex-row">
         <div className="flex gap-2">
-          {defaultFrequencyOptions[frequency].map((freqOption, idx) => {
+          {defaultFrequencyOptions[frequency].map((freqOption) => {
             const isSelected = defaultFrequency === freqOption;
 
             return (
@@ -103,7 +103,7 @@ export const FrequencyOptionsCard = ({
                 checked={isSelected}
                 className="min-w-[70px] h-10"
                 id={freqOption}
-                key={idx}
+                key={freqOption}
                 name={freqOption}
                 onChange={(event) => {
                   setDefaultFrequency(event.target.value as FREQUENCY_OPTIONS);
