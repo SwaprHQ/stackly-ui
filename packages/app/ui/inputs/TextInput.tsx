@@ -15,9 +15,6 @@ export const TextInput = ({
   error,
   id,
   label,
-  onChange,
-  placeholder,
-  value,
   ...inputProps
 }: TextInputProps) => (
   <Field className="flex flex-col gap-2">
@@ -28,9 +25,6 @@ export const TextInput = ({
     )}
     <Input
       id={id}
-      value={value}
-      placeholder={placeholder}
-      onChange={onChange}
       className={twMerge(
         [
           "border placeholder:text-sm w-full min-h-10 rounded-3xl px-3 py-2",
