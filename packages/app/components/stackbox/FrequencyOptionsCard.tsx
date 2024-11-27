@@ -109,6 +109,7 @@ export const FrequencyOptionsCard = ({
                 name={freqOption}
                 onChange={(event) => {
                   setDefaultFrequency(event.target.value as FREQUENCY_OPTIONS);
+                  setCustomFrequency("");
                 }}
                 value={freqOption}
               >
