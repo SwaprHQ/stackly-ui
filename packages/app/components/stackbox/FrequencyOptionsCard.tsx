@@ -40,8 +40,10 @@ const getEndDateByDefaultFrequency = (
       return add(new Date(), { weeks: timeAmount });
     case FREQUENCY_OPTIONS.month:
       return add(new Date(), { months: timeAmount });
-    default:
-      throw new Error("Invalid frequency option");
+    default: {
+      console.error("Invalid frequency option", frequency);
+      return new Date();
+    }
   }
 };
 
