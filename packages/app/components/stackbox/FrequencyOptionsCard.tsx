@@ -25,7 +25,7 @@ const maxCustomFrequencies = {
   [FREQUENCY_OPTIONS.week]: 52,
   [FREQUENCY_OPTIONS.month]: 24,
 };
-const postiveIntegerOnly = /^$|^[0-9]+$/;
+const postiveIntegerOnly = /^[1-9][0-9]*$/;
 
 const getEndDateByDefaultFrequency = (
   frequency: FREQUENCY_OPTIONS,
@@ -122,7 +122,6 @@ export const FrequencyOptionsCard = ({
         </div>
         <TextInput
           id="custom-frequency-option"
-          min={1}
           onChange={handleCustomFrequencyChange}
           placeholder={placeholder}
           value={customFrequency}
