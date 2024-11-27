@@ -159,7 +159,8 @@ export const StackOrders = ({ chainId, address }: StackOrdersProps) => {
           if (!orders || orders.length === 0) setCurrentStackOrders([]);
           else {
             const stackOrders = await getStackOrders(chainId, orders);
-            if (stackOrders.length > 0) setCurrentStackOrders(stackOrders);
+
+            setCurrentStackOrders(stackOrders?.length ? stackOrders : []);
           }
         })
         .finally(() => setLoadingStacks(false));
