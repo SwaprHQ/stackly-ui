@@ -447,7 +447,7 @@ export const Stackbox = () => {
       <div className="px-5 py-6 space-y-6">
         <div className="space-y-2">
           <TitleText weight="bold" className="text-em-med">
-            {toToken ? `Stack ${toToken?.symbol} every` : "Stack every"}
+            {toToken ? `Buy ${toToken?.symbol} every` : "Buy every"}
           </TitleText>
           <div className="space-y-4 lg:space-y-6">
             <div className="flex space-x-2">
@@ -476,7 +476,7 @@ export const Stackbox = () => {
               })}
             </div>
             <Checkbox
-              id="display-custom-date-range"
+              id="checkbox-freq-display-custom-date-range"
               checked={showCustomDateRange}
               onChange={setShowCustomDateRange}
               label="Choose custom date and time"
@@ -709,7 +709,7 @@ const StackDetailsTileText = ({
   timeLength,
 }: StackDetailsTileTextProps) => (
   <BodyText size={1}>
-    Stacks <span className="text-em-med">{toTokenSymbol}</span>, swapping{" "}
+    Buys <span className="text-em-med">{toTokenSymbol}</span>, swapping{" "}
     <span className="text-em-med">
       {amountPerOrder} {fromTokenSymbol}
     </span>

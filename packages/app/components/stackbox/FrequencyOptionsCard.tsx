@@ -7,6 +7,7 @@ import { twMerge } from "tailwind-merge";
 
 import { FREQUENCY_OPTIONS } from "@/models";
 import { BodyText, RadioButton, TextInput } from "@/ui";
+import { cx } from "class-variance-authority";
 
 interface FrequencyOptionsCardProps {
   frequency: FREQUENCY_OPTIONS;
@@ -25,9 +26,9 @@ const maxCustomFrequencies = {
   [FREQUENCY_OPTIONS.week]: 52,
   [FREQUENCY_OPTIONS.month]: 24,
 };
-const postiveIntegerOnly = /^[1-9][0-9]*$/;
+const postiveIntegerOnlyRegex = /^[1-9][0-9]*$/;
 
-const getEndDateByDefaultFrequency = (
+const getDefaultEndDateFrequency = (
   frequency: FREQUENCY_OPTIONS,
   timeAmount: number
 ) => {
@@ -68,7 +69,7 @@ export const FrequencyOptionsCard = ({
     const newValue = event.target.value;
     const isWithinRange = Number(newValue) <= maxCustomFrequencies[frequency];
 
-    if (postiveIntegerOnly.test(newValue) && isWithinRange) {
+    if (postiveIntegerOnlyRegex.test(newValue) && isWithinRange) {
       setDefaultFrequency("");
       setCustomFrequency(newValue);
     }
@@ -82,11 +83,9 @@ export const FrequencyOptionsCard = ({
   useEffect(() => {
     const newFrequency = customFrequency ? customFrequency : defaultFrequency;
 
-    setEndDate(getEndDateByDefaultFrequency(frequency, Number(newFrequency)));
+    setEndDate(getDefaultEndDateFrequency(frequency, Number(newFrequency)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultFrequency, customFrequency]);
-
-  const placeholder = `Custom ${frequency} (max: ${maxCustomFrequencies[frequency]})`;
 
   return (
     <div
@@ -95,7 +94,7 @@ export const FrequencyOptionsCard = ({
         "bg-surface-25 border border-surface-50",
       ])}
     >
-      <BodyText className="text-em-low">Duration</BodyText>
+      <BodyText className="text-em-low">Total duration of the stack</BodyText>
       <div className="flex gap-2 flex-col md:flex-row">
         <div className="flex gap-2">
           {defaultFrequencyOptions[frequency].map((freqOption) => {
@@ -114,7 +113,10 @@ export const FrequencyOptionsCard = ({
                 }}
                 value={freqOption}
               >
-                <BodyText className={!isSelected ? "text-em-med" : ""} size={2}>
+                <BodyText
+                  className={cx({ "text-em-med": !isSelected })}
+                  size={2}
+                >
                   {`${freqOption} ${getCroppedFrequency(frequency)}`}
                 </BodyText>
               </RadioButton>
@@ -124,7 +126,7 @@ export const FrequencyOptionsCard = ({
         <TextInput
           id="custom-frequency-option"
           onChange={handleCustomFrequencyChange}
-          placeholder={placeholder}
+          placeholder={`Custom ${frequency} (max: ${maxCustomFrequencies[frequency]})`}
           value={customFrequency}
         />
       </div>
