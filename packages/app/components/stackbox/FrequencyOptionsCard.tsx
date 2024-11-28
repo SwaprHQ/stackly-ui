@@ -76,6 +76,7 @@ export const FrequencyOptionsCard = ({
 
   useEffect(() => {
     setDefaultFrequency(defaultFrequencyOptions[frequency][0]);
+    setCustomFrequency("");
   }, [frequency]);
 
   useEffect(() => {
