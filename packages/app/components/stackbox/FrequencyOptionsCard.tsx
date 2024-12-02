@@ -67,9 +67,18 @@ export const FrequencyOptionsCard = ({
     event: ChangeEvent<HTMLInputElement>
   ) => {
     const newValue = event.target.value;
-    const isWithinRange = Number(newValue) <= maxCustomFrequencies[frequency];
 
-    if (postiveIntegerOnlyRegex.test(newValue) && isWithinRange) {
+    if (!newValue) {
+      setCustomFrequency("");
+      setDefaultFrequency(defaultFrequencyOptions[frequency][0]);
+      return;
+    }
+
+    const isWithinRange = Number(newValue) <= maxCustomFrequencies[frequency];
+    const isValidNumber =
+      postiveIntegerOnlyRegex.test(newValue) && isWithinRange;
+
+    if (isValidNumber) {
       setDefaultFrequency("");
       setCustomFrequency(newValue);
     }
@@ -77,7 +86,8 @@ export const FrequencyOptionsCard = ({
 
   useEffect(() => {
     setDefaultFrequency(defaultFrequencyOptions[frequency][0]);
-    setCustomFrequency("");
+    if (!!customFrequency) setCustomFrequency("");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [frequency]);
 
   useEffect(() => {
@@ -109,7 +119,7 @@ export const FrequencyOptionsCard = ({
                 name={freqOption}
                 onChange={(event) => {
                   setDefaultFrequency(event.target.value as FREQUENCY_OPTIONS);
-                  setCustomFrequency("");
+                  if (!!customFrequency) setCustomFrequency("");
                 }}
                 value={freqOption}
               >
