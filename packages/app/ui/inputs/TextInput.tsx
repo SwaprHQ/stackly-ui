@@ -27,8 +27,9 @@ export const TextInput = ({
       id={id}
       className={twMerge(
         [
-          "border placeholder:text-sm w-full min-h-10 rounded-3xl px-3 py-2",
-          "border-surface-75 placeholder:text-em-low outline-primary-500",
+          "border border-surface-75 outline-primary-500",
+          "placeholder:text-sm placeholder:text-em-low ",
+          "w-full min-h-10 rounded-3xl px-3 py-2",
         ],
         className
       )}
