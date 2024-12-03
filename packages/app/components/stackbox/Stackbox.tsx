@@ -50,6 +50,8 @@ import {
 } from "@/models";
 import { PATHNAMES } from "@/constants";
 import { checkIsValidChainId } from "@/utils";
+import { Checkbox } from "@/ui";
+import { FrequencyOptionsCard } from "./FrequencyOptionsCard";
 
 interface SelectTokenButtonProps {
   label: string;
@@ -105,6 +107,7 @@ export const Stackbox = () => {
   const [startDateTime, setStartDateTime] = stackboxFormState.startDateState;
   const [endDateTime, setEndDateTime] = stackboxFormState.endDateState;
 
+  const [showCustomDateRange, setShowCustomDateRange] = useState(false);
   const [showTokenAmountError, setShowTokenAmountError] = useState(false);
   const [showPastEndDateError, setShowPastEndDateError] = useState(false);
   const [isNearStartDate, setIsNearStartDate] = useState(false);
@@ -444,7 +447,7 @@ export const Stackbox = () => {
       <div className="px-5 py-6 space-y-6">
         <div className="space-y-2">
           <TitleText weight="bold" className="text-em-med">
-            {toToken ? `Stack ${toToken?.symbol} every` : "Stack every"}
+            {toToken ? `Buy ${toToken?.symbol} every` : "Buy every"}
           </TitleText>
           <div className="space-y-4 lg:space-y-6">
             <div className="flex space-x-2">
@@ -472,52 +475,66 @@ export const Stackbox = () => {
                 );
               })}
             </div>
-            <div className="space-y-1">
-              <div className="flex flex-col border divide-y md:divide-y-0 md:flex-row rounded-2xl border-surface-50 md:divide-x divide-surface-50">
-                <div className="flex flex-col w-full py-2 pl-4 pr-3 space-y-2 lg:py-3 hover:bg-surface-25">
-                  <BodyText size={2}>Starting from</BodyText>
-                  <DatePicker
-                    dateTime={startDateTime}
-                    setDateTime={handleStartDateTimeChange}
-                    timeCaption="Start time"
-                    className="w-full"
-                  />
-                </div>
-                <div
-                  className={cx(
-                    "flex flex-col w-full pl-4 pr-3 py-2 lg:py-3 space-y-2 hover:bg-surface-25",
-                    {
-                      "!border !border-danger-200 !rounded-r-2xl":
-                        showPastEndDateError,
-                    }
-                  )}
-                >
-                  <BodyText size={2}>Until</BodyText>
-                  <DatePicker
-                    dateTime={endDateTime}
-                    setDateTime={(date: Date) => {
-                      const isEndTimeBeforeStartTime =
-                        date.getTime() <= startDateTime.getTime();
+            <Checkbox
+              id="checkbox-freq-display-custom-date-range"
+              checked={showCustomDateRange}
+              onChange={setShowCustomDateRange}
+              label="Choose custom date and time"
+            />
+            {!showCustomDateRange && (
+              <FrequencyOptionsCard
+                frequency={frequency}
+                setEndDate={setEndDateTime}
+              />
+            )}
+            {showCustomDateRange && (
+              <div className="!mb-[25px] md:!mb-[46px]">
+                <div className="flex flex-col border divide-y md:divide-y-0 md:flex-row rounded-2xl border-surface-50 md:divide-x divide-surface-50">
+                  <div className="flex flex-col w-full py-2 pl-4 pr-3 space-y-2 lg:py-3 hover:bg-surface-25">
+                    <BodyText size={2}>Starting from</BodyText>
+                    <DatePicker
+                      dateTime={startDateTime}
+                      setDateTime={handleStartDateTimeChange}
+                      timeCaption="Start time"
+                      className="w-full"
+                    />
+                  </div>
+                  <div
+                    className={cx(
+                      "flex flex-col w-full pl-4 pr-3 py-2 lg:py-3 space-y-2 hover:bg-surface-25",
+                      {
+                        "!border !border-danger-200 !rounded-r-2xl":
+                          showPastEndDateError,
+                      }
+                    )}
+                  >
+                    <BodyText size={2}>Until</BodyText>
+                    <DatePicker
+                      dateTime={endDateTime}
+                      setDateTime={(date: Date) => {
+                        const isEndTimeBeforeStartTime =
+                          date.getTime() <= startDateTime.getTime();
 
-                      setShowPastEndDateError(isEndTimeBeforeStartTime);
-                      deselectStrategy();
-                      setEndDateTime(date);
-                    }}
-                    timeCaption="End time"
-                    className="w-full"
-                    fromDate={startDateTime}
-                  />
+                        setShowPastEndDateError(isEndTimeBeforeStartTime);
+                        deselectStrategy();
+                        setEndDateTime(date);
+                      }}
+                      timeCaption="End time"
+                      className="w-full"
+                      fromDate={startDateTime}
+                    />
+                  </div>
                 </div>
+                {showPastEndDateError && (
+                  <div className="flex items-center space-x-1 text-danger-500">
+                    <Icon name="warning" size={12} />
+                    <BodyText size={1}>
+                      Please select an end time after start time.
+                    </BodyText>
+                  </div>
+                )}
               </div>
-              {showPastEndDateError && (
-                <div className="flex items-center space-x-1 text-danger-500">
-                  <Icon name="warning" size={12} />
-                  <BodyText size={1}>
-                    Please select an end time after start time.
-                  </BodyText>
-                </div>
-              )}
-            </div>
+            )}
           </div>
         </div>
         {fromToken &&
@@ -692,7 +709,7 @@ const StackDetailsTileText = ({
   timeLength,
 }: StackDetailsTileTextProps) => (
   <BodyText size={1}>
-    Stacks <span className="text-em-med">{toTokenSymbol}</span>, swapping{" "}
+    Buys <span className="text-em-med">{toTokenSymbol}</span>, swapping{" "}
     <span className="text-em-med">
       {amountPerOrder} {fromTokenSymbol}
     </span>
