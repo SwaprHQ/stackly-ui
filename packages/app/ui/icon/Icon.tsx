@@ -8,6 +8,7 @@ export type IconName =
   | "caret-left"
   | "caret-right"
   | "check"
+  | "checkbox"
   | "close"
   | "discord"
   | "info"
@@ -34,6 +35,7 @@ export const iconMap: Record<IconName, any> = {
   "caret-left": IconList.CaretLeftIcon,
   "caret-right": IconList.CaretRightIcon,
   check: IconList.CheckmarkIcon,
+  checkbox: IconList.CheckboxIcon,
   close: IconList.CloseIcon,
   discord: IconList.DiscordIcon,
   info: IconList.InfoIcon,

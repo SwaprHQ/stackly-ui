@@ -21,7 +21,10 @@ export const Providers = ({ children }: PropsWithChildren) => {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <ConnectKitProvider mode="light" options={{ initialChainId: 0 }}>
+        <ConnectKitProvider
+          mode="light"
+          options={{ initialChainId: 0, enforceSupportedChains: true }}
+        >
           <NetworkContextProvider>
             <TokenListProvider>
               <ModalContextProvider>

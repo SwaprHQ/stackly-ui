@@ -5,6 +5,7 @@ import { ReactNode, createContext, useContext, useMemo } from "react";
 import { ChainId } from "@stackly/sdk";
 import {
   createParser,
+  Options,
   parseAsString,
   parseAsStringEnum,
   parseAsTimestamp,
@@ -50,14 +51,29 @@ const throwStackboxFormContextError = () => {
   throw new Error("No StackboxFormContext available");
 };
 
+type StackboxFormStateInput<T> = [
+  T,
+  <Shallow>(
+    value: T | ((old: T) => T | null) | null,
+    options?: Options<Shallow> | undefined
+  ) => Promise<URLSearchParams>
+];
+
 interface StackboxFormContextProps {
   resetFormValues: (newChainId: ChainId) => void;
-  stackboxFormState: any;
+  stackboxFormState: {
+    fromTokenState: StackboxFormStateInput<TokenWithBalance>;
+    toTokenState: StackboxFormStateInput<TokenWithBalance>;
+    tokenAmountState: StackboxFormStateInput<string>;
+    frequencyState: StackboxFormStateInput<FREQUENCY_OPTIONS>;
+    startDateState: StackboxFormStateInput<Date>;
+    endDateState: StackboxFormStateInput<Date>;
+  };
 }
 
 const StackboxFormContext = createContext<StackboxFormContextProps>({
   resetFormValues: throwStackboxFormContextError,
-  stackboxFormState: null,
+  stackboxFormState: null as any,
 });
 
 interface StackboxFormContextProviderProps {
@@ -108,7 +124,6 @@ export const StackboxFormContextProvider = ({
     "endDate",
     parseAsTimestamp.withDefault(new Date(endDateByFrequency[frequency]))
   );
-
   const stackboxFormContext = useMemo(() => {
     const resetFormValues = (newChainId: ChainId) => {
       const validChainId = checkIsValidChainId(newChainId)
@@ -125,12 +140,30 @@ export const StackboxFormContextProvider = ({
     };
 
     const stackboxFormState = {
-      fromTokenState: [fromToken, setFromToken],
-      toTokenState: [toToken, setToToken],
-      tokenAmountState: [tokenAmount, setTokenAmount],
-      frequencyState: [frequency, setFrequency],
-      startDateState: [startDateTime, setStartDateTime],
-      endDateState: [endDateTime, setEndDateTime],
+      fromTokenState: [
+        fromToken,
+        setFromToken,
+      ] as StackboxFormStateInput<TokenWithBalance>,
+      toTokenState: [
+        toToken,
+        setToToken,
+      ] as StackboxFormStateInput<TokenWithBalance>,
+      tokenAmountState: [
+        tokenAmount,
+        setTokenAmount,
+      ] as StackboxFormStateInput<string>,
+      frequencyState: [
+        frequency,
+        setFrequency,
+      ] as StackboxFormStateInput<FREQUENCY_OPTIONS>,
+      startDateState: [
+        startDateTime,
+        setStartDateTime,
+      ] as StackboxFormStateInput<Date>,
+      endDateState: [
+        endDateTime,
+        setEndDateTime,
+      ] as StackboxFormStateInput<Date>,
     };
 
     return {

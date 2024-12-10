@@ -7,6 +7,7 @@ import CaretDownIcon from "./caret-down.svg";
 import CaretLeftIcon from "./caret-left.svg";
 import CaretRightIcon from "./caret-right.svg";
 import CheckmarkIcon from "./check.svg";
+import CheckboxIcon from "./checkbox.svg";
 import CloseIcon from "./close.svg";
 import DiscordIcon from "./discord.svg";
 import HamburgerIcon from "./hamburger.svg";
@@ -26,6 +27,7 @@ export {
   CaretLeftIcon,
   CaretRightIcon,
   CheckmarkIcon,
+  CheckboxIcon,
   CloseIcon,
   DiscordIcon,
   HamburgerIcon,

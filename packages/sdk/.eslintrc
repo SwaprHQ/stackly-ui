@@ -5,7 +5,7 @@
   "parserOptions": {
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["turbo", "@typescript-eslint"],
   "env": {
     "es6": true
   }
