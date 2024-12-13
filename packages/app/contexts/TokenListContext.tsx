@@ -23,6 +23,7 @@ import { TokenFromTokenlist } from "@/models";
 import defaultGnosisTokenlist from "public/assets/blockchains/gnosis/tokenlist.json";
 import defaultEthereumTokenlist from "public/assets/blockchains/ethereum/tokenlist.json";
 import defaultArbitrumTokenList from "public/assets/blockchains/arbitrum/tokenlist.json";
+import defaultBaseTokenList from "public/assets/blockchains/base/tokenlist.json";
 
 import { useNetworkContext } from "./NetworkContext";
 
@@ -37,6 +38,7 @@ const DEFAULT_TOKEN_LIST_BY_CHAIN: {
   [ChainId.ETHEREUM]: defaultEthereumTokenlist,
   [ChainId.GNOSIS]: defaultGnosisTokenlist,
   [ChainId.ARBITRUM]: defaultArbitrumTokenList,
+  [ChainId.BASE]: defaultBaseTokenList,
 };
 
 const TOKEN_LISTS_BY_CHAIN_URL: { [chainId: number]: string[] } = {
@@ -52,6 +54,10 @@ const TOKEN_LISTS_BY_CHAIN_URL: { [chainId: number]: string[] } = {
   [ChainId.ARBITRUM]: [
     "https://raw.githubusercontent.com/cowprotocol/token-lists/main/src/public/ArbitrumOneUniswapTokensList.json",
     "https://tokens.coingecko.com/arbitrum-one/all.json",
+  ],
+  [ChainId.BASE]: [
+    "https://raw.githubusercontent.com/ethereum-optimism/ethereum-optimism.github.io/master/optimism.tokenlist.json",
+    "https://tokens.coingecko.com/base/all.json",
   ],
 };
 
