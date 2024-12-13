@@ -56,8 +56,9 @@ const TOKEN_LISTS_BY_CHAIN_URL: { [chainId: number]: string[] } = {
     "https://tokens.coingecko.com/arbitrum-one/all.json",
   ],
   [ChainId.BASE]: [
-    "https://raw.githubusercontent.com/ethereum-optimism/ethereum-optimism.github.io/master/optimism.tokenlist.json",
+    "https://raw.githubusercontent.com/cowprotocol/token-lists/main/src/public/CoinGecko.8453.json",
     "https://tokens.coingecko.com/base/all.json",
+    "https://raw.githubusercontent.com/ethereum-optimism/ethereum-optimism.github.io/master/optimism.tokenlist.json",
   ],
 };
 

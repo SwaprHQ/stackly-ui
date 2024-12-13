@@ -20,7 +20,7 @@
     "name": "Coinbase Wrapped BTC",
     "symbol": "cbBTC",
     "decimals": 8,
-    "logoURI": "/assets/images/tokens/cbbtc.png", // todo add proper image
+    "logoURI": "/assets/images/tokens/cbbtc.png",
     "chainId": 8453
   }
 ]

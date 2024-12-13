@@ -15,6 +15,7 @@ import WethTokenImg from "./weth.png";
 import WxdaiTokenImg from "./wxdai.png";
 import XdaiTokenImg from "./xdai.png";
 import ArbTokenImg from "./arb.png";
+import CbBtcTokenImg from "./cbbtc.png";
 
 export {
   OneInchTokenImg,
@@ -32,4 +33,5 @@ export {
   WxdaiTokenImg,
   XdaiTokenImg,
   ArbTokenImg,
+  CbBtcTokenImg,
 };
