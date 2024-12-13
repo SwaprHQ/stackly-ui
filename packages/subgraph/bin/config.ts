@@ -27,8 +27,8 @@ export const config: Record<
   },
   base: {
     orderFactory: {
-      address: "0xYourBaseFactoryAddress",
-      startBlock: 1234567,
+      address: "0xf4cd605e5fef8618ac450e84b7e912c870927922",
+      startBlock: 23650573,
     },
   },
 };

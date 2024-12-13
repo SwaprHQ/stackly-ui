@@ -10,7 +10,8 @@ export const GNOSIS_ORDER_FACTORY_ADDRESS =
 export const ARBITRUM_ORDER_FACTORY_ADDRESS =
   "0xf4cd605e5fef8618ac450e84b7e912c870927922";
 
-export const BASE_ORDER_FACTORY_ADDRESS = "0xYourBaseFactoryAddress"; // Replace with actual address
+export const BASE_ORDER_FACTORY_ADDRESS =
+  "0xf4cd605e5fef8618ac450e84b7e912c870927922";
 
 const validateVaultInfo = (
   chainId: ChainId,
@@ -42,7 +43,7 @@ export const DCAORDER_SINGLETON_ADDRESS_LIST: Record<ChainId, string> = {
   [ChainId.ETHEREUM]: "0xc97ecbdba20c672c61e27bd657d4dfbd2328f6fa",
   [ChainId.GNOSIS]: "0xFc41E4DCBab781092a32E8487cFB7444F9e0e403",
   [ChainId.ARBITRUM]: "0x810f9f1384421b6d185f46253e36f3a558e57369",
-  [ChainId.BASE]: "0xYourBaseSingletonAddress", // Replace with actual address
+  [ChainId.BASE]: "0x810f9f1384421b6d185f46253e36f3a558e57369",
 };
 
 /**
