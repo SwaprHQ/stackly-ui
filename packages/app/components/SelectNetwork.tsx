@@ -3,16 +3,12 @@
 import { Fragment } from "react";
 import { ChainIcon } from "connectkit";
 import { Listbox, Transition } from "@headlessui/react";
-import { usePathname } from "next/navigation";
 
 import { Button, Icon } from "@/ui";
-import { useNetworkContext, useStackboxFormContext } from "@/contexts";
-import { PATHNAMES } from "@/constants";
+import { useNetworkContext } from "@/contexts";
 
 export const SelectNetwork = () => {
   const { chains, changeNetwork, chainId, selectedChain } = useNetworkContext();
-  const { resetFormValues } = useStackboxFormContext();
-  const pathname = usePathname();
 
   return (
     <Listbox
@@ -27,7 +23,7 @@ export const SelectNetwork = () => {
           iconRight="caret-down"
           size="sm"
           variant="tertiary"
-          className="flex h-10 border-none shadow-sm rounded-xl focus:bg-white focus:ring-0 active:ring-0"
+          className="flex h-10 rounded-xl border-none shadow-sm focus:bg-white focus:ring-0 active:ring-0"
         >
           <div className="flex items-center space-x-2">
             <ChainIcon size={20} id={chainId} />
@@ -42,11 +38,11 @@ export const SelectNetwork = () => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <Listbox.Options className="absolute z-10 w-auto py-1 mt-1 overflow-auto text-base bg-white shadow-md max-h-60 rounded-2xl focus:outline-none sm:text-sm">
+          <Listbox.Options className="overflow-auto absolute z-10 py-1 mt-1 w-auto max-h-60 text-base bg-white rounded-2xl shadow-md focus:outline-none sm:text-sm">
             {chains?.map(({ id, name }) => (
               <Listbox.Option
                 key={id}
-                className="relative py-2 pl-4 pr-10 cursor-pointer select-none hover:bg-surface-75"
+                className="relative py-2 pr-10 pl-4 cursor-pointer select-none hover:bg-surface-75"
                 value={id.toString()}
               >
                 {({ selected }) => {
@@ -57,7 +53,7 @@ export const SelectNetwork = () => {
                         <p className="text-nowrap">{name}</p>
                       </div>
                       {selected ? (
-                        <div className="absolute inset-y-0 right-0 flex items-center pr-3 text-amber-600">
+                        <div className="flex absolute inset-y-0 right-0 items-center pr-3 text-amber-600">
                           <Icon
                             name="check"
                             className="w-4 h-4 text-primary-600"
