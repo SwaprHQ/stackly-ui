@@ -178,7 +178,7 @@ export const STRATEGY_CATEGORIES: { [chainId: number]: ChainStrategies } = {
         },
         {
           id: 3,
-          buyToken: baseTokens.WETH,
+          buyToken: baseTokens.CBBTC,
           daysAmount: 10,
           frequency: FREQUENCY_OPTIONS.hour,
           sellAmountPerTimeframe: 5,

@@ -15,5 +15,12 @@ export const baseTokens = {
     logoURI: "/assets/images/tokens/weth.png",
     chainId: 8453,
   },
-  // Add other relevant Base tokens
+  CBBTC: {
+    address: "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+    name: "Coinbase Wrapped BTC",
+    symbol: "cbBTC",
+    decimals: 8,
+    logoURI: "/assets/images/tokens/cbbtc.png",
+    chainId: 8453,
+  },
 };

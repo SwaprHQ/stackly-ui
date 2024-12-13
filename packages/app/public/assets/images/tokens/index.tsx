@@ -16,6 +16,11 @@ import WxdaiTokenImg from "./wxdai.png";
 import XdaiTokenImg from "./xdai.png";
 import ArbTokenImg from "./arb.png";
 import CbBtcTokenImg from "./cbbtc.png";
+import VirtualTokenImg from "./virtual.png";
+import DegenTokenImg from "./degen.png";
+import ToshiTokenImg from "./toshi.png";
+import HigherTokenImg from "./higher.png";
+import TalentTokenImg from "./talent.png";
 
 export {
   OneInchTokenImg,
@@ -34,4 +39,9 @@ export {
   XdaiTokenImg,
   ArbTokenImg,
   CbBtcTokenImg,
+  VirtualTokenImg,
+  TalentTokenImg,
+  HigherTokenImg,
+  ToshiTokenImg,
+  DegenTokenImg,
 };

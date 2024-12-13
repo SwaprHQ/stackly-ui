@@ -29,9 +29,5 @@ export const TOKEN_PICKER_COMMON_TOKENS: {
     gnosisTokens.WETH,
     gnosisTokens.WXDAI,
   ],
-  [ChainId.BASE]: [
-    baseTokens.USDC,
-    baseTokens.WETH,
-    // Add any other common Base tokens you want to display in the token picker
-  ],
+  [ChainId.BASE]: [baseTokens.USDC, baseTokens.WETH, baseTokens.CBBTC],
 };

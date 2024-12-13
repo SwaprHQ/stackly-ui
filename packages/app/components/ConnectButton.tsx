@@ -30,6 +30,7 @@ const CustomConnectButton = ({
     [ChainId.ETHEREUM]: WETH[ChainId.ETHEREUM].address,
     [ChainId.GNOSIS]: WXDAI.address,
     [ChainId.ARBITRUM]: WETH[ChainId.ARBITRUM].address,
+    [ChainId.BASE]: WETH[ChainId.BASE].address,
   };
 
   const { data: balance } = useBalance({
@@ -56,7 +57,7 @@ const CustomConnectButton = ({
       {balance && (
         <BodyText
           size={2}
-          className="hidden ml-3 text-em-med md:block min-w-max"
+          className="hidden ml-3 min-w-max text-em-med md:block"
         >
           {formattedBalance(balance)}
         </BodyText>
@@ -67,7 +68,7 @@ const CustomConnectButton = ({
         iconRight="caret-down"
         onClick={onClick}
         width="full"
-        className="flex border-none shadow-sm rounded-xl hover:bg-surface-25 focus:bg-white focus:ring-0 active:ring-0"
+        className="flex rounded-xl border-none shadow-sm hover:bg-surface-25 focus:bg-white focus:ring-0 active:ring-0"
       >
         {avatar && (
           <Image
