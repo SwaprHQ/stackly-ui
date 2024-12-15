@@ -80,7 +80,7 @@ const ARBITRUM_SUBGRAPH_ENDPOINT_URL =
 
 const BASE_SUBGRAPH_ENDPOINT_URL =
   process.env.BASE_SUBGRAPH_API_URL ??
-  `${API_BASE_URL}/${SUBGRAPH_API_KEY}/subgraphs/id/3CchqyW6sgt9DxyZaNTZCZRQKkvkfVuYK2UrLqSAeyTS`;
+  `${API_BASE_URL}/${SUBGRAPH_API_KEY}/subgraphs/id/7WUXPez9b9DMfJriVPS3yttxA6xLRwq73duq15jXaVi7`;
 
 export const SUBGRAPH_ENDPOINT_LIST: Readonly<Record<string, string>> = {
   [ChainId.ETHEREUM]: ETHEREUM_SUBGRAPH_ENDPOINT_URL,
