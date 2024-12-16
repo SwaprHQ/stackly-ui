@@ -6,6 +6,25 @@ import { Listbox, Transition } from "@headlessui/react";
 
 import { Button, Icon } from "@/ui";
 import { useNetworkContext } from "@/contexts";
+import Image from "next/image";
+import { ChainId } from "@stackly/sdk";
+
+const CustomChainIcon = ({ id, size }: { id: number; size: number }) => {
+  if (id === ChainId.BASE) {
+    return (
+      <Image
+        src="/assets/images/base-logo.svg"
+        alt="Base network logo"
+        width={size}
+        height={size}
+        className="rounded-full"
+      />
+    );
+  }
+
+  // Fall back to ConnectKit's ChainIcon for other networks
+  return <ChainIcon size={size} id={id} />;
+};
 
 export const SelectNetwork = () => {
   const { chains, changeNetwork, chainId, selectedChain } = useNetworkContext();
@@ -25,7 +44,7 @@ export const SelectNetwork = () => {
           className="flex h-10 rounded-xl border-none shadow-sm focus:bg-white focus:ring-0 active:ring-0"
         >
           <div className="flex items-center space-x-2">
-            <ChainIcon size={20} id={chainId} />
+            <CustomChainIcon size={20} id={chainId} />
             <span className="hidden md:inline-block">
               {selectedChain?.name}
             </span>
@@ -48,7 +67,7 @@ export const SelectNetwork = () => {
                   return (
                     <>
                       <div className="flex items-center space-x-2">
-                        <ChainIcon size={20} id={id} />
+                        <CustomChainIcon size={20} id={id} />
                         <p className="text-nowrap">{name}</p>
                       </div>
                       {selected ? (
