@@ -4,7 +4,7 @@ import { twMerge } from "tailwind-merge";
 import Image from "next/image";
 import { Address, http } from "viem";
 import { mainnet } from "viem/chains";
-import { createConfig, fallback, useEnsAvatar, useEnsName } from "wagmi";
+import { createConfig, fallback, useEnsAvatar } from "wagmi";
 import { RPC_LIST } from "@/constants";
 
 interface AvatarProps {

@@ -3,6 +3,7 @@
 import { ChainId, WETH, WXDAI } from "@stackly/sdk";
 import { ConnectKitButton } from "connectkit";
 import { useBalance } from "wagmi";
+import { formatUnits } from "viem";
 
 import { BodyText, Button, SizeProps } from "@/ui";
 import { useAutoConnect } from "@/hooks";
@@ -41,11 +42,11 @@ const CustomConnectButton = ({
     )}`;
 
   const formattedBalance = (balanceData: NonNullable<typeof balance>) =>
-    balanceData.formatted === "0"
+    balanceData.value === BigInt(0)
       ? `0 ${balanceData.symbol}`
-      : `${balanceData.formatted.substring(
+      : `${formatUnits(balanceData.value, balanceData.decimals).substring(
           0,
-          balanceData.formatted.length - balanceData.decimals + 3
+          5
         )} ${balanceData.symbol}`;
 
   return (
