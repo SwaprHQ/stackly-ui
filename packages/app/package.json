@@ -31,8 +31,8 @@
     "react-dom": "^18.2.0",
     "react-popper": "^2.3.0",
     "tailwind-merge": "^1.12.0",
-    "viem": "2.x",
-    "wagmi": "2.x"
+    "viem": "2.21.55",
+    "wagmi": "2.14.1"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.0.1",

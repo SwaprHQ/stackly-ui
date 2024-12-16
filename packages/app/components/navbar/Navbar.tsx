@@ -14,7 +14,7 @@ export function Navbar() {
   const { chainId } = useNetworkContext();
 
   return (
-    <header className="top-0 flex flex-col w-full px-4 border-b border-solid h-nav-height bg-surface-25 border-b-surface-75">
+    <header className="flex top-0 flex-col px-4 w-full border-b border-solid h-nav-height bg-surface-25 border-b-surface-75">
       <nav className="flex items-center w-full h-full">
         <div>
           <Link
@@ -25,13 +25,13 @@ export function Navbar() {
               query: `chainId=${chainId}`,
             }}
             title="Stackly Home"
-            className="flex items-center outline-none w-14 md:w-40"
+            className="flex items-center w-14 outline-none md:w-40"
           >
             <Logo />
           </Link>
         </div>
         <Divider />
-        <div className="items-center justify-end hidden w-full gap-4 md:flex">
+        <div className="hidden gap-4 justify-end items-center w-full md:flex">
           <ButtonLink
             variant="quaternary"
             size="sm"

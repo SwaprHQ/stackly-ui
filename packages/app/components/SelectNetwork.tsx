@@ -9,7 +9,6 @@ import { useNetworkContext } from "@/contexts";
 
 export const SelectNetwork = () => {
   const { chains, changeNetwork, chainId, selectedChain } = useNetworkContext();
-
   return (
     <Listbox
       value={chainId.toString()}

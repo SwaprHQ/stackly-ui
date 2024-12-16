@@ -2,12 +2,12 @@
 
 import { ChainId, WETH, WXDAI } from "@stackly/sdk";
 import { ConnectKitButton } from "connectkit";
-import Image from "next/image";
-import { useBalance, useEnsAvatar } from "wagmi";
+import { useBalance } from "wagmi";
 
 import { BodyText, Button, SizeProps } from "@/ui";
 import { useAutoConnect } from "@/hooks";
 import { useNetworkContext } from "@/contexts";
+import { Avatar } from "@/components/Avatar";
 
 const CustomConnectButton = ({
   address,
@@ -21,10 +21,6 @@ const CustomConnectButton = ({
   size: SizeProps;
 }) => {
   const { chainId } = useNetworkContext();
-  const { data: avatar } = useEnsAvatar({
-    name: ensName,
-    chainId: ChainId.ETHEREUM,
-  });
 
   const TOKEN_BY_CHAIN: { [chainId: number]: string } = {
     [ChainId.ETHEREUM]: WETH[ChainId.ETHEREUM].address,
@@ -70,18 +66,16 @@ const CustomConnectButton = ({
         width="full"
         className="flex rounded-xl border-none shadow-sm hover:bg-surface-25 focus:bg-white focus:ring-0 active:ring-0"
       >
-        {avatar && (
-          <Image
-            width={20}
-            height={20}
-            src={avatar}
-            alt={address}
-            className="rounded-full"
-          />
-        )}
+        <Avatar address={address} ensName={ensName} />
         <BodyText size={2} className="text-black">
-          <span className="md:hidden">{truncatedAddress(2)}</span>
-          <span className="hidden md:block">{truncatedAddress(4)}</span>
+          {ensName ? (
+            <>{ensName}</>
+          ) : (
+            <>
+              <span className="md:hidden">{truncatedAddress(2)}</span>
+              <span className="hidden md:block">{truncatedAddress(4)}</span>
+            </>
+          )}
         </BodyText>
       </Button>
     </div>
