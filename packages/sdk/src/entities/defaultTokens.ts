@@ -21,6 +21,12 @@ export const USDC: Readonly<Record<ChainId, Token>> = {
     6,
     "USDC"
   ),
+  [ChainId.BASE]: new Token(
+    ChainId.BASE,
+    "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    6,
+    "USDC"
+  ),
 };
 
 export const SETH2 = new Token(
@@ -59,9 +65,16 @@ export const WETH: Readonly<Record<ChainId, Token>> = {
     "WETH",
     "Wrapped Ether"
   ),
+  [ChainId.BASE]: new Token(
+    ChainId.BASE,
+    "0x4200000000000000000000000000000000000006",
+    18,
+    "WETH",
+    "Wrapped Ether"
+  ),
 };
 
-export const SWPR: Readonly<Record<ChainId, Token>> = {
+export const SWPR: Record<Exclude<ChainId, ChainId.BASE>, Token> = {
   [ChainId.ETHEREUM]: new Token(
     ChainId.ETHEREUM,
     "0x6cacdb97e3fc8136805a9e7c342d866ab77d0957",
@@ -108,7 +121,7 @@ export const DAI: Readonly<Record<ChainId.ETHEREUM | ChainId.ARBITRUM, Token>> =
     ),
   };
 
-export const GNO: Record<ChainId, Token> = {
+export const GNO: Record<Exclude<ChainId, ChainId.BASE>, Token> = {
   [ChainId.ETHEREUM]: new Token(
     ChainId.ETHEREUM,
     "0x6810e776880c02933d47db1b9fc05908e5386b96",
@@ -129,7 +142,7 @@ export const GNO: Record<ChainId, Token> = {
   ),
 };
 
-export const WBTC: Record<ChainId, Token> = {
+export const WBTC: Record<Exclude<ChainId, ChainId.BASE>, Token> = {
   [ChainId.ETHEREUM]: new Token(
     ChainId.ETHEREUM,
     "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
@@ -150,7 +163,7 @@ export const WBTC: Record<ChainId, Token> = {
   ),
 };
 
-export const DPI: Record<ChainId, Token> = {
+export const DPI: Record<Exclude<ChainId, ChainId.BASE>, Token> = {
   [ChainId.ETHEREUM]: new Token(
     ChainId.ETHEREUM,
     "0x1494ca1f11d487c2bbe4543e90080aeba4ba3c2b",

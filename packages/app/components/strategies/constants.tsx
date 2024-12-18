@@ -1,5 +1,10 @@
 import { FREQUENCY_OPTIONS } from "@/models/stack";
-import { gnosisTokens, mainnetTokens, arbitrumTokens } from "@/models/token";
+import {
+  gnosisTokens,
+  mainnetTokens,
+  arbitrumTokens,
+  baseTokens,
+} from "@/models/token";
 import { Strategy } from "@/contexts";
 import { ChainId } from "@stackly/sdk";
 
@@ -144,6 +149,49 @@ export const STRATEGY_CATEGORIES: { [chainId: number]: ChainStrategies } = {
           frequency: FREQUENCY_OPTIONS.week,
           sellAmountPerTimeframe: 100,
           sellToken: arbitrumTokens.DAI,
+          totalSellAmount: "800",
+        },
+      ],
+    },
+  },
+  [ChainId.BASE]: {
+    popular: {
+      label: "Popular Strategies",
+      strategies: [
+        {
+          id: 1,
+          buyToken: baseTokens.WETH,
+          daysAmount: 30,
+          frequency: FREQUENCY_OPTIONS.day,
+          sellAmountPerTimeframe: 50,
+          sellToken: baseTokens.USDC,
+          totalSellAmount: "1500",
+        },
+        {
+          id: 2,
+          buyToken: baseTokens.WETH,
+          daysAmount: 7,
+          frequency: FREQUENCY_OPTIONS.day,
+          sellAmountPerTimeframe: 20,
+          sellToken: baseTokens.USDC,
+          totalSellAmount: "140",
+        },
+        {
+          id: 3,
+          buyToken: baseTokens.CBBTC,
+          daysAmount: 10,
+          frequency: FREQUENCY_OPTIONS.hour,
+          sellAmountPerTimeframe: 5,
+          sellToken: baseTokens.USDC,
+          totalSellAmount: "1200",
+        },
+        {
+          id: 4,
+          buyToken: baseTokens.WETH,
+          daysAmount: 56,
+          frequency: FREQUENCY_OPTIONS.week,
+          sellAmountPerTimeframe: 100,
+          sellToken: baseTokens.USDC,
           totalSellAmount: "800",
         },
       ],

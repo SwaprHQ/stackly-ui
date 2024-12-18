@@ -1,0 +1,74 @@
+[
+  {
+    "address": "0x4200000000000000000000000000000000000006",
+    "name": "Wrapped Ether",
+    "symbol": "WETH",
+    "decimals": 18,
+    "logoURI": "/assets/images/tokens/weth.png",
+    "chainId": 8453
+  },
+  {
+    "address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "name": "USD Coin",
+    "symbol": "USDC",
+    "decimals": 6,
+    "logoURI": "/assets/images/tokens/usdc.png",
+    "chainId": 8453
+  },
+  {
+    "address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+    "name": "Coinbase Wrapped BTC",
+    "symbol": "cbBTC",
+    "decimals": 8,
+    "logoURI": "/assets/images/tokens/cbbtc.png",
+    "chainId": 8453
+  },
+  {
+    "address": "0x0b3e328455c4059EEb9e3f84b5543F74E24e7E1b",
+    "name": "Virtual Protocol",
+    "symbol": "VIRTUAL",
+    "decimals": 18,
+    "logoURI": "/assets/images/tokens/virtual.png",
+    "chainId": 8453
+  },
+  {
+    "address": "0x4ed4E862860beD51a9570b96d89aF5E1B0Efefed",
+    "name": "Degen",
+    "symbol": "DEGEN",
+    "decimals": 18,
+    "logoURI": "/assets/images/tokens/degen.png",
+    "chainId": 8453
+  },
+  {
+    "address": "0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe",
+    "name": "Higher",
+    "symbol": "HIGHER",
+    "decimals": 18,
+    "logoURI": "/assets/images/tokens/higher.png",
+    "chainId": 8453
+  },
+  {
+    "address": "0xAC1Bd2486aAf3B5C0fc3Fd868558b082a531B2B4",
+    "name": "Toshi",
+    "symbol": "TOSHI",
+    "decimals": 18,
+    "logoURI": "/assets/images/tokens/toshi.png",
+    "chainId": 8453
+  },
+  {
+    "address": "0x9a33406165f562E16C3abD82fd1185482E01b49a",
+    "name": "Talent Protocol Token",
+    "symbol": "TALENT",
+    "decimals": 18,
+    "logoURI": "/assets/images/tokens/talent.png",
+    "chainId": 8453
+  },
+  {
+    "address": "0x4F9Fd6Be4a90f2620860d680c0d4d5Fb53d1A825",
+    "name": "aixbt by Virtuals",
+    "symbol": "AIXBT",
+    "decimals": 18,
+    "logoURI": "/assets/images/tokens/aixbt.png",
+    "chainId": 8453
+  }
+]

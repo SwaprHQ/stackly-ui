@@ -10,6 +10,9 @@ export const GNOSIS_ORDER_FACTORY_ADDRESS =
 export const ARBITRUM_ORDER_FACTORY_ADDRESS =
   "0xf4cd605e5fef8618ac450e84b7e912c870927922";
 
+export const BASE_ORDER_FACTORY_ADDRESS =
+  "0xf4cd605e5fef8618ac450e84b7e912c870927922";
+
 const validateVaultInfo = (
   chainId: ChainId,
   map: Record<ChainId, string> | Readonly<Record<string, string>>,
@@ -30,6 +33,7 @@ export const ORDER_FACTORY_ADDRESS_LIST: Record<ChainId, string> = {
   [ChainId.ETHEREUM]: MAINNET_ORDER_FACTORY_ADDRESS,
   [ChainId.GNOSIS]: GNOSIS_ORDER_FACTORY_ADDRESS,
   [ChainId.ARBITRUM]: ARBITRUM_ORDER_FACTORY_ADDRESS,
+  [ChainId.BASE]: BASE_ORDER_FACTORY_ADDRESS,
 };
 
 /**
@@ -39,6 +43,7 @@ export const DCAORDER_SINGLETON_ADDRESS_LIST: Record<ChainId, string> = {
   [ChainId.ETHEREUM]: "0xc97ecbdba20c672c61e27bd657d4dfbd2328f6fa",
   [ChainId.GNOSIS]: "0xFc41E4DCBab781092a32E8487cFB7444F9e0e403",
   [ChainId.ARBITRUM]: "0x810f9f1384421b6d185f46253e36f3a558e57369",
+  [ChainId.BASE]: "0x810f9f1384421b6d185f46253e36f3a558e57369",
 };
 
 /**
@@ -54,6 +59,7 @@ export const COW_SETTLEMENT_ADDRESS_LIST: Record<ChainId, string> = {
   [ChainId.ETHEREUM]: COW_SETTLEMENT_ADDRESS,
   [ChainId.GNOSIS]: COW_SETTLEMENT_ADDRESS,
   [ChainId.ARBITRUM]: COW_SETTLEMENT_ADDRESS,
+  [ChainId.BASE]: COW_SETTLEMENT_ADDRESS,
 };
 
 const API_BASE_URL = "https://gateway-arbitrum.network.thegraph.com/api";
@@ -72,10 +78,15 @@ const ARBITRUM_SUBGRAPH_ENDPOINT_URL =
   process.env.ARBITRUM_SUBGRAPH_API_URL ??
   `${API_BASE_URL}/${SUBGRAPH_API_KEY}/subgraphs/id/FNmemHB6tUh7eHmJnBFKYFf27U5GUAzXnatry4ZbrF7f`;
 
+const BASE_SUBGRAPH_ENDPOINT_URL =
+  process.env.BASE_SUBGRAPH_API_URL ??
+  `${API_BASE_URL}/${SUBGRAPH_API_KEY}/subgraphs/id/7WUXPez9b9DMfJriVPS3yttxA6xLRwq73duq15jXaVi7`;
+
 export const SUBGRAPH_ENDPOINT_LIST: Readonly<Record<string, string>> = {
   [ChainId.ETHEREUM]: ETHEREUM_SUBGRAPH_ENDPOINT_URL,
   [ChainId.GNOSIS]: GNOSIS_SUBGRAPH_ENDPOINT_URL,
   [ChainId.ARBITRUM]: ARBITRUM_SUBGRAPH_ENDPOINT_URL,
+  [ChainId.BASE]: BASE_SUBGRAPH_ENDPOINT_URL,
 };
 
 /**

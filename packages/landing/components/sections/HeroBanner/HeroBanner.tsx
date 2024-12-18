@@ -15,39 +15,45 @@ import {
 import { EVENTS } from "@/analytics";
 import { STACKLY_APP_URL } from "@/constants";
 
+export const SUPPORTED_NETWORKS = [
+  {
+    name: "Ethereum",
+    image: "/assets/images/ethereum-logo.svg",
+  },
+  {
+    name: "Gnosis",
+    image: "/assets/images/gnosis-logo.svg",
+  },
+  {
+    name: "Arbitrum",
+    image: "/assets/images/arbitrum-logo.svg",
+  },
+  {
+    name: "Base",
+    image: "/assets/images/base-logo.svg",
+  },
+];
+
 export const HeroBanner = () => {
   return (
     <section className="px-6 pt-16 border-b border-gray-100 md:pt-20">
-      <div className="flex items-center px-3 py-2 mx-auto mb-3 space-x-2 border border-surface-75 rounded-3xl w-fit hover:border-primary-300">
+      <div className="flex items-center px-3 py-2 mx-auto mb-3 space-x-2 rounded-3xl border border-surface-75 w-fit hover:border-primary-300">
         <p className="text-xs text-em-med">Live on:</p>
         <div className="flex items-center space-x-1">
-          <Image
-            src="/assets/images/ethereum-avatar.svg"
-            alt="ethereum logo"
-            width={20}
-            height={20}
-            title="live on ethereum mainnet network"
-            className="hover:scale-125"
-          />
-          <Image
-            src="/assets/images/gnosis-avatar.svg"
-            alt="gnosis logo"
-            width={20}
-            height={20}
-            title="live on gnosis network"
-            className="hover:scale-125"
-          />
-          <Image
-            src="/assets/images/arbitrum-avatar.svg"
-            alt="arbitrum logo"
-            width={20}
-            height={20}
-            title="live on arbitrum one network"
-            className="hover:scale-125"
-          />
+          {SUPPORTED_NETWORKS.map((network) => (
+            <Image
+              key={network.name}
+              src={network.image}
+              alt={network.name}
+              width={20}
+              height={20}
+              title={`live on ${network.name} mainnet network`}
+              className="hover:scale-125"
+            />
+          ))}
         </div>
       </div>
-      <div className="space-y-4 text-center md:space-y-6 ">
+      <div className="space-y-4 text-center md:space-y-6">
         <DisplayText>Empower your portfolio</DisplayText>
         <HeadingText className="!font-medium text-em-med max-w-2xl mx-auto">
           Say goodbye to market timing and hello to effortless recurrent swaps.
@@ -65,15 +71,15 @@ export const HeroBanner = () => {
       >
         Start stacking now
       </ButtonLink>
-      <div className="relative max-w-4xl mx-auto mt-12 mb-24 md:my-20">
+      <div className="relative mx-auto mt-12 mb-24 max-w-4xl md:my-20">
         <Link
           passHref
           href={STACKLY_APP_URL}
-          className="relative block mx-auto w-fit"
+          className="block relative mx-auto w-fit"
         >
           <div className="invisible sm:visible absolute w-[3px] h-[26px] bg-em-med bottom-[60px] left-[17px] animate-cursor-blink"></div>
           <Image
-            className="mx-auto border shadow-xl hover:shadow-2xl rounded-2xl border-surface-50"
+            className="mx-auto rounded-2xl border shadow-xl hover:shadow-2xl border-surface-50"
             alt="amount widget"
             src="/assets/images/landing-widget.png"
             height={200}
