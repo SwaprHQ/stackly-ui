@@ -43,6 +43,8 @@ interface NetworkContextProviderProps {
   children: ReactNode;
 }
 
+const INVALID_CHAIN_ID = 0;
+
 export const NetworkContextProvider = ({
   children,
 }: NetworkContextProviderProps) => {
@@ -90,7 +92,8 @@ export const NetworkContextProvider = ({
   useEffect(() => {
     const parsedSearchParamsChainId = searchParamsChainId
       ? parseInt(searchParamsChainId)
-      : 0;
+      : INVALID_CHAIN_ID;
+
     const newChainIsDiferentFromCurrent =
       parsedSearchParamsChainId !== chain?.id;
 
@@ -116,9 +119,14 @@ export const NetworkContextProvider = ({
         }
       }
     }
-    // set default chain
-    setSelectedChain(arbitrum);
-    setSelectedChainId(arbitrum.id);
+
+    const chainIsNotSet = !chain?.id;
+
+    if (!isValidSearchParamsChainId && chainIsNotSet) {
+      // set default chain
+      setSelectedChain(arbitrum);
+      setSelectedChainId(arbitrum.id);
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isConnected, chains, searchParamsChainId, switchChain]);
