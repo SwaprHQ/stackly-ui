@@ -3,6 +3,7 @@ import {
   gnosisTokens,
   mainnetTokens,
   TokenFromTokenlist,
+  baseTokens,
 } from "@/models/token";
 import { ChainId } from "@stackly/sdk";
 
@@ -23,5 +24,9 @@ export const DEFAULT_TOKENS_BY_CHAIN: { [chainId: number]: DefaultTokens } = {
   [ChainId.GNOSIS]: {
     from: gnosisTokens.WXDAI,
     to: gnosisTokens.WETH,
+  },
+  [ChainId.BASE]: {
+    from: baseTokens.USDC,
+    to: baseTokens.WETH,
   },
 };

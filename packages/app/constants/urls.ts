@@ -6,6 +6,7 @@ export const RPC_LIST: { [chainId: number]: string } = {
   [ChainId.GNOSIS]: process.env.RPC_GNOSIS ?? "https://rpc.gnosis.gateway.fm/",
   [ChainId.ARBITRUM]:
     process.env.RPC_ARBITRUM ?? "https://arbitrum-one-rpc.publicnode.com/",
+  [ChainId.BASE]: process.env.RPC_BASE ?? "https://base-rpc.publicnode.com",
 };
 
 // App URLs

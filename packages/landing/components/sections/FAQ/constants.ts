@@ -70,7 +70,7 @@ export const FAQ_QUESTIONS_AND_ANSWERS: FaqQa[] = [
   {
     question: "Which networks is Stackly available?",
     answers: [
-      `Currently Stackly supports Arbitrum, Gnosis and Ethereum mainnet networks.`,
+      `Currently Stackly supports Arbitrum, Base, Gnosis and Ethereum mainnet networks.`,
     ],
     trackEventName: EVENTS.SECTIONS.FAQ.NETWORKS_AVAILABLE,
   },

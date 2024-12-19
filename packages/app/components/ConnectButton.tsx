@@ -2,12 +2,13 @@
 
 import { ChainId, WETH, WXDAI } from "@stackly/sdk";
 import { ConnectKitButton } from "connectkit";
-import Image from "next/image";
-import { useBalance, useEnsAvatar } from "wagmi";
+import { useBalance } from "wagmi";
+import { formatUnits } from "viem";
 
 import { BodyText, Button, SizeProps } from "@/ui";
 import { useAutoConnect } from "@/hooks";
 import { useNetworkContext } from "@/contexts";
+import { Avatar } from "@/components/Avatar";
 
 const CustomConnectButton = ({
   address,
@@ -21,15 +22,12 @@ const CustomConnectButton = ({
   size: SizeProps;
 }) => {
   const { chainId } = useNetworkContext();
-  const { data: avatar } = useEnsAvatar({
-    name: ensName,
-    chainId: ChainId.ETHEREUM,
-  });
 
   const TOKEN_BY_CHAIN: { [chainId: number]: string } = {
     [ChainId.ETHEREUM]: WETH[ChainId.ETHEREUM].address,
     [ChainId.GNOSIS]: WXDAI.address,
     [ChainId.ARBITRUM]: WETH[ChainId.ARBITRUM].address,
+    [ChainId.BASE]: WETH[ChainId.BASE].address,
   };
 
   const { data: balance } = useBalance({
@@ -44,11 +42,11 @@ const CustomConnectButton = ({
     )}`;
 
   const formattedBalance = (balanceData: NonNullable<typeof balance>) =>
-    balanceData.formatted === "0"
+    balanceData.value === BigInt(0)
       ? `0 ${balanceData.symbol}`
-      : `${balanceData.formatted.substring(
+      : `${formatUnits(balanceData.value, balanceData.decimals).substring(
           0,
-          balanceData.formatted.length - balanceData.decimals + 3
+          5
         )} ${balanceData.symbol}`;
 
   return (
@@ -56,7 +54,7 @@ const CustomConnectButton = ({
       {balance && (
         <BodyText
           size={2}
-          className="hidden ml-3 text-em-med md:block min-w-max"
+          className="hidden ml-3 min-w-max text-em-med md:block"
         >
           {formattedBalance(balance)}
         </BodyText>
@@ -67,20 +65,18 @@ const CustomConnectButton = ({
         iconRight="caret-down"
         onClick={onClick}
         width="full"
-        className="flex border-none shadow-sm rounded-xl hover:bg-surface-25 focus:bg-white focus:ring-0 active:ring-0"
+        className="flex rounded-xl border-none shadow-sm hover:bg-surface-25 focus:bg-white focus:ring-0 active:ring-0"
       >
-        {avatar && (
-          <Image
-            width={20}
-            height={20}
-            src={avatar}
-            alt={address}
-            className="rounded-full"
-          />
-        )}
+        <Avatar address={address} ensName={ensName} />
         <BodyText size={2} className="text-black">
-          <span className="md:hidden">{truncatedAddress(2)}</span>
-          <span className="hidden md:block">{truncatedAddress(4)}</span>
+          {ensName ? (
+            <>{ensName}</>
+          ) : (
+            <>
+              <span className="md:hidden">{truncatedAddress(2)}</span>
+              <span className="hidden md:block">{truncatedAddress(4)}</span>
+            </>
+          )}
         </BodyText>
       </Button>
     </div>
